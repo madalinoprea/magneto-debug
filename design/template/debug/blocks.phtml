@@ -1,0 +1,48 @@
+<?php
+$templateDirs = $this->getTemplateDirs();
+$blocks = $this->getItems();
+?>
+
+<h4><?php echo $this->__('Template path') ?></h4>
+<?php if( $templateDirs ): ?>
+	<ol>
+	<?php foreach( $templateDirs as $template ): ?>
+		<li><?php echo $template; ?></li>
+	</ol>
+	<?php endforeach; ?>
+<?php else: ?>
+	<p>None</p>
+<?php endif; ?>
+
+<h4><?php echo $this->__("Blocks") ?> (<?php echo count($blocks); ?> rendered)</h4>
+<?php if( $blocks ): ?>
+<dl>
+<?php foreach( $blocks as $block ): ?>
+	<dt><strong><?php echo $block['class'] ?> <a class="remoteCall toggleTemplate" href="<?php echo Mage::getUrl('debug/index/viewTemplate', array('_query' => array('template'=> $block['template']))) ?>"><?php echo $block['template'] ?></a></strong></dt>
+	<dd><samp><?php echo $block['template'] ?></samp></dd>
+	<?php if( $block['context'] ): ?>
+	<dd>
+		<div class="djTemplateShowContextDiv"><a class="djTemplateShowContext"><span class="toggleArrow">&#x25B6;</span><?php echo $this->__('Toggle Context') ?></a></div>
+		<div class="djTemplateHideContextDiv" style="display:none;"><code><?php echo $block['context'] ?></code></div>
+	</dd>
+	<?php endif ?>
+<?php endforeach ?>
+</dl>
+<?php else: ?>
+	<p><?php echo $this->__('None') ?></p>
+<?php endif; ?>
+
+<!-- <h4>{% trans 'Context processor' %}{{ context_processors|length|pluralize }}</h4>
+{% if context_processors %}
+<dl>
+{% for key, value in context_processors.iteritems %}
+	<dt><strong>{{ key|escape }}</strong></dt>
+	<dd>
+		<div class="djTemplateShowContextDiv"><a class="djTemplateShowContext"><span class="toggleArrow">&#x25B6;</span> {% trans 'Toggle Context' %}</a></div>
+		<div class="djTemplateHideContextDiv" style="display:none;"><code>{{ value|escape }}</code></div>
+	</dd>
+{% endfor %}
+</dl>
+{% else %}
+	<p>{% trans 'None' %}</p>
+{% endif %} -->

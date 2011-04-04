@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+        <reference name="before_body_end">
+            <block type="debug/debug" name="debug_panels" template="debug/debug.phtml">
+                <block type="debug/versions" name="debug_versions_panel" template="debug/versions.phtml"/>
+                <block type="debug/config" name="debug_config_panel" template="debug/config.phtml"/>
+                <block type="debug/blocks" name="debug_blocks_panel" template="debug/blocks.phtml"/>
+                <block type="debug/controller" name="debug_controller_panel" template="debug/controller.phtml"/>
+                <block type="debug/models" name="debug_models_panel" template="debug/models.phtml"/>
+                <block type="core/template" name="debug_layout_panel" template="debug/layout.phtml"/>
+                <block type="core/template" name="debug_performance_panel" template="debug/performance.phtml"/>
+            </block>
+        </reference>
+    </default>
+</layout>   

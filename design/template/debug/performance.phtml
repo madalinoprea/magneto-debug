@@ -1,0 +1,34 @@
+<?php
+$layoutUpdates = Mage::getSingleton('core/layout')->getUpdate()->getHandles();
+?>
+<h4><?php $this->__('Performance') ?></h4>
+<table>
+	<thead>
+		<tr>
+			<th><?php echo $this->__('Handle') ?></th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php $row = 0; ?>
+		<?php foreach( $layoutUpdates as $item ): ?>
+			<tr class="<?php echo ( ($row % 2 ? 'djDebugOdd' : 'djDebugEven')) ?>">
+				<td><?php echo $item ?></td>
+			</tr>
+			<?php $row++; ?>
+		<?php endforeach ?>
+	</tbody>
+</table>
+
+<dl>
+	<dt><strong>
+		<a class="remoteCall toggleTemplate" href="<?php echo Mage::getUrl('debug/index/clearCache') ?>">
+			Clear Magento Cache
+		</a>
+	</strong></dt>
+	<dt><strong>
+		<a class="remoteCall toggleTemplate" href="<?php echo Mage::getUrl('debug/index/viewPackageLayout') ?>">
+			View Package Layout
+		</a>
+	</strong></dt>
+</dl>
+

@@ -1,0 +1,26 @@
+<dl>
+	<dt><strong>
+		<a class="remoteCall toggleTemplate" href="<?php echo Mage::getUrl('debug/index/toggleTemplateHints') ?>">
+            <?php echo $this->__("Toggle Template Hints") ?>
+		</a>
+	</strong></dt>
+</dl>
+
+<table>
+	<thead>
+		<tr>
+            <th><?php echo $this->__("Setting") ?></th>
+            <th><?php echo $this->__("Value") ?></th>
+		</tr>
+	</thead>
+    <tbody>
+        <?php $row = 0; ?>
+        <?php foreach( $this->getItems() as $item ): ?>
+            <tr class="<?php echo (($row % 2)?'djDebugOdd':'djDebugEven') ?>">
+                <td><?php echo $item[0] ?></td>
+                <td><?php echo $item[1] ?></td>
+			</tr>
+            <?php $row++; ?>
+        <?php endforeach; ?>
+	</tbody>
+</table>

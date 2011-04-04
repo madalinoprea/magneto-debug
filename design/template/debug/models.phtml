@@ -1,0 +1,55 @@
+<?php
+$items = $this->getItems();
+Mage::helper('debug')->sortModelsByOccurences($items);
+$queries = $this->getQueries();
+?>
+<h4><?php $this->__('MODELS') ?></h4>
+<table>
+	<thead>
+		<tr>
+			<th><?php echo $this->__('Resource Name') ?></th>
+			<th><?php echo $this->__('Model Class') ?></th>
+			<th><?php echo $this->__('Times Instantiated') ?></th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php $row = 0; ?>
+		<?php foreach( $items as $item ): ?>
+			<tr class="<?php echo ( ($row % 2 ? 'djDebugOdd' : 'djDebugEven')) ?>">
+				<td><?php echo $item['resource_name'] ?></td>
+				<td><?php echo $item['class'] ?></td>
+				<td><?php echo $item['occurences'] ?></td>
+			</tr>
+			<?php $row++; ?>
+		<?php endforeach ?>
+	</tbody>
+</table>
+
+<h4><?php echo $this->__('COLLECTIONS') ?></h4>
+<table>
+	<thead>
+		<tr>
+			<th><?php echo $this->__('Time') ?></th>
+			<th><?php echo $this->__('Action') ?></th>
+			<th><?php echo $this->__('Query') ?></th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php $row = 0; ?>
+		<?php foreach( $queries as $item ): ?>
+			<tr class="<?php echo ( ($row % 2 ? 'djDebugOdd' : 'djDebugEven')) ?>">
+				<td></td>
+				<td>
+                    <a class="remoteCall" href="<?php echo Mage::getUrl('debug/index/viewSqlSelect', array('_query' => array('sql'=>$item['sql']))) ?>">SELECT</a><br />
+                    <a class="remoteCall" href="<?php echo Mage::getUrl('debug/index/viewSqlExplain', array('_query' => array('sql'=>$item['sql']))) ?>">EXPLAIN</a><br />
+				</td>
+				<td class="syntax">
+					 <div class="djDebugSqlWrap">
+					 	 <div class="djDebugSql"><?php echo $item['sql'] ?></div>
+					 </div>
+				</td>
+			</tr>
+			<?php $row++; ?>
+		<?php endforeach ?>
+	</tbody>
+</table>

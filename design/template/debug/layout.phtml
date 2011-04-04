@@ -1,0 +1,57 @@
+<?php
+$layoutHandles = Mage::getSingleton('core/layout')->getUpdate()->getHandles();
+$layoutUpdates = Mage::getSingleton('core/layout')->getUpdate()->asArray();
+?>
+<h4><?php echo $this->__('Handles for this request') ?></h4>
+<table>
+	<thead>
+		<tr>
+			<th><?php echo $this->__('Handle') ?></th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php $row = 0; ?>
+		<?php foreach( $layoutHandles as $item ): ?>
+			<tr class="<?php echo ( ($row % 2 ? 'djDebugOdd' : 'djDebugEven')) ?>">
+				<td><?php echo $item ?></td>
+			</tr>
+			<?php $row++; ?>
+		<?php endforeach ?>
+	</tbody>
+</table>
+
+<h4><?php echo $this->__('Layout updates') ?> (<?php echo count($layoutUpdates); ?>)</h4>
+<table>
+	<thead>
+		<tr>
+			<th><?php echo $this->__('#'); ?></th>
+			<th><?php echo $this->__('Update') ?></th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php $row = 0; ?>
+		<?php foreach( $layoutUpdates as $item ): ?>
+			<tr class="<?php echo ( ($row % 2 ? 'djDebugOdd' : 'djDebugEven')) ?>">
+			<td><?php echo $row ?>.</td>
+			<td class="syntax">
+				<code><?php echo htmlspecialchars($item) ?></code>
+				</td>
+			</tr>
+			<?php $row++; ?>
+		<?php endforeach ?>
+	</tbody>
+</table>
+
+<dl>
+	<dt><strong>
+		<a class="remoteCall toggleTemplate" href="<?php echo Mage::getUrl('debug/index/viewPageLayout') ?>">
+			View Page Layout
+		</a>
+	</strong></dt>
+	<dt><strong>
+		<a class="remoteCall toggleTemplate" href="<?php echo Mage::getUrl('debug/index/viewPackageLayout') ?>">
+			View Package Layout
+		</a>
+	</strong></dt>
+</dl>
+
