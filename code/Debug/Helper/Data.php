@@ -9,9 +9,11 @@ class Magneto_Debug_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     function isRequestAllowed() {
+        return Mage::helper('core')->isDevAllowed();
+
         // FIXME: Check if current user can perform sensitive requests
-        // I've tried to check if user is an authenticated admin user but the code doesn't
-        // seem to work
+        // I've tried to check if user is an authenticated admin user but the code is not working
+        // Investigate what happens!!
         //
         // //get the admin session
         // Mage::getSingleton('core/session', array('name'=>'adminhtml'));
@@ -21,11 +23,10 @@ class Magneto_Debug_Helper_Data extends Mage_Core_Helper_Abstract
         //   //do stuff
         // }
         // else
-        // {
+        // 
         //   echo "go away bad boy";
         // }
         //         
-        return true;
     }
 
 	function formatSize($size) {
