@@ -84,11 +84,11 @@ TEXT;
 
         $content = 'Template hints status changed to ' . var_export($newStatus, true) . ' Please hit <a href="javascript:location.reload(true)">refresh this page</a>';
         $content .= "<br/>Dev Allowed: " . Mage::helper('core')->isDevAllowed();
-        echo $this->_debugPanel("Toggle Template Hints", $content);
+        // echo $this->_debugPanel("Toggle Template Hints", $content);
 
         // This should be the correct behaviour, but some caching problems were noticed
-        // Mage::getSingleton('core/session')->addSuccess('Template hints set to ' . var_export($newStatus, true));
-        // $this->_redirectReferer(); 
+        Mage::getSingleton('core/session')->addSuccess('Template hints set to ' . var_export($newStatus, true));
+        $this->_redirectReferer(); 
     }
 
     public function toggleModuleStatusAction()
