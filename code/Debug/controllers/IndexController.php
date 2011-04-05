@@ -67,8 +67,7 @@ TEXT;
 	}
 	
 	public function clearCacheAction() {
-		Mage::app()->cleanCache();
-		$content = `ls -al`;
+        $content = Mage::helper('debug')->cleanCache();
 		echo $this->_debugPanel("Clear Caches", "Magento caches were cleared. " . $content);
 		
 	}
@@ -81,16 +80,59 @@ TEXT;
         $config->saveConfig('dev/debug/template_hints', $newStatus, 'websites', Mage::app()->getStore()->getWebsiteId());
         $config->saveConfig('dev/debug/template_hints_blocks', $newStatus, 'websites', Mage::app()->getStore()->getWebsiteId());
 
-        // Mage::app()->getConfig()->reinit();
         Mage::app()->cleanCache();
 
         $content = 'Template hints status changed to ' . var_export($newStatus, true) . ' Please hit <a href="javascript:location.reload(true)">refresh this page</a>';
         $content .= "<br/>Dev Allowed: " . Mage::helper('core')->isDevAllowed();
         echo $this->_debugPanel("Toggle Template Hints", $content);
 
-        // This should be the nice behaviour but some caching problems were noticed
+        // This should be the correct behaviour, but some caching problems were noticed
         // Mage::getSingleton('core/session')->addSuccess('Template hints set to ' . var_export($newStatus, true));
         // $this->_redirectReferer(); 
+    }
+
+    public function toggleModuleStatusAction()
+    {
+        $title = "Toggle Module Status";
+        $moduleName = $this->getRequest()->getParam('module');
+        if( !$moduleName ){
+            echo $this->_debugPanel($title, "Invalid module name supplied. ");
+            return;
+        }
+        $config = Mage::getConfig();
+
+        $moduleConfig = Mage::getConfig()->getModuleConfig($moduleName);
+        if( !$moduleConfig  ) {
+            echo $this->_debugPanel($title, "Unable to load supplied module. ");
+            return;
+        }
+
+    
+        $moduleCurrentStatus = $moduleConfig->is('active');
+        $moduleNewStatus = !$moduleCurrentStatus;
+        $moduleConfigFile = $config->getOptions()->getEtcDir() . DS . 'modules' . DS . $moduleName . '.xml';
+        $configContent = file_get_contents($moduleConfigFile);
+
+        function strbool($value)
+        {
+            return $value ? 'true' : 'false';
+        }
+
+        $contents = "<br/>Active status switched to " . strbool($moduleNewStatus) . " for module {$moduleName} in file {$moduleConfigFile}:";
+        $contents .= "<br/><code>" . htmlspecialchars($configContent) . "</code>";
+        $configContent = str_replace("<active>" . strbool($moduleCurrentStatus) ."</active>", "<active>" . strbool($moduleNewStatus) . "</active>", $configContent);
+
+        if( file_put_contents($moduleConfigFile, $configContent) === FALSE ) {
+            echo $this->_debugPanel($title, "Failed to write configuration. (Web Service permissions for {$moduleConfigFile}?!)");
+            return $this;
+        }
+
+        Mage::helper('debug')->cleanCache();
+
+        $contents .= "<br/><code>" . htmlspecialchars($configContent) . "</code>";
+        $contents .= "<br/><br/><i>WARNING: This feature doesn't support usage of multiple frontends.</i>";
+
+        echo $this->_debugPanel($title, $contents);
     }
 	
     public function indexAction()

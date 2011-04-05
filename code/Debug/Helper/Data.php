@@ -2,6 +2,11 @@
 
 class Magneto_Debug_Helper_Data extends Mage_Core_Helper_Abstract
 {
+    
+    public function cleanCache()
+    {
+        Mage::app()->cleanCache();
+    }
 
     function isRequestAllowed() {
         // FIXME: Check if current user can perform sensitive requests
