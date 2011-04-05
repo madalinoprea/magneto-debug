@@ -12,8 +12,9 @@ Basic features are implemented and few others will come soon.
 ```
 cd <magento root folder>
 modman init
-modman magento-debug git@github.com:madalinoprea/magento-debug.git
+modman magento-debug clone git@github.com:madalinoprea/magento-debug.git
 ```
+ - Make sure you clear Magento's cache to enable the new module
 
 == FEATURES ==
  - Controllers Information
