@@ -32,7 +32,6 @@ TEXT;
             echo $this->_debugPanel($title, "You need to be logged in as admin to run this operation");
             return $this;
         } else {
-            // $con = Mage::getResourceSingleton('core/resource')->getConnection('core_write');
             $con = Mage::getSingleton('core/resource')->getConnection('core_write');
             $query = $this->getRequest()->getParam('sql');
             $result = $con->query($query);
@@ -133,6 +132,43 @@ TEXT;
         $contents .= "<br/><br/><i>WARNING: This feature doesn't support usage of multiple frontends.</i>";
 
         echo $this->_debugPanel($title, $contents);
+    }
+
+    public function showSqlProfilerAction()
+    {
+        $config = Mage::getConfig()->getNode('global/resources/default_setup/connection/profiler');
+        Mage::getSingleton('core/resource')->getConnection('core_write')->getProfiler()->setEnabled(false);
+        var_dump($config);
+    }
+
+    public function toggleSqlProfilerAction()
+    {
+        $localConfigFile = Mage::getBaseDir('etc').DS.'local.xml';
+        $localConfigBackupFile = Mage::getBaseDir('etc').DS.'local-magneto.xml';
+
+        $configContent = file_get_contents($localConfigFile);
+        $xml = new SimpleXMLElement($configContent);
+        $profiler = $xml->global->resources->default_setup->connection->profiler;
+        if( (int)$xml->global->resources->default_setup->connection->profiler !=1 ){
+            $xml->global->resources->default_setup->connection->addChild('profiler', 1);
+        } else {
+            unset($xml->global->resources->default_setup->connection->profiler);
+        }
+        
+        // backup config file
+        if( file_put_contents($localConfigBackupFile, $configContent)===FALSE ){
+            Mage::getSingleton('core/session')->addError("Operation aborted: couldn't create backup for config file");
+            $this->_redirectReferer();
+        }
+
+        if( $xml->saveXML($localConfigFile) === FALSE ) {
+            Mage::getSingleton('core/session')->addError("Couldn't save {$localConfigFile}: check write permissions.");
+            $this->_redirectReferer();
+        }
+        Mage::getSingleton('core/session')->addSuccess("SQL profiler status changed in local.xml");
+
+        Mage::helper('debug')->cleanCache();
+        $this->_redirectReferer();
     }
 	
     public function indexAction()
