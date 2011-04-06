@@ -26,6 +26,7 @@ $queries = $this->getQueries();
 </table>
 
 <h4><?php echo $this->__('QUERIES') ?></h4>
+<?php if( $queries ): ?>
 <table>
 	<thead>
 		<tr>
@@ -55,3 +56,6 @@ $queries = $this->getQueries();
 		<?php endforeach ?>
 	</tbody>
 </table>
+<?php else: ?>
+    <p>SQL Profiler is not enabled. <a class="toggleTemplate" href="<?php Mage::getUrl('debug/index/toggleSqlProfile') ?>">Enable SQL Profiler</a></p>
+<?php endif; ?> 
