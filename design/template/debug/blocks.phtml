@@ -18,7 +18,7 @@ $blocks = $this->getItems();
 <?php if( $blocks ): ?>
 <dl>
 <?php foreach( $blocks as $block ): ?>
-	<dt><strong><?php echo $block['class'] ?> <a class="remoteCall toggleTemplate" href="<?php echo Mage::getUrl('debug/index/viewTemplate', array('_query' => array('template'=> $block['template']))) ?>"><?php echo $block['template'] ?></a></strong></dt>
+	<dt><strong><?php echo $block['class'] ?> <?php if($block['template']):?><a class="remoteCall toggleTemplate" href="<?php echo Mage::getUrl('debug/index/viewTemplate', array('_query' => array('template'=> $block['template']))) ?>"><?php echo $block['template'] ?></a><?php endif ?></strong></dt>
 	<dd><samp><?php echo $block['template'] ?></samp></dd>
 	<?php if( $block['context'] ): ?>
 	<dd>
