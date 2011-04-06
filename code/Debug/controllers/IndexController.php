@@ -20,9 +20,9 @@ TEXT;
 	{
 		$fileName = $this->getRequest()->get('template');
 		$absoluteFilepath = realpath(Mage::getBaseDir('design') . DS . $fileName);
-		$source = htmlspecialchars( file_get_contents($absoluteFilepath) );
+		$source =  highlight_string(file_get_contents($absoluteFilepath), true) ;
 		
-		echo $this->_debugPanel("Template Source: <code>$fileName</code>", $source);
+		echo $this->_debugPanel("Template Source: <code>$fileName</code>", ''.$source.'');
 	}
 
     public function viewSqlSelectAction()

@@ -136,6 +136,10 @@
 	overflow:auto;
 }
 
+#djDebug code span {
+	font-family:Consolas, Monaco, "Bitstream Vera Sans Mono", "Lucida Console", monospace;
+}
+
 #djDebug tr.djDebugOdd {
 	background-color:#f5f5f5;
 }
