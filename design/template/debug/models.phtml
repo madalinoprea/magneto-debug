@@ -25,7 +25,7 @@ $queries = $this->getQueries();
 	</tbody>
 </table>
 
-<h4><?php echo $this->__('COLLECTIONS') ?></h4>
+<h4><?php echo $this->__('QUERIES') ?></h4>
 <table>
 	<thead>
 		<tr>
@@ -38,14 +38,16 @@ $queries = $this->getQueries();
 		<?php $row = 0; ?>
 		<?php foreach( $queries as $item ): ?>
 			<tr class="<?php echo ( ($row % 2 ? 'djDebugOdd' : 'djDebugEven')) ?>">
-				<td></td>
 				<td>
-                    <a class="remoteCall" href="<?php echo Mage::getUrl('debug/index/viewSqlSelect', array('_query' => array('sql'=>$item['sql']))) ?>">SELECT</a><br />
-                    <a class="remoteCall" href="<?php echo Mage::getUrl('debug/index/viewSqlExplain', array('_query' => array('sql'=>$item['sql']))) ?>">EXPLAIN</a><br />
+					 	 <div class=""><?php echo sprintf("%.4f", $item->getElapsedSecs()) ?>&nbsp;s</div>
+				</td>
+				<td>
+                    <a class="remoteCall" href="<?php echo Mage::getUrl('debug/index/viewSqlSelect', array('_query' => array('sql'=>$item->getQuery()))) ?>">SELECT</a><br />
+                    <a class="remoteCall" href="<?php echo Mage::getUrl('debug/index/viewSqlExplain', array('_query' => array('sql'=>$item->getQuery()))) ?>">EXPLAIN</a><br />
 				</td>
 				<td class="syntax">
 					 <div class="djDebugSqlWrap">
-					 	 <div class="djDebugSql"><?php echo $item['sql'] ?></div>
+					 	 <div class="djDebugSql"><?php echo $item->getQuery() ?></div>
 					 </div>
 				</td>
 			</tr>

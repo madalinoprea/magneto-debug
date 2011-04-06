@@ -11,7 +11,18 @@ class Magneto_Debug_Model_Observer {
 	
 	public function getBlocks() { return $this->blocks; }
 	
-	public function getQueries() { return $this->queries; }
+	public function getQueries() {
+		//TODO: implement profiler for connections other than 'core_write'  
+		$profiler = Mage::getSingleton('core/resource')->getConnection('core_write')->getProfiler();
+		$queries = array();
+		
+		if($profiler)
+		{ 
+			$queries = $profiler->getQueryProfiles();
+		}
+		
+		return $queries;
+	 }
 	
     public function skipCoreBlocks(){
         return false;
