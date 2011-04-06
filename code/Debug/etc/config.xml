@@ -138,6 +138,15 @@
                     </debug_observer>
                 </observers>
             </model_load_after>
+            <controller_action_predispatch>
+                <observers>
+                    <debug_observer>
+                        <type>singleton</type>
+                        <class>debug/observer</class>
+                        <method>onActionPreDispatch</method>
+                    </debug_observer>
+                </observers>
+            </controller_action_predispatch>
 		</events>
     </global>
 </config>
