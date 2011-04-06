@@ -44,6 +44,7 @@
 				return false;
 			});
 			$('#djDebug a.remoteCall').click(function() {
+				$('#djDebugWindow').html('<div class="loader"></div>');
 				$('#djDebugWindow').load(this.href, {}, function() {
 					$('#djDebugWindow a.djDebugBack').click(function() {
 						$(this).parent().parent().hide();
