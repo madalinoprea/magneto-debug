@@ -134,6 +134,13 @@ TEXT;
 
         echo $this->_debugPanel($title, $contents);
     }
+
+
+    public function downloadConfigAction()
+    {
+        header("Content-type: text/xml");
+        echo Mage::app()->getConfig()->getNode()->asXML();
+    }
 	
     public function indexAction()
     {
