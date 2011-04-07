@@ -1,20 +1,13 @@
 <?php
 class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
 {
-    // TODO: Move this helpers to templates and initiate Blocks
 	private function _debugPanel($title, $content) {
-		return <<<TEXT
-		<div class="djDebugPanelTitle"> 
-			<a class="djDebugClose djDebugBack" href="">"Back"</a> 
-			<h3>{$title}</h3> 
-		</div> 
-		<div class="djDebugPanelContent"> 
-		<div class="scroll"> 
-				<code>{$content}</code> 
-		</div> 
-		</div>
-TEXT;
-	}
+         $block = new Mage_Core_Block_Template(); //Is this the correct way?
+        $block->setTemplate('debug/simplepanel.phtml');
+        $block->assign('title', $title);
+        $block->assign('content', $content);
+        return $block->toHtml();
+    }
 
 	public function viewTemplateAction()
 	{
