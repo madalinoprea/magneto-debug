@@ -145,7 +145,6 @@ class Magneto_Debug_Block_Debug extends Mage_Core_Block_Template
     }
 
     public function getDebugMediaUrl() {
-        // FIXME: don't hardcode media url
-        return '/media/debug/';
+        return Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'debug/';
     }
 }
