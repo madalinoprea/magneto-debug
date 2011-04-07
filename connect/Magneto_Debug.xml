@@ -1,5 +1,5 @@
 <_>
-   <form_key>cbVtm1xDN1bOtYXP</form_key>
+   <form_key>ruQc9WyUmqSS2CKl</form_key>
    <name>Magneto_Debug</name>
    <channel>http://connect.magentocommerce.com/community</channel>
    <summary>Debug</summary>
@@ -11,17 +11,14 @@
    <notes>Beta</notes>
    <authors>
       <name>
-         <name/>
          <name>Sorin Stoiana</name>
          <name>Madalin Oprea</name>
       </name>
       <user>
-         <user/>
          <user>sstoiana</user>
          <user>madalinoprea</user>
       </user>
       <email>
-         <email/>
          <email>sorinalin.stoiana@gmail.com</email>
          <email>madalinoprea@gmail.com</email>
       </email>
@@ -43,7 +40,7 @@
             <max/>
          </max>
          <files>
-            <files>                    </files>
+            <files>                      </files>
          </files>
       </package>
       <extension>

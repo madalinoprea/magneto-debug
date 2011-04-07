@@ -2,20 +2,13 @@
 class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
 {
 	private function _debugPanel($title, $content) {
-		return <<<TEXT
-		<div class="djDebugPanelTitle"> 
-			<a class="djDebugClose djDebugBack" href="">"Back"</a> 
-			<h3>{$title}</h3> 
-		</div> 
-		<div class="djDebugPanelContent"> 
-		<div class="scroll"> 
-				<code>{$content}</code> 
-		</div> 
-		</div>
-TEXT;
-	}
-	
-	
+         $block = new Mage_Core_Block_Template(); //Is this the correct way?
+        $block->setTemplate('debug/simplepanel.phtml');
+        $block->assign('title', $title);
+        $block->assign('content', $content);
+        return $block->toHtml();
+    }
+
 	public function viewTemplateAction()
 	{
 		$fileName = $this->getRequest()->get('template');
@@ -27,33 +20,53 @@ TEXT;
 
     public function viewSqlSelectAction()
     {
-        $title = "SQL Select";
-        if( !Mage::helper('debug')->isRequestAllowed() ){
-            echo $this->_debugPanel($title, "You need to be logged in as admin to run this operation");
-            return $this;
-        } else {
-            // $con = Mage::getResourceSingleton('core/resource')->getConnection('core_write');
-            $con = Mage::getSingleton('core/resource')->getConnection('core_write');
-            $query = $this->getRequest()->getParam('sql');
-            $result = $con->query($query);
-            $source = "Results";
+        $con = Mage::getSingleton('core/resource')->getConnection('core_write');
+        $query = $this->getRequest()->getParam('sql');
+        $result = $con->query($query);
 
-            while( $row=$result->fetch(PDO::FETCH_ASSOC) ){
-                $source .= "<br/>$row";
-                foreach ($row as $key=>$value) {
-                    $source .= "$key=$value";
-                }
+        $items = array();
+        $headers = array();
+        while( $row=$result->fetch(PDO::FETCH_ASSOC) ){
+            $items[]=$row;
+            
+            if( empty($headers) ){
+                $headers = array_keys($row);
             }
-
-            echo $this->_debugPanel($title, $source);
         }
+
+        $block = new Mage_Core_Block_Template(); //Is this the correct way?
+        $block->setTemplate('debug/arrayformat.phtml');
+        $block->assign('title', 'SQL Select');
+        $block->assign('headers', $headers);
+        $block->assign('items', $items);
+        $block->assign('query', $query);
+        echo $block->toHtml();
     }
 
 
     public function viewSqlExplainAction()
     {
-        $content = 'aaa';
-        echo $this->_debugPanel("SQL Explain", $content);
+        $con = Mage::getSingleton('core/resource')->getConnection('core_write');
+        $query = $this->getRequest()->getParam('sql');
+        $result = $con->query("EXPLAIN {$query}");
+
+        $items = array();
+        $headers = array();
+        while( $row=$result->fetch(PDO::FETCH_ASSOC) ){
+            $items[]=$row;
+            
+            if( empty($headers) ){
+                $headers = array_keys($row);
+            }
+        }
+
+        $block = new Mage_Core_Block_Template(); //Is this the correct way?
+        $block->setTemplate('debug/arrayformat.phtml');
+        $block->assign('title', 'SQL Explain');
+        $block->assign('headers', $headers);
+        $block->assign('items', $items);
+        $block->assign('query', $query);
+        echo $block->toHtml();
     }
 	
 	public function viewPageLayoutAction() {
@@ -133,6 +146,13 @@ TEXT;
         $contents .= "<br/><br/><i>WARNING: This feature doesn't support usage of multiple frontends.</i>";
 
         echo $this->_debugPanel($title, $contents);
+    }
+
+
+    public function downloadConfigAction()
+    {
+        header("Content-type: text/xml");
+        echo Mage::app()->getConfig()->getNode()->asXML();
     }
 	
     public function indexAction()

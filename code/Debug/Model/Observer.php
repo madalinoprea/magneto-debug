@@ -28,61 +28,6 @@ class Magneto_Debug_Model_Observer {
         return false;
     }
 
-    protected function _displayActions() {
-        echo "<h2>Actions</h2>";
-        foreach ($this->_actions as $action) {
-            echo "<b>Route:</b> {$action['route_name']} | {$action['class']} | {$action['action_name']}";
-        }
-    }
-
-    protected function _displayBlocks() {
-        echo "<h2>Blocks</h2>";
-        foreach ($this->_blocks as $block) {
-            echo "<b>{$block['class']}</b> <i>{$block['template']}</i><br/>";
-            if( isset($block['template_vars']) ){
-                foreach ($block['template_vars'] as $key=>$val){
-                    echo "<pre>{$key} = {$val}</pre><br/>";
-                }
-            }
-        }
-
-        return $this;
-    }     
-	
-	protected function _displayLayoutUpdates(){
-		echo "<h2>Layout updates</h2>";
-		foreach ($this->_layoutUpdates as $layout) {
-			echo "<i>{$layout['block']}</i><br/>";
-		}
-	}
-
-    protected function _displayCollections() {
-        echo "<h2>Collections</h2>";
-        $index = 0;
-        foreach ($this->_queries as $collection) {
-            echo "<b>{$index}.</b> <pre>${collection['sql']}</pre>";
-            $index++;
-        }
-    }
-
-    protected function _displayConfig() {
-        echo "<h2>Config</h2>";
-        /** @var Mage_Core_Model_Config */
-        $configs = Mage::app()->getConfig()->getNode();
-        foreach ($configs as $key=>$config) {
-            echo "<br/><h2>$key</h2>";
-            var_dump($config);
-        }
-    }
-
-    public function displayToolbar(Varien_Event_Observer $observer){
-    	// $this->_displayLayoutUpdates();
-        // $this->_displayActions();
-        // $this->_displayCollections();
-        // $this->_displayConfig();
-        // $this->_displayBlocks();
-    }
-
 
     public function onBlockToHtml(Varien_Event_Observer $observer) {
 

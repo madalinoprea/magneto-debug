@@ -75,15 +75,6 @@
         </helpers>
 
 		<events>
-			<controller_front_send_response_after>
-				<observers>
-					<debug_observer>
-						<type>singleton</type>
-						<class>debug/observer</class>
-						<method>displayToolbar</method>
-					</debug_observer>
-				</observers>
-			</controller_front_send_response_after>
 			<core_block_abstract_to_html_before>
 			    <observers>
                     <debug_observer>

@@ -1,3 +1,6 @@
+<?php
+$config = Mage::app()->getConfig()->getNode();
+?>
 <dl>
 	<dt><strong>
 		<a class="toggleTemplate" href="<?php echo Mage::getUrl('debug/index/toggleTemplateHints') ?>">
@@ -5,20 +8,29 @@
 		</a>
 	</strong></dt>
 </dl>
+<dl>
+	<dt><strong>
+		<a class="toggleTemplate" href="<?php echo Mage::getUrl('debug/index/downloadConfig') ?>">Download Config (XML)</a>
+	</strong></dt>
+</dl>
+
+<!-- FIXME: Use Ajax form to filter configs -->
 
 <table>
 	<thead>
 		<tr>
+            <th><?php echo $this->__("#") ?></th>
             <th><?php echo $this->__("Setting") ?></th>
             <th><?php echo $this->__("Value") ?></th>
 		</tr>
 	</thead>
     <tbody>
         <?php $row = 0; ?>
-        <?php foreach( $this->getItems() as $item ): ?>
+        <?php foreach( $this->getItems() as $key=>$value ): ?>
             <tr class="<?php echo (($row % 2)?'djDebugOdd':'djDebugEven') ?>">
-                <td></td>
-                <td></td>
+                <td><?php echo $row ?></td>
+                <td><?php echo $key ?></td>
+                <td><?php echo htmlspecialchars($value) ?></td>
 			</tr>
             <?php $row++; ?>
         <?php endforeach; ?>

@@ -54,13 +54,14 @@ class Magneto_Debug_Block_Debug extends Mage_Core_Block_Template
     protected function createConfigPanel() {
         $title = 'Configuration';
         $content = '';
+        $nItems = count(Magneto_Debug_Block_Config::getItems());
         $panel = array(
             'title' => $title,
             'has_content' => true,
             'url' => NULL,
             'dom_id' => 'debug-panel-' . $title,
             'nav_title' => $title,
-            'nav_subtitle' => 'Configuration',
+            'nav_subtitle' => "{$nItems} configurations",
             'template' => 'debug_config_panel',           // child block defined in layout xml
         );
         return $panel;
@@ -77,7 +78,7 @@ class Magneto_Debug_Block_Debug extends Mage_Core_Block_Template
             'url' => NULL,
             'dom_id' => 'debug-panel-' . $title,
             'nav_title' => $title,
-            'nav_subtitle' => "{$nBlocks}used blocks",
+            'nav_subtitle' => "{$nBlocks} used blocks",
             'template' => 'debug_blocks_panel',           // child block defined in layout xml
         );
         return $panel;
