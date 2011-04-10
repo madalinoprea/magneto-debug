@@ -146,6 +146,17 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
         echo Mage::app()->getConfig()->getNode()->asXML();
     }
 
+    public function downloadConfigAsTextAction()
+    {
+        header("Content-type: text/plain");
+        $configs = Mage::app()->getConfig()->getNode();
+        $items = array();
+        Magneto_Debug_Block_Config::xml2array($configs, $items);
+        foreach ($items as $key=>$value) {
+            echo "$key = $value\n";
+        }
+    }
+
 
     public function showSqlProfilerAction()
     {
@@ -200,5 +211,28 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
             $class = Mage::getConfig()->getGroupedClassName($groupType, $uri);
         }
         var_dump($class);
+    }
+
+    public function searchConfigAction() {
+        if( $this->getRequest()->isPost() ){
+            $result['error'] = 0;
+
+            $query = $this->getRequest()->getPost('query');
+            if( !empty($query) ){
+                $configs = Mage::app()->getConfig()->getNode($query);
+                $items = array();
+                Magneto_Debug_Block_Config::xml2array($configs, $items, $query);
+                $result['items'] = $items;
+                
+                $block = new Mage_Core_Block_Template(); //Is this the correct way?
+                $block->setTemplate('debug/configsearch.phtml');
+                $block->assign('items', $items);
+                echo $block->toHtml();
+
+            } else {
+                $result['error'] = 1;
+                $result['message'] = 'Search query cannot be empty.';
+            }
+        }
     }
 }

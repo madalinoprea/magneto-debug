@@ -4,15 +4,20 @@ class Magneto_Debug_Block_Config extends Mage_Core_Block_Template
     protected static $_items;
 
     static function xml2array($xml, &$arr, $parentKey=''){
+        if( !$xml )
+            return;
+
         if( count($xml->children())==0 ){
-            $arr[$parentKey . DS . $xml->getName()] = (string) $xml;
+            $arr[$parentKey] = (string) $xml;
         } else {
             foreach( $xml->children() as $key => $item ){
-                self::xml2array($item, $arr, $parentKey . DS . $key);
+                $key = $parentKey ? $parentKey . DS . $key : $key;
+                self::xml2array($item, $arr, $key);
             }
         }
     }
 
+    // TODO: Delete this
     static function getItems() {
         if( !self::$_items ){
             $config = Mage::app()->getConfig()->getNode();
