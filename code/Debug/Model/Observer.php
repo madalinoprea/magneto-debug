@@ -4,13 +4,14 @@ class Magneto_Debug_Model_Observer {
     private $_actions = array();
     // List of assoc array with class, type and sql keys
     private $collections= array();
-	private $layoutUpdates = array();
+	// private $layoutUpdates = array();
 	private $models = array();
 	private $blocks = array();
 
 	public function getModels() { return $this->models; }
     public function getBlocks() { return $this->blocks; }
     public function getCollections() { return $this->collections; }
+    // public function getLayoutUpdates() { return $this->layoutUpdates; }
 	
 	public function getQueries() {
 		//TODO: implement profiler for connections other than 'core_write'  
@@ -97,14 +98,15 @@ class Magneto_Debug_Model_Observer {
         $this->collections[] = $sqlStruct;
     }
 	
-	function onPrepareLayout(Varien_Event_Observer $observer){
+	/*function onPrepareLayout(Varien_Event_Observer $observer){
 		$block = $observer->getEvent()->getBlock();
-		// var_dump(array_keys($block->getData()));
+		// var_dump(array_keys($observer->getEvent()->getData()));
 
 		$layoutUpdate = array();
 		$layoutUpdate['block'] = get_class($observer->getBlock());
-		$this->_layoutUpdates[] = $layoutUpdate;
-	}
+		$layoutUpdate['name'] = get_class($observer->getName());
+		$this->layoutUpdates[] = $layoutUpdate;
+    }*/
 
 	function onModelLoad(Varien_Event_Observer $observer){
 		$event = $observer->getEvent();

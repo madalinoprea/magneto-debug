@@ -111,15 +111,15 @@
                     </debug_observer>
                 </observers>
             </eav_collection_abstract_load_before>
-            <core_block_abstract_prepare_layout_after>
-                <observers>
-                    <debug_observer>
-                        <type>singleton</type>
-                        <class>debug/observer</class>
-                        <method>onPrepareLayout</method>
-                    </debug_observer>
-                </observers>
-            </core_block_abstract_prepare_layout_after>
+            <!-- <core_block_abstract_prepare_layout_after> -->
+            <!--     <observers> -->
+            <!--         <debug_observer> -->
+            <!--             <type>singleton</type> -->
+            <!--             <class>debug/observer</class> -->
+            <!--             <method>onPrepareLayout</method> -->
+            <!--         </debug_observer> -->
+            <!--     </observers> -->
+            <!-- </core_block_abstract_prepare_layout_after> -->
             <model_load_after>
             	 <observers>
                     <debug_observer>
