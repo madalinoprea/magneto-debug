@@ -1,9 +1,10 @@
 <?php
 $items = $this->getItems();
 Mage::helper('debug')->sortModelsByOccurences($items);
+$collections = $this->getCollections();
 $queries = $this->getQueries();
 ?>
-<h4><?php $this->__('MODELS') ?></h4>
+<h4><?php echo $this->__('MODELS') ?></h4>
 <table>
 	<thead>
 		<tr>
@@ -25,6 +26,27 @@ $queries = $this->getQueries();
 	</tbody>
 </table>
 
+<h4><?php echo $this->__('COLLECTIONS') ?></h4>
+<table>
+	<thead>
+		<tr>
+			<th><?php echo $this->__('Type') ?></th>
+			<th><?php echo $this->__('Class') ?></th>
+			<th><?php echo $this->__('SQL') ?></th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php $row = 0; ?>
+		<?php foreach( $collections as $item ): ?>
+			<tr class="<?php echo ( ($row % 2 ? 'djDebugOdd' : 'djDebugEven')) ?>">
+				<td><?php echo $item['type'] ?></td>
+				<td><?php echo $item['class'] ?></td>
+				<td><?php echo $item['sql'] ?></td>
+			</tr>
+			<?php $row++; ?>
+		<?php endforeach ?>
+	</tbody>
+</table>
 <h4><?php echo $this->__('QUERIES') ?></h4>
 <?php if( $queries ): ?>
 <table>

@@ -2,14 +2,15 @@
 class Magneto_Debug_Model_Observer {
 
     private $_actions = array();
-    private $queries= array();
-	private $_layoutUpdates = array();
+    // List of assoc array with class, type and sql keys
+    private $collections= array();
+	private $layoutUpdates = array();
 	private $models = array();
 	private $blocks = array();
 
 	public function getModels() { return $this->models; }
-	
-	public function getBlocks() { return $this->blocks; }
+    public function getBlocks() { return $this->blocks; }
+    public function getCollections() { return $this->collections; }
 	
 	public function getQueries() {
 		//TODO: implement profiler for connections other than 'core_write'  
@@ -57,7 +58,6 @@ class Magneto_Debug_Model_Observer {
 			$blockStruct['context'] = NULL;
 		}
 
-        // Mage::getSingleton('debug/debug')->addBlock($blockStruct);
 		$this->blocks[] = $blockStruct;
 
         return $this;
@@ -83,7 +83,9 @@ class Magneto_Debug_Model_Observer {
 
         $collectionStruct = array();
         $collectionStruct['sql'] = $collection->getSelectSql(true);
-        $this->queries[] = $collectionStruct;
+        $collectionStruct['type'] = 'mysql';
+        $collectionStruct['class'] = get_class($collection);
+        $this->collections[] = $collectionStruct;
     }
 
     function onEavCollectionLoad(Varien_Event_Observer $event) {
@@ -91,18 +93,17 @@ class Magneto_Debug_Model_Observer {
         $sqlStruct = array();
         $sqlStruct['sql'] = $collection->getSelectSql(true);
         $sqlStruct['type'] = 'eav';
-
-        $this->queries[] = $sqlStruct;
+        $sqlStruct['class'] = get_class($collection);
+        $this->collections[] = $sqlStruct;
     }
 	
 	function onPrepareLayout(Varien_Event_Observer $observer){
 		$block = $observer->getEvent()->getBlock();
 		// var_dump(array_keys($block->getData()));
 
-		// $layoutUpdate = array();
-		// $layoutUpdate['block'] = get_class($observer->getBlock());
-		// $this->_layoutUpdates[] = $layoutUpdate;
-		
+		$layoutUpdate = array();
+		$layoutUpdate['block'] = get_class($observer->getBlock());
+		$this->_layoutUpdates[] = $layoutUpdate;
 	}
 
 	function onModelLoad(Varien_Event_Observer $observer){

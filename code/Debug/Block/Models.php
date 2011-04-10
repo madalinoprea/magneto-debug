@@ -12,10 +12,10 @@ class Magneto_Debug_Block_Models extends Mage_Core_Block_Template
 		return Mage::getSingleton('debug/observer')->getQueries();
 	}
 
-    public function getCacheLifetime()
-    {
-        return 0;
+    protected function getCollections() {
+        return Mage::getSingleton('debug/observer')->getCollections();
     }
+
 
     /**
      * $viewType can be 'Select' or 'Explain'
