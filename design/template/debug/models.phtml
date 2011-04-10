@@ -49,6 +49,7 @@ $queries = $this->getQueries();
 </table>
 <h4><?php echo $this->__('QUERIES') ?></h4>
 <?php if( $queries ): ?>
+    <p><a class="toggleTemplate" href="<?php echo Mage::getUrl('debug/index/toggleSqlProfiler') ?>">Disable SQL Profiler</a></p>
 <table>
 	<thead>
 		<tr>
@@ -85,5 +86,5 @@ $queries = $this->getQueries();
 	</tbody>
 </table>
 <?php else: ?>
-    <p>SQL Profiler is not enabled. <a class="toggleTemplate" href="<?php Mage::getUrl('debug/index/toggleSqlProfile') ?>">Enable SQL Profiler</a></p>
+    <p>SQL Profiler is not enabled. <a class="toggleTemplate" href="<?php echo Mage::getUrl('debug/index/toggleSqlProfiler') ?>">Enable SQL Profiler</a></p>
 <?php endif; ?> 

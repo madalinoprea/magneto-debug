@@ -144,47 +144,49 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
         header("Content-type: text/xml");
         echo Mage::app()->getConfig()->getNode()->asXML();
     }
+
+
+    public function showSqlProfilerAction()
+    {
+        $config = Mage::getConfig()->getNode('global/resources/default_setup/connection/profiler');
+        Mage::getSingleton('core/resource')->getConnection('core_write')->getProfiler()->setEnabled(false);
+        var_dump($config);
+    }
+
+
+    // FIXME: This needs to be corrected
+    public function toggleSqlProfilerAction()
+    {
+        $localConfigFile = Mage::getBaseDir('etc').DS.'local.xml';
+        $localConfigBackupFile = Mage::getBaseDir('etc').DS.'local-magneto.xml';
+
+        $configContent = file_get_contents($localConfigFile);
+        $xml = new SimpleXMLElement($configContent);
+        $profiler = $xml->global->resources->default_setup->connection->profiler;
+        if( (int)$xml->global->resources->default_setup->connection->profiler !=1 ){
+            $xml->global->resources->default_setup->connection->addChild('profiler', 1);
+        } else {
+            unset($xml->global->resources->default_setup->connection->profiler);
+        }
+        
+        // backup config file
+        if( file_put_contents($localConfigBackupFile, $configContent)===FALSE ){
+            Mage::getSingleton('core/session')->addError("Operation aborted: couldn't create backup for config file");
+            $this->_redirectReferer();
+        }
+
+        if( $xml->saveXML($localConfigFile) === FALSE ) {
+            Mage::getSingleton('core/session')->addError("Couldn't save {$localConfigFile}: check write permissions.");
+            $this->_redirectReferer();
+        }
+        Mage::getSingleton('core/session')->addSuccess("SQL profiler status changed in local.xml");
+
+        Mage::helper('debug')->cleanCache();
+        $this->_redirectReferer();
+    }
 	
     public function indexAction()
-    {
-    	
-    	/*
-    	 * Load an object by id 
-    	 * Request looking like:
-    	 * http://site.com/debug?id=15 
-    	 *  or
-    	 * http://site.com/debug/id/15 	
-    	 */
-    	/* 
-		$debug_id = $this->getRequest()->getParam('id');
-
-  		if($debug_id != null && $debug_id != '')	{
-			$debug = Mage::getModel('debug/debug')->load($debug_id)->getData();
-		} else {
-			$debug = null;
-		}	
-		*/
-		
-		 /*
-    	 * If no param we load a the last created item
-    	 */ 
-    	/*
-    	if($debug == null) {
-			$resource = Mage::getSingleton('core/resource');
-			$read= $resource->getConnection('core_read');
-			$debugTable = $resource->getTableName('debug');
-			
-			$select = $read->select()
-			   ->from($debugTable,array('debug_id','title','content','status'))
-			   ->where('status',1)
-			   ->order('created_time DESC') ;
-			   
-			$debug = $read->fetchRow($select);
-		}
-		Mage::register('debug', $debug);
-		*/
-
-			
+    {	
 		$this->loadLayout();     
 		$this->renderLayout();
     }
