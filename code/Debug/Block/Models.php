@@ -2,7 +2,7 @@
 class Magneto_Debug_Block_Models extends Mage_Core_Block_Template
 {
     const SQL_SELECT_ACTION = 'viewSqlSelect';
-:1,$ s/^M//:1,$ s/^M//    const SQL_EXPLAIN_ACTION = 'viewSqlExplain';
+    const SQL_EXPLAIN_ACTION = 'viewSqlExplain';
 
     protected function getItems() {
     	return Mage::getSingleton('debug/observer')->getModels();
