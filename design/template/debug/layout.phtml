@@ -1,8 +1,10 @@
 <?php
+$layout =  Mage::getSingleton('core/layout');
 $layoutHandles = Mage::getSingleton('core/layout')->getUpdate()->getHandles();
 $layoutUpdates = Mage::getSingleton('core/layout')->getUpdate()->asArray();
+
 ?>
-<h4><?php echo $this->__('Handles for this request') ?></h4>
+<h4><?php echo $this->__('Handles for this request'); echo "(" . count($layoutHandles) . ")" ?></h4>
 <table>
 	<thead>
 		<tr>
@@ -19,6 +21,16 @@ $layoutUpdates = Mage::getSingleton('core/layout')->getUpdate()->asArray();
 		<?php endforeach ?>
 	</tbody>
 </table>
+
+<dl>
+    <dt><strong>Page Layout</strong></dt>
+    <dd>
+		<div class="djTemplateShowContextDiv"><a class="djTemplateShowContext"><span class="toggleArrow">&#x25B6;</span>View Page Layout</a></div>
+        <div class="djTemplateHideContextDiv" style="display:none;">
+            <code><?php echo htmlspecialchars($layout->getNode()->asXML()) ?></code>
+        </div>
+	</dd>
+</dl>
 
 <h4><?php echo $this->__('Layout updates') ?> (<?php echo count($layoutUpdates); ?>)</h4>
 <table>
@@ -41,17 +53,4 @@ $layoutUpdates = Mage::getSingleton('core/layout')->getUpdate()->asArray();
 		<?php endforeach ?>
 	</tbody>
 </table>
-
-<dl>
-	<dt><strong>
-		<a class="remoteCall toggleTemplate" href="<?php echo Mage::getUrl('debug/index/viewPageLayout') ?>">
-			View Page Layout
-		</a>
-	</strong></dt>
-	<dt><strong>
-		<a class="remoteCall toggleTemplate" href="<?php echo Mage::getUrl('debug/index/viewPackageLayout') ?>">
-			View Package Layout
-		</a>
-	</strong></dt>
-</dl>
 

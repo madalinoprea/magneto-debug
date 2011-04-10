@@ -54,7 +54,7 @@
 				$('#djDebugWindow').show();
 				return false;
 			});
-			$('#djDebugTemplatePanel a.djTemplateShowContext').click(function() {
+			$('#debug-panel-Layout a.djTemplateShowContext').click(function() {
 				djdt.toggle_arrow($(this).children('.toggleArrow'))
 				djdt.toggle_content($(this).parent().next());
 				return false;
