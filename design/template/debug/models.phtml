@@ -43,12 +43,18 @@ $queries = $this->getQueries();
 					 	 <div class=""><?php echo sprintf("%.4f", $item->getElapsedSecs()) ?>&nbsp;s</div>
 				</td>
 				<td>
-                    <a class="remoteCall" href="<?php echo Mage::getUrl('debug/index/viewSqlSelect', array('_query' => array('sql'=>$item->getQuery()))) ?>">SELECT</a><br />
-                    <a class="remoteCall" href="<?php echo Mage::getUrl('debug/index/viewSqlExplain', array('_query' => array('sql'=>$item->getQuery()))) ?>">EXPLAIN</a><br />
+                    <?php if( $item->getQueryType() ==  Zend_Db_Profiler::SELECT ): ?>
+                        <a class="remoteCall" href="<?php echo $this->getSqlSelectUrl($item) ?>">SELECT</a><br />
+                        <a class="remoteCall" href="<?php echo $this->getSqlExplainUrl($item) ?>">EXPLAIN</a><br />
+                    <?php endif; ?>
 				</td>
 				<td class="syntax">
 					 <div class="djDebugSqlWrap">
-					 	 <div class="djDebugSql"><?php echo $item->getQuery() ?></div>
+                         <div class="djDebugSql"><?php echo $item->getQuery() ?>
+                             <?php if( count($item->getQueryParams()) ): ?>
+                                <br/><strong>Params:</strong> <?php echo implode(', ', $item->getQueryParams()); ?>
+                            <?php endif; ?>
+                        </div>
 					 </div>
 				</td>
 			</tr>

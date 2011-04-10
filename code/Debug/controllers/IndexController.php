@@ -22,7 +22,9 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
     {
         $con = Mage::getSingleton('core/resource')->getConnection('core_write');
         $query = $this->getRequest()->getParam('sql');
-        $result = $con->query($query);
+        $queryParams = $this->getRequest()->getParam('params');
+
+        $result = $con->query($query, $queryParams);
 
         $items = array();
         $headers = array();
@@ -48,7 +50,9 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
     {
         $con = Mage::getSingleton('core/resource')->getConnection('core_write');
         $query = $this->getRequest()->getParam('sql');
-        $result = $con->query("EXPLAIN {$query}");
+        $queryParams = $this->getRequest()->getParam('params');
+
+        $result = $con->query("EXPLAIN {$query}", $queryParams);
 
         $items = array();
         $headers = array();
@@ -81,8 +85,8 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
 	
 	public function clearCacheAction() {
         $content = Mage::helper('debug')->cleanCache();
-		echo $this->_debugPanel("Clear Caches", "Magento caches were cleared. " . $content);
-		
+        Mage::getSingleton('core/session')->addSuccess("Magento's caches were cleared.");
+        $this->_redirectReferer();
 	}
 
     public function toggleTemplateHintsAction() {
@@ -95,11 +99,6 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
 
         Mage::app()->cleanCache();
 
-        $content = 'Template hints status changed to ' . var_export($newStatus, true) . ' Please hit <a href="javascript:location.reload(true)">refresh this page</a>';
-        $content .= "<br/>Dev Allowed: " . Mage::helper('core')->isDevAllowed();
-        // echo $this->_debugPanel("Toggle Template Hints", $content);
-
-        // This should be the correct behaviour, but some caching problems were noticed
         Mage::getSingleton('core/session')->addSuccess('Template hints set to ' . var_export($newStatus, true));
         $this->_redirectReferer(); 
     }
@@ -197,5 +196,15 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
 			
 		$this->loadLayout();     
 		$this->renderLayout();
+    }
+
+    public function findURIAction()
+    {
+        $uri = $this->getRequest()->getParam('uri');
+        $groupType = 'model'; //model, block, helper
+        if( $uri) {
+            $class = Mage::getConfig()->getGroupedClassName($groupType, $uri);
+        }
+        var_dump($class);
     }
 }
