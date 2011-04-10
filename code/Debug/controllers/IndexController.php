@@ -73,15 +73,6 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
         echo $block->toHtml();
     }
 	
-	public function viewPageLayoutAction() {
-		// FIXME: Implement this
-		echo $this->_debugPanel("Page Layout", "assasa");
-	}
-	
-	public function viewPackageLayoutAction() {
-		// FIXME: Implement this
-		echo $this->_debugPanel("Package Layout", "Package layout content");
-	}
 	
 	public function clearCacheAction() {
         $content = Mage::helper('debug')->cleanCache();
