@@ -123,10 +123,11 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
 
         $contents = "<br/>Active status switched to " . strbool($moduleNewStatus) . " for module {$moduleName} in file {$moduleConfigFile}:";
         $contents .= "<br/><code>" . htmlspecialchars($configContent) . "</code>";
+        
         $configContent = str_replace("<active>" . strbool($moduleCurrentStatus) ."</active>", "<active>" . strbool($moduleNewStatus) . "</active>", $configContent);
 
         if( file_put_contents($moduleConfigFile, $configContent) === FALSE ) {
-            echo $this->_debugPanel($title, "Failed to write configuration. (Web Service permissions for {$moduleConfigFile}?!)");
+            echo $this->_debugPanel($title, "Failed to write configuration. (Web Server's permissions for {$moduleConfigFile}?!)");
             return $this;
         }
 
