@@ -2,7 +2,7 @@
 Based on robhudson's awesome work (<https://github.com/robhudson/django-debug-toolbar>) we've created a debug toolbar for Magento.
 It is installed as a Magento module without hacking Magento's core.
 
-Basic features are implemented and few others will come soon.
+Basic features are implemented and few others will come soon. Check the screenshots for current features: <https://github.com/madalinoprea/magneto-debug/wiki>
 
 ## INSTALLATION 
 
