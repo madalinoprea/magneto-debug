@@ -26,6 +26,7 @@ Soon we'll make available a Magento extension package that can be installed via 
  - Request information (controller name, action name, cookies variables, session variables, GET and POST variables)
  - Models instantiated
  - SQL queries executed for current request; ability to see queries' result or queries' execution plan (EXPLAIN)
+ - List Magento configuration
  - Print layout handles for current request
  - Created blocks, their associated templates; Preview templates' source code
  - Quick actions: 
@@ -49,5 +50,3 @@ We working to correct these:
             </default_setup>
     </code>
  - `Disable SQL Profiler` is not working, but `Enable SQL Profiler` works like a charm (or not)
- - Due to immense number of configurations we'll have to implement a better way to display them (currently we list configuration from on config section)
-
