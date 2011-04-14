@@ -1,6 +1,7 @@
 <?php
 $templateDirs = $this->getTemplateDirs();
 $blocks = $this->getItems();
+$layoutBlocks = $this->getLayoutBlocks();
 ?>
 
 <h4><?php echo $this->__('Template path') ?></h4>
@@ -14,26 +15,28 @@ $blocks = $this->getItems();
 	<p>None</p>
 <?php endif; ?>
 
-<h4><?php echo $this->__('Blocks') ?></h4>
+
+<h4><?php echo $this->__('Rendered Blocks') ?></h4>
+<p>List of all rendered blocks.</p>
 <table>
 	<thead>
 		<tr>
 			<th>#</th>
-			<th><?php echo $this->__('Name In Layout') ?></th>
-			<th><?php echo $this->__('Block Class') ?></th>
-			<th><?php echo $this->__('Template') ?></th>
+			<th><?php echo $this->__('name in layout') ?></th>
+			<th><?php echo $this->__('block class') ?></th>
+			<th><?php echo $this->__('template') ?></th>
 		</tr>
 	</thead>
 	<tbody>
 		<?php $row = 0; ?>
 		<?php foreach( $blocks as $block ): ?>
-			<tr class="<?php echo ( ($row % 2 ? 'djDebugOdd' : 'djDebugEven')) ?>">
+			<tr class="<?php echo ( ($row % 2 ? 'djdebugodd' : 'djdebugeven')) ?>">
                 <td><?php echo $row ?></td>
                 <td><?php echo $block['layout_name'] ?></td>
                 <td><?php echo $block['class'] ?></td>
                 <td>
                 <?php if($block['template']):?> 
-                    <a class="remoteCall toggleTemplate" href="<?php echo Mage::getUrl('debug/index/viewTemplate', array('_query' => array('template'=> $block['template']))) ?>"><?php echo $block['template'] ?></a>
+                    <a class="remotecall toggletemplate" href="<?php echo mage::geturl('debug/index/viewtemplate', array('_query' => array('template'=> $block['template']))) ?>"><?php echo $block['template'] ?></a>
                 <?php endif; ?>
                 </td>
 			</tr>
@@ -42,3 +45,31 @@ $blocks = $this->getItems();
 	</tbody>
 </table>
 
+<h4><?php echo $this->__('Layout Blocks') ?></h4>
+<p>List of all the instantiated blocks, few of them might not be rendered.</p>
+<table>
+	<thead>
+		<tr>
+			<th>#</th>
+			<th><?php echo $this->__('name in layout') ?></th>
+			<th><?php echo $this->__('block class') ?></th>
+			<th><?php echo $this->__('template') ?></th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php $row = 0; ?>
+		<?php foreach( $layoutBlocks as $block ): ?>
+			<tr class="<?php echo ( ($row % 2 ? 'djdebugodd' : 'djdebugeven')) ?>">
+                <td><?php echo $row ?></td>
+                <td><?php echo $block['layout_name'] ?></td>
+                <td><?php echo $block['class'] ?></td>
+                <td>
+                <?php if($block['template']):?> 
+                    <a class="remotecall toggletemplate" href="<?php echo mage::geturl('debug/index/viewtemplate', array('_query' => array('template'=> $block['template']))) ?>"><?php echo $block['template'] ?></a>
+                <?php endif; ?>
+                </td>
+			</tr>
+			<?php $row++; ?>
+		<?php endforeach ?>
+	</tbody>
+</table>
