@@ -14,35 +14,31 @@ $blocks = $this->getItems();
 	<p>None</p>
 <?php endif; ?>
 
-<h4><?php echo $this->__("Blocks") ?> (<?php echo count($blocks); ?> rendered)</h4>
-<?php if( $blocks ): ?>
-<dl>
-<?php foreach( $blocks as $block ): ?>
-	<dt><strong><?php echo $block['class'] ?> <?php if($block['template']):?><a class="remoteCall toggleTemplate" href="<?php echo Mage::getUrl('debug/index/viewTemplate', array('_query' => array('template'=> $block['template']))) ?>"><?php echo $block['template'] ?></a><?php endif ?></strong></dt>
-	<dd><samp><?php echo $block['template'] ?></samp></dd>
-	<?php if( $block['context'] ): ?>
-	<dd>
-		<div class="djTemplateShowContextDiv"><a class="djTemplateShowContext"><span class="toggleArrow">&#x25B6;</span><?php echo $this->__('Toggle Context') ?></a></div>
-		<div class="djTemplateHideContextDiv" style="display:none;"><code><?php echo $block['context'] ?></code></div>
-	</dd>
-	<?php endif ?>
-<?php endforeach ?>
-</dl>
-<?php else: ?>
-	<p><?php echo $this->__('None') ?></p>
-<?php endif; ?>
+<h4><?php echo $this->__('Blocks') ?></h4>
+<table>
+	<thead>
+		<tr>
+			<th>#</th>
+			<th><?php echo $this->__('Name In Layout') ?></th>
+			<th><?php echo $this->__('Block Class') ?></th>
+			<th><?php echo $this->__('Template') ?></th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php $row = 0; ?>
+		<?php foreach( $blocks as $block ): ?>
+			<tr class="<?php echo ( ($row % 2 ? 'djDebugOdd' : 'djDebugEven')) ?>">
+                <td><?php echo $row ?></td>
+                <td><?php echo $block['layout_name'] ?></td>
+                <td><?php echo $block['class'] ?></td>
+                <td>
+                <?php if($block['template']):?> 
+                    <a class="remoteCall toggleTemplate" href="<?php echo Mage::getUrl('debug/index/viewTemplate', array('_query' => array('template'=> $block['template']))) ?>"><?php echo $block['template'] ?></a>
+                <?php endif; ?>
+                </td>
+			</tr>
+			<?php $row++; ?>
+		<?php endforeach ?>
+	</tbody>
+</table>
 
-<!-- <h4>{% trans 'Context processor' %}{{ context_processors|length|pluralize }}</h4>
-{% if context_processors %}
-<dl>
-{% for key, value in context_processors.iteritems %}
-	<dt><strong>{{ key|escape }}</strong></dt>
-	<dd>
-		<div class="djTemplateShowContextDiv"><a class="djTemplateShowContext"><span class="toggleArrow">&#x25B6;</span> {% trans 'Toggle Context' %}</a></div>
-		<div class="djTemplateHideContextDiv" style="display:none;"><code>{{ value|escape }}</code></div>
-	</dd>
-{% endfor %}
-</dl>
-{% else %}
-	<p>{% trans 'None' %}</p>
-{% endif %} -->

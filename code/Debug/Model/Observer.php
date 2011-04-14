@@ -48,6 +48,7 @@ class Magneto_Debug_Model_Observer {
 
         $blockStruct = array();
         $blockStruct['class'] = get_class($block);
+        $blockStruct['layout_name'] = $block->getNameInLayout();
 		if( method_exists($block, 'getTemplateFile') ) {
         	$blockStruct['template'] = $block->getTemplateFile();
 		} else {
@@ -98,9 +99,10 @@ class Magneto_Debug_Model_Observer {
         $this->collections[] = $sqlStruct;
     }
 	
-	/*function onPrepareLayout(Varien_Event_Observer $observer){
+    /*function onPrepareLayout(Varien_Event_Observer $observer){
 		$block = $observer->getEvent()->getBlock();
-		// var_dump(array_keys($observer->getEvent()->getData()));
+		var_dump(array_keys($observer->getEvent()->getData()));
+        // Mage::log('onPrepareLayout: ' . get_class($observer) . 'block=";
 
 		$layoutUpdate = array();
 		$layoutUpdate['block'] = get_class($observer->getBlock());
