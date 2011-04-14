@@ -29,8 +29,7 @@ class Magneto_Debug_Block_Debug extends Mage_Core_Block_Template
             'url' => NULL,
             'dom_id' => 'debug-panel-' . $title,
             'nav_title' => $title,
-            // 'content' => 'Subtitle for ' . $title,
-            'nav_subtitle' => 'Magento and modules version',
+            'nav_subtitle' => 'Magento modules',
             'template' => 'debug_versions_panel',           // child block defined in layout xml
         );
         return $panel;
