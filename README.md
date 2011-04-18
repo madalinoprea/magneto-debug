@@ -34,7 +34,7 @@ Soon we'll make available a Magento extension package that can be installed via 
     - Clear cache
 
 ## KNOWN ISSUES
-We working to correct these:
+We're working to correct these:
 
  - To enable SQL profiler manually you have to add in your local.xml, under connection the profiler tag like in the example below:
     <code>
