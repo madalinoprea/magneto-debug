@@ -8,6 +8,7 @@ Basic features are implemented and few others will come soon. Check the screensh
 
 ### Via Modman
  - Modman required: <http://code.google.com/p/module-manager/>
+
 <code>
   curl http://module-manager.googlecode.com/files/modman-1.1.5 > modman
   chmod +x modman
@@ -16,11 +17,13 @@ Basic features are implemented and few others will come soon. Check the screensh
 
  - Magento patch to allow symlinks for templates dir: <http://www.tonigrigoriu.com/magento/magento-how-to-fix-template-path-errors-when-using-symlinks/> (required if you choose to use modman installation)
  - Install via modman (for details consult modman website):
+
     <code>
         cd <magento root folder>
         modman init
         modman magneto-debug clone https://github.com/madalinoprea/magneto-debug.git
     </code>
+
  - Make sure you've cleaned Magento's cache to enable the new module; hit refresh
 
 ### Via Magento Connect
@@ -43,6 +46,7 @@ Soon we'll make available a Magento extension package that can be installed via 
 We're working to correct these:
 
  - To enable SQL profiler manually you have to add in your local.xml, under connection the profiler tag like in the example below:
+
     <code>
             <default_setup>
                 <connection>
