@@ -9,9 +9,9 @@ Basic features are implemented and few others will come soon. Check the screensh
 ### Via Modman
  - Modman required: <http://code.google.com/p/module-manager/>
 ```
-  curl http://module-manager.googlecode.com/files/modman-1.1.5 > modman
-  chmod +x modman
-  sudo mv modman /usr/bin
+curl http://module-manager.googlecode.com/files/modman-1.1.5 > modman
+chmod +x modman
+sudo mv modman /usr/bin
 ```
 
  - Magento patch to allow symlinks for templates dir: <http://www.tonigrigoriu.com/magento/magento-how-to-fix-template-path-errors-when-using-symlinks/> (required if you choose to use modman installation)
