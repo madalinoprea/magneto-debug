@@ -43,7 +43,7 @@ Soon we'll make available a Magento extension package that can be installed via 
 We're working to correct these:
 
  - To enable SQL profiler manually you have to add in your local.xml profiler tag under connection, like in the example below:
-<pre>
+```xml
            <default_setup>
                 <connection>
                     <host><![CDATA[/var/run/mysqld/mysqld.sock]]></host>
@@ -54,5 +54,5 @@ We're working to correct these:
                     <profiler>1</profiler>
                 </connection>
             </default_setup>
-</pre>
+```
  - `Disable SQL Profiler` is not working, but `Enable SQL Profiler` works like a charm (or not)
