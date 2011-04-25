@@ -16,13 +16,11 @@ sudo mv modman /usr/bin
 
  - Magento patch to allow symlinks for templates dir: <http://www.tonigrigoriu.com/magento/magento-how-to-fix-template-path-errors-when-using-symlinks/> (required if you choose to use modman installation)
  - Install via modman (for details consult modman website):
-
-    <code>
-        cd <magento root folder>
-        modman init
-        modman magneto-debug clone https://github.com/madalinoprea/magneto-debug.git
-    </code>
-
+<pre>
+cd <magento root folder>
+modman init
+modman magneto-debug clone https://github.com/madalinoprea/magneto-debug.git
+</pre>
  - Make sure you've cleaned Magento's cache to enable the new module; hit refresh
 
 ### Via Magento Connect
@@ -44,9 +42,8 @@ Soon we'll make available a Magento extension package that can be installed via 
 ## KNOWN ISSUES
 We're working to correct these:
 
- - To enable SQL profiler manually you have to add in your local.xml, under connection the profiler tag like in the example below:
-
-    <code>
+ - To enable SQL profiler manually you have to add in your local.xml profiler tag under connection, like in the example below:
+    <pre>
             <default_setup>
                 <connection>
                     <host><![CDATA[/var/run/mysqld/mysqld.sock]]></host>
@@ -57,5 +54,5 @@ We're working to correct these:
                     <profiler>1</profiler>
                 </connection>
             </default_setup>
-    </code>
+    </pre>
  - `Disable SQL Profiler` is not working, but `Enable SQL Profiler` works like a charm (or not)
