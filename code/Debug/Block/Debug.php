@@ -160,6 +160,6 @@ class Magneto_Debug_Block_Debug extends Mage_Core_Block_Template
     }
 
     public function getDebugMediaUrl() {
-        return Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'debug/';
+        return Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN) . 'frontend/base/default/debug/';
     }
 }

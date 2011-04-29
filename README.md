@@ -8,14 +8,20 @@ Basic features are implemented and few others will come soon. Check the screensh
 
 ### Via Modman
  - Modman required: <http://code.google.com/p/module-manager/>
+<pre>
+curl http://module-manager.googlecode.com/files/modman-1.1.5 > modman
+chmod +x modman
+sudo mv modman /usr/bin
+</pre>
+
  - Magento patch to allow symlinks for templates dir: <http://www.tonigrigoriu.com/magento/magento-how-to-fix-template-path-errors-when-using-symlinks/> (required if you choose to use modman installation)
  - Install via modman (for details consult modman website):
-    <code>
-        cd <magento root folder>
-        modman init
-        modman magneto-debug clone https://github.com/madalinoprea/magneto-debug.git
-    </code>
- - Make sure you've cleaned Magento's cache to enable the new module
+<pre>
+cd <magento root folder>
+modman init
+modman magneto-debug clone https://github.com/madalinoprea/magneto-debug.git
+</pre>
+ - Make sure you've cleaned Magento's cache to enable the new module; hit refresh
 
 ### Via Magento Connect
 Soon we'll make available a Magento extension package that can be installed via Admin.
@@ -34,19 +40,20 @@ Soon we'll make available a Magento extension package that can be installed via 
     - Clear cache
 
 ## KNOWN ISSUES
-We working to correct these:
+We're working to correct these:
 
- - To enable SQL profiler manually you have to add in your local.xml, under connection the profiler tag like in the example below:
-    <code>
-            <default_setup>
-                <connection>
-                    <host><![CDATA[/var/run/mysqld/mysqld.sock]]></host>
-                    <username><![CDATA[root]]></username>
-                    <password><![CDATA[]]></password>
-                    <dbname><![CDATA[magento]]></dbname>
-                    <active>1</active>
-                    <profiler>1</profiler>
-                </connection>
-            </default_setup>
-    </code>
+ - To enable SQL profiler manually you have to add in your local.xml profiler tag `<profiler>1</profiler>` under connection, like in the example below:
+<pre>
+    <default_setup>
+        <connection>
+            <host><![CDATA[/var/run/mysqld/mysqld.sock]]></host>
+            <username><![CDATA[root]]></username>
+            <password><![CDATA[]]></password>
+            <dbname><![CDATA[magento]]></dbname>
+            <active>1</active>
+            <profiler>1</profiler>
+        </connection>
+    </default_setup>
+</pre>
+
  - `Disable SQL Profiler` is not working, but `Enable SQL Profiler` works like a charm (or not)

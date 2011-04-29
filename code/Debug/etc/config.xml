@@ -75,6 +75,15 @@
         </helpers>
 
 		<events>
+            <controller_action_layout_generate_blocks_after>
+                <observers>
+                    <debug_observer>
+                        <type>singleton</type>
+                        <class>debug/observer</class>
+                        <method>onLayoutGenerate</method>
+                    </debug_observer>
+                </observers>
+            </controller_action_layout_generate_blocks_after>
 			<core_block_abstract_to_html_before>
 			    <observers>
                     <debug_observer>
