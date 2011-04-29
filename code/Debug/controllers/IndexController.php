@@ -203,22 +203,33 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
 		$this->renderLayout();
     }
 
-    public function findURIAction()
-    {
-        $uri = $this->getRequest()->getParam('uri');
-        $groupType = 'model'; //model, block, helper
-        if( $uri) {
-            $class = Mage::getConfig()->getGroupedClassName($groupType, $uri);
-        }
-        var_dump($class);
-    }
 
     public function searchGroupedClassAction()
     {
-        $uri = $this->getRequest()->getPost('uri');
-        $group = $this->getRequest()->getPost('group');
-        // if( empty($group) )
-            // $group =
+        if( $this->getRequest()->isPost() ){
+            $uri = $this->getRequest()->getPost('uri');
+            $groupType = $this->getRequest()->getPost('group');
+            $items = array();
+
+            $groupTypes = array('model', 'block', 'helper');
+
+            if (!empty($uri)) {
+                if( $groupType=='all' ) {
+                    foreach ($groupTypes as $type){
+                        $items[$type] = Mage::getConfig()->getGroupedClassName($type, $uri);
+                    }
+                } else {
+                    $items[$groupType] = Mage::getConfig()->getGroupedClassName($groupType, $uri);
+                }
+
+                $block = new Mage_Core_Block_Template();
+                $block->setTemplate('debug/groupedclasssearch.phtml');
+                $block->assign('items', $items);
+                echo $block->toHtml();
+            } else {
+                echo "Please fill in a search query";
+            }
+        }
     }
 
     public function searchConfigAction() {
@@ -230,7 +241,6 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
                 $configs = Mage::app()->getConfig()->getNode($query);
                 $items = array();
                 Magneto_Debug_Block_Config::xml2array($configs, $items, $query);
-                $result['items'] = $items;
                 
                 $block = new Mage_Core_Block_Template(); //Is this the correct way?
                 $block->setTemplate('debug/configsearch.phtml');

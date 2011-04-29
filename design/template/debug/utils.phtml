@@ -1,14 +1,22 @@
 <?php
-<form action="#" id="class-search-form" onSubmit="handlerFunction(); return false;">
-    <input name="query" class="input-text required-entry" type="search" size="40" />
-    <input type="button" onClick="handlerFunction()" value="<?php echo $this->__('Search Grouped Class Name') ?>" />
+?>
+<h4>Grouped Class Search</h4>
+<form action="#" id="class-search-form" onSubmit="submitGroupedClassSearch(); return false;">
+    <input name="uri" class="input-text required-entry" type="search" size="40" />
+    <select name="group" class="input-select required-entry">
+        <option>all</option>
+        <option>model</option>
+        <option>block</option>
+        <option>helper</option>
+    </select>
+    <input type="button" onClick="submitGroupedClassSearch()" value="<?php echo $this->__('Search Grouped Class Name') ?>" />
 </form>
 <p>
 Search examples: <em>catalog/product</em>, <em>core/url</em>, etc.
 </p>
 
 <script type="text/javascript">
-function handlerFunction(){
+function submitGroupedClassSearch(){
     var request = new Ajax.Updater(
         'class-search-results',
         '<?php echo $this->getUrl("debug/index/searchGroupedClass") ?>',
@@ -23,8 +31,8 @@ function handlerFunction(){
 	<thead>
 		<tr>
             <th><?php echo $this->__("#") ?></th>
-            <th><?php echo $this->__("Config") ?></th>
-            <th><?php echo $this->__("Value") ?></th>
+            <th><?php echo $this->__("Group Type") ?></th>
+            <th><?php echo $this->__("Search Results") ?></th>
 		</tr>
 	</thead>
     <tbody>
