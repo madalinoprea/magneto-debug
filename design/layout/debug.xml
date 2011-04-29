@@ -10,6 +10,7 @@
                 <block type="debug/models" name="debug_models_panel" template="debug/models.phtml"/>
                 <block type="core/template" name="debug_layout_panel" template="debug/layout.phtml"/>
                 <block type="core/template" name="debug_performance_panel" template="debug/performance.phtml"/>
+                <block type="core/template" name="debug_utils_panel" template="debug/utils.phtml"/>
             </block>
         </reference>
     </default>

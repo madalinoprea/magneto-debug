@@ -128,6 +128,22 @@ class Magneto_Debug_Block_Debug extends Mage_Core_Block_Template
         );
         return $panel;
     } 
+
+
+    protected function createUtilsPanel() {
+        $title = 'Utilities';
+		
+        $panel = array(
+            'title' => $title,
+            'has_content' => true,
+            'url' => NULL,
+            'dom_id' => 'debug-panel-' . $title,
+            'nav_title' => $title,
+            'nav_subtitle' => "Quick actions",
+            'template' => 'debug_utils_panel',           // child block defined in layout xml
+        );
+        return $panel;
+    }
     
     public function getPanels() {
         $panels = array();
@@ -138,6 +154,7 @@ class Magneto_Debug_Block_Debug extends Mage_Core_Block_Template
 		$panels[] = $this->createModelsPanel();
 		$panels[] = $this->createLayoutPanel();
         $panels[] = $this->createBlocksPanel();
+        $panels[] = $this->createUtilsPanel();
 
         return $panels;
     }

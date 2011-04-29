@@ -213,6 +213,14 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
         var_dump($class);
     }
 
+    public function searchGroupedClassAction()
+    {
+        $uri = $this->getRequest()->getPost('uri');
+        $group = $this->getRequest()->getPost('group');
+        // if( empty($group) )
+            // $group =
+    }
+
     public function searchConfigAction() {
         if( $this->getRequest()->isPost() ){
             $result['error'] = 0;

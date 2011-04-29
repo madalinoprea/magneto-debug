@@ -1,0 +1,33 @@
+<?php
+<form action="#" id="class-search-form" onSubmit="handlerFunction(); return false;">
+    <input name="query" class="input-text required-entry" type="search" size="40" />
+    <input type="button" onClick="handlerFunction()" value="<?php echo $this->__('Search Grouped Class Name') ?>" />
+</form>
+<p>
+Search examples: <em>catalog/product</em>, <em>core/url</em>, etc.
+</p>
+
+<script type="text/javascript">
+function handlerFunction(){
+    var request = new Ajax.Updater(
+        'class-search-results',
+        '<?php echo $this->getUrl("debug/index/searchGroupedClass") ?>',
+        {
+            method: 'post',
+            parameters: Form.serialize($('class-search-form'))
+        });
+}
+</script>
+<div id="class-search-results">
+<table>
+	<thead>
+		<tr>
+            <th><?php echo $this->__("#") ?></th>
+            <th><?php echo $this->__("Config") ?></th>
+            <th><?php echo $this->__("Value") ?></th>
+		</tr>
+	</thead>
+    <tbody>
+	</tbody>
+</table>
+</div>
