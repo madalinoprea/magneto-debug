@@ -38,7 +38,7 @@ class Magneto_Debug_Block_Debug extends Mage_Core_Block_Template
 	protected function createPerformancePanel() {
         $title = 'Performance';
 		$helper = Mage::helper('debug');
-         $panel = array(
+        $panel = array(
             'title' => $title,
             'has_content' => true,
             'url' => NULL,

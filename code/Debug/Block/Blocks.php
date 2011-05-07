@@ -13,4 +13,5 @@ class Magneto_Debug_Block_Blocks extends Mage_Core_Block_Template
 	protected function getTemplateDirs() {
 		return array(Mage::getBaseDir('design'));
 	}
+
 }

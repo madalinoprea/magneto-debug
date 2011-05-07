@@ -33,10 +33,13 @@ $layoutBlocks = $this->getLayoutBlocks();
 			<tr class="<?php echo ( ($row % 2 ? 'djdebugodd' : 'djdebugeven')) ?>">
                 <td><?php echo $row ?></td>
                 <td><?php echo $block['layout_name'] ?></td>
-                <td><?php echo $block['class'] ?></td>
+                <td>
+                    <a href="<?php echo Mage::getUrl('debug/index/viewBlock', array('block' => $block['class'])); ?>" 
+                        class="remoteCall"><?php echo $block['class'] ?></a>
+                </td>
                 <td>
                 <?php if($block['template']):?> 
-                    <a class="remotecall toggletemplate" href="<?php echo mage::geturl('debug/index/viewtemplate', array('_query' => array('template'=> $block['template']))) ?>"><?php echo $block['template'] ?></a>
+                    <a class="remoteCall toggletemplate" href="<?php echo Mage::geturl('debug/index/viewtemplate', array('_query' => array('template'=> $block['template']))) ?>"><?php echo $block['template'] ?></a>
                 <?php endif; ?>
                 </td>
 			</tr>

@@ -59,4 +59,9 @@ class Magneto_Debug_Helper_Data extends Mage_Core_Helper_Abstract
 	public function sortModelsByOccurences(&$models) {
 		usort($models, array('Magneto_Debug_Helper_Data', 'sortModelCmp'));
 	}
+
+    public function getBlockFilename($blockClass)
+    {
+        return mageFindClassFile($blockClass);
+    }
 }

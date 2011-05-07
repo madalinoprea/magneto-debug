@@ -18,6 +18,16 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
 		echo $this->_debugPanel("Template Source: <code>$fileName</code>", ''.$source.'');
 	}
 
+    public function viewBlockAction()
+    {
+        $blockClass = $this->getRequest()->get('block');
+        $absoluteFilepath = Mage::helper('debug')->getBlockFilename($blockClass);
+        
+		$source =  highlight_string(file_get_contents($absoluteFilepath), true) ;
+		
+		echo $this->_debugPanel("Block Source: <code>{$blockClass}</code>", ''.$source.'');
+    }
+
     public function viewSqlSelectAction()
     {
         $con = Mage::getSingleton('core/resource')->getConnection('core_write');
