@@ -5,4 +5,4 @@ design/template/debug       app/design/frontend/base/default/template/debug
 skin        skin/frontend/base/default/debug/
 #locale/My_Module.xml       app/locale/en_US/My_Module.xml
 Magneto_Debug.xml           app/etc/modules/Magneto_Debug.xml 
-connect/Magneto_Debug.xml           var/connect/Magneto_Debug.xml
+#connect/Magneto_Debug.xml           var/connect/Magneto_Debug.xml
