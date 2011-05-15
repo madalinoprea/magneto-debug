@@ -90,6 +90,26 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
         $this->_redirectReferer();
 	}
 
+    public function toggleTranslateInlineAction() {
+        $currentStatus = Mage::getStoreConfig('dev/translate_inline/active');
+        $newStatus = !$currentStatus;
+
+        $config = Mage::app()->getConfig();
+        $config->saveConfig('dev/translate_inline/active', $newStatus);
+        $config->saveConfig('dev/translate_inline/active_admin', $newStatus);
+
+        // Toggle translate cache too
+        $allTypes = Mage::app()->useCache();
+        $allTypes['translate'] = !$newStatus; // Cache off when translate is on
+        Mage::app()->saveUseCache($allTypes);
+
+        // clear cache
+        Mage::app()->getCacheInstance()->flush();
+
+        Mage::getSingleton('core/session')->addSuccess('Translate inline set to ' . var_export($newStatus, true));
+        $this->_redirectReferer();
+    }
+
     public function toggleTemplateHintsAction() {
         $currentStatus = Mage::getStoreConfig('dev/debug/template_hints');
         $newStatus = !$currentStatus;
