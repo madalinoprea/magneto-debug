@@ -4,6 +4,8 @@ It is installed as a Magento module without hacking Magento's core.
 
 Basic features are implemented and few others will come soon. Check the screenshots for current features: <https://github.com/madalinoprea/magneto-debug/wiki>
 
+Or demo video on YouTube: http://www.youtube.com/watch?v=aqvgrmebcu4
+
 ## INSTALLATION 
 
 ### Via Modman
@@ -25,6 +27,7 @@ modman magneto-debug clone https://github.com/madalinoprea/magneto-debug.git
 
 ### Via Magento Connect
 Magento Connect extension package is available here: http://www.magentocommerce.com/magento-connect/sstoiana/extension/6714/magnetodebug
+
 ## FEATURES 
  - Magento module listing; Toggle Magento modules on the fly
  - Display peak memory usage, script execution time
@@ -42,7 +45,7 @@ Magento Connect extension package is available here: http://www.magentocommerce.
 We're working to correct these:
 
  - To enable SQL profiler manually you have to add in your local.xml profiler tag `<profiler>1</profiler>` under connection, like in the example below:
-<pre>
+<pre><code>
     <default_setup>
         <connection>
             <host><![CDATA[/var/run/mysqld/mysqld.sock]]></host>
@@ -53,6 +56,6 @@ We're working to correct these:
             <profiler>1</profiler>
         </connection>
     </default_setup>
-</pre>
+</code></pre>
 
  - `Disable SQL Profiler` is not working, but `Enable SQL Profiler` works like a charm (or not)
