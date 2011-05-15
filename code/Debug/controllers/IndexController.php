@@ -55,6 +55,48 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
         echo $block->toHtml();
     }
 
+    public function viewFilesWithHandleAction()
+    {
+        $layoutHandle = $this->getRequest()->getParam('layout');
+        $title = "Files with layout updates for handle {$layoutHandle}";
+        if( !$layoutHandle ){
+
+        }
+
+        $content = "<h4>Layout files with handle '{$layoutHandle}'</h4><br/>";
+        $foundFiles = array();
+
+        $updateFiles = Mage::helper('debug')->getLayoutUpdatesFiles();
+        /* @var $design Mage_Core_Model_Design_Package */
+        $design = Mage::getSingleton('core/design_package');
+
+        // search handle in the files 
+        foreach ($updateFiles as $file) {
+            $filename = $design->getLayoutFilename($file, array(
+                '_area'    => $design->getArea(),
+                '_package' => $design->getPackageName(),
+                '_theme'   => $design->getTheme('layout')
+            ));
+            if (!is_readable($filename)) {
+                continue;
+            }
+            $fileStr = file_get_contents($filename);
+
+            //$fileStr = str_replace($this->_subst['from'], $this->_subst['to'], $fileStr);
+            $fileXml = simplexml_load_string($fileStr, Mage::getConfig()->getModelClassName('core/layout_element'));
+            if (!$fileXml instanceof SimpleXMLElement) {
+                continue;
+            }
+
+            $result = $fileXml->xpath("/layout/" . $layoutHandle);
+            if ($result) {
+                $content .= "{$file} from {$filename}<br/>";
+            }
+        }
+
+        echo $this->_debugPanel($title, $content);
+    }
+
 
     public function viewSqlExplainAction()
     {

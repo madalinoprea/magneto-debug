@@ -2,8 +2,8 @@
 $layout =  Mage::getSingleton('core/layout');
 $layoutHandles = Mage::getSingleton('core/layout')->getUpdate()->getHandles();
 $layoutUpdates = Mage::getSingleton('core/layout')->getUpdate()->asArray();
-
 ?>
+
 <h4><?php echo $this->__('Handles for this request'); echo "(" . count($layoutHandles) . ")" ?></h4>
 <table>
 	<thead>
@@ -15,7 +15,7 @@ $layoutUpdates = Mage::getSingleton('core/layout')->getUpdate()->asArray();
 		<?php $row = 0; ?>
 		<?php foreach( $layoutHandles as $item ): ?>
 			<tr class="<?php echo ( ($row % 2 ? 'djDebugOdd' : 'djDebugEven')) ?>">
-				<td><?php echo $item ?></td>
+                <td><a class="remoteCall toggleTemplate" href="<?php echo $this->getUrl('debug/index/viewFilesWithHandle', array('layout' => $item)) ?>"><?php echo $item ?></a></td>
 			</tr>
 			<?php $row++; ?>
 		<?php endforeach ?>

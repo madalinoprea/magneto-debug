@@ -64,4 +64,35 @@ class Magneto_Debug_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return mageFindClassFile($blockClass);
     }
+
+    
+    /** 
+     * Returns all xml files that contains layout updates.
+     *
+     */
+    function getLayoutUpdatesFiles($storeId=null) {
+        if (null === $storeId) {
+            $storeId = Mage::app()->getStore()->getId();
+        }
+        /* @var $design Mage_Core_Model_Design_Package */
+        $design = Mage::getSingleton('core/design_package');
+        $updatesRoot = Mage::app()->getConfig()->getNode($design->getArea().'/layout/updates');
+
+        // Find files with layout updates
+        $updateFiles = array();
+        foreach ($updatesRoot->children() as $updateNode) {
+            if ($updateNode->file) {
+                $module = $updateNode->getAttribute('module');
+                if ($module && Mage::getStoreConfigFlag('advanced/modules_disable_output/' . $module, $storeId)) {
+                    continue;
+                }
+                $updateFiles[] = (string)$updateNode->file;
+            }
+        }
+        // custom local layout updates file - load always last
+        $updateFiles[] = 'local.xml';
+
+        return $updateFiles;
+    }
+    
 }
