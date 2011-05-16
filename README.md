@@ -30,16 +30,19 @@ Magento Connect extension package is available here: http://www.magentocommerce.
 
 ## FEATURES 
  - Magento module listing; Toggle Magento modules on the fly
+ - Search configuration keys
  - Display peak memory usage, script execution time
  - Request information (controller name, action name, cookies variables, session variables, GET and POST variables)
  - Models instantiated
  - SQL queries executed for current request; ability to see queries' result or queries' execution plan (EXPLAIN)
  - List Magento configuration
  - Print layout handles for current request
+ - Find xml files where a specific layout handle is defined
  - Created blocks, their associated templates; Preview templates' source code
  - Quick actions: 
     - Toggle template hints
     - Clear cache
+    - Toggle inline translation
 
 ## KNOWN ISSUES
 We're working to correct these:
