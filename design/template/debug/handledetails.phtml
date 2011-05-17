@@ -1,0 +1,33 @@
+<div class="djDebugPanelTitle"> 
+    <a class="djDebugClose djDebugBack" href="">"Back"</a> 
+    <h3><?php echo $title ?></h3> 
+</div> 
+
+<div class="djDebugPanelContent">
+    <div class="scroll">
+        <h4><?php echo $this->__('Layout Updates For This Handle') ?> (<?php echo count($handleFiles); ?>)</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th><?php echo $this->__('Update xml file') ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php $row = 0; ?>
+                <?php foreach( $handleFiles as $filename => $handleUpdates ): ?>
+                    <tr class="<?php echo ( ($row % 2 ? 'djDebugOdd' : 'djDebugEven')) ?>">
+                        <td class="syntax"><h5><?php echo $filename ?></h5></td>
+                    </tr>
+
+                    <?php foreach( $handleUpdates as $update ): ?>
+                        <tr class="<?php echo ( ($row % 2 ? 'djDebugOdd' : 'djDebugEven')) ?>"><td>
+                            <code><?php echo htmlspecialchars($update->asXML()) ?></code>
+                        </td></tr>
+                    <?php endforeach; ?>
+                    <?php $row++; ?>
+                <?php endforeach ?>
+            </tbody>
+        </table>
+
+    </div>
+</div>

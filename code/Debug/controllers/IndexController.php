@@ -2,7 +2,7 @@
 class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
 {
 	private function _debugPanel($title, $content) {
-         $block = new Mage_Core_Block_Template(); //Is this the correct way?
+         $block = new Mage_Core_Block_Template();
         $block->setTemplate('debug/simplepanel.phtml');
         $block->assign('title', $title);
         $block->assign('content', $content);
@@ -46,7 +46,7 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
             }
         }
 
-        $block = new Mage_Core_Block_Template(); //Is this the correct way?
+        $block = new Mage_Core_Block_Template();
         $block->setTemplate('debug/arrayformat.phtml');
         $block->assign('title', 'SQL Select');
         $block->assign('headers', $headers);
@@ -63,14 +63,12 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
 
         }
 
-        $content = "<h4>Layout files with handle '{$layoutHandle}'</h4><br/>";
-        $foundFiles = array();
-
         $updateFiles = Mage::helper('debug')->getLayoutUpdatesFiles();
         /* @var $design Mage_Core_Model_Design_Package */
         $design = Mage::getSingleton('core/design_package');
 
         // search handle in the files 
+        $handleFiles = array();
         foreach ($updateFiles as $file) {
             $filename = $design->getLayoutFilename($file, array(
                 '_area'    => $design->getArea(),
@@ -82,7 +80,6 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
             }
             $fileStr = file_get_contents($filename);
 
-            //$fileStr = str_replace($this->_subst['from'], $this->_subst['to'], $fileStr);
             $fileXml = simplexml_load_string($fileStr, Mage::getConfig()->getModelClassName('core/layout_element'));
             if (!$fileXml instanceof SimpleXMLElement) {
                 continue;
@@ -90,11 +87,15 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
 
             $result = $fileXml->xpath("/layout/" . $layoutHandle);
             if ($result) {
-                $content .= "{$file} from {$filename}<br/>";
+                $handleFiles[$filename] = $result;
             }
         }
 
-        echo $this->_debugPanel($title, $content);
+        $block = new Mage_Core_Block_Template();
+        $block->setTemplate('debug/handledetails.phtml');
+        $block->assign('title', $title);
+        $block->assign('handleFiles', $handleFiles);
+        echo $block->toHtml();
     }
 
 
