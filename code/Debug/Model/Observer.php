@@ -152,13 +152,22 @@ class Magneto_Debug_Model_Observer {
 		return $this;
 	}
 
-    /** We listen to this event to filter access to actions defined by Debug module.
+    /** 
+     * We listen to this event to filter access to actions defined by Debug module.
+     * We allow only actions if debug toolbar is on and ip is listed in Developer Client Restrictions
+     *
      */
     function onActionPreDispatch(Varien_Event_Observer $observer){
         $action = $observer->getEvent()->getControllerAction();
         $moduleName = $action->getRequest()->getControllerModule();
         if( strpos($moduleName, "Magneto_Debug") === 0 && !Mage::helper('debug')->isRequestAllowed() ){
+
             Mage::log("Access to Magneto_Debug's actions blocked: dev mode is set to false.");
+            // $response = $action->getResponse();
+            // $response->setHttpResponseCode(404);
+            // $response->setBody('Site access denied.');
+            //$action->setDispatched(true)
+            //
             exit();
         }
     }

@@ -5,6 +5,14 @@ class Magneto_Debug_Block_Debug extends Mage_Core_Block_Template
     {
 		return parent::_prepareLayout();
     }
+
+    public function renderView()
+    {
+        // Render Debug toolbar only if allowed 
+        if( Mage::helper('debug')->isRequestAllowed() ){
+            return parent::renderView();
+        } 
+    }
     
     private function createDummyPanel($title){
         $panel = array(

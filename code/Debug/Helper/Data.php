@@ -9,24 +9,26 @@ class Magneto_Debug_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     function isRequestAllowed() {
-        return Mage::helper('core')->isDevAllowed();
+        $isDebugEnable = (int)Mage::getStoreConfig('debug/options/enable');
+        $clientIp = $this->_getRequest()->getClientIp();
+        $allow = false;
 
-        // FIXME: Check if current user can perform sensitive requests
-        // I've tried to check if user is an authenticated admin user but the code is not working
-        // Investigate what happens!!
-        //
-        // //get the admin session
-        // Mage::getSingleton('core/session', array('name'=>'adminhtml'));
+        if( $isDebugEnable ){
+            $allow = true;
 
-        // //verify if the user is logged in to the backend
-        // if(Mage::getSingleton('admin/session')->isLoggedIn()){
-        //   //do stuff
-        // }
-        // else
-        // 
-        //   echo "go away bad boy";
-        // }
-        //         
+            // Code copy-pasted from core/helper, isDevAllowed method 
+            // I cannot use that method because the client ip is not always correct (e.g varnish)
+            $allowedIps = Mage::getStoreConfig('dev/restrict/allow_ips');
+            if ( $isDebugEnable && !empty($allowedIps) && !empty($clientIp)) {
+                $allowedIps = preg_split('#\s*,\s*#', $allowedIps, null, PREG_SPLIT_NO_EMPTY);
+                if (array_search($clientIp, $allowedIps) === false
+                    && array_search(Mage::helper('core/http')->getHttpHost(), $allowedIps) === false) {
+                    $allow = false;
+                }
+            }
+        }
+
+        return $allow;
     }
 
 	function formatSize($size) {

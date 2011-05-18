@@ -149,4 +149,36 @@
             </controller_action_predispatch>
 		</events>
     </global>
+
+    <default>
+        <debug>
+            <options>
+                <enable>1</enable>
+            </options>
+        </debug>
+    </default>
+
+    <adminhtml>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <debug>
+                            <title>Debug Toolbar</title>
+                            <sort_order>10</sort_order>
+                        </debug>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <debug>Debug Toolbar Options</debug>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+    </adminhtml>
 </config>
