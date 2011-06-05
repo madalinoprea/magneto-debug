@@ -91,6 +91,8 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
             }
         }
 
+        // TODO: search handle in db layout updates
+
         $block = new Mage_Core_Block_Template();
         $block->setTemplate('debug/handledetails.phtml');
         $block->assign('title', $title);

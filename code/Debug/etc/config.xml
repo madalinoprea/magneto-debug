@@ -27,26 +27,9 @@
         <models>
             <debug>
                 <class>Magneto_Debug_Model</class>
-                <resourceModel>debug_mysql4</resourceModel>
             </debug>
-            <debug_mysql4>
-                <class>Magneto_Debug_Model_Mysql4</class>
-                <entities>
-                    <debug>
-                        <table>debug</table>
-                    </debug>
-                </entities>
-            </debug_mysql4>
         </models>
         <resources>
-            <debug_setup>
-                <setup>
-                    <module>Magneto_Debug</module>
-                </setup>
-                <connection>
-                    <use>core_setup</use>
-                </connection>
-            </debug_setup>
             <debug_write>
                 <connection>
                     <use>core_write</use>
@@ -59,11 +42,6 @@
             </debug_read>
         </resources>
         <blocks>
-            <core>
-                <!-- <rewrite> -->
-                <!--     <template>Magneto_Debug_Block_Abstract</template> -->
-                <!-- </rewrite> -->
-            </core>
             <debug>
                 <class>Magneto_Debug_Block</class>
             </debug>
