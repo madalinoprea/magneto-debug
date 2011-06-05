@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Magneto_Debug>
-            <version>0.1.0</version>
+            <version>1.0.0</version>
         </Magneto_Debug>
     </modules>
     <frontend>
