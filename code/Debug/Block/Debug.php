@@ -152,6 +152,22 @@ class Magneto_Debug_Block_Debug extends Mage_Core_Block_Template
         );
         return $panel;
     }
+
+    protected function createLogsPanel()
+    {
+        $title = 'Logs';
+
+        $panel = array(
+            'title' => $title,
+            'has_content' => true,
+            'url' => NULL,
+            'dom_id' => 'debug-panel-' . $title,
+            'nav_title' => $title,
+            'nav_subtitle' => "View logs",
+            'template' => 'debug_logs_panel',           // child block defined in layout xml
+        );
+        return $panel;
+    }
     
     public function getPanels() {
         $panels = array();
@@ -163,6 +179,7 @@ class Magneto_Debug_Block_Debug extends Mage_Core_Block_Template
 		$panels[] = $this->createLayoutPanel();
         $panels[] = $this->createBlocksPanel();
         $panels[] = $this->createUtilsPanel();
+        $panels[] = $this->createLogsPanel();
 
         return $panels;
     }

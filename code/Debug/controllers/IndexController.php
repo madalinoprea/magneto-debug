@@ -416,4 +416,28 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
             }
         }
     }
+
+    /**
+     * Return last 100 lines of log file
+     *
+     * @return string
+     */
+    public function viewLogAction()
+    {
+        $file = $this->getRequest()->getParam('file');
+        if (!empty($file)) {
+            $result = Mage::helper('debug')->getLastRows(Mage::getBaseDir() . '/var/log/' . $file, 10);
+
+            if (!is_array($result)) {
+                $result = array($result);
+            }
+
+            $block = new Mage_Core_Block_Template(); //Is this the correct way?
+            $block->setTemplate('debug/logdetails.phtml');
+            $block->assign('title', 'Log details : ' . $file);
+            $block->assign('items', $result);
+
+            echo $block->toHtml();
+        }
+    }
 }
