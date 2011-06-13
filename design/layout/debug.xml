@@ -11,6 +11,7 @@
                 <block type="core/template" name="debug_layout_panel" template="debug/layout.phtml"/>
                 <block type="core/template" name="debug_performance_panel" template="debug/performance.phtml"/>
                 <block type="core/template" name="debug_utils_panel" template="debug/utils.phtml"/>
+                <block type="core/template" name="debug_logs_panel" template="debug/logs.phtml"/>
             </block>
         </reference>
     </default>
