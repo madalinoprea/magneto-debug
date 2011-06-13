@@ -1,33 +1,57 @@
 <?php
 class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
 {
-	private function _debugPanel($title, $content) {
-         $block = new Mage_Core_Block_Template();
+    /**
+     * Return block content
+     *
+     * @param string $title   block title
+     * @param string $content body content
+     *
+     * @return string
+     */
+    private function _debugPanel($title, $content)
+    {
+        $block = new Mage_Core_Block_Template();
         $block->setTemplate('debug/simplepanel.phtml');
         $block->assign('title', $title);
         $block->assign('content', $content);
         return $block->toHtml();
     }
 
-	public function viewTemplateAction()
-	{
-		$fileName = $this->getRequest()->get('template');
-		$absoluteFilepath = realpath(Mage::getBaseDir('design') . DS . $fileName);
-		$source =  highlight_string(file_get_contents($absoluteFilepath), true) ;
-		
-		echo $this->_debugPanel("Template Source: <code>$fileName</code>", ''.$source.'');
-	}
+    /**
+     * Show source code of template
+     *
+     * @return string
+     */
+    public function viewTemplateAction()
+    {
+        $fileName = $this->getRequest()->get('template');
+        $absoluteFilepath = realpath(Mage::getBaseDir('design') . DS . $fileName);
+        $source = highlight_string(file_get_contents($absoluteFilepath), true);
 
+        echo $this->_debugPanel("Template Source: <code>$fileName</code>", '' . $source . '');
+    }
+
+    /**
+     * Show source code of block
+     *
+     * @return string
+     */
     public function viewBlockAction()
     {
         $blockClass = $this->getRequest()->get('block');
         $absoluteFilepath = Mage::helper('debug')->getBlockFilename($blockClass);
-        
-		$source =  highlight_string(file_get_contents($absoluteFilepath), true) ;
-		
-		echo $this->_debugPanel("Block Source: <code>{$blockClass}</code>", ''.$source.'');
+
+        $source = highlight_string(file_get_contents($absoluteFilepath), true);
+
+        echo $this->_debugPanel("Block Source: <code>{$blockClass}</code>", '' . $source . '');
     }
 
+    /**
+     * View sql query
+     *
+     * @return void
+     */
     public function viewSqlSelectAction()
     {
         $con = Mage::getSingleton('core/resource')->getConnection('core_write');
@@ -38,10 +62,10 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
 
         $items = array();
         $headers = array();
-        while( $row=$result->fetch(PDO::FETCH_ASSOC) ){
-            $items[]=$row;
-            
-            if( empty($headers) ){
+        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+            $items[] = $row;
+
+            if (empty($headers)) {
                 $headers = array_keys($row);
             }
         }
@@ -52,14 +76,18 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
         $block->assign('headers', $headers);
         $block->assign('items', $items);
         $block->assign('query', $query);
+        
         echo $block->toHtml();
     }
 
+    /**
+     * @return void
+     */
     public function viewFilesWithHandleAction()
     {
         $layoutHandle = $this->getRequest()->getParam('layout');
         $title = "Files with layout updates for handle {$layoutHandle}";
-        if( !$layoutHandle ){
+        if (!$layoutHandle) {
 
         }
 
@@ -71,10 +99,10 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
         $handleFiles = array();
         foreach ($updateFiles as $file) {
             $filename = $design->getLayoutFilename($file, array(
-                '_area'    => $design->getArea(),
-                '_package' => $design->getPackageName(),
-                '_theme'   => $design->getTheme('layout')
-            ));
+                                                               '_area' => $design->getArea(),
+                                                               '_package' => $design->getPackageName(),
+                                                               '_theme' => $design->getTheme('layout')
+                                                          ));
             if (!is_readable($filename)) {
                 continue;
             }
@@ -97,10 +125,15 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
         $block->setTemplate('debug/handledetails.phtml');
         $block->assign('title', $title);
         $block->assign('handleFiles', $handleFiles);
+        
         echo $block->toHtml();
     }
 
-
+    /**
+     * Show explain of sql query
+     *
+     * @return void
+     */
     public function viewSqlExplainAction()
     {
         $con = Mage::getSingleton('core/resource')->getConnection('core_write');
@@ -111,10 +144,10 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
 
         $items = array();
         $headers = array();
-        while( $row=$result->fetch(PDO::FETCH_ASSOC) ){
-            $items[]=$row;
-            
-            if( empty($headers) ){
+        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+            $items[] = $row;
+
+            if (empty($headers)) {
                 $headers = array_keys($row);
             }
         }
@@ -125,17 +158,29 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
         $block->assign('headers', $headers);
         $block->assign('items', $items);
         $block->assign('query', $query);
+
         echo $block->toHtml();
     }
-	
-	
-	public function clearCacheAction() {
+
+    /**
+     * Clear Magento cache
+     *
+     * @return void
+     */
+    public function clearCacheAction()
+    {
         $content = Mage::helper('debug')->cleanCache();
         Mage::getSingleton('core/session')->addSuccess("Magento's caches were cleared.");
         $this->_redirectReferer();
-	}
+    }
 
-    public function toggleTranslateInlineAction() {
+    /**
+     * Turn on/off translate inline
+     *
+     * @return void
+     */
+    public function toggleTranslateInlineAction()
+    {
         $currentStatus = Mage::getStoreConfig('dev/translate_inline/active');
         $newStatus = !$currentStatus;
 
@@ -155,7 +200,13 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
         $this->_redirectReferer();
     }
 
-    public function toggleTemplateHintsAction() {
+    /**
+     * Turn on/off template hints
+     *
+     * @return void
+     */
+    public function toggleTemplateHintsAction()
+    {
         $currentStatus = Mage::getStoreConfig('dev/debug/template_hints');
         $newStatus = !$currentStatus;
 
@@ -166,42 +217,46 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
         Mage::app()->cleanCache();
 
         Mage::getSingleton('core/session')->addSuccess('Template hints set to ' . var_export($newStatus, true));
-        $this->_redirectReferer(); 
+        $this->_redirectReferer();
     }
 
+    /**
+     * Turn on/off modules
+     *
+     * @return Magneto_Debug_IndexController|string
+     */
     public function toggleModuleStatusAction()
     {
         $title = "Toggle Module Status";
         $moduleName = $this->getRequest()->getParam('module');
-        if( !$moduleName ){
+        if (!$moduleName) {
             echo $this->_debugPanel($title, "Invalid module name supplied. ");
             return;
         }
         $config = Mage::getConfig();
 
         $moduleConfig = Mage::getConfig()->getModuleConfig($moduleName);
-        if( !$moduleConfig  ) {
+        if (!$moduleConfig) {
             echo $this->_debugPanel($title, "Unable to load supplied module. ");
             return;
         }
 
-    
+
         $moduleCurrentStatus = $moduleConfig->is('active');
         $moduleNewStatus = !$moduleCurrentStatus;
         $moduleConfigFile = $config->getOptions()->getEtcDir() . DS . 'modules' . DS . $moduleName . '.xml';
         $configContent = file_get_contents($moduleConfigFile);
 
-        function strbool($value)
-        {
+        function strbool($value) {
             return $value ? 'true' : 'false';
         }
 
         $contents = "<br/>Active status switched to " . strbool($moduleNewStatus) . " for module {$moduleName} in file {$moduleConfigFile}:";
         $contents .= "<br/><code>" . htmlspecialchars($configContent) . "</code>";
-        
-        $configContent = str_replace("<active>" . strbool($moduleCurrentStatus) ."</active>", "<active>" . strbool($moduleNewStatus) . "</active>", $configContent);
 
-        if( file_put_contents($moduleConfigFile, $configContent) === FALSE ) {
+        $configContent = str_replace("<active>" . strbool($moduleCurrentStatus) . "</active>", "<active>" . strbool($moduleNewStatus) . "</active>", $configContent);
+
+        if (file_put_contents($moduleConfigFile, $configContent) === FALSE) {
             echo $this->_debugPanel($title, "Failed to write configuration. (Web Server's permissions for {$moduleConfigFile}?!)");
             return $this;
         }
@@ -214,55 +269,73 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
         echo $this->_debugPanel($title, $contents);
     }
 
-
+    /**
+     * Download config as XML file
+     *
+     * @return string
+     */
     public function downloadConfigAction()
     {
         header("Content-type: text/xml");
         echo Mage::app()->getConfig()->getNode()->asXML();
     }
 
+    /**
+     * Download config as text
+     *
+     * @return void
+     */
     public function downloadConfigAsTextAction()
     {
         header("Content-type: text/plain");
         $configs = Mage::app()->getConfig()->getNode();
         $items = array();
         Magneto_Debug_Block_Config::xml2array($configs, $items);
-        foreach ($items as $key=>$value) {
+        foreach ($items as $key => $value) {
             echo "$key = $value\n";
         }
     }
 
-
+    /**
+     * Show sql profiler
+     *
+     * @return void
+     */
     public function showSqlProfilerAction()
     {
         $config = Mage::getConfig()->getNode('global/resources/default_setup/connection/profiler');
         Mage::getSingleton('core/resource')->getConnection('core_write')->getProfiler()->setEnabled(false);
+        
         var_dump($config);
     }
 
-
-    // FIXME: This needs to be corrected
+    /**
+     * Toggle Sql profiler
+     *
+     * @return void
+     */
     public function toggleSqlProfilerAction()
     {
-        $localConfigFile = Mage::getBaseDir('etc').DS.'local.xml';
-        $localConfigBackupFile = Mage::getBaseDir('etc').DS.'local-magneto.xml';
+        // FIXME: This needs to be corrected
+        $localConfigFile = Mage::getBaseDir('etc') . DS . 'local.xml';
+        $localConfigBackupFile = Mage::getBaseDir('etc') . DS . 'local-magneto.xml';
 
         $configContent = file_get_contents($localConfigFile);
         $xml = new SimpleXMLElement($configContent);
         $profiler = $xml->global->resources->default_setup->connection->profiler;
-        if( (int)$xml->global->resources->default_setup->connection->profiler !=1 ){
+        if ((int)$xml->global->resources->default_setup->connection->profiler != 1) {
             $xml->global->resources->default_setup->connection->addChild('profiler', 1);
         } else {
             unset($xml->global->resources->default_setup->connection->profiler);
         }
-        
+
         // backup config file
-        if( file_put_contents($localConfigBackupFile, $configContent)===FALSE ){
+        if (file_put_contents($localConfigBackupFile, $configContent) === FALSE) {
             Mage::getSingleton('core/session')->addError("Operation aborted: couldn't create backup for config file");
             $this->_redirectReferer();
         }
 
-        if( $xml->saveXML($localConfigFile) === FALSE ) {
+        if ($xml->saveXML($localConfigFile) === FALSE) {
             Mage::getSingleton('core/session')->addError("Couldn't save {$localConfigFile}: check write permissions.");
             $this->_redirectReferer();
         }
@@ -271,17 +344,26 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
         Mage::helper('debug')->cleanCache();
         $this->_redirectReferer();
     }
-	
+
+    /**
+     * Index action
+     *
+     * @return void
+     */
     public function indexAction()
-    {	
-		$this->loadLayout();     
-		$this->renderLayout();
+    {
+        $this->loadLayout();
+        $this->renderLayout();
     }
 
-
+    /**
+     * Search groupped class
+     *
+     * @return void
+     */
     public function searchGroupedClassAction()
     {
-        if( $this->getRequest()->isPost() ){
+        if ($this->getRequest()->isPost()) {
             $uri = $this->getRequest()->getPost('uri');
             $groupType = $this->getRequest()->getPost('group');
             $items = array();
@@ -289,8 +371,8 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
             $groupTypes = array('model', 'block', 'helper');
 
             if (!empty($uri)) {
-                if( $groupType=='all' ) {
-                    foreach ($groupTypes as $type){
+                if ($groupType == 'all') {
+                    foreach ($groupTypes as $type) {
                         $items[$type] = Mage::getConfig()->getGroupedClassName($type, $uri);
                     }
                 } else {
@@ -307,16 +389,22 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
         }
     }
 
-    public function searchConfigAction() {
-        if( $this->getRequest()->isPost() ){
+    /**
+     * Seach config
+     *
+     * @return void
+     */
+    public function searchConfigAction()
+    {
+        if ($this->getRequest()->isPost()) {
             $result['error'] = 0;
 
             $query = $this->getRequest()->getPost('query');
-            if( !empty($query) ){
+            if (!empty($query)) {
                 $configs = Mage::app()->getConfig()->getNode($query);
                 $items = array();
                 Magneto_Debug_Block_Config::xml2array($configs, $items, $query);
-                
+
                 $block = new Mage_Core_Block_Template(); //Is this the correct way?
                 $block->setTemplate('debug/configsearch.phtml');
                 $block->assign('items', $items);
