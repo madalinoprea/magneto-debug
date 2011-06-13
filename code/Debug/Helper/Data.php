@@ -2,12 +2,21 @@
 
 class Magneto_Debug_Helper_Data extends Mage_Core_Helper_Abstract
 {
-    
+    /**
+     * Clean Magento cache
+     *
+     * @return void
+     */
     public function cleanCache()
     {
         Mage::app()->cleanCache();
     }
 
+    /**
+     * Check if client's ip is whitelisted
+     *
+     * @return bool
+     */
     function isRequestAllowed() {
         $isDebugEnable = (int)Mage::getStoreConfig('debug/options/enable');
         $clientIp = $this->_getRequest()->getClientIp();
@@ -31,6 +40,13 @@ class Magneto_Debug_Helper_Data extends Mage_Core_Helper_Abstract
         return $allow;
     }
 
+    /**
+     * Return readable file size
+     *
+     * @param int $size size in bytes
+     * 
+     * @return string
+     */
 	function formatSize($size) {
 		$sizes = array(" Bytes", " KB", " MB", " GB", " TB", " PB", " EB", " ZB", " YB");
 		if ($size == 0) {
@@ -67,10 +83,12 @@ class Magneto_Debug_Helper_Data extends Mage_Core_Helper_Abstract
         return mageFindClassFile($blockClass);
     }
 
-    
-    /** 
+    /**
      * Returns all xml files that contains layout updates.
      *
+     * @param int|null $storeId store identifier
+     * 
+     * @return array
      */
     function getLayoutUpdatesFiles($storeId=null) {
         if (null === $storeId) {
