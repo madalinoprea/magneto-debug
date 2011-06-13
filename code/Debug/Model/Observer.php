@@ -156,6 +156,9 @@ class Magneto_Debug_Model_Observer {
      * We listen to this event to filter access to actions defined by Debug module.
      * We allow only actions if debug toolbar is on and ip is listed in Developer Client Restrictions
      *
+     * @param Varien_Event_Observer $observer
+     *
+     * @return void
      */
     function onActionPreDispatch(Varien_Event_Observer $observer){
         $action = $observer->getEvent()->getControllerAction();

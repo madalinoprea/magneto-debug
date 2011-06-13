@@ -1,0 +1,21 @@
+<div class="djDebugPanelTitle">
+    <a class="djDebugClose djDebugBack" href="">"Back"</a>
+    <h3><?php echo $title ?></h3>
+</div>
+
+<div class="djDebugPanelContent">
+    <div class="scroll">
+
+        <table class="djSqlExplain">
+            <tbody>
+               <?php $row=0; ?>
+               <?php foreach( $items as $index => $row ): ?>
+                <tr class="<?php echo ( ($index % 2 ? 'djDebugOdd' : 'djDebugEven')) ?>">
+                    <td><?php echo $row; ?></td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
