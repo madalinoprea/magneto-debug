@@ -19,13 +19,18 @@ sudo mv modman /usr/bin
  - Magento patch to allow symlinks for templates dir: <http://www.tonigrigoriu.com/magento/magento-how-to-fix-template-path-errors-when-using-symlinks/> (required if you choose to use modman installation)
  - Install via modman (for details consult modman website):
 <pre>
-cd <magento root folder>
+cd [magento root folder]
 modman init
 modman magneto-debug clone https://github.com/madalinoprea/magneto-debug.git
 </pre>
  - Make sure you've cleaned Magento's cache to enable the new module; hit refresh
 
 ### Via Magento Connect
+<pre>
+cd [magento root folder]
+sudo ./mage install community MagnetoDebug
+</pre>
+
 Magento Connect extension package is available here: http://www.magentocommerce.com/magento-connect/sstoiana/extension/6714/magnetodebug
 
 ## FEATURES 
