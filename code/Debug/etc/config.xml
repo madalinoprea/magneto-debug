@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Magneto_Debug>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
         </Magneto_Debug>
     </modules>
     <frontend>
@@ -158,5 +158,12 @@
                 </admin>
             </resources>
         </acl>
+        <layout>
+            <updates>
+                <debugadmin>
+                    <file>debug.xml</file>
+                </debugadmin>
+            </updates>
+        </layout>
     </adminhtml>
 </config>

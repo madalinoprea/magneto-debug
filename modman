@@ -1,8 +1,11 @@
 # Comments are supported, begin a line with a hash
-code/Debug                  app/code/community/Magneto/Debug
-design/layout/debug.xml     app/design/frontend/base/default/layout/debug.xml 
-design/template/debug       app/design/frontend/base/default/template/debug
-skin        skin/frontend/base/default/debug/
+code/Debug                      app/code/community/Magneto/Debug
+design/layout/debug.xml         app/design/frontend/base/default/layout/debug.xml 
+design/template/debug           app/design/frontend/base/default/template/debug
+# admin
+design/layout/debug.xml         app/design/adminhtml/base/default/layout/debug.xml
+design/template/debug           app/design/adminhtml/base/default/template/debug
+skin                            skin/frontend/base/default/debug/
 #locale/My_Module.xml       app/locale/en_US/My_Module.xml
-Magneto_Debug.xml           app/etc/modules/Magneto_Debug.xml 
+Magneto_Debug.xml               app/etc/modules/Magneto_Debug.xml 
 #connect/Magneto_Debug.xml           var/connect/Magneto_Debug.xml
