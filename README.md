@@ -24,8 +24,17 @@ modman init
 modman magneto-debug clone https://github.com/madalinoprea/magneto-debug.git
 </pre>
  - Make sure you've cleaned Magento's cache to enable the new module; hit refresh
+ 
+## Update plugin installed via Modman
+I'm pretty lazy and I don't like to create Magento Connect packages. That's why using modman, you'll have latest changes pushed to github.
+<pre>
+modman magneto-debug update
+</pre>
+ - Clean Magento's cache to make sure new changes will be enabled.
 
 ### Via Magento Connect
+Extension is not updated regularly. I recommend using modman.
+
 <pre>
 cd [magento root folder]
 sudo ./mage install community MagnetoDebug
@@ -34,6 +43,7 @@ sudo ./mage install community MagnetoDebug
 Magento Connect extension package is available here: http://www.magentocommerce.com/magento-connect/sstoiana/extension/6714/magnetodebug
 
 ## FEATURES 
+ - Now available in Admin (1.0.1 RC - fancy for I'm laizy to create Magento Connect package)
  - Magento module listing; Toggle Magento modules on the fly
  - Search configuration keys
  - Display peak memory usage, script execution time
