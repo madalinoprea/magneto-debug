@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<layout version="0.1.0">
+<layout version="0.1.1">
     <default>
         <reference name="before_body_end">
             <block type="debug/debug" name="debug_panels" template="debug/debug.phtml">
@@ -8,10 +8,10 @@
                 <block type="debug/blocks" name="debug_blocks_panel" template="debug/blocks.phtml"/>
                 <block type="debug/controller" name="debug_controller_panel" template="debug/controller.phtml"/>
                 <block type="debug/models" name="debug_models_panel" template="debug/models.phtml"/>
-                <block type="core/template" name="debug_layout_panel" template="debug/layout.phtml"/>
-                <block type="core/template" name="debug_performance_panel" template="debug/performance.phtml"/>
-                <block type="core/template" name="debug_utils_panel" template="debug/utils.phtml"/>
-                <block type="core/template" name="debug_logs_panel" template="debug/logs.phtml"/>
+                <block type="debug/abstract" name="debug_layout_panel" template="debug/layout.phtml"/>
+                <block type="debug/abstract" name="debug_performance_panel" template="debug/performance.phtml"/>
+                <block type="debug/abstract" name="debug_utils_panel" template="debug/utils.phtml"/>
+                <block type="debug/abstract" name="debug_logs_panel" template="debug/logs.phtml"/>
             </block>
         </reference>
     </default>

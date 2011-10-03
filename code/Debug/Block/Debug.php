@@ -1,5 +1,5 @@
 <?php
-class Magneto_Debug_Block_Debug extends Mage_Core_Block_Template
+class Magneto_Debug_Block_Debug extends Magneto_Debug_Block_Abstract
 {
 	public function _prepareLayout()
     {

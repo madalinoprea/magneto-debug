@@ -1,5 +1,5 @@
 <?php
-class Magneto_Debug_Block_Config extends Mage_Core_Block_Template
+class Magneto_Debug_Block_Config extends Magneto_Debug_Block_Abstract
 {
     protected static $_items;
 

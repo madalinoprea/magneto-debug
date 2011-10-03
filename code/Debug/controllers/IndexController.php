@@ -11,7 +11,7 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
      */
     private function _debugPanel($title, $content)
     {
-        $block = new Mage_Core_Block_Template();
+        $block = new Magneto_Debug_Block_Abstract();
         $block->setTemplate('debug/simplepanel.phtml');
         $block->assign('title', $title);
         $block->assign('content', $content);
@@ -70,7 +70,7 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
             }
         }
 
-        $block = new Mage_Core_Block_Template();
+        $block = new Magneto_Debug_Block_Abstract();
         $block->setTemplate('debug/arrayformat.phtml');
         $block->assign('title', 'SQL Select');
         $block->assign('headers', $headers);
@@ -121,7 +121,7 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
 
         // TODO: search handle in db layout updates
 
-        $block = new Mage_Core_Block_Template();
+        $block = new Magneto_Debug_Block_Abstract();
         $block->setTemplate('debug/handledetails.phtml');
         $block->assign('title', $title);
         $block->assign('handleFiles', $handleFiles);
@@ -152,7 +152,7 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
             }
         }
 
-        $block = new Mage_Core_Block_Template(); //Is this the correct way?
+        $block = new Magneto_Debug_Block_Abstract(); //Is this the correct way?
         $block->setTemplate('debug/arrayformat.phtml');
         $block->assign('title', 'SQL Explain');
         $block->assign('headers', $headers);
@@ -379,7 +379,7 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
                     $items[$groupType] = Mage::getConfig()->getGroupedClassName($groupType, $uri);
                 }
 
-                $block = new Mage_Core_Block_Template();
+                $block = new Magneto_Debug_Block_Abstract();
                 $block->setTemplate('debug/groupedclasssearch.phtml');
                 $block->assign('items', $items);
                 echo $block->toHtml();
@@ -405,7 +405,7 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
                 $items = array();
                 Magneto_Debug_Block_Config::xml2array($configs, $items, $query);
 
-                $block = new Mage_Core_Block_Template(); //Is this the correct way?
+                $block = new Magneto_Debug_Block_Abstract(); //Is this the correct way?
                 $block->setTemplate('debug/configsearch.phtml');
                 $block->assign('items', $items);
                 echo $block->toHtml();
@@ -432,7 +432,7 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
                 $result = array($result);
             }
 
-            $block = new Mage_Core_Block_Template(); //Is this the correct way?
+            $block = new Magneto_Debug_Block_Abstract(); //Is this the correct way?
             $block->setTemplate('debug/logdetails.phtml');
             $block->assign('title', 'Log details : ' . $file);
             $block->assign('items', $result);

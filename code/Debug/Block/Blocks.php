@@ -1,5 +1,5 @@
 <?php
-class Magneto_Debug_Block_Blocks extends Mage_Core_Block_Template
+class Magneto_Debug_Block_Blocks extends Magneto_Debug_Block_Abstract
 {
     protected function getItems() {
     	$blocks = Mage::getSingleton('debug/observer')->getBlocks();
