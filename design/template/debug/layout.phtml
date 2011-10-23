@@ -1,8 +1,36 @@
 <?php
+/* @var $this Magneto_Debug_Block_Layout */
 $layout =  Mage::getSingleton('core/layout');
 $layoutHandles = Mage::getSingleton('core/layout')->getUpdate()->getHandles();
 $layoutUpdates = Mage::getSingleton('core/layout')->getUpdate()->asArray();
+
+/* @var $designPackage Mage_Core_Model_Design_Package */
+$designPackage = Mage::getSingleton('core/design_package');
 ?>
+
+<h4><?php echo $this->__('Package information') ?></h4>
+<table>
+    <thead>
+    <tr>
+        <th><?php echo $this->__('Variable') ?></th>
+        <th><?php echo $this->__('Value') ?></th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr class="djDebugOdd">
+            <td><?php echo $this->__('Design Area') ?></td>
+            <td><?php echo $designPackage->getArea() ?></td>
+        </tr>
+        <tr class="djDebugEven">
+            <td><?php echo $this->__('Package Name') ?></td>
+            <td><?php echo $designPackage->getPackageName() ?></td>
+        </tr>
+        <tr class="djDebugOdd">
+            <td><?php echo $this->__('Template Theme') ?></td>
+            <td><?php echo $designPackage->getTheme('template') ?></td>
+        </tr>
+    </tbody>
+</table>
 
 <h4><?php echo $this->__('Handles for this request'); echo "(" . count($layoutHandles) . ")" ?></h4>
 <table>
@@ -15,7 +43,7 @@ $layoutUpdates = Mage::getSingleton('core/layout')->getUpdate()->asArray();
 		<?php $row = 0; ?>
 		<?php foreach( $layoutHandles as $item ): ?>
 			<tr class="<?php echo ( ($row % 2 ? 'djDebugOdd' : 'djDebugEven')) ?>">
-                <td><a class="remoteCall toggleTemplate" href="<?php echo $this->getUrl('debug/index/viewFilesWithHandle', array('layout' => $item)) ?>"><?php echo $item ?></a></td>
+                <td><a class="remoteCall toggleTemplate" href="<?php echo $this->getViewHandleUrl($item) ?>"><?php echo $item ?></a></td>
 			</tr>
 			<?php $row++; ?>
 		<?php endforeach ?>

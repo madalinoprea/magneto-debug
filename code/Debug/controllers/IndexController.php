@@ -86,22 +86,28 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
     public function viewFilesWithHandleAction()
     {
         $layoutHandle = $this->getRequest()->getParam('layout');
+        $storeId = $this->getRequest()->getParam('storeId');
+        $designArea = $this->getRequest()->getParam('area');
+
         $title = "Files with layout updates for handle {$layoutHandle}";
         if (!$layoutHandle) {
 
         }
 
-        $updateFiles = Mage::helper('debug')->getLayoutUpdatesFiles();
-        /* @var $design Mage_Core_Model_Design_Package */
-        $design = Mage::getSingleton('core/design_package');
+        $updateFiles = Mage::helper('debug')->getLayoutUpdatesFiles($storeId, $designArea);
 
-        // search handle in the files 
+        /* @var $designPackage Mage_Core_Model_Design_Package */
+        $designPackage = Mage::getModel('core/design_package');
+        $designPackage->setStore(Mage::app()->getStore($storeId));
+        $designPackage->setArea($designArea);
+
+        // search handle in these files
         $handleFiles = array();
         foreach ($updateFiles as $file) {
-            $filename = $design->getLayoutFilename($file, array(
-                                                               '_area' => $design->getArea(),
-                                                               '_package' => $design->getPackageName(),
-                                                               '_theme' => $design->getTheme('layout')
+            $filename = $designPackage->getLayoutFilename($file, array(
+                                                               '_area' => $designPackage->getArea(),
+                                                               '_package' => $designPackage->getPackageName(),
+                                                               '_theme' => $designPackage->getTheme('layout')
                                                           ));
             if (!is_readable($filename)) {
                 continue;

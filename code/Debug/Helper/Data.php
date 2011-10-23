@@ -87,16 +87,15 @@ class Magneto_Debug_Helper_Data extends Mage_Core_Helper_Abstract
      * Returns all xml files that contains layout updates.
      *
      * @param int|null $storeId store identifier
-     * 
+     *
+     * @param $designArea
      * @return array
      */
-    function getLayoutUpdatesFiles($storeId=null) {
+    function getLayoutUpdatesFiles($storeId, $designArea) {
         if (null === $storeId) {
             $storeId = Mage::app()->getStore()->getId();
         }
-        /* @var $design Mage_Core_Model_Design_Package */
-        $design = Mage::getSingleton('core/design_package');
-        $updatesRoot = Mage::app()->getConfig()->getNode($design->getArea().'/layout/updates');
+        $updatesRoot = Mage::app()->getConfig()->getNode($designArea . '/layout/updates');
 
         // Find files with layout updates
         $updateFiles = array();
