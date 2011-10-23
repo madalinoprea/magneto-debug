@@ -132,6 +132,15 @@
         <debug>
             <options>
                 <enable>1</enable>
+                <debug_panel_versions_visibility>1</debug_panel_versions_visibility>
+                <debug_panel_performance_visibility>1</debug_panel_performance_visibility>
+                <debug_panel_configuration_visibility>1</debug_panel_configuration_visibility>
+                <debug_panel_blocks_visibility>1</debug_panel_blocks_visibility>
+                <debug_panel_layout_visibility>1</debug_panel_layout_visibility>
+                <debug_panel_controller_visibility>1</debug_panel_controller_visibility>
+                <debug_panel_models_visibility>1</debug_panel_models_visibility>
+                <debug_panel_utils_visibility>1</debug_panel_utils_visibility>
+                <debug_panel_preferences_visibility>1</debug_panel_preferences_visibility>
             </options>
         </debug>
     </default>

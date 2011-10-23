@@ -1,0 +1,18 @@
+<?php
+/* @var $this Magneto_Debug_Block_Preferences */
+$panels = $this->getPanels();
+
+/* @var $helper Magneto_Debug_Helper_Data */
+$helper = Mage::helper('debug');
+?>
+
+<h4><?php echo $this->__('Visible Panels') ?></h4>
+<form method="post" action="<?php echo $this->getFormUrl() ?>" name="preferences-form">
+    <?php foreach ($panels as $panel): ?>
+    <input type="checkbox" name="<?php echo strtolower($panel['title']) ?>" id="<?php echo $panel['dom_id'] . '_visibility' ?>"
+        <?php if ($helper->isPanelVisible($panel['title'])): ?>checked<?php endif ?>>
+    <label for="<?php echo $panel['dom_id'] . '_visibility' ?>"><?php echo $panel['title'] ?></label><br>
+    <?php endforeach ?>
+
+    <button class="form-button" type="submit"><span>Update</span></button>
+</form>

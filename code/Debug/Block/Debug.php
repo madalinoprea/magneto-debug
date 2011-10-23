@@ -1,6 +1,8 @@
 <?php
 class Magneto_Debug_Block_Debug extends Magneto_Debug_Block_Abstract
 {
+
+
 	public function _prepareLayout()
     {
 		return parent::_prepareLayout();
@@ -168,6 +170,21 @@ class Magneto_Debug_Block_Debug extends Magneto_Debug_Block_Abstract
         );
         return $panel;
     }
+
+    protected function createPreferencesPanel()
+    {
+        $title = 'Preferences';
+        $panel = array(
+            'title' => $title,
+            'has_content' => true,
+            'url' => NULL,
+            'dom_id' => 'debug-panel-' . $title,
+            'nav_title' => $title,
+            'nav_subtitle' => "Customize Magneto Debug",
+            'template' => 'debug_preferences_panel',           // child block defined in layout xml
+        );
+        return $panel;
+    }
     
     public function getPanels() {
         $panels = array();
@@ -180,8 +197,26 @@ class Magneto_Debug_Block_Debug extends Magneto_Debug_Block_Abstract
         $panels[] = $this->createBlocksPanel();
         $panels[] = $this->createUtilsPanel();
         $panels[] = $this->createLogsPanel();
+        // TODO: Implement preferences panel (toggle panels visibility from toolbar)
+//        $panels[] = $this->createPreferencesPanel();
 
         return $panels;
+    }
+
+    public function getVisiblePanels()
+    {
+        /* @var $helper Magneto_Debug_Helper_Data */
+        $helper = Mage::helper('debug');
+        $panels = $this->getPanels();
+        $visiblePanels = array();
+
+        foreach ($panels as $panel) {
+            if ($helper->isPanelVisible($panel['title'])){
+                $visiblePanels[] = $panel;
+            }
+        }
+
+        return $visiblePanels;
     }
 
     public function getDebugMediaUrl() {

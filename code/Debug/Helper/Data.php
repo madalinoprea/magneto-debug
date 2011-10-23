@@ -231,5 +231,9 @@ class Magneto_Debug_Helper_Data extends Mage_Core_Helper_Abstract
 
         return $line_arr;
     }
-    
+
+    public function isPanelVisible($panelTitle)
+    {
+        return Mage::getStoreConfig('debug/options/debug_panel_' . strtolower($panelTitle) . '_visibility');
+    }
 }
