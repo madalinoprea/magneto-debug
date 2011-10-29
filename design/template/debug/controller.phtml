@@ -80,7 +80,7 @@ $session = Mage::getSingleton('core/session');
 					<td><?php echo htmlspecialchars($key) ?></td>
 					<td>
 					<?php if( is_array($value) ): ?>
-						<?php echo implode('<br/>', array_map('htmlspecialchars', $value)) ?>
+						<?php echo @implode('<br/>', array_map('htmlspecialchars', $value)) ?>
 					<?php elseif( is_object($value)): ?>
 						<?php echo get_class($value) ?>
 					<?php else: ?>
