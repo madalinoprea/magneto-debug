@@ -24,7 +24,7 @@
     <input type="button" onClick="handlerFunction()" value="<?php echo $this->__('Search Config') ?>" />
 </form>
 <p>
-Search examples: <em>default/system</em>, <em>global/resources/default_setup</em>, <em>frontend/events</em> or <em>modules</em>. If you don't know what to search check all the <a class="toggleTemplate" href="<?php echo Mage::getUrl('debug/index/downloadConfigAsText') ?>">configuration keys</a>.
+Search examples: <em>default/system</em>, <em>global/resources/default_setup</em>, <em>frontend/events</em> or <em>modules</em>. If you don't know what to search check all the <a class="toggleTemplate" href="<?php echo $this->getDownloadConfigAsTextUrl() ?>">configuration keys</a>.
 </p>
 
 <script type="text/javascript">
