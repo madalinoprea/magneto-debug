@@ -218,16 +218,18 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
      */
     public function toggleTemplateHintsAction()
     {
-        $currentStatus = Mage::getStoreConfig('dev/debug/template_hints');
+        $forStore = $this->getRequest()->getParam('store', 1);
+
+        $currentStatus = Mage::app()->getStore($forStore)->getConfig('dev/debug/template_hints');
         $newStatus = !$currentStatus;
 
         $config = Mage::getModel('core/config');
-        $config->saveConfig('dev/debug/template_hints', $newStatus, 'websites', Mage::app()->getStore()->getWebsiteId());
-        $config->saveConfig('dev/debug/template_hints_blocks', $newStatus, 'websites', Mage::app()->getStore()->getWebsiteId());
-
-        Mage::app()->cleanCache();
+        $config->saveConfig('dev/debug/template_hints', $newStatus, 'stores', $forStore);
+        $config->saveConfig('dev/debug/template_hints_blocks', $newStatus, 'stores', $forStore);
+        Mage::app()->cleanCache(array(Mage_Core_Model_Config::CACHE_TAG));
 
         Mage::getSingleton('core/session')->addSuccess('Template hints set to ' . var_export($newStatus, true));
+
         $this->_redirectReferer();
     }
 

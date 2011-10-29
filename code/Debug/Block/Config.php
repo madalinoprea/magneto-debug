@@ -2,6 +2,7 @@
 class Magneto_Debug_Block_Config extends Magneto_Debug_Block_Abstract
 {
     protected static $_items;
+    const DEFAULT_STORE_ID = 1;
 
     static function xml2array($xml, &$arr, $parentKey=''){
         if( !$xml )
@@ -30,4 +31,22 @@ class Magneto_Debug_Block_Config extends Magneto_Debug_Block_Abstract
         
         return self::$_items;
     }
+
+    public function getToggleHintsUrl($forStore=null)
+    {
+        if (!$forStore) {
+            $forStore = Mage::app()->getStore()->getId();
+        }
+
+        return Mage::getUrl('debug/index/toggleTemplateHints', array(
+                'store' => $forStore,
+                '_store' => self::DEFAULT_STORE_ID,
+                '_nosid' => true));
+    }
+
+    public function getToggleTranslateHintsUrl($forStore=null)
+    {
+
+    }
+
 }
