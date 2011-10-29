@@ -192,12 +192,14 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
      */
     public function toggleTranslateInlineAction()
     {
-        $currentStatus = Mage::getStoreConfig('dev/translate_inline/active');
+        $forStore = $this->getRequest()->getParam('store', 1);
+
+        $currentStatus = Mage::getStoreConfig('dev/translate_inline/active', $forStore);
         $newStatus = !$currentStatus;
 
         $config = Mage::app()->getConfig();
-        $config->saveConfig('dev/translate_inline/active', $newStatus);
-        $config->saveConfig('dev/translate_inline/active_admin', $newStatus);
+        $config->saveConfig('dev/translate_inline/active', $newStatus, 'stores', $forStore);
+        $config->saveConfig('dev/translate_inline/active_admin', $newStatus, 'stores', $forStore);
 
         // Toggle translate cache too
         $allTypes = Mage::app()->useCache();
@@ -205,7 +207,7 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
         Mage::app()->saveUseCache($allTypes);
 
         // clear cache
-        Mage::app()->getCacheInstance()->flush();
+        Mage::app()->cleanCache(array(Mage_Core_Model_Config::CACHE_TAG, Mage_Core_Model_Translate::CACHE_TAG));
 
         Mage::getSingleton('core/session')->addSuccess('Translate inline set to ' . var_export($newStatus, true));
         $this->_redirectReferer();

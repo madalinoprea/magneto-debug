@@ -46,7 +46,14 @@ class Magneto_Debug_Block_Config extends Magneto_Debug_Block_Abstract
 
     public function getToggleTranslateHintsUrl($forStore=null)
     {
+        if (!$forStore) {
+            $forStore = Mage::app()->getStore()->getId();
+        }
 
+        return Mage::getUrl('debug/index/toggleTranslateInline', array(
+            'store' => $forStore,
+            '_store' => self::DEFAULT_STORE_ID,
+            '_nosid' => true));
     }
 
 }
