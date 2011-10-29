@@ -56,4 +56,11 @@ class Magneto_Debug_Block_Config extends Magneto_Debug_Block_Abstract
             '_nosid' => true));
     }
 
+    public function getDownloadConfigUrl()
+    {
+        return Mage::getUrl('debug/index/downloadConfig', array(
+            '_store' => self::DEFAULT_STORE_ID,
+            '_nosid' => true));
+    }
+
 }
