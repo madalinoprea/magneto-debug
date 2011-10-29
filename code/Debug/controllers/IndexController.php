@@ -1,4 +1,7 @@
 <?php
+
+// TODO: Test all the refactorings
+
 class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
 {
     /**
@@ -11,7 +14,7 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
      */
     private function _debugPanel($title, $content)
     {
-        $block = new Magneto_Debug_Block_Abstract();
+        $block = $this->getLayout()->createBlock('debug/abstract');
         $block->setTemplate('debug/simplepanel.phtml');
         $block->assign('title', $title);
         $block->assign('content', $content);
@@ -26,10 +29,11 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
     public function viewTemplateAction()
     {
         $fileName = $this->getRequest()->get('template');
-        $absoluteFilepath = realpath(Mage::getBaseDir('design') . DS . $fileName);
-        $source = highlight_string(file_get_contents($absoluteFilepath), true);
+        $absoluteFilePath = realpath(Mage::getBaseDir('design') . DS . $fileName);
+        $source = highlight_string(file_get_contents($absoluteFilePath), true);
 
-        echo $this->_debugPanel("Template Source: <code>$fileName</code>", '' . $source . '');
+        $content = $this->_debugPanel("Template Source: <code>$fileName</code>", $source);
+        $this->getResponse()->setBody($content);
     }
 
     /**
@@ -40,11 +44,12 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
     public function viewBlockAction()
     {
         $blockClass = $this->getRequest()->get('block');
-        $absoluteFilepath = Mage::helper('debug')->getBlockFilename($blockClass);
+        $absoluteFilePath = Mage::helper('debug')->getBlockFilename($blockClass);
 
-        $source = highlight_string(file_get_contents($absoluteFilepath), true);
+        $source = highlight_string(file_get_contents($absoluteFilePath), true);
 
-        echo $this->_debugPanel("Block Source: <code>{$blockClass}</code>", '' . $source . '');
+        $content = $this->_debugPanel("Block Source: <code>{$blockClass}</code>", $source);
+        $this->getResponse()->setBody($content);
     }
 
     /**
@@ -70,14 +75,13 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
             }
         }
 
-        $block = new Magneto_Debug_Block_Abstract();
+        $block = $this->getLayout()->createBlock('debug/abstract');
         $block->setTemplate('debug/arrayformat.phtml');
         $block->assign('title', 'SQL Select');
         $block->assign('headers', $headers);
         $block->assign('items', $items);
         $block->assign('query', $query);
-        
-        echo $block->toHtml();
+        $this->getResponse()->setBody($block->toHtml());
     }
 
     /**
@@ -128,11 +132,12 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
         // TODO: search handle in db layout updates
 
         $block = new Magneto_Debug_Block_Abstract();
+        $block = $this->getLayout()->createBlock('debug/abstract');
         $block->setTemplate('debug/handledetails.phtml');
         $block->assign('title', $title);
         $block->assign('handleFiles', $handleFiles);
-        
-        echo $block->toHtml();
+
+        $this->getResponse()->setBody($block->toHtml());
     }
 
     /**
@@ -158,14 +163,14 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
             }
         }
 
-        $block = new Magneto_Debug_Block_Abstract(); //Is this the correct way?
+        $block = $this->getLayout()->createBlock('debug/abstract');
         $block->setTemplate('debug/arrayformat.phtml');
         $block->assign('title', 'SQL Explain');
         $block->assign('headers', $headers);
         $block->assign('items', $items);
         $block->assign('query', $query);
 
-        echo $block->toHtml();
+        $this->getResponse()->setBody($block->toHtml());
     }
 
     /**
@@ -247,7 +252,6 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
             return;
         }
 
-
         $moduleCurrentStatus = $moduleConfig->is('active');
         $moduleNewStatus = !$moduleCurrentStatus;
         $moduleConfigFile = $config->getOptions()->getEtcDir() . DS . 'modules' . DS . $moduleName . '.xml';
@@ -272,7 +276,7 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
         $contents .= "<br/><code>" . htmlspecialchars($configContent) . "</code>";
         $contents .= "<br/><br/><i>WARNING: This feature doesn't support usage of multiple frontends.</i>";
 
-        echo $this->_debugPanel($title, $contents);
+        $this->getResponse()->setBody($this->_debugPanel($title, $contents));
     }
 
     /**
@@ -282,8 +286,8 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
      */
     public function downloadConfigAction()
     {
-        header("Content-type: text/xml");
-        echo Mage::app()->getConfig()->getNode()->asXML();
+        $this->getResponse()->setHeader('Content-type', 'text/xml', true);
+        $this->getResponse()->setBody(Mage::app()->getConfig()->getNode()->asXML());
     }
 
     /**
@@ -293,13 +297,17 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
      */
     public function downloadConfigAsTextAction()
     {
-        header("Content-type: text/plain");
-        $configs = Mage::app()->getConfig()->getNode();
         $items = array();
+        $configs = Mage::app()->getConfig()->getNode();
         Magneto_Debug_Block_Config::xml2array($configs, $items);
+
+        $content = '';
         foreach ($items as $key => $value) {
-            echo "$key = $value\n";
+            $content .= "$key = $value\n";
         }
+
+        $this->getResponse()->setHeader('Content-type', 'text/plain', true);
+        $this->getResponse()->setBody($content);
     }
 
     /**
@@ -352,18 +360,7 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
     }
 
     /**
-     * Index action
-     *
-     * @return void
-     */
-    public function indexAction()
-    {
-        $this->loadLayout();
-        $this->renderLayout();
-    }
-
-    /**
-     * Search groupped class
+     * Search grouped class
      *
      * @return void
      */
@@ -385,12 +382,12 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
                     $items[$groupType] = Mage::getConfig()->getGroupedClassName($groupType, $uri);
                 }
 
-                $block = new Magneto_Debug_Block_Abstract();
+                $block = $this->getLayout()->createBlock('debug/abstract');
                 $block->setTemplate('debug/groupedclasssearch.phtml');
                 $block->assign('items', $items);
-                echo $block->toHtml();
+                $this->getResponse()->setBody($block->toHtml());
             } else {
-                echo "Please fill in a search query";
+                $this->getResponse()->setBody($this->__('Please fill in a search query'));
             }
         }
     }
@@ -411,39 +408,44 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
                 $items = array();
                 Magneto_Debug_Block_Config::xml2array($configs, $items, $query);
 
-                $block = new Magneto_Debug_Block_Abstract(); //Is this the correct way?
+                $block = $this->getLayout()->createBlock('debug/abstract');
                 $block->setTemplate('debug/configsearch.phtml');
                 $block->assign('items', $items);
-                echo $block->toHtml();
-
+                $this->getResponse()->setBody($block->toHtml());
             } else {
                 $result['error'] = 1;
-                $result['message'] = 'Search query cannot be empty.';
+                $result['message'] = $this->__('Search query cannot be empty.');
             }
         }
     }
 
     /**
-     * Return last 100 lines of log file
+     * Return last 100 lines of log file.
      *
-     * @return string
      */
     public function viewLogAction()
     {
         $file = $this->getRequest()->getParam('file');
+
         if (!empty($file)) {
-            $result = Mage::helper('debug')->getLastRows(Mage::getBaseDir() . '/var/log/' . $file, 10);
+            // Accept only specific files
+            if ($file == Mage::getStoreConfig('dev/log/file') || $file == Mage::getStoreConfig('dev/log/exception_file')) {
+                // TODO: Review this..
+                $result = Mage::helper('debug')->getLastRows(Mage::getBaseDir('var') . DS . 'log' . DS . $file, 10);
 
-            if (!is_array($result)) {
-                $result = array($result);
+                if (!is_array($result)) {
+                    $result = array($result);
+                }
+
+                $block = $this->getLayout()->createBlock('debug/abstract');
+                $block->setTemplate('debug/logdetails.phtml');
+                $block->assign('title', 'Log details : ' . $file);
+                $block->assign('items', $result);
+
+                $this->getResponse()->setBody($block->toHtml());
+            } else {
+                $this->getResponse()->setHttpResponseCode(418)->setBody('I\'m a teapot.');
             }
-
-            $block = new Magneto_Debug_Block_Abstract(); //Is this the correct way?
-            $block->setTemplate('debug/logdetails.phtml');
-            $block->assign('title', 'Log details : ' . $file);
-            $block->assign('items', $result);
-
-            echo $block->toHtml();
         }
     }
 }
