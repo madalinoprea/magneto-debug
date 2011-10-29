@@ -69,9 +69,9 @@ class Magneto_Debug_Helper_Data extends Mage_Core_Helper_Abstract
 	}
 	
 	public static function sortModelCmp($a, $b) {
-		if($a['occurences']==$b['occurences'])
+		if($a['occurrences']==$b['occurrences'])
 			return 0;
-		return ($a['occurences'] < $b['occurences']) ? 1 : -1;
+		return ($a['occurrences'] < $b['occurrences']) ? 1 : -1;
 	}
 	
 	public function sortModelsByOccurences(&$models) {

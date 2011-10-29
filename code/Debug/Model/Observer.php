@@ -193,12 +193,12 @@ class Magneto_Debug_Model_Observer {
 		$key = get_class($object);
 		
 		if( array_key_exists($key, $this->models) ) {
-			$this->models[$key]['occurences']++; 
+			$this->models[$key]['occurrences']++;
 		} else {
 			$model = array();
 			$model['class'] = get_class($object);
 			$model['resource_name'] = $object->getResourceName();
-			$model['occurences'] = 1;
+			$model['occurrences'] = 1;
 			$this->models[$key] = $model;
 		}
 		
