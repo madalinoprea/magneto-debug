@@ -14,23 +14,49 @@ class Magneto_Debug_Model_Observer {
     public function getLayoutBlocks() { return $this->layoutBlocks; }
     public function getCollections() { return $this->collections; }
     // public function getLayoutUpdates() { return $this->layoutUpdates; }
-	
+
+    /**
+     *
+     * TODO: Make this a setting
+     *
+     * @return bool
+     */
+    protected function _skipCoreBlocks(){
+        return false;
+    }
+
+    /**
+     * Logic that checks if we should ignore this block
+     *
+     * @param $block Mage_Core_Block_Abstract
+     * @return bool
+     */
+    protected function _skipBlock($block) {
+        $blockClass = get_class($block);
+
+        if( $this->_skipCoreBlocks() && strpos($blockClass, 'Mage_') === 0 ) {
+            return true;
+        }
+
+        // Don't list blocks from Debug module
+        if( strpos($blockClass, 'Magneto_Debug_Block')===0 ) {
+            return true;
+        }
+
+        return false;
+    }
+
 	public function getQueries() {
 		//TODO: implement profiler for connections other than 'core_write'  
 		$profiler = Mage::getSingleton('core/resource')->getConnection('core_write')->getProfiler();
 		$queries = array();
 		
-		if($profiler)
-		{ 
+		if( $profiler ) {
 			$queries = $profiler->getQueryProfiles();
 		}
 		
 		return $queries;
 	 }
-	
-    public function skipCoreBlocks(){
-        return false;
-    }
 
     public function onLayoutGenerate(Varien_Event_Observer $observer)
     {
@@ -56,23 +82,28 @@ class Magneto_Debug_Model_Observer {
         }
     }
 
+    /**
+     * Listens to core_block_abstract_to_html_before event and records blocks
+     * that are about to being rendered.
+     *
+     * @param Varien_Event_Observer $observer
+     * @return Magneto_Debug_Model_Observer
+     */
     public function onBlockToHtml(Varien_Event_Observer $observer) {
-        /** @var Varien_Event */
+        /** @var $event Varien_Event */
         $event = $observer->getEvent();
+        /* @var $block Mage_Core_Block_Abstract */
         $block = $event->getBlock();
-        $template = $block->getTemplateFile();
-        $viewVars = $block->getViewVars();
 
-        if( $this->skipCoreBlocks() && strpos(get_class($block), 'Mage_')===0 )
+        if( $this->_skipBlock($block) ) {
             return $this;
-
-        // Don't list blocks from Debug module
-        // if( strpos(get_class($block), 'Magneto_Debug_Block')===0 )
-			// return $this;			
+        }
 
         $blockStruct = array();
         $blockStruct['class'] = get_class($block);
         $blockStruct['layout_name'] = $block->getNameInLayout();
+        $blockStruct['rendered_at'] = microtime(true);
+
 		if( method_exists($block, 'getTemplateFile') ) {
         	$blockStruct['template'] = $block->getTemplateFile();
 		} else {
@@ -84,14 +115,36 @@ class Magneto_Debug_Model_Observer {
 			$blockStruct['context'] = NULL;
 		}
 
-		$this->blocks[] = $blockStruct;
+		$this->blocks[$block->getNameInLayout()] = $blockStruct;
 
         return $this;
     }
 
+    /**
+     * Listens to core_block_abstract_to_html_after event end computes the time
+     * spent in block's _toHtml (rendering time).
+     *
+     * @param Varien_Event_Observer $observer
+     * @return Magneto_Debug_Model_Observer
+     */
+    public function onBlockToHtmlAfter(Varien_Event_Observer $observer) {
+        $event = $observer->getEvent();
+        /* @var $block Mage_Core_Block_Abstract */
+        $block = $event->getBlock();
+
+        // Don't list blocks from Debug module
+        if( $this->_skipBlock($block) ) {
+            return $this;
+        }
+
+        $blockStruct = $this->blocks[$block->getNameInLayout()];
+
+        $duration = microtime(true) - $blockStruct['rendered_at'];
+        $this->blocks[$block->getNameInLayout()]['rendered_in'] = $duration;
+    }
+
     function onActionPostDispatch(Varien_Event_Observer $event) {
         $action = $event->getControllerAction();
-        $response = $event->getResponse();
 
         $actionStruct = array();
         $actionStruct['class'] = get_class($action);

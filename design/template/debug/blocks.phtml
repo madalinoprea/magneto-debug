@@ -25,6 +25,7 @@ $layoutBlocks = $this->getLayoutBlocks();
 			<th><?php echo $this->__('name in layout') ?></th>
 			<th><?php echo $this->__('block class') ?></th>
 			<th><?php echo $this->__('template') ?></th>
+            <th><?php echo $this->__('rendering in') ?></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -41,6 +42,9 @@ $layoutBlocks = $this->getLayoutBlocks();
                 <?php if($block['template']):?> 
                     <a class="remoteCall toggletemplate" href="<?php echo Mage::geturl('debug/index/viewtemplate', array('_query' => array('template'=> $block['template']))) ?>"><?php echo $block['template'] ?></a>
                 <?php endif; ?>
+                </td>
+                <td>
+                    <?php if( array_key_exists('rendered_in', $block) ){ echo number_format($block['rendered_in'], 3);} ?>
                 </td>
 			</tr>
 			<?php $row++; ?>

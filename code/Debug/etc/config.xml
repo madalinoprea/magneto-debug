@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Magneto_Debug>
-            <version>1.0.1</version>
+            <version>1.0.2</version>
         </Magneto_Debug>
     </modules>
     <frontend>
@@ -52,7 +52,7 @@
             </debug>
         </helpers>
 
-		<events>
+        <events>
             <controller_action_layout_generate_blocks_after>
                 <observers>
                     <debug_observer>
@@ -62,16 +62,28 @@
                     </debug_observer>
                 </observers>
             </controller_action_layout_generate_blocks_after>
-			<core_block_abstract_to_html_before>
-			    <observers>
+
+            <core_block_abstract_to_html_before>
+                <observers>
                     <debug_observer>
                         <type>singleton</type>
                         <class>debug/observer</class>
                         <method>onBlockToHtml</method>
                     </debug_observer>
                 </observers>
-			</core_block_abstract_to_html_before>
-			<controller_action_postdispatch>
+            </core_block_abstract_to_html_before>
+
+            <core_block_abstract_to_html_after>
+                <observers>
+                    <debug_observer>
+                        <type>singleton</type>
+                        <class>debug/observer</class>
+                        <method>onBlockToHtmlAfter</method>
+                    </debug_observer>
+                </observers>
+            </core_block_abstract_to_html_after>
+
+            <controller_action_postdispatch>
                 <observers>
                     <debug_observer>
                         <type>singleton</type>
@@ -80,7 +92,8 @@
                     </debug_observer>
                 </observers>
             </controller_action_postdispatch>
-			<core_collection_abstract_load_before>
+
+            <core_collection_abstract_load_before>
                 <observers>
                     <debug_observer>
                         <type>singleton</type>
@@ -89,6 +102,7 @@
                     </debug_observer>
                 </observers>
             </core_collection_abstract_load_before>
+
             <eav_collection_abstract_load_before>
                 <observers>
                     <debug_observer>
@@ -98,6 +112,8 @@
                     </debug_observer>
                 </observers>
             </eav_collection_abstract_load_before>
+
+
             <!-- <core_block_abstract_prepare_layout_after> -->
             <!--     <observers> -->
             <!--         <debug_observer> -->
@@ -107,8 +123,9 @@
             <!--         </debug_observer> -->
             <!--     </observers> -->
             <!-- </core_block_abstract_prepare_layout_after> -->
+
             <model_load_after>
-            	 <observers>
+                <observers>
                     <debug_observer>
                         <type>singleton</type>
                         <class>debug/observer</class>
@@ -116,6 +133,7 @@
                     </debug_observer>
                 </observers>
             </model_load_after>
+
             <controller_action_predispatch>
                 <observers>
                     <debug_observer>
@@ -125,7 +143,7 @@
                     </debug_observer>
                 </observers>
             </controller_action_predispatch>
-		</events>
+        </events>
     </global>
 
     <default>
