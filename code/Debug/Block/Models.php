@@ -22,13 +22,12 @@ class Magneto_Debug_Block_Models extends Magneto_Debug_Block_Abstract
      */
     protected function getSqlUrl(Zend_Db_Profiler_Query $query, $viewType=self::SQL_SELECT_ACTION) {
         $queryType = $query->getQueryType();
-        if( $queryType == Zend_Db_Profiler::SELECT )
-        {
+        if ($queryType == Zend_Db_Profiler::SELECT) {
             return Mage::getUrl('debug/index/' . $viewType, 
-                array('_query' => array(
-                    'sql'=>$query->getQuery(), 
-                    'params'=>$query->getQueryParams())
-                ));
+                array(
+                    '_query' => array('sql' => $query->getQuery(), 'params' => $query->getQueryParams()),
+                    '_store' => self::DEFAULT_STORE_ID
+                 ));
         } else {
             return '';
         }

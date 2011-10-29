@@ -2,7 +2,6 @@
 class Magneto_Debug_Block_Config extends Magneto_Debug_Block_Abstract
 {
     protected static $_items;
-    const DEFAULT_STORE_ID = 1;
 
     static function xml2array($xml, &$arr, $parentKey=''){
         if( !$xml )
