@@ -74,7 +74,7 @@ class Magneto_Debug_Helper_Data extends Mage_Core_Helper_Abstract
 		return ($a['occurrences'] < $b['occurrences']) ? 1 : -1;
 	}
 	
-	public function sortModelsByOccurences(&$models) {
+	public function sortModelsByOccurrences(&$models) {
 		usort($models, array('Magneto_Debug_Helper_Data', 'sortModelCmp'));
 	}
 
