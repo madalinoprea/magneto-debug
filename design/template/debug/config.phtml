@@ -31,7 +31,7 @@ Search examples: <em>default/system</em>, <em>global/resources/default_setup</em
 function handlerFunction(){
     var request = new Ajax.Updater(
         'config-search-results',
-        '<?php echo $this->getUrl("debug/index/searchConfig") ?>',
+        '<?php echo $this->getSearchConfigUrl() ?>',
         {
             method: 'post',
             parameters: Form.serialize($('config-search-form'))

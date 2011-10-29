@@ -70,4 +70,11 @@ class Magneto_Debug_Block_Config extends Magneto_Debug_Block_Abstract
             '_nosid' => true));
     }
 
+    public function getSearchConfigUrl()
+    {
+        return Mage::getUrl('debug/index/searchConfig', array(
+            '_store' => self::DEFAULT_STORE_ID,
+            '_nosid' => true));
+    }
+
 }
