@@ -128,9 +128,43 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
             }
         }
 
-        // TODO: search handle in db layout updates
+        // Search updates for handle in DB
+        $bind = array(
+            'store_id'  => $storeId,
+            'area'      => $designArea,
+            'package'   => $designPackage->getPackageName(),
+            'theme'     => $designPackage->getTheme('layout'),
+            'layout_update_handle' => $layoutHandle
+        );
 
-        $block = new Magneto_Debug_Block_Abstract();
+        /* @var $layoutResourceModel Mage_Core_Model_Resource_Layout */
+        $layoutResourceModel = Mage::getResourceModel('core/layout');
+
+        /* @var $readAdapter Varien_Db_Adapter_Pdo_Mysql */
+        $readAdapter = Mage::getSingleton('core/resource')->getConnection('core_read');
+
+        /* @var $select Varien_Db_Select */
+        $select = $readAdapter->select()
+            ->from(array('layout_update' => $layoutResourceModel->getMainTable()), array('xml'))
+            ->join(array('link' => $layoutResourceModel->getTable('core/layout_link')),
+            'link.layout_update_id=layout_update.layout_update_id',
+            '')
+            ->where('link.store_id IN (0, :store_id)')
+            ->where('link.area = :area')
+            ->where('link.package = :package')
+            ->where('link.theme = :theme')
+            ->where('layout_update.handle = :layout_update_handle')
+            ->order('layout_update.sort_order ' . Varien_Db_Select::SQL_ASC);
+        
+        $result = $readAdapter->fetchCol($select, $bind);
+
+        if (count($result)) {
+            $handleFiles['DATABASE'] = array();
+            foreach ($result as $dbLayoutUpdate){
+                $handleFiles['DATABASE'][] = new Varien_Simplexml_Element($dbLayoutUpdate);
+            }
+        }
+
         $block = $this->getLayout()->createBlock('debug/abstract');
         $block->setTemplate('debug/handledetails.phtml');
         $block->assign('title', $title);
