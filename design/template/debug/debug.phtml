@@ -35,6 +35,11 @@ var DEBUG_TOOLBAR_MEDIA_URL = "<?php echo $this->getDebugMediaUrl(); ?>";
                 <?php endif; ?>
 				</li>
             <?php endforeach; ?>
+            <li>
+                <a href="#" class="">About
+                    <br/><small>Version <?php echo $this->getVersion() ?></a></small>
+                </a>
+            </li>
 		</ul>
 	</div>
 	<div style="display:none;" id="djDebugToolbarHandle">
@@ -42,18 +47,19 @@ var DEBUG_TOOLBAR_MEDIA_URL = "<?php echo $this->getDebugMediaUrl(); ?>";
 	</div>
     <?php foreach ($panels as $panel): ?>
         <?php if( $panel['has_content'] ): ?>
-        <div id="<?php echo $panel['dom_id'] ?>" class="panelContent">
-				<div class="djDebugPanelTitle">
+            <div id="<?php echo $panel['dom_id'] ?>" class="panelContent">
+                <div class="djDebugPanelTitle">
                     <a href="" class="djDebugClose"><?php echo $this->__("Close"); ?></a>
                     <h3><?php echo $panel['title'] ?></h3>
-				</div>
-				<div class="djDebugPanelContent">
+                </div>
+                <div class="djDebugPanelContent">
                     <div class="scroll">
                         <?php echo $this->getChildHtml($panel['template']) ?>
-				    </div>
-				</div>
-			</div>
+                    </div>
+                </div>
+            </div>
         <?php endif; ?>
+
     <?php endforeach; ?>
 	<div id="djDebugWindow" class="panelContent"></div>
 </div>

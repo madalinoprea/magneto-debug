@@ -15,6 +15,11 @@ class Magneto_Debug_Block_Debug extends Magneto_Debug_Block_Abstract
             return parent::renderView();
         } 
     }
+
+    public function getVersion()
+    {
+        return (string)Mage::getConfig()->getNode('modules/Magneto_Debug/version');
+    }
     
     private function createDummyPanel($title){
         $panel = array(
