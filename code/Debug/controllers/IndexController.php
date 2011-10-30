@@ -313,20 +313,6 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
         $this->getResponse()->setBody($content);
     }
 
-    // TODO: Remove this action
-    /**
-     * Show sql profiler
-     *
-     * @return void
-     */
-    public function showSqlProfilerAction()
-    {
-        $config = Mage::getConfig()->getNode('global/resources/default_setup/connection/profiler');
-        Mage::getSingleton('core/resource')->getConnection('core_write')->getProfiler()->setEnabled(false);
-        
-        var_dump($config);
-    }
-
     /**
      * Toggle Sql profiler
      *
