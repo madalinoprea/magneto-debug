@@ -1,4 +1,6 @@
 <?php
+/* @var $this Magneto_Debug_Block_Models */
+
 $items = $this->getItems();
 Mage::helper('debug')->sortModelsByOccurrences($items);
 $collections = $this->getCollections();

@@ -16,9 +16,11 @@ class Magneto_Debug_Block_Models extends Magneto_Debug_Block_Abstract
         return Mage::getSingleton('debug/observer')->getCollections();
     }
 
-
     /**
      * $viewType can be 'Select' or 'Explain'
+     * @param \Zend_Db_Profiler_Query $query
+     * @param string $viewType
+     * @return string
      */
     protected function getSqlUrl(Zend_Db_Profiler_Query $query, $viewType=self::SQL_SELECT_ACTION) {
         $queryType = $query->getQueryType();
