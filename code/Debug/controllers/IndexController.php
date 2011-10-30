@@ -313,6 +313,7 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
         $this->getResponse()->setBody($content);
     }
 
+    // TODO: Remove this action
     /**
      * Show sql profiler
      *
@@ -333,13 +334,12 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
      */
     public function toggleSqlProfilerAction()
     {
-        // FIXME: This needs to be corrected
         $localConfigFile = Mage::getBaseDir('etc') . DS . 'local.xml';
-        $localConfigBackupFile = Mage::getBaseDir('etc') . DS . 'local-magneto.xml';
+        $localConfigBackupFile = Mage::getBaseDir('etc') . DS . 'local-magneto.xml_';
 
         $configContent = file_get_contents($localConfigFile);
         $xml = new SimpleXMLElement($configContent);
-        $profiler = $xml->global->resources->default_setup->connection->profiler;
+
         if ((int)$xml->global->resources->default_setup->connection->profiler != 1) {
             $xml->global->resources->default_setup->connection->addChild('profiler', 1);
         } else {
@@ -348,17 +348,17 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
 
         // backup config file
         if (file_put_contents($localConfigBackupFile, $configContent) === FALSE) {
-            Mage::getSingleton('core/session')->addError("Operation aborted: couldn't create backup for config file");
+            Mage::getSingleton('core/session')->addError($this->__('Operation aborted: couldn\'t create backup for config file'));
             $this->_redirectReferer();
         }
 
         if ($xml->saveXML($localConfigFile) === FALSE) {
-            Mage::getSingleton('core/session')->addError("Couldn't save {$localConfigFile}: check write permissions.");
+            Mage::getSingleton('core/session')->addError($this->__("Couldn't save {$localConfigFile}: check write permissions."));
             $this->_redirectReferer();
         }
-        Mage::getSingleton('core/session')->addSuccess("SQL profiler status changed in local.xml");
+        Mage::getSingleton('core/session')->addSuccess($this->__('SQL profiler status changed in local.xml'));
 
-        Mage::helper('debug')->cleanCache();
+        Mage::app()->cleanCache(array(Mage_Core_Model_Config::CACHE_TAG));
         $this->_redirectReferer();
     }
 
