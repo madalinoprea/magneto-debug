@@ -29,6 +29,7 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
     public function viewTemplateAction()
     {
         $fileName = $this->getRequest()->get('template');
+
         $absoluteFilePath = realpath(Mage::getBaseDir('design') . DS . $fileName);
         $source = highlight_string(file_get_contents($absoluteFilePath), true);
 
