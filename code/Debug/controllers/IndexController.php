@@ -358,17 +358,19 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
         if ($this->getRequest()->isPost()) {
             $uri = $this->getRequest()->getPost('uri');
             $groupType = $this->getRequest()->getPost('group');
+
+            if ($groupType=='all') {
+                $groupTypes = array('model', 'block', 'helper');
+            } else {
+                $groupTypes = array($groupType);
+            }
+
             $items = array();
 
-            $groupTypes = array('model', 'block', 'helper');
-
             if (!empty($uri)) {
-                if ($groupType == 'all') {
-                    foreach ($groupTypes as $type) {
-                        $items[$type] = Mage::getConfig()->getGroupedClassName($type, $uri);
-                    }
-                } else {
-                    $items[$groupType] = Mage::getConfig()->getGroupedClassName($groupType, $uri);
+                foreach ($groupTypes as $type) {
+                    $items[$type]['class'] = Mage::getConfig()->getGroupedClassName($type, $uri);
+                    $items[$type]['filepath'] = mageFindClassFile($items[$type]['class']);
                 }
 
                 $block = $this->getLayout()->createBlock('debug/abstract');

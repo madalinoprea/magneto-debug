@@ -1,20 +1,22 @@
 <table>
 	<thead>
 		<tr>
-            <th><?php echo $this->__("#") ?></th>
-            <th><?php echo $this->__("Group Type") ?></th>
-            <th><?php echo $this->__("Search Results") ?></th>
+            <th><?php echo $this->__('#') ?></th>
+            <th><?php echo $this->__('Group Type') ?></th>
+            <th><?php echo $this->__('Search Results') ?></th>
+            <th><?php echo $this->__('File path') ?></th>
 		</tr>
 	</thead>
     <tbody>
         <div id="class-search-results">
         <?php if(count($items)): ?>
-            <?php $row=0 ?>
+            <?php $row = 0 ?>
             <?php foreach($items as $key=>$value): ?>
                 <tr>
                     <td><?php echo $row ?></td>
                     <td><?php echo $key ?></td>
-                    <td><?php echo htmlspecialchars($value) ?></td>
+                    <td><?php echo htmlspecialchars($value['class']) ?></td>
+                    <td><?php echo htmlspecialchars($value['filepath']) ?></td>
                 </tr>
                 <?php $row++ ?>
             <?php endforeach; ?>
