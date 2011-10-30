@@ -1,7 +1,5 @@
 <?php
 
-// TODO: Test all the refactorings
-
 class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
 {
     /**
