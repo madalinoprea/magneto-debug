@@ -394,11 +394,21 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
             $result['error'] = 0;
 
             $query = $this->getRequest()->getPost('query');
-            if (!empty($query)) {
-                $configs = Mage::app()->getConfig()->getNode($query);
-                $items = array();
-                Magneto_Debug_Block_Config::xml2array($configs, $items, $query);
 
+            if (!empty($query)) {
+                $configs = Mage::app()->getConfig()->getNode();
+                $configArray = array();
+
+                Magneto_Debug_Block_Config::xml2array($configs, $configArray);
+                $configKeys = array_keys($configArray);
+
+                $items = array();
+
+                foreach ($configKeys as $configKey){
+                    if (strpos($configKey, $query)!==FALSE){
+                        $items[$configKey] = $configArray[$configKey];
+                    }
+                }
                 $block = $this->getLayout()->createBlock('debug/abstract');
                 $block->setTemplate('debug/configsearch.phtml');
                 $block->assign('items', $items);
