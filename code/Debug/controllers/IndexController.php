@@ -298,10 +298,10 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
             return $value ? 'true' : 'false';
         }
 
-        $contents = "<br/>Active status switched to " . strbool($moduleNewStatus) . " for module {$moduleName} in file {$moduleConfigFile}:";
-        $contents .= "<br/><code>" . htmlspecialchars($configContent) . "</code>";
+        $contents = '<br/>Active status switched to ' . (string)$moduleNewStatus . ' for module {$moduleName} in file {$moduleConfigFile}:';
+        $contents .= '<br/><code>' . htmlspecialchars($configContent) . '</code>';
 
-        $configContent = str_replace("<active>" . strbool($moduleCurrentStatus) . "</active>", "<active>" . strbool($moduleNewStatus) . "</active>", $configContent);
+        $configContent = str_replace('<active>' . (string)$moduleCurrentStatus . '</active>', '<active>' . (string)$moduleNewStatus . '</active>', $configContent);
 
         if (file_put_contents($moduleConfigFile, $configContent) === FALSE) {
             echo $this->_debugPanel($title, "Failed to write configuration. (Web Server's permissions for {$moduleConfigFile}?!)");
@@ -310,8 +310,8 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
 
         Mage::helper('debug')->cleanCache();
 
-        $contents .= "<br/><code>" . htmlspecialchars($configContent) . "</code>";
-        $contents .= "<br/><br/><i>WARNING: This feature doesn't support usage of multiple frontends.</i>";
+        $contents .= '<br/><code>' . htmlspecialchars($configContent) . '</code>';
+        $contents .= '<br/><br/><i>WARNING: This feature doesn\'t support usage of multiple frontends.</i>';
 
         $this->getResponse()->setBody($this->_debugPanel($title, $contents));
     }
@@ -378,7 +378,8 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
         }
         Mage::getSingleton('core/session')->addSuccess($this->__('SQL profiler status changed in local.xml'));
 
-        Mage::app()->cleanCache(array(Mage_Core_Model_Config::CACHE_TAG));
+        // Assure config cache and all full page cache is emptied
+        Mage::app()->cleanCache();
         $this->_redirectReferer();
     }
 
