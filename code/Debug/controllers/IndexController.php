@@ -484,4 +484,20 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
             }
         }
     }
+
+    public function togglePageCacheDebugAction()
+    {
+        $forStore = $this->getRequest()->getParam('store', 1);
+
+        if (class_exists('Enterprise_PageCache_Model_Processor')) {
+            $configPath =  Enterprise_PageCache_Model_Processor::XML_PATH_CACHE_DEBUG;
+            $currentStatus = Mage::getStoreConfig($configPath);
+
+            $config = Mage::getModel('core/config');
+            $config->saveConfig($configPath, !$currentStatus, 'stores', $forStore);
+            Mage::app()->cleanCache(array(Mage_Core_Model_Config::CACHE_TAG));
+
+            $this->_redirectReferer();
+        }
+    }
 }

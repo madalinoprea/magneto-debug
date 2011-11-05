@@ -60,4 +60,18 @@ class Magneto_Debug_Block_Config extends Magneto_Debug_Block_Abstract
             '_nosid' => true));
     }
 
+    public function getFullPageDebugUrl($forStore=null)
+    {
+        if (!$forStore) {
+            $forStore = Mage::app()->getStore()->getId();
+        }
+
+        return Mage::getUrl('debug/index/togglePageCacheDebug',
+                            array('store' => $forStore,
+                                 '_store' => self::DEFAULT_STORE_ID,
+                                 '_nosid' => true
+                            )
+        );
+    }
+
 }
