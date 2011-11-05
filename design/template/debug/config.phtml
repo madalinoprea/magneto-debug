@@ -7,9 +7,11 @@
 		<a class="toggleTemplate" href="<?php echo $this->getToggleTranslateHintsUrl() ?>">
             <?php echo $this->__('Toggle Translate Inline') ?>
 		</a>
+        <?php if ($this->hasFullPageCache()): ?>
         <a class="toggleTemplate" href="<?php echo $this->getFullPageDebugUrl() ?>">
             <?php echo $this->__('Toggle FPC Debug') ?>
         </a>
+        <?php endif ?>
 	</strong></dt>
 </dl>
 <dl>

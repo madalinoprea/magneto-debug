@@ -495,7 +495,7 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
 
             $config = Mage::getModel('core/config');
             $config->saveConfig($configPath, !$currentStatus, 'stores', $forStore);
-            Mage::app()->cleanCache(array(Mage_Core_Model_Config::CACHE_TAG));
+            Mage::getModel('core/cache')->flush();
 
             $this->_redirectReferer();
         }

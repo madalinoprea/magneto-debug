@@ -60,6 +60,27 @@ class Magneto_Debug_Block_Config extends Magneto_Debug_Block_Abstract
             '_nosid' => true));
     }
 
+    public function hasFullPageCache()
+    {
+        return class_exists('Enterprise_PageCache_Model_Processor');
+    }
+
+    /**
+     * FIXME: Find a better idea
+     * Currently not very useful because FPC is caching our block and status is displayed incorrectly.
+     *
+     * @return string
+     */
+    public function getFullPacheDebugStatus()
+    {
+        if ($this->hasFullPageCache()) {
+            return Mage::getStoreConfig(Enterprise_PageCache_Model_Processor::XML_PATH_CACHE_DEBUG) ? $this->__('Now: On') :
+                $this->__('Now: Off');
+        } else {
+            return '';
+        }
+    }
+
     public function getFullPageDebugUrl($forStore=null)
     {
         if (!$forStore) {
@@ -68,6 +89,7 @@ class Magneto_Debug_Block_Config extends Magneto_Debug_Block_Abstract
 
         return Mage::getUrl('debug/index/togglePageCacheDebug',
                             array('store' => $forStore,
+                                 'query' => rand(0, 1000000), // To bypass fpc
                                  '_store' => self::DEFAULT_STORE_ID,
                                  '_nosid' => true
                             )
