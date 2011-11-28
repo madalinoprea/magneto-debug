@@ -62,7 +62,7 @@ class Magneto_Debug_Block_Config extends Magneto_Debug_Block_Abstract
 
     public function hasFullPageCache()
     {
-        return class_exists('Enterprise_PageCache_Model_Processor');
+        return class_exists('Enterprise_PageCache_Model_Processor', false);
     }
 
     /**
