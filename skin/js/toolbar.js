@@ -11,7 +11,7 @@
 				j(script).remove();
 			}
 		};
-		document.documentElement.childNodes[0].appendChild(script)
+		document.getElementsByTagName('head')[0].appendChild(script)
 	}
 })(window, document, "1.3", function($, jquery_loaded) {
 
