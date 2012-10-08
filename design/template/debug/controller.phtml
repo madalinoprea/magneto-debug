@@ -61,7 +61,7 @@ $session = Mage::getSingleton('core/session');
 <?php endif ?>
 
 <h4><?php echo $this->__('SESSION Variables') ?></h4>
-<?php if( $session): ?>
+<?php if( count($_SESSION)): ?>
 	<table>
 		<colgroup>
 			<col style="width:20%"/>
@@ -73,14 +73,18 @@ $session = Mage::getSingleton('core/session');
 				<th><?php echo $this->__("Value") ?></th>
 			</tr>
 		</thead>
+		<?php foreach( $_SESSION as $namespace => $data): ?>
 		<tbody>
+			<tr><th colspan="2" style="text-align: center; font-size: 120%; font-weight: bold;"><?php echo $namespace ?></th></tr>
 			<?php $row = 0; ?>
-			<?php foreach( $session->getData() as $key=>$value ): ?>
+			<?php foreach( $data as $key => $value ): ?>
 				<tr class="<?php echo ( ($row % 2 ? 'djDebugOdd' : 'djDebugEven')) ?>">
 					<td><?php echo htmlspecialchars($key) ?></td>
 					<td>
 					<?php if( is_array($value) ): ?>
-						<?php echo @implode('<br/>', array_map('htmlspecialchars', $value)) ?>
+						<?php foreach ($value as $key => $_value): ?>
+						<?php echo $key.' => '.$this->escapeHtml(json_encode($_value)); ?><br/>
+						<?php endforeach; ?>
 					<?php elseif( is_object($value)): ?>
 						<?php echo get_class($value) ?>
 					<?php else: ?>
@@ -91,6 +95,7 @@ $session = Mage::getSingleton('core/session');
 				<?php $row++; ?>
 			<?php endforeach; ?>
 		</tbody>
+		<?php endforeach; ?>
 	</table>
 <?php else: ?>
 	<p><?php echo $this->__("No SESSION data") ?></p>
