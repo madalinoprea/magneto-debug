@@ -20,6 +20,18 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
     }
 
     /**
+     * @param null $defaultUrl
+     * @return Mage_Core_Controller_Varien_Action
+     */
+    protected function _redirectReferer($defaultUrl = null)
+    {
+        if ($store = $this->getRequest()->getParam('store')) {
+            Mage::app()->setCurrentStore($store);
+        }
+        return parent::_redirectReferer($defaultUrl);
+    }
+
+    /**
      * Show source code of template
      *
      * @return string
