@@ -8,31 +8,44 @@ Or demo video on YouTube: http://www.youtube.com/watch?v=aqvgrmebcu4
 
 ## INSTALLATION 
 
-### Via Modman
- - Modman required: <http://code.google.com/p/module-manager/>
-<pre>
-curl http://module-manager.googlecode.com/files/modman-1.1.5 > modman
-chmod +x modman
-sudo mv modman /usr/bin
-</pre>
+### A) Via Modman - Recommended (https://github.com/colinmollenhour/modman)
 
- - Magento patch to allow symlinks for templates dir: <http://www.tonigrigoriu.com/magento/magento-how-to-fix-template-path-errors-when-using-symlinks/> (required if you choose to use modman installation)
- - Install via modman (for details consult modman website):
+#### 1) Install Modman:
+
+```
+bash < <(wget -O - https://raw.github.com/colinmollenhour/modman/master/modman-installer)
+```
+
+or
+
+```
+bash < <(curl -s https://raw.github.com/colinmollenhour/modman/master/modman-installer)
+source ~/.profile
+```
+
+#### 2) Allow symlinks for the templates directory (required for installation via Modman)
+
+ - For newer Magento versions (1.5.1.0 & above) you just need enable 'Allow Symlinks' from System - Configuration / Advanced / Developer / Template Settings
+ - For older Magento versions: http://www.tonigrigoriu.com/magento/magento-how-to-fix-template-path-errors-when-using-symlinks/
+
+#### 3) Install Debug Toolbar module:
+ 
 <pre>
 cd [magento root folder]
 modman init
-modman magneto-debug clone https://github.com/madalinoprea/magneto-debug.git
+modman clone https://github.com/madalinoprea/magneto-debug.git
 </pre>
+
  - Make sure you've cleaned Magento's cache to enable the new module; hit refresh
  
-## Update plugin installed via Modman
-I'm pretty lazy and I don't like to create Magento Connect packages. That's why using modman, you'll have latest changes pushed to github.
+#### How to update
+I'm pretty lazy and I don't like to create Magento Connect packages. With modman you can effortlessly grab the latest changes from github.
 <pre>
-modman magneto-debug update
+modman update magneto-debug
 </pre>
  - Clean Magento's cache to make sure new changes will be enabled.
 
-### Via Magento Connect
+### B) Via Magento Connect
 Extension is not updated regularly. I recommend using modman.
 
 <pre>
