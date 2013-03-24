@@ -44,7 +44,7 @@ class Magneto_Debug_Block_Debug extends Magneto_Debug_Block_Abstract
             'url' => NULL,
             'dom_id' => 'debug-panel-' . $title,
             'nav_title' => $title,
-            'nav_subtitle' => 'Magento modules',
+            'nav_subtitle' => $this->__('Magento modules'),
             'template' => 'debug_versions_panel',           // child block defined in layout xml
         );
         return $panel;
@@ -59,7 +59,7 @@ class Magneto_Debug_Block_Debug extends Magneto_Debug_Block_Abstract
             'url' => NULL,
             'dom_id' => 'debug-panel-' . $title,
             'nav_title' => $title,
-            'nav_subtitle' => "TIME: {$helper->getScriptDuration()}s MEM: {$helper->getMemoryUsage()}",
+            'nav_subtitle' => $this->__('TIME: ') .$helper->getScriptDuration() . $this->__('s MEM: ').$helper->getMemoryUsage(),
             'template' => 'debug_performance_panel',
         );
         return $panel;
@@ -74,7 +74,7 @@ class Magneto_Debug_Block_Debug extends Magneto_Debug_Block_Abstract
             'url' => NULL,
             'dom_id' => 'debug-panel-' . $title,
             'nav_title' => $title,
-            'nav_subtitle' => "Search configurations",
+            'nav_subtitle' => $this->__("Search configurations"),
             'template' => 'debug_config_panel',           // child block defined in layout xml
         );
         return $panel;
@@ -91,7 +91,7 @@ class Magneto_Debug_Block_Debug extends Magneto_Debug_Block_Abstract
             'url' => NULL,
             'dom_id' => 'debug-panel-' . $title,
             'nav_title' => $title,
-            'nav_subtitle' => "{$nBlocks} used blocks",
+            'nav_subtitle' => $nBlocks . $this->__(" used blocks"),
             'template' => 'debug_blocks_panel',           // child block defined in layout xml
         );
         return $panel;
@@ -106,7 +106,7 @@ class Magneto_Debug_Block_Debug extends Magneto_Debug_Block_Abstract
             'url' => NULL,
             'dom_id' => 'debug-panel-' . $title,
             'nav_title' => $title,
-            'nav_subtitle' => "Layout handlers",
+            'nav_subtitle' => $this->__("Layout handlers"),
             'template' => 'debug_layout_panel',           // child block defined in layout xml
         );
         return $panel;
@@ -121,7 +121,7 @@ class Magneto_Debug_Block_Debug extends Magneto_Debug_Block_Abstract
             'url' => NULL,
             'dom_id' => 'debug-panel-' . $title,
             'nav_title' => $title,
-            'nav_subtitle' => 'Controller and request',
+            'nav_subtitle' => $this->__('Controller and request'),
             'template' => 'debug_controller_panel',           // child block defined in layout xml
         );
         return $panel;
@@ -138,7 +138,7 @@ class Magneto_Debug_Block_Debug extends Magneto_Debug_Block_Abstract
             'url' => NULL,
             'dom_id' => 'debug-panel-' . $title,
             'nav_title' => $title,
-            'nav_subtitle' => "{$nModels} models, {$nQueries} queries",
+            'nav_subtitle' => $nModels. $this->__(' models, ') . $nQueries. $this->__(' queries'),
             'template' => 'debug_models_panel',           // child block defined in layout xml
         );
         return $panel;
@@ -154,7 +154,7 @@ class Magneto_Debug_Block_Debug extends Magneto_Debug_Block_Abstract
             'url' => NULL,
             'dom_id' => 'debug-panel-' . $title,
             'nav_title' => $title,
-            'nav_subtitle' => "Quick actions",
+            'nav_subtitle' => $this->__("Quick actions"),
             'template' => 'debug_utils_panel',           // child block defined in layout xml
         );
         return $panel;
@@ -170,7 +170,7 @@ class Magneto_Debug_Block_Debug extends Magneto_Debug_Block_Abstract
             'url' => NULL,
             'dom_id' => 'debug-panel-' . $title,
             'nav_title' => $title,
-            'nav_subtitle' => "View logs",
+            'nav_subtitle' => $this->__("View logs"),
             'template' => 'debug_logs_panel',           // child block defined in layout xml
         );
         return $panel;
@@ -185,7 +185,7 @@ class Magneto_Debug_Block_Debug extends Magneto_Debug_Block_Abstract
             'url' => NULL,
             'dom_id' => 'debug-panel-' . $title,
             'nav_title' => $title,
-            'nav_subtitle' => "Customize Magneto Debug",
+            'nav_subtitle' => $this->__("Customize Magneto Debug"),
             'template' => 'debug_preferences_panel',           // child block defined in layout xml
         );
         return $panel;

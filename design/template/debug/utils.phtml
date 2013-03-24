@@ -1,18 +1,18 @@
 <?php
 ?>
-<h4>Grouped Class Search</h4>
+<h4><?php echo $this->__('Grouped Class Search'); ?></h4>
 <form action="#" id="class-search-form" onSubmit="submitGroupedClassSearch(); return false;">
     <input name="uri" class="input-text required-entry" type="search" size="40" />
     <select name="group" class="input-select required-entry">
-        <option>all</option>
-        <option>model</option>
-        <option>block</option>
-        <option>helper</option>
+        <option value="all"><?php echo $this->__('all'); ?></option>
+        <option value="model"><?php echo $this->__('model'); ?></option>
+        <option value="block"><?php echo $this->__('block'); ?></option>
+        <option value="helper"><?php echo $this->__('helper'); ?></option>
     </select>
     <input type="button" onClick="submitGroupedClassSearch()" value="<?php echo $this->__('Search Grouped Class Name') ?>" />
 </form>
 <p>
-Search examples: <em>catalog/product</em>, <em>core/url</em>, etc.
+<?php echo $this->__('Search examples:'); ?> <em>catalog/product</em>, <em>core/url</em>, <?php echo $this->__('etc.'); ?>
 </p>
 
 <script type="text/javascript">

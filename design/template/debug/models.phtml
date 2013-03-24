@@ -51,7 +51,7 @@ $queries = $this->getQueries();
 </table>
 <h4><?php echo $this->__('QUERIES') ?></h4>
 <?php if( $queries ): ?>
-    <p><a class="toggleTemplate" href="<?php echo Mage::getUrl('debug/index/toggleSqlProfiler') ?>">Disable SQL Profiler</a></p>
+    <p><a class="toggleTemplate" href="<?php echo Mage::getUrl('debug/index/toggleSqlProfiler') ?>"><?php echo $this->__('Disable SQL Profiler'); ?></a></p>
 <table>
 	<thead>
 		<tr>
@@ -69,15 +69,15 @@ $queries = $this->getQueries();
 				</td>
 				<td>
                     <?php if( $item->getQueryType() ==  Zend_Db_Profiler::SELECT ): ?>
-                        <a class="remoteCall" href="<?php echo $this->getSqlSelectUrl($item) ?>">SELECT</a><br />
-                        <a class="remoteCall" href="<?php echo $this->getSqlExplainUrl($item) ?>">EXPLAIN</a><br />
+                        <a class="remoteCall" href="<?php echo $this->getSqlSelectUrl($item) ?>"><?php echo $this->__('SELECT'); ?></a><br />
+                        <a class="remoteCall" href="<?php echo $this->getSqlExplainUrl($item) ?>"><?php echo $this->__('EXPLAIN'); ?></a><br />
                     <?php endif; ?>
 				</td>
 				<td class="syntax">
 					 <div class="djDebugSqlWrap">
                          <div class="djDebugSql"><?php echo $item->getQuery() ?>
                              <?php if( count($item->getQueryParams()) ): ?>
-                                <br/><strong>Params:</strong> <?php echo implode(', ', $item->getQueryParams()); ?>
+                                <br/><strong><?php echo $this->__('Params:'); ?></strong> <?php echo implode(', ', $item->getQueryParams()); ?>
                             <?php endif; ?>
                         </div>
 					 </div>
@@ -88,5 +88,5 @@ $queries = $this->getQueries();
 	</tbody>
 </table>
 <?php else: ?>
-    <p>SQL Profiler is not enabled. <a class="toggleTemplate" href="<?php echo Mage::getUrl('debug/index/toggleSqlProfiler') ?>">Enable SQL Profiler</a></p>
+    <p><?php echo $this->__('SQL Profiler is not enabled.'); ?> <a class="toggleTemplate" href="<?php echo Mage::getUrl('debug/index/toggleSqlProfiler') ?>"><?php echo $this->__('Enable SQL Profiler'); ?></a></p>
 <?php endif; ?> 

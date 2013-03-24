@@ -51,9 +51,9 @@ $designPackage = Mage::getSingleton('core/design_package');
 </table>
 
 <dl>
-    <dt><strong>Page Layout</strong></dt>
+    <dt><strong><?php echo $this->__('Page Layout'); ?></strong></dt>
     <dd>
-		<div class="djTemplateShowContextDiv"><a class="djTemplateShowContext"><span class="toggleArrow">&#x25B6;</span>View Page Layout</a></div>
+		<div class="djTemplateShowContextDiv"><a class="djTemplateShowContext"><span class="toggleArrow">&#x25B6;</span><?php echo $this->__('View Page Layout'); ?></a></div>
         <div class="djTemplateHideContextDiv" style="display:none;">
             <code><?php echo htmlspecialchars($layout->getNode()->asXML()) ?></code>
         </div>
