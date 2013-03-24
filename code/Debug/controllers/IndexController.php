@@ -43,7 +43,7 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
         $absoluteFilePath = realpath(Mage::getBaseDir('design') . DS . $fileName);
         $source = highlight_string(file_get_contents($absoluteFilePath), true);
 
-        $content = $this->_debugPanel("Template Source: <code>$fileName</code>", $source);
+        $content = $this->_debugPanel($this->__("Template Source:") . " <code>$fileName</code>", $source);
         $this->getResponse()->setBody($content);
     }
 
@@ -59,7 +59,7 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
 
         $source = highlight_string(file_get_contents($absoluteFilePath), true);
 
-        $content = $this->_debugPanel("Block Source: <code>{$blockClass}</code>", $source);
+        $content = $this->_debugPanel($this->__("Block Source:") . " <code>{$blockClass}</code>", $source);
         $this->getResponse()->setBody($content);
     }
 
@@ -104,7 +104,7 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
         $storeId = $this->getRequest()->getParam('storeId');
         $designArea = $this->getRequest()->getParam('area');
 
-        $title = "Files with layout updates for handle {$layoutHandle}";
+        $title = $this->__("Files with layout updates for handle ") . $layoutHandle;
         if (!$layoutHandle) {
 
         }
@@ -226,7 +226,7 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
     public function clearCacheAction()
     {
         $content = Mage::helper('debug')->cleanCache();
-        Mage::getSingleton('core/session')->addSuccess("Magento's caches were cleared.");
+        Mage::getSingleton('core/session')->addSuccess($this->__("Magento's caches were cleared."));
         $this->_redirectReferer();
     }
 
@@ -254,7 +254,7 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
         // clear cache
         Mage::app()->cleanCache(array(Mage_Core_Model_Config::CACHE_TAG, Mage_Core_Model_Translate::CACHE_TAG));
 
-        Mage::getSingleton('core/session')->addSuccess('Translate inline set to ' . var_export($newStatus, true));
+        Mage::getSingleton('core/session')->addSuccess($this->__('Translate inline set to ') . var_export($newStatus, true));
         $this->_redirectReferer();
     }
 
@@ -275,7 +275,7 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
         $config->saveConfig('dev/debug/template_hints_blocks', $newStatus, 'stores', $forStore);
         Mage::app()->cleanCache(array(Mage_Core_Model_Config::CACHE_TAG));
 
-        Mage::getSingleton('core/session')->addSuccess('Template hints set to ' . var_export($newStatus, true));
+        Mage::getSingleton('core/session')->addSuccess($this->__('Template hints set to ') . var_export($newStatus, true));
 
         $this->_redirectReferer();
     }
@@ -290,14 +290,14 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
         $title = "Toggle Module Status";
         $moduleName = $this->getRequest()->getParam('module');
         if (!$moduleName) {
-            echo $this->_debugPanel($title, "Invalid module name supplied. ");
+            echo $this->_debugPanel($title, $this->__("Invalid module name supplied. "));
             return;
         }
         $config = Mage::getConfig();
 
         $moduleConfig = Mage::getConfig()->getModuleConfig($moduleName);
         if (!$moduleConfig) {
-            echo $this->_debugPanel($title, "Unable to load supplied module. ");
+            echo $this->_debugPanel($title, $this->__("Unable to load supplied module. "));
             return;
         }
 
@@ -310,20 +310,20 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
             return $value ? 'true' : 'false';
         }
 
-        $contents = '<br/>Active status switched to ' . (string)$moduleNewStatus . ' for module {$moduleName} in file {$moduleConfigFile}:';
+        $contents = '<br/>'. $this->__('Active status switched to ') . (string)$moduleNewStatus . $this->__(' for module ') . $moduleName . $this->__(' in file '). $moduleConfigFile .':';
         $contents .= '<br/><code>' . htmlspecialchars($configContent) . '</code>';
 
         $configContent = str_replace('<active>' . (string)$moduleCurrentStatus . '</active>', '<active>' . (string)$moduleNewStatus . '</active>', $configContent);
 
         if (file_put_contents($moduleConfigFile, $configContent) === FALSE) {
-            echo $this->_debugPanel($title, "Failed to write configuration. (Web Server's permissions for {$moduleConfigFile}?!)");
+            echo $this->_debugPanel($title, $this->__("Failed to write configuration. (Web Server's permissions for ") . $moduleConfigFile . "?!)");
             return $this;
         }
 
         Mage::helper('debug')->cleanCache();
 
         $contents .= '<br/><code>' . htmlspecialchars($configContent) . '</code>';
-        $contents .= '<br/><br/><i>WARNING: This feature doesn\'t support usage of multiple frontends.</i>';
+        $contents .= '<br/><br/><i> '. $this->__("WARNING: This feature doesn't support usage of multiple frontends.") . '</i>';
 
         $this->getResponse()->setBody($this->_debugPanel($title, $contents));
     }
@@ -380,12 +380,12 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
 
         // backup config file
         if (file_put_contents($localConfigBackupFile, $configContent) === FALSE) {
-            Mage::getSingleton('core/session')->addError($this->__('Operation aborted: couldn\'t create backup for config file'));
+            Mage::getSingleton('core/session')->addError($this->__("Operation aborted: couldn't create backup for config file"));
             $this->_redirectReferer();
         }
 
         if ($xml->saveXML($localConfigFile) === FALSE) {
-            Mage::getSingleton('core/session')->addError($this->__("Couldn't save {$localConfigFile}: check write permissions."));
+            Mage::getSingleton('core/session')->addError($this->__("Couldn't save ") . $localConfigFile . $this->__(": check write permissions."));
             $this->_redirectReferer();
         }
         Mage::getSingleton('core/session')->addSuccess($this->__('SQL profiler status changed in local.xml'));
