@@ -1,10 +1,10 @@
-code/Debug                  app/code/community/Magneto/Debug
-design/layout/debug.xml     app/design/frontend/base/default/layout/debug.xml
-design/template/debug       app/design/frontend/base/default/template/debug
-skin                        skin/frontend/base/default/debug/
-locale                      app/locale/
-Magneto_Debug.xml           app/etc/modules/Magneto_Debug.xml
+code/Debug                      app/code/community/Magneto/Debug
+Magneto_Debug.xml               app/etc/modules/Magneto_Debug.xml
+design/layout/debug.xml         app/design/frontend/base/default/layout/debug.xml
+design/template/debug           app/design/frontend/base/default/template/debug
+skin                            skin/frontend/base/default/debug/
+locale/pt_BR/Magneto_Debug.csv  app/locale/pt_BR/Magneto_Debug.csv
 
 # admin
-design/layout/debug.xml     app/design/adminhtml/base/default/layout/debug.xml
-design/template/debug       app/design/adminhtml/base/default/template/debug
+design/layout/debug.xml         app/design/adminhtml/base/default/layout/debug.xml
+design/template/debug           app/design/adminhtml/base/default/template/debug
