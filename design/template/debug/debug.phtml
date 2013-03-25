@@ -15,7 +15,7 @@ var DEBUG_TOOLBAR_MEDIA_URL = "<?php echo $this->getDebugMediaUrl(); ?>";
             <?php if( $panels ): ?>
             <li><a id="djHideToolBarButton" href="#" title="<?php echo $this->__("Hide Toolbar"); ?>"><?php echo $this->__("Hide") ?> &raquo;</a></li>
             <?php else: ?>
-			<li id="djDebugButton">DEBUG</li>
+			<li id="djDebugButton"><?php echo $this->__("DEBUG"); ?></li>
             <?php endif; ?>
             <?php foreach ($panels as $panel): ?>
 				<li>
@@ -36,8 +36,8 @@ var DEBUG_TOOLBAR_MEDIA_URL = "<?php echo $this->getDebugMediaUrl(); ?>";
 				</li>
             <?php endforeach; ?>
             <li>
-                <a href="#" class="">About
-                    <br/><small>Version <?php echo $this->getVersion() ?></a></small>
+                <a href="#" class=""><?php echo $this->__("About"); ?>
+                    <br/><small><?php echo $this->__("Version"); ?> <?php echo $this->getVersion() ?></a></small>
                 </a>
             </li>
 		</ul>

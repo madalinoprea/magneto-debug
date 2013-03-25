@@ -15,6 +15,17 @@
                 </args>
             </debug>
         </routers>
+        
+        <translate>
+            <modules>
+                <Magneto_Debug>
+                    <files>
+                        <default>Magneto_Debug.csv</default>
+                    </files>
+                </Magneto_Debug>
+            </modules>
+        </translate>
+        
         <layout>
             <updates>
                 <debug>
@@ -193,5 +204,15 @@
                 </debugadmin>
             </updates>
         </layout>
+        
+         <translate>
+            <modules>
+                <magneto_debug>
+                    <files>
+                        <default>Magneto_Debug.csv</default>
+                    </files>
+                </magneto_debug>
+            </modules>
+        </translate>
     </adminhtml>
 </config>

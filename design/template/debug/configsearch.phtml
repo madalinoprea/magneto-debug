@@ -19,7 +19,7 @@
                 <?php $row++ ?>
             <?php endforeach; ?>
         <?php else: ?>
-            <tr><td colspan="3">Configurations not found for this query.</td></tr>
+            <tr><td colspan="3"><?php echo $this->__("Configurations not found for this query.") ?></td></tr>
         <?php endif; ?>
         </div>
 	</tbody>
