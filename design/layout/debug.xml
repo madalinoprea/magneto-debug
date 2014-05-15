@@ -12,6 +12,7 @@
                 <block type="debug/abstract" name="debug_performance_panel" template="debug/performance.phtml"/>
                 <block type="debug/abstract" name="debug_utils_panel" template="debug/utils.phtml"/>
                 <block type="debug/abstract" name="debug_logs_panel" template="debug/logs.phtml"/>
+                <block type="customer/form_login" name="customer_login_by_email" template="debug/customer_login_form.phtml"/>
 
                 <!-- Preferences panel is not implemented yet -->
                 <!--<block type="debug/preferences" name="debug_preferences_panel" template="debug/preferences.phtml"/>-->

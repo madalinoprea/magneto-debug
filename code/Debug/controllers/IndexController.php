@@ -512,4 +512,36 @@ class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
             $this->_redirectReferer();
         }
     }
+    
+    /**
+     * Login a customer by email only
+     * @return NULL
+     */
+    public function loginAction()
+    {
+        $customerSession = Mage::getSingleton('customer/session');
+        $params = $this->getRequest()->getParams();
+        if (!(isset($params['login']['username'])) && !Zend_Validate::is(trim($params['login']['username']) , 'EmailAddress')) {
+            $customerSession->addError($this->__('Invalid email.'));
+            $this->_redirectReferer();
+            return;
+        }
+        $email = trim($params['login']['username']);
+        if(Mage::helper('customer')->isLoggedIn()){
+            $customerSession->addError($this->__('Already logged in, please log out first'));
+            $this->_redirectReferer();
+            return;
+        }
+        $customer = Mage::getModel('customer/customer')
+            ->setWebsiteId(Mage::app()->getStore()->getWebsiteId());
+        $customer->loadByEmail($email);
+        if(!$customer->getId()){
+            $customerSession->addError($this->__('Invalid email.'));
+            $this->_redirectReferer();
+            return;
+        }
+        $customerSession->loginById($customer->getId());
+        $this->_redirectReferer();
+        return;
+    }
 }

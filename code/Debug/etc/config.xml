@@ -160,6 +160,7 @@
                 <debug_panel_utilities_visibility>1</debug_panel_utilities_visibility>
                 <debug_panel_preferences_visibility>1</debug_panel_preferences_visibility>
                 <debug_panel_logs_visibility>1</debug_panel_logs_visibility>
+                <debug_panel_customerlogin_visibility>1</debug_panel_customerlogin_visibility>
             </options>
         </debug>
     </default>
