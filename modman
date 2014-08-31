@@ -3,8 +3,8 @@ code/Debug                      app/code/community/Magneto/Debug
 design/layout/debug.xml         app/design/frontend/base/default/layout/debug.xml 
 design/template/debug           app/design/frontend/base/default/template/debug
 # admin
-design/layout/debug.xml         app/design/adminhtml/base/default/layout/debug.xml
-design/template/debug           app/design/adminhtml/base/default/template/debug
+design/layout/debug.xml         app/design/adminhtml/default/default/layout/debug.xml
+design/template/debug           app/design/adminhtml/default/default/template/debug
 skin                            skin/frontend/base/default/debug/
 #locale/My_Module.xml       app/locale/en_US/My_Module.xml
 Magneto_Debug.xml               app/etc/modules/Magneto_Debug.xml 
