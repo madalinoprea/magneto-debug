@@ -11,7 +11,8 @@
 				j(script).remove();
 			}
 		};
-		document.getElementsByTagName('head')[0].appendChild(script)
+		
+		document.head.appendChild(script)
 	}
 })(window, document, "1.3", function($, jquery_loaded) {
 
