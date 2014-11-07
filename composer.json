@@ -1,0 +1,18 @@
+{
+    "name": "madalinoprea/magneto-debug",
+    "license": "OSL-3.0",
+    "type": "magento-module",
+    "description": "Based on robhudson's awesome work (https://github.com/robhudson/django-debug-toolbar) we've created a debug toolbar for Magento. It is installed as a Magento module without hacking Magento's core.",
+	"website": "https://github.com/madalinoprea/magneto-debug",
+    "require": {
+        "magento-hackathon/magento-composer-installer": "*"
+    },
+    "require-dev": {        
+    },
+    "authors":[
+        {
+            "name":"Madalin Oprea"
+        }
+    ]
+	
+}
