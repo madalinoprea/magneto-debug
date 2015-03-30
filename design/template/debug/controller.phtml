@@ -74,6 +74,7 @@ $session = Mage::getSingleton('core/session');
 			</tr>
 		</thead>
 		<?php foreach( $_SESSION as $namespace => $data): ?>
+        <?php if(!is_array($data)) { continue; } ?>
 		<tbody>
 			<tr><th colspan="2" style="text-align: center; font-size: 120%; font-weight: bold;"><?php echo $namespace ?></th></tr>
 			<?php $row = 0; ?>
