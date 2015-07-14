@@ -400,3 +400,5 @@
 #djDebug .highlight .cp { color:#333 } /* Comment.Preproc */
 
 #djDebug div.loader { background: url(../img/loader.gif); margin: 100px auto; width: 64px; height: 64px; border: none; }
+
+#djDebug .account-login .buttons-set button.button{float:left;margin-top: 10px;}
