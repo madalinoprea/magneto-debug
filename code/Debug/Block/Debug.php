@@ -191,6 +191,22 @@ class Magneto_Debug_Block_Debug extends Magneto_Debug_Block_Abstract
         return $panel;
     }
     
+    protected function createCustomerLoginPanel()
+    {
+        $title = 'CustomerLogin';
+
+        $panel = array(
+            'title'         => $title,
+            'has_content'   => true,
+            'url'           => NULL,
+            'dom_id'        => 'debug-panel-' . 'login-by-email',
+            'nav_title'     => $title,
+            'nav_subtitle'  => "Customer Login by email",
+            'template'      => 'customer_login_by_email',           // child block defined in layout xml
+        );
+        return $panel;
+    }
+    
     public function getPanels() {
         $panels = array();
         $panels[] = $this->createVersionsPanel();
@@ -202,12 +218,24 @@ class Magneto_Debug_Block_Debug extends Magneto_Debug_Block_Abstract
         $panels[] = $this->createBlocksPanel();
         $panels[] = $this->createUtilsPanel();
         $panels[] = $this->createLogsPanel();
+        
+        if($this->canShowCustomerLoginForm()){
+            $panels[] = $this->createCustomerLoginPanel();
+        }
         // TODO: Implement preferences panel (toggle panels visibility from toolbar)
 //        $panels[] = $this->createPreferencesPanel();
 
         return $panels;
     }
 
+    public function canShowCustomerLoginForm()
+    {
+        $coreSession            = Mage::getModel('core/session');
+        $hasAdminSession        = $coreSession->getAdmin() && $coreSession->getAdmin()->getId();
+        $currentStoreIsAdmin    = Mage::app()->getStore()->isAdmin();
+        return !($currentStoreIsAdmin || $hasAdminSession || Mage::getSingleton('customer/session')->isLoggedIn());
+    }
+    
     public function getVisiblePanels()
     {
         /* @var $helper Magneto_Debug_Helper_Data */
