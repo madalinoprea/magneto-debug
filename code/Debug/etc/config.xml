@@ -22,6 +22,30 @@
                 </debug>
             </updates>
         </layout>
+        <enterprise>
+            <websiterestriction>
+                <full_action_names>
+                    <generic>
+                        <debug_index_clearCache />
+                        <debug_index_downloadConfig />
+                        <debug_index_downloadConfigAsText />
+                        <debug_index_searchConfig />
+                        <debug_index_searchGroupedClass />
+                        <debug_index_toggleModuleStatus />
+                        <debug_index_togglePageCacheDebug />
+                        <debug_index_toggleSqlProfiler />
+                        <debug_index_toggleTemplateHints />
+                        <debug_index_toggleTranslateInline />
+                        <debug_index_viewBlock />
+                        <debug_index_viewFilesWithHandle />
+                        <debug_index_viewLog />
+                        <debug_index_viewSqlExplain />
+                        <debug_index_viewSqlSelect />
+                        <debug_index_viewTemplate />
+                    </generic>
+                </full_action_names>
+            </websiterestriction>
+        </enterprise>
     </frontend>
     <global>
         <models>
