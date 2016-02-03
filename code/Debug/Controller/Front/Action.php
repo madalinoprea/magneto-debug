@@ -40,4 +40,39 @@ class Sheep_Debug_Controller_Front_Action extends Mage_Core_Controller_Front_Act
         return Mage::getModel('sheep_debug/service');
     }
 
+
+    /**
+     * Renders content as panel
+     *
+     * @param $title
+     * @param $content
+     */
+    public function renderContent($title, $content)
+    {
+        /** @var Sheep_Debug_Block_Panel $block */
+        $block = $this->getLayout()->createBlock('sheep_debug/panel');
+        $block->setTitle($title);
+        $block->setContent($content);
+
+        $this->getResponse()->setBody($block->toHtml());
+    }
+
+
+    /**
+     * Renders specifies array
+     *
+     * @param array  $data
+     * @param string $title
+     * @param string $description
+     */
+    public function renderArray(array $data, $title='', $description='')
+    {
+        /** @var Sheep_Debug_Block_Array $block */
+        $block = $this->getLayout()->createBlock('sheep_debug/array');
+        $block->setTitle($title);
+        $block->setArray($data);
+        $block->setDescription($description);
+
+        $this->getResponse()->setBody($block->toHtml());
+    }
 }
