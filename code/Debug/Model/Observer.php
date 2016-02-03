@@ -1,8 +1,15 @@
 <?php
 
+/**
+ * Class Sheep_Debug_Model_Observer
+ *
+ * @category Sheep
+ * @package  Sheep_Debug
+ * @license  Copyright: Pirate Sheep, 2016, All Rights reserved.
+ * @link     https://piratesheep.com
+ */
 class Sheep_Debug_Model_Observer
 {
-
     private $_actions = array();
     // List of assoc array with class, type and sql keys
     private $collections = array();
@@ -11,26 +18,42 @@ class Sheep_Debug_Model_Observer
     private $blocks = array();
     private $layoutBlocks = array();
 
+
+    /**
+     * @return array
+     */
     public function getModels()
     {
         return $this->models;
     }
 
+
+    /**
+     * @return array
+     */
     public function getBlocks()
     {
         return $this->blocks;
     }
 
+
+    /**
+     * @return array
+     */
     public function getLayoutBlocks()
     {
         return $this->layoutBlocks;
     }
 
+
+    /**
+     * @return array
+     */
     public function getCollections()
     {
         return $this->collections;
     }
-    // public function getLayoutUpdates() { return $this->layoutUpdates; }
+
 
     /**
      *
@@ -42,6 +65,7 @@ class Sheep_Debug_Model_Observer
     {
         return false;
     }
+
 
     /**
      * Logic that checks if we should ignore this block
@@ -58,13 +82,17 @@ class Sheep_Debug_Model_Observer
         }
 
         // Don't list blocks from Debug module
-        if (strpos($blockClass, 'Magneto_Debug_Block') === 0) {
+        if (strpos($blockClass, 'Sheep_Debug_Block') === 0) {
             return true;
         }
 
         return false;
     }
 
+
+    /**
+     * @return array
+     */
     public function getQueries()
     {
         //TODO: implement profiler for connections other than 'core_write'
@@ -78,6 +106,10 @@ class Sheep_Debug_Model_Observer
         return $queries;
     }
 
+
+    /**
+     * @param Varien_Event_Observer $observer
+     */
     public function onLayoutGenerate(Varien_Event_Observer $observer)
     {
         $layout = $observer->getEvent()->getLayout();
@@ -107,7 +139,7 @@ class Sheep_Debug_Model_Observer
      * that are about to being rendered.
      *
      * @param Varien_Event_Observer $observer
-     * @return Magneto_Debug_Model_Observer
+     * @return $this
      */
     public function onBlockToHtml(Varien_Event_Observer $observer)
     {
@@ -146,7 +178,7 @@ class Sheep_Debug_Model_Observer
      * spent in block's _toHtml (rendering time).
      *
      * @param Varien_Event_Observer $observer
-     * @return Magneto_Debug_Model_Observer
+     * @return $this
      */
     public function onBlockToHtmlAfter(Varien_Event_Observer $observer)
     {
@@ -165,7 +197,10 @@ class Sheep_Debug_Model_Observer
         $this->blocks[$block->getNameInLayout()]['rendered_in'] = $duration;
     }
 
-    function onActionPostDispatch(Varien_Event_Observer $event)
+    /**
+     * @param Varien_Event_Observer $event
+     */
+    public function onActionPostDispatch(Varien_Event_Observer $event)
     {
         $action = $event->getControllerAction();
 
@@ -178,8 +213,10 @@ class Sheep_Debug_Model_Observer
     }
 
 
-    // controller_action_layout_generate_blocks_after
-    function onCollectionLoad(Varien_Event_Observer $event)
+    /**
+     * @param Varien_Event_Observer $event
+     */
+    public function onCollectionLoad(Varien_Event_Observer $event)
     {
         /** @var Mage_Core_Model_Mysql4_Store_Collection */
         $collection = $event->getCollection();
@@ -191,7 +228,11 @@ class Sheep_Debug_Model_Observer
         $this->collections[] = $collectionStruct;
     }
 
-    function onEavCollectionLoad(Varien_Event_Observer $event)
+
+    /**
+     * @param Varien_Event_Observer $event
+     */
+    public function onEavCollectionLoad(Varien_Event_Observer $event)
     {
         $collection = $event->getCollection();
         $sqlStruct = array();
@@ -201,18 +242,12 @@ class Sheep_Debug_Model_Observer
         $this->collections[] = $sqlStruct;
     }
 
-    /*function onPrepareLayout(Varien_Event_Observer $observer){
-		$block = $observer->getEvent()->getBlock();
-		var_dump(array_keys($observer->getEvent()->getData()));
-        // Mage::log('onPrepareLayout: ' . get_class($observer) . 'block=";
 
-		$layoutUpdate = array();
-		$layoutUpdate['block'] = get_class($observer->getBlock());
-		$layoutUpdate['name'] = get_class($observer->getName());
-		$this->layoutUpdates[] = $layoutUpdate;
-    }*/
-
-    function onModelLoad(Varien_Event_Observer $observer)
+    /**
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     */
+    public function onModelLoad(Varien_Event_Observer $observer)
     {
         $event = $observer->getEvent();
         $object = $event->getObject();
@@ -231,6 +266,7 @@ class Sheep_Debug_Model_Observer
         return $this;
     }
 
+
     /**
      * We listen to this event to filter access to actions defined by Debug module.
      * We allow only actions if debug toolbar is on and ip is listed in Developer Client Restrictions
@@ -239,11 +275,11 @@ class Sheep_Debug_Model_Observer
      *
      * @return void
      */
-    function onActionPreDispatch(Varien_Event_Observer $observer)
+    public function onActionPreDispatch(Varien_Event_Observer $observer)
     {
         $action = $observer->getEvent()->getControllerAction();
         $moduleName = $action->getRequest()->getControllerModule();
-        if (strpos($moduleName, "Magneto_Debug") === 0 && !Mage::helper('debug')->isRequestAllowed()) {
+        if (strpos($moduleName, "Sheep_Debug") === 0 && !Mage::helper('sheep_debug')->isRequestAllowed()) {
 
             Mage::log("Access to Magneto_Debug's actions blocked: dev mode is set to false.");
             // $response = $action->getResponse();
