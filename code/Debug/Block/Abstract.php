@@ -1,4 +1,13 @@
 <?php
+
+/**
+ * Class Sheep_Debug_Block_Abstract
+ *
+ * @category Sheep
+ * @package  Sheep_Subscription
+ * @license  Copyright: Pirate Sheep, 2016, All Rights reserved.
+ * @link     https://piratesheep.com
+ */
 class Sheep_Debug_Block_Abstract extends Mage_Core_Block_Template
 {
     /** @var Sheep_Debug_Helper_Data */
