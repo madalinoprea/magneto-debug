@@ -1,6 +1,6 @@
 <?php
 
-class Magneto_Debug_IndexController extends Mage_Core_Controller_Front_Action
+class Sheep_Debug_IndexController extends Mage_Core_Controller_Front_Action
 {
     /**
      * Return block content

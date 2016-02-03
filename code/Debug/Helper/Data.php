@@ -1,6 +1,6 @@
 <?php
 
-class Magneto_Debug_Helper_Data extends Mage_Core_Helper_Abstract
+class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Abstract
 {
     /**
      * Cleans Magento's cache

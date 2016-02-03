@@ -1,5 +1,5 @@
 <?php
-class Magneto_Debug_Block_Preferences extends Magneto_Debug_Block_Abstract
+class Sheep_Debug_Block_Preferences extends Sheep_Debug_Block_Abstract
 {
     public function getPanels()
     {

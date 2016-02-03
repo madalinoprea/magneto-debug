@@ -1,5 +1,5 @@
 <?php
-class Magneto_Debug_PreferencesController extends Mage_Core_Controller_Front_Action
+class Sheep_Debug_PreferencesController extends Mage_Core_Controller_Front_Action
 {
     public function updatePostAction()
     {

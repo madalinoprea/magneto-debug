@@ -1,18 +1,35 @@
 <?php
-class Magneto_Debug_Model_Observer {
+
+class Sheep_Debug_Model_Observer
+{
 
     private $_actions = array();
     // List of assoc array with class, type and sql keys
-    private $collections= array();
-	// private $layoutUpdates = array();
-	private $models = array();
-	private $blocks = array();
+    private $collections = array();
+    // private $layoutUpdates = array();
+    private $models = array();
+    private $blocks = array();
     private $layoutBlocks = array();
 
-	public function getModels() { return $this->models; }
-    public function getBlocks() { return $this->blocks; }
-    public function getLayoutBlocks() { return $this->layoutBlocks; }
-    public function getCollections() { return $this->collections; }
+    public function getModels()
+    {
+        return $this->models;
+    }
+
+    public function getBlocks()
+    {
+        return $this->blocks;
+    }
+
+    public function getLayoutBlocks()
+    {
+        return $this->layoutBlocks;
+    }
+
+    public function getCollections()
+    {
+        return $this->collections;
+    }
     // public function getLayoutUpdates() { return $this->layoutUpdates; }
 
     /**
@@ -21,7 +38,8 @@ class Magneto_Debug_Model_Observer {
      *
      * @return bool
      */
-    protected function _skipCoreBlocks(){
+    protected function _skipCoreBlocks()
+    {
         return false;
     }
 
@@ -31,32 +49,34 @@ class Magneto_Debug_Model_Observer {
      * @param $block Mage_Core_Block_Abstract
      * @return bool
      */
-    protected function _skipBlock($block) {
+    protected function _skipBlock($block)
+    {
         $blockClass = get_class($block);
 
-        if( $this->_skipCoreBlocks() && strpos($blockClass, 'Mage_') === 0 ) {
+        if ($this->_skipCoreBlocks() && strpos($blockClass, 'Mage_') === 0) {
             return true;
         }
 
         // Don't list blocks from Debug module
-        if( strpos($blockClass, 'Magneto_Debug_Block')===0 ) {
+        if (strpos($blockClass, 'Magneto_Debug_Block') === 0) {
             return true;
         }
 
         return false;
     }
 
-	public function getQueries() {
-		//TODO: implement profiler for connections other than 'core_write'  
-		$profiler = Mage::getSingleton('core/resource')->getConnection('core_write')->getProfiler();
-		$queries = array();
-		
-		if( $profiler ) {
-			$queries = $profiler->getQueryProfiles();
-		}
-		
-		return $queries;
-	 }
+    public function getQueries()
+    {
+        //TODO: implement profiler for connections other than 'core_write'
+        $profiler = Mage::getSingleton('core/resource')->getConnection('core_write')->getProfiler();
+        $queries = array();
+
+        if ($profiler) {
+            $queries = $profiler->getQueryProfiles();
+        }
+
+        return $queries;
+    }
 
     public function onLayoutGenerate(Varien_Event_Observer $observer)
     {
@@ -68,12 +88,12 @@ class Magneto_Debug_Model_Observer {
             $blockStruct = array();
             $blockStruct['class'] = get_class($block);
             $blockStruct['layout_name'] = $block->getNameInLayout();
-            if( method_exists($block, 'getTemplateFile') ) {
+            if (method_exists($block, 'getTemplateFile')) {
                 $blockStruct['template'] = $block->getTemplateFile();
             } else {
                 $blockStruct['template'] = '';
             }
-            if( method_exists($block, 'getViewVars') ) {
+            if (method_exists($block, 'getViewVars')) {
                 $blockStruct['context'] = $block->getViewVars();
             } else {
                 $blockStruct['context'] = NULL;
@@ -89,13 +109,14 @@ class Magneto_Debug_Model_Observer {
      * @param Varien_Event_Observer $observer
      * @return Magneto_Debug_Model_Observer
      */
-    public function onBlockToHtml(Varien_Event_Observer $observer) {
+    public function onBlockToHtml(Varien_Event_Observer $observer)
+    {
         /** @var $event Varien_Event */
         $event = $observer->getEvent();
         /* @var $block Mage_Core_Block_Abstract */
         $block = $event->getBlock();
 
-        if( $this->_skipBlock($block) ) {
+        if ($this->_skipBlock($block)) {
             return $this;
         }
 
@@ -104,18 +125,18 @@ class Magneto_Debug_Model_Observer {
         $blockStruct['layout_name'] = $block->getNameInLayout();
         $blockStruct['rendered_at'] = microtime(true);
 
-		if( method_exists($block, 'getTemplateFile') ) {
-        	$blockStruct['template'] = $block->getTemplateFile();
-		} else {
-			$blockStruct['template'] = '';
-		}
-		if( method_exists($block, 'getViewVars') ) {
-        	$blockStruct['context'] = $block->getViewVars();
-		} else {
-			$blockStruct['context'] = NULL;
-		}
+        if (method_exists($block, 'getTemplateFile')) {
+            $blockStruct['template'] = $block->getTemplateFile();
+        } else {
+            $blockStruct['template'] = '';
+        }
+        if (method_exists($block, 'getViewVars')) {
+            $blockStruct['context'] = $block->getViewVars();
+        } else {
+            $blockStruct['context'] = NULL;
+        }
 
-		$this->blocks[$block->getNameInLayout()] = $blockStruct;
+        $this->blocks[$block->getNameInLayout()] = $blockStruct;
 
         return $this;
     }
@@ -127,13 +148,14 @@ class Magneto_Debug_Model_Observer {
      * @param Varien_Event_Observer $observer
      * @return Magneto_Debug_Model_Observer
      */
-    public function onBlockToHtmlAfter(Varien_Event_Observer $observer) {
+    public function onBlockToHtmlAfter(Varien_Event_Observer $observer)
+    {
         $event = $observer->getEvent();
         /* @var $block Mage_Core_Block_Abstract */
         $block = $event->getBlock();
 
         // Don't list blocks from Debug module
-        if( $this->_skipBlock($block) ) {
+        if ($this->_skipBlock($block)) {
             return $this;
         }
 
@@ -143,7 +165,8 @@ class Magneto_Debug_Model_Observer {
         $this->blocks[$block->getNameInLayout()]['rendered_in'] = $duration;
     }
 
-    function onActionPostDispatch(Varien_Event_Observer $event) {
+    function onActionPostDispatch(Varien_Event_Observer $event)
+    {
         $action = $event->getControllerAction();
 
         $actionStruct = array();
@@ -156,9 +179,10 @@ class Magneto_Debug_Model_Observer {
 
 
     // controller_action_layout_generate_blocks_after
-    function onCollectionLoad(Varien_Event_Observer $event) {
+    function onCollectionLoad(Varien_Event_Observer $event)
+    {
         /** @var Mage_Core_Model_Mysql4_Store_Collection */
-        $collection = $event->getCollection();          
+        $collection = $event->getCollection();
 
         $collectionStruct = array();
         $collectionStruct['sql'] = $collection->getSelectSql(true);
@@ -167,7 +191,8 @@ class Magneto_Debug_Model_Observer {
         $this->collections[] = $collectionStruct;
     }
 
-    function onEavCollectionLoad(Varien_Event_Observer $event) {
+    function onEavCollectionLoad(Varien_Event_Observer $event)
+    {
         $collection = $event->getCollection();
         $sqlStruct = array();
         $sqlStruct['sql'] = $collection->getSelectSql(true);
@@ -175,7 +200,7 @@ class Magneto_Debug_Model_Observer {
         $sqlStruct['class'] = get_class($collection);
         $this->collections[] = $sqlStruct;
     }
-	
+
     /*function onPrepareLayout(Varien_Event_Observer $observer){
 		$block = $observer->getEvent()->getBlock();
 		var_dump(array_keys($observer->getEvent()->getData()));
@@ -187,25 +212,26 @@ class Magneto_Debug_Model_Observer {
 		$this->layoutUpdates[] = $layoutUpdate;
     }*/
 
-	function onModelLoad(Varien_Event_Observer $observer){
-		$event = $observer->getEvent();
-		$object = $event->getObject();
-		$key = get_class($object);
-		
-		if( array_key_exists($key, $this->models) ) {
-			$this->models[$key]['occurrences']++;
-		} else {
-			$model = array();
-			$model['class'] = get_class($object);
-			$model['resource_name'] = $object->getResourceName();
-			$model['occurrences'] = 1;
-			$this->models[$key] = $model;
-		}
-		
-		return $this;
-	}
+    function onModelLoad(Varien_Event_Observer $observer)
+    {
+        $event = $observer->getEvent();
+        $object = $event->getObject();
+        $key = get_class($object);
 
-    /** 
+        if (array_key_exists($key, $this->models)) {
+            $this->models[$key]['occurrences']++;
+        } else {
+            $model = array();
+            $model['class'] = get_class($object);
+            $model['resource_name'] = $object->getResourceName();
+            $model['occurrences'] = 1;
+            $this->models[$key] = $model;
+        }
+
+        return $this;
+    }
+
+    /**
      * We listen to this event to filter access to actions defined by Debug module.
      * We allow only actions if debug toolbar is on and ip is listed in Developer Client Restrictions
      *
@@ -213,10 +239,11 @@ class Magneto_Debug_Model_Observer {
      *
      * @return void
      */
-    function onActionPreDispatch(Varien_Event_Observer $observer){
+    function onActionPreDispatch(Varien_Event_Observer $observer)
+    {
         $action = $observer->getEvent()->getControllerAction();
         $moduleName = $action->getRequest()->getControllerModule();
-        if( strpos($moduleName, "Magneto_Debug") === 0 && !Mage::helper('debug')->isRequestAllowed() ){
+        if (strpos($moduleName, "Magneto_Debug") === 0 && !Mage::helper('debug')->isRequestAllowed()) {
 
             Mage::log("Access to Magneto_Debug's actions blocked: dev mode is set to false.");
             // $response = $action->getResponse();

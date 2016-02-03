@@ -1,7 +1,6 @@
 <?php
-class Magneto_Debug_Block_Debug extends Magneto_Debug_Block_Abstract
+class Sheep_Debug_Block_Debug extends Sheep_Debug_Block_Abstract
 {
-
 
 	public function _prepareLayout()
     {
@@ -18,7 +17,7 @@ class Magneto_Debug_Block_Debug extends Magneto_Debug_Block_Abstract
 
     public function getVersion()
     {
-        return (string)Mage::getConfig()->getNode('modules/Magneto_Debug/version');
+        return (string)Mage::getConfig()->getNode('modules/Sheep_Debug/version');
     }
     
     private function createDummyPanel($title){
@@ -225,6 +224,6 @@ class Magneto_Debug_Block_Debug extends Magneto_Debug_Block_Abstract
     }
 
     public function getDebugMediaUrl() {
-        return Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN) . 'frontend/base/default/debug/';
+        return Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN) . 'frontend/base/default/sheep_debug/';
     }
 }

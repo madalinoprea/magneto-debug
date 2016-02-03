@@ -2,23 +2,23 @@
 <config>
     <modules>
         <Magneto_Debug>
-            <version>1.1.0</version>
+            <version>1.2.0</version>
         </Magneto_Debug>
     </modules>
     <frontend>
         <routers>
-            <debug>
+            <sheep_debug>
                 <use>standard</use>
                 <args>
-                    <module>Magneto_Debug</module>
-                    <frontName>debug</frontName>
+                    <module>Sheep_Debug</module>
+                    <frontName>sheep_debug</frontName>
                 </args>
-            </debug>
+            </sheep_debug>
         </routers>
         <layout>
             <updates>
                 <debug>
-                    <file>debug.xml</file>
+                    <file>sheep_debug.xml</file>
                 </debug>
             </updates>
         </layout>
@@ -50,29 +50,17 @@
     <global>
         <models>
             <debug>
-                <class>Magneto_Debug_Model</class>
+                <class>Sheep_Debug_Model</class>
             </debug>
         </models>
-        <resources>
-            <debug_write>
-                <connection>
-                    <use>core_write</use>
-                </connection>
-            </debug_write>
-            <debug_read>
-                <connection>
-                    <use>core_read</use>
-                </connection>
-            </debug_read>
-        </resources>
         <blocks>
             <debug>
-                <class>Magneto_Debug_Block</class>
+                <class>Sheep_Debug_Block</class>
             </debug>
         </blocks>
         <helpers>
             <debug>
-                <class>Magneto_Debug_Helper</class>
+                <class>Sheep_Debug_Helper</class>
             </debug>
         </helpers>
 
@@ -213,7 +201,7 @@
         <layout>
             <updates>
                 <debugadmin>
-                    <file>debug.xml</file>
+                    <file>sheep_debug.xml</file>
                 </debugadmin>
             </updates>
         </layout>

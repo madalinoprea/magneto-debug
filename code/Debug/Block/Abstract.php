@@ -1,5 +1,5 @@
 <?php
-class Magneto_Debug_Block_Abstract extends Mage_Core_Block_Template
+class Sheep_Debug_Block_Abstract extends Mage_Core_Block_Template
 {
     public function getDefaultStoreId(){
         return Mage::app()

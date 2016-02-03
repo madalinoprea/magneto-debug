@@ -1,5 +1,5 @@
 <?php
-class Magneto_Debug_Block_Blocks extends Magneto_Debug_Block_Abstract
+class Sheep_Debug_Block_Blocks extends Sheep_Debug_Block_Abstract
 {
     public function getItems() {
     	$blocks = Mage::getSingleton('debug/observer')->getBlocks();

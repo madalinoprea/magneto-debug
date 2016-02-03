@@ -1,5 +1,5 @@
 <?php
-class Magneto_Debug_Block_Models extends Magneto_Debug_Block_Abstract
+class Sheep_Debug_Block_Models extends Sheep_Debug_Block_Abstract
 {
     const SQL_SELECT_ACTION = 'viewSqlSelect';
     const SQL_EXPLAIN_ACTION = 'viewSqlExplain';
