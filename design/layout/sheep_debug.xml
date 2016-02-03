@@ -5,10 +5,6 @@
         <reference name="before_body_end">
             <block type="sheep_debug/toolbar" name="debug_panels" template="sheep_debug/toolbar.phtml">
 
-                <block type="sheep_debug/config" name="debug_config_panel" template="sheep_debug/config.phtml">
-                    <action method="setTitle"><title>Configuration</title></action>
-                </block>
-
                 <block type="sheep_debug/controller" name="debug_controller_panel" template="sheep_debug/controller.phtml">
                     <action method="setTitle"><title>Controller</title></action>
                     <action method="setSubTitle"><sub_title>Controller and Request</sub_title></action>
@@ -41,6 +37,11 @@
                 <block type="sheep_debug/modules" name="debug_modules_panel" template="sheep_debug/modules.phtml">
                     <action method="setTitle"><title>Modules</title></action>
                     <action method="setSubTitle"><sub_title>Magento Modules</sub_title></action>
+                </block>
+
+
+                <block type="sheep_debug/config" name="debug_config_panel" template="sheep_debug/config.phtml">
+                    <action method="setTitle"><title>Configuration</title></action>
                 </block>
 
                 <block type="sheep_debug/about" name="debug_about_panel">
