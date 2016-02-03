@@ -10,13 +10,12 @@
  */
 class Sheep_Debug_Block_Controller extends Sheep_Debug_Block_Panel
 {
-    protected function getItems()
+    /**
+     * @return Sheep_Debug_Model_Controller
+     */
+    public function getController()
     {
-        return Mage::getSingleton('debug/debug')->getBlocks();
+        return $this->getRequestInfo()->getController();
     }
 
-    protected function getTemplateDirs()
-    {
-        return NULL;
-    }
 }
