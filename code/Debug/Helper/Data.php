@@ -1,6 +1,6 @@
 <?php
 
-class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Abstract
+class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
 {
     const DEBUG_OPTIONS_ENABLE_PATH = 'sheep_debug/options/enable';
 
@@ -24,8 +24,28 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Abstract
     public function getModuleVersion()
     {
         $moduleConfig = Mage::getConfig()->getModuleConfig($this->getModuleName());
-        return (string) $moduleConfig->version;
+        return (string)$moduleConfig->version;
     }
+
+
+    /**
+     * Returns results as assoc array for specified SQL query
+     *
+     * @param string $query
+     * @param array  $queryParams
+     * @return array
+     * @throws Zend_Db_Statement_Exception
+     */
+    public function runSql($query, $queryParams = array())
+    {
+        /** @var Magento_Db_Adapter_Pdo_Mysql $connection */
+        $connection = Mage::getSingleton('core/resource')->getConnection('core_write');
+        /** @var Varien_Db_Statement_Pdo_Mysql $statement */
+        $statement = $connection->query($query, $queryParams);
+
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 
     /**
      * Cleans Magento's cache
@@ -42,21 +62,23 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Abstract
      *
      * @return bool
      */
-    public function isRequestAllowed() {
+    public function isRequestAllowed()
+    {
         $isDebugEnable = (int)Mage::getStoreConfig(self::DEBUG_OPTIONS_ENABLE_PATH);
         $clientIp = $this->_getRequest()->getClientIp();
         $allow = false;
 
-        if( $isDebugEnable ){
+        if ($isDebugEnable) {
             $allow = true;
 
             // Code copy-pasted from core/helper, isDevAllowed method 
             // I cannot use that method because the client ip is not always correct (e.g varnish)
             $allowedIps = Mage::getStoreConfig('dev/restrict/allow_ips');
-            if ( $isDebugEnable && !empty($allowedIps) && !empty($clientIp)) {
+            if ($isDebugEnable && !empty($allowedIps) && !empty($clientIp)) {
                 $allowedIps = preg_split('#\s*,\s*#', $allowedIps, null, PREG_SPLIT_NO_EMPTY);
                 if (array_search($clientIp, $allowedIps) === false
-                    && array_search(Mage::helper('core/http')->getHttpHost(), $allowedIps) === false) {
+                    && array_search(Mage::helper('core/http')->getHttpHost(), $allowedIps) === false
+                ) {
                     $allow = false;
                 }
             }
@@ -69,39 +91,44 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Abstract
      * Return readable file size
      *
      * @param int $size size in bytes
-     * 
+     *
      * @return string
      */
-	public function formatSize($size) {
-		$sizes = array(" Bytes", " KB", " MB", " GB", " TB", " PB", " EB", " ZB", " YB");
-		if ($size == 0) {
-			 return('n/a'); 
-		} else {
-			return ( round($size/pow(1024, ($i = floor(log($size, 1024)))), 2) . $sizes[$i]); 
-		}
-	}
-	
-	public function getMemoryUsage(){
-		return $this->formatSize( memory_get_peak_usage(TRUE) );
-	}
+    public function formatSize($size)
+    {
+        $sizes = array(" Bytes", " KB", " MB", " GB", " TB", " PB", " EB", " ZB", " YB");
+        if ($size == 0) {
+            return ('n/a');
+        } else {
+            return (round($size / pow(1024, ($i = floor(log($size, 1024)))), 2) . $sizes[$i]);
+        }
+    }
 
-	public function getScriptDuration(){
-		if( function_exists('xdebug_time_index') ){
-			return sprintf("%0.2f", xdebug_time_index() );
-		} else {
-			return 'n/a';
-		}
-	}
-	
-	public static function sortModelCmp($a, $b) {
-		if($a['occurrences']==$b['occurrences'])
-			return 0;
-		return ($a['occurrences'] < $b['occurrences']) ? 1 : -1;
-	}
-	
-	public function sortModelsByOccurrences(&$models) {
-		usort($models, array('Sheep_Debug_Helper_Data', 'sortModelCmp'));
-	}
+    public function getMemoryUsage()
+    {
+        return $this->formatSize(memory_get_peak_usage(TRUE));
+    }
+
+    public function getScriptDuration()
+    {
+        if (function_exists('xdebug_time_index')) {
+            return sprintf("%0.2f", xdebug_time_index());
+        } else {
+            return 'n/a';
+        }
+    }
+
+    public static function sortModelCmp($a, $b)
+    {
+        if ($a['occurrences'] == $b['occurrences'])
+            return 0;
+        return ($a['occurrences'] < $b['occurrences']) ? 1 : -1;
+    }
+
+    public function sortModelsByOccurrences(&$models)
+    {
+        usort($models, array('Sheep_Debug_Helper_Data', 'sortModelCmp'));
+    }
 
     public function getBlockFilename($blockClass)
     {
@@ -113,10 +140,11 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Abstract
      *
      * @param int|null $storeId store identifier
      *
-     * @param $designArea
+     * @param          $designArea
      * @return array
      */
-    public function getLayoutUpdatesFiles($storeId, $designArea) {
+    public function getLayoutUpdatesFiles($storeId, $designArea)
+    {
         if (null === $storeId) {
             $storeId = Mage::app()->getStore()->getId();
         }
@@ -142,9 +170,9 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Read last lines of file (able to read huge file)
      *
-     * @param string        $file
-     * @param int           $lines
-     * @param null|string   $header
+     * @param string      $file
+     * @param int         $lines
+     * @param null|string $header
      *
      * @return array|int
      */
@@ -157,7 +185,7 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Abstract
         $tmp = array();
         $tmp2 = array();
 
-        if (!($handle = fopen($file , "r"))) {
+        if (!($handle = fopen($file, "r"))) {
             return "Could not fopen $file";
         }
 
@@ -169,7 +197,7 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Abstract
         fseek($handle, 0, SEEK_END);
         $filesize = ftell($handle);
 
-        $position= - min($bufferlength,$filesize);
+        $position = -min($bufferlength, $filesize);
 
         while ($lines > 0) {
             if (fseek($handle, $position, SEEK_END)) {
@@ -185,7 +213,7 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Abstract
 
             // Split by line
             $cnt = (count($tmp) - 1);
-            for ($i = 0; $i < count($tmp); $i++ ) {
+            for ($i = 0; $i < count($tmp); $i++) {
                 unset($tmp[0]);
             }
             unset($tmp);
@@ -210,14 +238,14 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Abstract
 
                 // Discard the header line if it is there
                 if ($header &&
-                    (count($line_arr) <= $lines)) {
+                    (count($line_arr) <= $lines)
+                ) {
                     array_shift($line_arr);
                 }
 
                 // Break the loop
                 $lines = 0;
-            }
-            // Reached start of file
+            } // Reached start of file
             elseif (-$position >= $filesize) {
                 // Get back $aliq which contains the very first line of the file
                 unset($tmp2);
@@ -227,14 +255,14 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Abstract
 
                 // Discard the header line if it is there
                 if ($header &&
-                    (count($line_arr) <= $lines)) {
+                    (count($line_arr) <= $lines)
+                ) {
                     array_shift($line_arr);
                 }
 
                 // Break the loop
                 $lines = 0;
-            }
-            // Continue reading
+            } // Continue reading
             else {
                 // Add the freshly grabbed lines on top of the others
                 $line_arr = array_merge($tmp, $line_arr);
@@ -244,8 +272,7 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Abstract
                 if ($position - $bufferlength < -$filesize) {
                     $bufferlength = $filesize + $position;
                     $position = -$filesize;
-                }
-                // Still >= $bufferlength worth of data to read
+                } // Still >= $bufferlength worth of data to read
                 else {
                     $position -= $bufferlength;
                 }
