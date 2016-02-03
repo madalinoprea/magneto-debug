@@ -77,23 +77,25 @@ $session = Mage::getSingleton('core/session');
 		<tbody>
 			<tr><th colspan="2" style="text-align: center; font-size: 120%; font-weight: bold;"><?php echo $namespace ?></th></tr>
 			<?php $row = 0; ?>
-			<?php foreach( $data as $key => $value ): ?>
-				<tr class="<?php echo ( ($row % 2 ? 'djDebugOdd' : 'djDebugEven')) ?>">
-					<td><?php echo htmlspecialchars($key) ?></td>
-					<td>
-					<?php if( is_array($value) ): ?>
-						<?php foreach ($value as $key => $_value): ?>
-						<?php echo $key.' => '.$this->escapeHtml(json_encode($_value)); ?><br/>
-						<?php endforeach; ?>
-					<?php elseif( is_object($value)): ?>
-						<?php echo get_class($value) ?>
-					<?php else: ?>
-						<?php echo htmlspecialchars($value) ?>
-					<?php endif ?>
-					</td>
-				</tr>
-				<?php $row++; ?>
-			<?php endforeach; ?>
+            <?php if(is_array($data)) : ?>
+                <?php foreach( $data as $key => $value ): ?>
+                    <tr class="<?php echo ( ($row % 2 ? 'djDebugOdd' : 'djDebugEven')) ?>">
+                        <td><?php echo htmlspecialchars($key) ?></td>
+                        <td>
+                        <?php if( is_array($value) ): ?>
+                            <?php foreach ($value as $key => $_value): ?>
+                            <?php echo $key.' => '.$this->escapeHtml(json_encode($_value)); ?><br/>
+                            <?php endforeach; ?>
+                        <?php elseif( is_object($value)): ?>
+                            <?php echo get_class($value) ?>
+                        <?php else: ?>
+                            <?php echo htmlspecialchars($value) ?>
+                        <?php endif ?>
+                        </td>
+                    </tr>
+                    <?php $row++; ?>
+                <?php endforeach; ?>
+            <?php endif; ?>
 		</tbody>
 		<?php endforeach; ?>
 	</table>
