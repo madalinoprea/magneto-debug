@@ -28,7 +28,7 @@ class Magneto_Debug_Block_Models extends Magneto_Debug_Block_Abstract
             return Mage::getUrl('debug/index/' . $viewType, 
                 array(
                     '_query' => array('sql' => $query->getQuery(), 'params' => $query->getQueryParams()),
-                    '_store' => self::DEFAULT_STORE_ID
+                    '_store' => $this->getDefaultStoreId()
                  ));
         } else {
             return '';

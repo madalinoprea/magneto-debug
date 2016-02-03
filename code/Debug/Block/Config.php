@@ -23,7 +23,7 @@ class Magneto_Debug_Block_Config extends Magneto_Debug_Block_Abstract
 
         return Mage::getUrl('debug/index/toggleTemplateHints', array(
                 'store' => $forStore,
-                '_store' => self::DEFAULT_STORE_ID,
+                '_store' => $this->getDefaultStoreId(),
                 '_nosid' => true));
     }
 
@@ -35,28 +35,28 @@ class Magneto_Debug_Block_Config extends Magneto_Debug_Block_Abstract
 
         return Mage::getUrl('debug/index/toggleTranslateInline', array(
             'store' => $forStore,
-            '_store' => self::DEFAULT_STORE_ID,
+            '_store' => $this->getDefaultStoreId(),
             '_nosid' => true));
     }
 
     public function getDownloadConfigUrl()
     {
         return Mage::getUrl('debug/index/downloadConfig', array(
-            '_store' => self::DEFAULT_STORE_ID,
+            '_store' => $this->getDefaultStoreId(),
             '_nosid' => true));
     }
 
     public function getDownloadConfigAsTextUrl()
     {
         return Mage::getUrl('debug/index/downloadConfigAsText', array(
-            '_store' => self::DEFAULT_STORE_ID,
+            '_store' => $this->getDefaultStoreId(),
             '_nosid' => true));
     }
 
     public function getSearchConfigUrl()
     {
         return Mage::getUrl('debug/index/searchConfig', array(
-            '_store' => self::DEFAULT_STORE_ID,
+            '_store' => $this->getDefaultStoreId(),
             '_nosid' => true));
     }
 
@@ -90,7 +90,7 @@ class Magneto_Debug_Block_Config extends Magneto_Debug_Block_Abstract
         return Mage::getUrl('debug/index/togglePageCacheDebug',
                             array('store' => $forStore,
                                  'query' => rand(0, 1000000), // To bypass fpc
-                                 '_store' => self::DEFAULT_STORE_ID,
+                                 '_store' => $this->getDefaultStoreId(),
                                  '_nosid' => true
                             )
         );
