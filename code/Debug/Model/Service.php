@@ -50,7 +50,7 @@ class Sheep_Debug_Model_Service
     {
         $moduleConfigFile = $this->getModuleConfigFilePath($moduleName);
         $configXml = simplexml_load_file($moduleConfigFile);
-        if ($configXml===false) {
+        if ($configXml === false) {
             throw new Exception("Unable to parse module configuration file {$moduleConfigFile}");
         }
 
