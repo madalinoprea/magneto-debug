@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Class Sheep_Debug_Helper_Url
+ *
+ * @category Sheep
+ * @package  Sheep_Debug
+ * @license  Copyright: Pirate Sheep, 2016, All Rights reserved.
+ * @link     https://piratesheep.com
+ */
 class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Abstract
 {
     const MODULE_ROUTE = 'sheep_debug/';
@@ -16,11 +24,11 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Abstract
 
 
     /**
-     * @param string $path      Contains controller and action. Route will be added.
+     * @param string $path Contains controller and action. Route will be added.
      * @param array  $params
      * @return string
      */
-    public function getToolbarUrl($path, $params = array())
+    public function getToolbarUrl($path, array $params = array())
     {
         $path = self::MODULE_ROUTE . $path;
         $params['_store'] = $this->getRouteStoreId();

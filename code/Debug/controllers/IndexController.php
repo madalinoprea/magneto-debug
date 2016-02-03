@@ -280,49 +280,6 @@ class Sheep_Debug_IndexController extends Mage_Core_Controller_Front_Action
         $this->_redirectReferer();
     }
 
-    /**
-     * Turn on/off modules
-     *
-     * @return Magneto_Debug_IndexController|string
-     */
-    public function toggleModuleStatusAction()
-    {
-        $title = "Toggle Module Status";
-        $moduleName = $this->getRequest()->getParam('module');
-        if (!$moduleName) {
-            echo $this->_debugPanel($title, "Invalid module name supplied. ");
-            return;
-        }
-        $config = Mage::getConfig();
-
-        $moduleConfig = Mage::getConfig()->getModuleConfig($moduleName);
-        if (!$moduleConfig) {
-            echo $this->_debugPanel($title, "Unable to load supplied module. ");
-            return;
-        }
-
-        $moduleCurrentStatus = $moduleConfig->is('active');
-        $moduleNewStatus = $moduleCurrentStatus ? 'false' : 'true';
-        $moduleConfigFile = $config->getOptions()->getEtcDir() . DS . 'modules' . DS . $moduleName . '.xml';
-        $configContent = file_get_contents($moduleConfigFile);
-
-        $contents = '<br/>Active status switched to ' . $moduleNewStatus . ' for module {$moduleName} in file {$moduleConfigFile}:';
-        $contents .= '<br/><code>' . htmlspecialchars($configContent) . '</code>';
-
-        $configContent = str_replace('<active>' . $moduleConfig->active . '</active>', '<active>' . $moduleNewStatus . '</active>', $configContent);
-
-        if (file_put_contents($moduleConfigFile, $configContent) === FALSE) {
-            echo $this->_debugPanel($title, "Failed to write configuration. (Web Server's permissions for {$moduleConfigFile}?!)");
-            return $this;
-        }
-
-        Mage::helper('debug')->cleanCache();
-
-        $contents .= '<br/><code>' . htmlspecialchars($configContent) . '</code>';
-        $contents .= '<br/><br/><i>WARNING: This feature doesn\'t support usage of multiple frontends.</i>';
-
-        $this->getResponse()->setBody($this->_debugPanel($title, $contents));
-    }
 
     /**
      * Download config as XML file
