@@ -1,6 +1,11 @@
 <?php
-class Sheep_Debug_Block_Config extends Sheep_Debug_Block_Abstract
+class Sheep_Debug_Block_Config extends Sheep_Debug_Block_Panel
 {
+    public function getSubTitle()
+    {
+        return $this->__('TIME: %ss MEM: %s', $this->helper->getScriptDuration(), $this->helper->getMemoryUsage());
+    }
+
     static function xml2array($xml, &$arr, $parentKey=''){
         if( !$xml )
             return;

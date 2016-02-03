@@ -1,20 +1,47 @@
 <?xml version="1.0"?>
-<layout version="0.1.1">
+
+<layout version="1.2.0">
     <default>
         <reference name="before_body_end">
-            <block type="debug/debug" name="debug_panels" template="sheep_debug/debug.phtml">
-                <block type="debug/versions" name="debug_versions_panel" template="sheep_debug/versions.phtml"/>
-                <block type="debug/config" name="debug_config_panel" template="sheep_debug/config.phtml"/>
-                <block type="debug/blocks" name="debug_blocks_panel" template="sheep_debug/blocks.phtml"/>
-                <block type="debug/controller" name="debug_controller_panel" template="sheep_debug/controller.phtml"/>
-                <block type="debug/models" name="debug_models_panel" template="sheep_debug/models.phtml"/>
-                <block type="debug/layout" name="debug_layout_panel" template="sheep_debug/layout.phtml"/>
-                <block type="debug/abstract" name="debug_performance_panel" template="sheep_debug/performance.phtml"/>
-                <block type="debug/abstract" name="debug_utils_panel" template="sheep_debug/utils.phtml"/>
-                <block type="debug/abstract" name="debug_logs_panel" template="sheep_debug/logs.phtml"/>
+            <block type="sheep_debug/toolbar" name="debug_panels" template="sheep_debug/toolbar.phtml">
 
-                <!-- Preferences panel is not implemented yet -->
-                <!--<block type="debug/preferences" name="debug_preferences_panel" template="debug/preferences.phtml"/>-->
+                <block type="sheep_debug/versions" name="debug_versions_panel" template="sheep_debug/versions.phtml">
+                    <action method="setTitle"><title>Versions</title></action>
+                    <action method="setSubTitle"><sub_title>Magento Modules</sub_title></action>
+                </block>
+
+                <block type="sheep_debug/config" name="debug_config_panel" template="sheep_debug/config.phtml">
+                    <action method="setTitle"><title>Configuration</title></action>
+                </block>
+
+                <block type="sheep_debug/controller" name="debug_controller_panel" template="sheep_debug/controller.phtml">
+                    <action method="setTitle"><title>Controller</title></action>
+                    <action method="setSubTitle"><sub_title>Controller and Request</sub_title></action>
+                </block>
+
+                <block type="sheep_debug/models" name="debug_models_panel" template="sheep_debug/models.phtml">
+                    <action method="setTitle"><title>Models</title></action>
+                </block>
+
+                <block type="sheep_debug/layout" name="debug_layout_panel" template="sheep_debug/layout.phtml">
+                    <action method="setTitle"><title>Layout</title></action>
+                    <action method="setSubTitle"><sub_title>Updates, Handlers</sub_title></action>
+                </block>
+
+                <block type="sheep_debug/blocks" name="debug_blocks_panel" template="sheep_debug/blocks.phtml">
+                    <action method="setTitle"><title>Blocks</title></action>
+                </block>
+
+
+                <block type="sheep_debug/panel" name="debug_utils_panel" template="sheep_debug/utils.phtml">
+                    <action method="setTitle"><title>Utils</title></action>
+                    <action method="setSubTitle"><sub_title>Cache, Hints, etc</sub_title></action>
+                </block>
+
+                <block type="sheep_debug/panel" name="debug_logs_panel" template="sheep_debug/logs.phtml">
+                    <action method="setTitle"><title>Logs</title></action>
+                    <action method="setSubTitle"><sub_title>system.log, exception.log</sub_title></action>
+                </block>
             </block>
         </reference>
     </default>

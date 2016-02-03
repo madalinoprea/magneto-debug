@@ -1,8 +1,7 @@
 <?php
-/* @var $this Magneto_Debug_Block_Models */
+/* @var $this Sheep_Debug_Block_Models */
 
-$items = $this->getItems();
-Mage::helper('debug')->sortModelsByOccurrences($items);
+$items = $this->getSortedModels();
 $collections = $this->getCollections();
 $queries = $this->getQueries();
 ?>
@@ -18,7 +17,7 @@ $queries = $this->getQueries();
 	<tbody>
 		<?php $row = 0; ?>
 		<?php foreach( $items as $item ): ?>
-			<tr class="<?php echo ( ($row % 2 ? 'djDebugOdd' : 'djDebugEven')) ?>">
+			<tr class="<?php echo $row % 2 ? 'djDebugOdd' : 'djDebugEven'?>">
 				<td><?php echo $item['resource_name'] ?></td>
 				<td><?php echo $item['class'] ?></td>
 				<td><?php echo $item['occurrences'] ?></td>

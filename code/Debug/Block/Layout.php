@@ -1,5 +1,5 @@
 <?php
-class Sheep_Debug_Block_Layout extends Sheep_Debug_Block_Abstract
+class Sheep_Debug_Block_Layout extends Sheep_Debug_Block_Panel
 {
 
     public function getViewHandleUrl($layoutHandle)
