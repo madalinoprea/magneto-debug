@@ -22,20 +22,11 @@ class Sheep_Debug_Block_Blocks extends Sheep_Debug_Block_Panel
 
 
     /**
-     * @return array
+     * @return Sheep_Debug_Model_Block[]
      */
     public function getItems()
     {
-        return Mage::getSingleton('sheep_debug/observer')->getBlocks();
-    }
-
-
-    /**
-     * @return array
-     */
-    public function getLayoutBlocks()
-    {
-        return Mage::getSingleton('sheep_debug/observer')->getLayoutBlocks();
+        return $this->getRequestInfo()->getBlocks();
     }
 
 
@@ -54,7 +45,7 @@ class Sheep_Debug_Block_Blocks extends Sheep_Debug_Block_Panel
      */
     public function getViewBlockUrl($blockClass)
     {
-        return Mage::helper('sheep_debug/url')->getToolbarUrl('index/viewBlock', array('block' => $blockClass));
+        return Mage::helper('sheep_debug/url')->getViewBlockUrl($blockClass);
     }
 
 
@@ -66,19 +57,19 @@ class Sheep_Debug_Block_Blocks extends Sheep_Debug_Block_Panel
      */
     public function getViewTemplateUrl($template)
     {
-        return Mage::helper('sheep_debug/url')->getToolbarUrl('index/viewTemplate', array('template' => $template));
+        return Mage::helper('sheep_debug/url')->getViewTemplateUrl($template);
     }
 
 
     /**
      * Returns rendering time for block
      *
-     * @param array $block
+     * @param Sheep_Debug_Model_Block $block
      * @return string
      */
-    public function getRenderingTime($block)
+    public function getRenderingTime(Sheep_Debug_Model_Block $block)
     {
-        return array_key_exists('rendered_in', $block) ? number_format($block['rendered_in'], 3) : '';
+        return $block->getRenderedDuration() ? number_format($block->getRenderedDuration(), 3) : '';
     }
 
 }
