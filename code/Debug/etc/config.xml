@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <config>
     <modules>
-        <Magneto_Debug>
+        <Sheep_Debug>
             <version>1.2.0</version>
-        </Magneto_Debug>
+        </Sheep_Debug>
     </modules>
 
     <global>

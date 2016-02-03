@@ -42,6 +42,10 @@
                     <action method="setTitle"><title>Logs</title></action>
                     <action method="setSubTitle"><sub_title>system.log, exception.log</sub_title></action>
                 </block>
+
+                <block type="sheep_debug/about" name="debug_about_panel">
+                    <action method="setTitle"><title>About</title></action>
+                </block>
             </block>
         </reference>
     </default>

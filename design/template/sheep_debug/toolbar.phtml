@@ -4,8 +4,6 @@
 $panels = $this->getVisiblePanels();
 ?>
 
-<h2>Toolbar</h2>
-
 <style type="text/css">@media print { #djDebug {display:none;}}</style>
 <script type="text/javascript">
 // <![CDATA[
@@ -44,13 +42,6 @@ var DEBUG_TOOLBAR_MEDIA_URL = "<?php echo $this->getDebugMediaUrl(); ?>";
                     <?php endif; ?>
 				</li>
             <?php endforeach; ?>
-
-            <li>
-                <a href="#" class="">
-                    <?php echo $this->__('About'); ?><br/>
-                    <small><?php echo $this->__('Version %s', $this->getVersion()) ?></a></small>
-                </a>
-            </li>
 		</ul>
 	</div>
 
