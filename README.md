@@ -1,4 +1,4 @@
-# Magento Debug Toolbar 
+# Magento Debug Toolbar
 Based on robhudson's awesome work (<https://github.com/robhudson/django-debug-toolbar>) we've created a debug toolbar for Magento.
 It is installed as a Magento module without hacking Magento's core.
 
@@ -6,7 +6,7 @@ Basic features are implemented and few others will come soon. Check the screensh
 
 Or demo video on YouTube: http://www.youtube.com/watch?v=aqvgrmebcu4
 
-## INSTALLATION 
+## INSTALLATION
 
 ### A) Via Modman - Recommended (https://github.com/colinmollenhour/modman)
 
@@ -29,33 +29,33 @@ source ~/.profile
  - For older Magento versions: http://www.tonigrigoriu.com/magento/magento-how-to-fix-template-path-errors-when-using-symlinks/
 
 #### 3) Install Debug Toolbar module:
- 
-<pre>
+
+```
 cd [magento root folder]
 modman init
 modman clone https://github.com/madalinoprea/magneto-debug.git
-</pre>
+```
 
  - Make sure you've cleaned Magento's cache to enable the new module; hit refresh
- 
+
 #### How to update
 I'm pretty lazy and I don't like to create Magento Connect packages. With modman you can effortlessly grab the latest changes from github.
-<pre>
+`
 modman update magneto-debug
-</pre>
+`
  - Clean Magento's cache to make sure new changes will be enabled.
 
 ### B) Via Magento Connect
 Extension is not updated regularly. I recommend using modman.
 
-<pre>
+`
 cd [magento root folder]
 sudo ./mage install community MagnetoDebug
-</pre>
+`
 
 Magento Connect extension package is available here: http://www.magentocommerce.com/magento-connect/sstoiana/extension/6714/magnetodebug
 
-## FEATURES 
+## FEATURES
  - Now available in Admin (1.0.1 RC - fancy for I'm laizy to create Magento Connect package)
  - Magento module listing; Toggle Magento modules on the fly
  - Search configuration keys
@@ -67,7 +67,7 @@ Magento Connect extension package is available here: http://www.magentocommerce.
  - Print layout handles for current request
  - Find xml files where a specific layout handle is defined
  - Created blocks, their associated templates; Preview templates' source code
- - Quick actions: 
+ - Quick actions:
     - Toggle template hints
     - Clear cache
     - Toggle inline translation
@@ -76,17 +76,18 @@ Magento Connect extension package is available here: http://www.magentocommerce.
 We're working to correct these:
 
  - To enable SQL profiler manually you have to add in your local.xml profiler tag `<profiler>1</profiler>` under connection, like in the example below:
-<pre><code>
-    <default_setup>
-        <connection>
-            <host><![CDATA[/var/run/mysqld/mysqld.sock]]></host>
-            <username><![CDATA[root]]></username>
-            <password><![CDATA[]]></password>
-            <dbname><![CDATA[magento]]></dbname>
-            <active>1</active>
-            <profiler>1</profiler>
-        </connection>
-    </default_setup>
-</code></pre>
+
+```
+<default_setup>
+    <connection>
+        <host><![CDATA[/var/run/mysqld/mysqld.sock]]></host>
+        <username><![CDATA[root]]></username>
+        <password><![CDATA[]]></password>
+        <dbname><![CDATA[magento]]></dbname>
+        <active>1</active>
+        <profiler>1</profiler>
+    </connection>
+</default_setup>
+```
 
  - `Disable SQL Profiler` is not working, but `Enable SQL Profiler` works like a charm (or not)
