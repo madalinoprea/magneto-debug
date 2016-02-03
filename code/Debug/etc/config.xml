@@ -26,6 +26,8 @@
         </helpers>
 
         <events>
+
+            <!-- Records all instantiated blocks -->
             <controller_action_layout_generate_blocks_after>
                 <observers>
                     <debug_observer>
@@ -36,6 +38,7 @@
                 </observers>
             </controller_action_layout_generate_blocks_after>
 
+            <!-- Records rendered block and rendering start time -->
             <core_block_abstract_to_html_before>
                 <observers>
                     <debug_observer>
@@ -46,6 +49,7 @@
                 </observers>
             </core_block_abstract_to_html_before>
 
+            <!-- Records block rendering end time -->
             <core_block_abstract_to_html_after>
                 <observers>
                     <debug_observer>
@@ -66,6 +70,7 @@
                 </observers>
             </controller_action_postdispatch>
 
+            <!-- Records loaded collections -->
             <core_collection_abstract_load_before>
                 <observers>
                     <debug_observer>
@@ -76,27 +81,18 @@
                 </observers>
             </core_collection_abstract_load_before>
 
+            <!-- Records collection load -->
             <eav_collection_abstract_load_before>
                 <observers>
                     <debug_observer>
                         <type>singleton</type>
                         <class>sheep_debug/observer</class>
-                        <method>onEavCollectionLoad</method>
+                        <method>onCollectionLoad</method>
                     </debug_observer>
                 </observers>
             </eav_collection_abstract_load_before>
 
-
-            <!-- <core_block_abstract_prepare_layout_after> -->
-            <!--     <observers> -->
-            <!--         <debug_observer> -->
-            <!--             <type>singleton</type> -->
-            <!--             <class>debug/observer</class> -->
-            <!--             <method>onPrepareLayout</method> -->
-            <!--         </debug_observer> -->
-            <!--     </observers> -->
-            <!-- </core_block_abstract_prepare_layout_after> -->
-
+            <!-- Records model load -->
             <model_load_after>
                 <observers>
                     <debug_observer>
@@ -106,6 +102,7 @@
                     </debug_observer>
                 </observers>
             </model_load_after>
+
 
             <controller_action_predispatch>
                 <observers>
