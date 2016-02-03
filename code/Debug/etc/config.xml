@@ -5,63 +5,24 @@
             <version>1.2.0</version>
         </Magneto_Debug>
     </modules>
-    <frontend>
-        <routers>
-            <sheep_debug>
-                <use>standard</use>
-                <args>
-                    <module>Sheep_Debug</module>
-                    <frontName>sheep_debug</frontName>
-                </args>
-            </sheep_debug>
-        </routers>
-        <layout>
-            <updates>
-                <debug>
-                    <file>sheep_debug.xml</file>
-                </debug>
-            </updates>
-        </layout>
-        <enterprise>
-            <websiterestriction>
-                <full_action_names>
-                    <generic>
-                        <debug_index_clearCache />
-                        <debug_index_downloadConfig />
-                        <debug_index_downloadConfigAsText />
-                        <debug_index_searchConfig />
-                        <debug_index_searchGroupedClass />
-                        <debug_index_toggleModuleStatus />
-                        <debug_index_togglePageCacheDebug />
-                        <debug_index_toggleSqlProfiler />
-                        <debug_index_toggleTemplateHints />
-                        <debug_index_toggleTranslateInline />
-                        <debug_index_viewBlock />
-                        <debug_index_viewFilesWithHandle />
-                        <debug_index_viewLog />
-                        <debug_index_viewSqlExplain />
-                        <debug_index_viewSqlSelect />
-                        <debug_index_viewTemplate />
-                    </generic>
-                </full_action_names>
-            </websiterestriction>
-        </enterprise>
-    </frontend>
+
     <global>
         <models>
-            <debug>
+            <sheep_debug>
                 <class>Sheep_Debug_Model</class>
-            </debug>
+            </sheep_debug>
         </models>
+
         <blocks>
-            <debug>
+            <sheep_debug>
                 <class>Sheep_Debug_Block</class>
-            </debug>
+            </sheep_debug>
         </blocks>
+
         <helpers>
-            <debug>
+            <sheep_debug>
                 <class>Sheep_Debug_Helper</class>
-            </debug>
+            </sheep_debug>
         </helpers>
 
         <events>
@@ -69,7 +30,7 @@
                 <observers>
                     <debug_observer>
                         <type>singleton</type>
-                        <class>debug/observer</class>
+                        <class>sheep_debug/observer</class>
                         <method>onLayoutGenerate</method>
                     </debug_observer>
                 </observers>
@@ -79,7 +40,7 @@
                 <observers>
                     <debug_observer>
                         <type>singleton</type>
-                        <class>debug/observer</class>
+                        <class>sheep_debug/observer</class>
                         <method>onBlockToHtml</method>
                     </debug_observer>
                 </observers>
@@ -89,7 +50,7 @@
                 <observers>
                     <debug_observer>
                         <type>singleton</type>
-                        <class>debug/observer</class>
+                        <class>sheep_debug/observer</class>
                         <method>onBlockToHtmlAfter</method>
                     </debug_observer>
                 </observers>
@@ -99,7 +60,7 @@
                 <observers>
                     <debug_observer>
                         <type>singleton</type>
-                        <class>debug/observer</class>
+                        <class>sheep_debug/observer</class>
                         <method>onActionPostDispatch</method>
                     </debug_observer>
                 </observers>
@@ -109,7 +70,7 @@
                 <observers>
                     <debug_observer>
                         <type>singleton</type>
-                        <class>debug/observer</class>
+                        <class>sheep_debug/observer</class>
                         <method>onCollectionLoad</method>
                     </debug_observer>
                 </observers>
@@ -119,7 +80,7 @@
                 <observers>
                     <debug_observer>
                         <type>singleton</type>
-                        <class>debug/observer</class>
+                        <class>sheep_debug/observer</class>
                         <method>onEavCollectionLoad</method>
                     </debug_observer>
                 </observers>
@@ -140,7 +101,7 @@
                 <observers>
                     <debug_observer>
                         <type>singleton</type>
-                        <class>debug/observer</class>
+                        <class>sheep_debug/observer</class>
                         <method>onModelLoad</method>
                     </debug_observer>
                 </observers>
@@ -150,7 +111,7 @@
                 <observers>
                     <debug_observer>
                         <type>singleton</type>
-                        <class>debug/observer</class>
+                        <class>sheep_debug/observer</class>
                         <method>onActionPreDispatch</method>
                     </debug_observer>
                 </observers>
@@ -158,10 +119,69 @@
         </events>
     </global>
 
+    <frontend>
+        <routers>
+            <sheep_debug>
+                <use>standard</use>
+                <args>
+                    <module>Sheep_Debug</module>
+                    <frontName>sheep_debug</frontName>
+                </args>
+            </sheep_debug>
+        </routers>
+
+        <layout>
+            <updates>
+                <sheep_debug>
+                    <file>sheep_debug.xml</file>
+                </sheep_debug>
+            </updates>
+        </layout>
+
+        <enterprise>
+            <!-- TODO: Update whitelisted actions after module renaming -->
+            <websiterestriction>
+                <full_action_names>
+                    <generic>
+                        <debug_index_clearCache/>
+                        <debug_index_downloadConfig/>
+                        <debug_index_downloadConfigAsText/>
+                        <debug_index_searchConfig/>
+                        <debug_index_searchGroupedClass/>
+                        <debug_index_toggleModuleStatus/>
+                        <debug_index_togglePageCacheDebug/>
+                        <debug_index_toggleSqlProfiler/>
+                        <debug_index_toggleTemplateHints/>
+                        <debug_index_toggleTranslateInline/>
+                        <debug_index_viewBlock/>
+                        <debug_index_viewFilesWithHandle/>
+                        <debug_index_viewLog/>
+                        <debug_index_viewSqlExplain/>
+                        <debug_index_viewSqlSelect/>
+                        <debug_index_viewTemplate/>
+                    </generic>
+                </full_action_names>
+            </websiterestriction>
+        </enterprise>
+    </frontend>
+
+    <!-- adminhtml configuration -->
+    <adminhtml>
+        <layout>
+            <updates>
+                <sheep_debug>
+                    <file>sheep_debug.xml</file>
+                </sheep_debug>
+            </updates>
+        </layout>
+    </adminhtml>
+
+    <!-- Default settings -->
     <default>
-        <debug>
+        <sheep_debug>
             <options>
                 <enable>1</enable>
+
                 <debug_panel_versions_visibility>1</debug_panel_versions_visibility>
                 <debug_panel_performance_visibility>1</debug_panel_performance_visibility>
                 <debug_panel_configuration_visibility>1</debug_panel_configuration_visibility>
@@ -173,37 +193,6 @@
                 <debug_panel_preferences_visibility>1</debug_panel_preferences_visibility>
                 <debug_panel_logs_visibility>1</debug_panel_logs_visibility>
             </options>
-        </debug>
+        </sheep_debug>
     </default>
-
-    <adminhtml>
-        <acl>
-            <resources>
-                <admin>
-                    <children>
-                        <debug>
-                            <title>Debug Toolbar</title>
-                            <sort_order>10</sort_order>
-                        </debug>
-                        <system>
-                            <children>
-                                <config>
-                                    <children>
-                                        <debug>Debug Toolbar Options</debug>
-                                    </children>
-                                </config>
-                            </children>
-                        </system>
-                    </children>
-                </admin>
-            </resources>
-        </acl>
-        <layout>
-            <updates>
-                <debugadmin>
-                    <file>sheep_debug.xml</file>
-                </debugadmin>
-            </updates>
-        </layout>
-    </adminhtml>
 </config>
