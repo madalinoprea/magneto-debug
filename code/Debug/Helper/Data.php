@@ -2,6 +2,31 @@
 
 class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Abstract
 {
+    const DEBUG_OPTIONS_ENABLE_PATH = 'sheep_debug/options/enable';
+
+
+    /**
+     * Returns module name (e.g Sheep_Debug)
+     *
+     * @return string
+     */
+    public function getModuleName()
+    {
+        return $this->_getModuleName();
+    }
+
+
+    /**
+     * Returns module version number
+     *
+     * @return string
+     */
+    public function getModuleVersion()
+    {
+        $versionPath = 'modules/' . $this->getModuleName() . '/version';
+        return (string) Mage::getConfig()->getNode($versionPath);
+    }
+
     /**
      * Cleans Magento's cache
      *
@@ -17,8 +42,8 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Abstract
      *
      * @return bool
      */
-    function isRequestAllowed() {
-        $isDebugEnable = (int)Mage::getStoreConfig('debug/options/enable');
+    public function isRequestAllowed() {
+        $isDebugEnable = (int)Mage::getStoreConfig(self::DEBUG_OPTIONS_ENABLE_PATH);
         $clientIp = $this->_getRequest()->getClientIp();
         $allow = false;
 
@@ -47,7 +72,7 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Abstract
      * 
      * @return string
      */
-	function formatSize($size) {
+	public function formatSize($size) {
 		$sizes = array(" Bytes", " KB", " MB", " GB", " TB", " PB", " EB", " ZB", " YB");
 		if ($size == 0) {
 			 return('n/a'); 
@@ -75,7 +100,7 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Abstract
 	}
 	
 	public function sortModelsByOccurrences(&$models) {
-		usort($models, array('Magneto_Debug_Helper_Data', 'sortModelCmp'));
+		usort($models, array('Sheep_Debug_Helper_Data', 'sortModelCmp'));
 	}
 
     public function getBlockFilename($blockClass)
@@ -91,7 +116,7 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Abstract
      * @param $designArea
      * @return array
      */
-    function getLayoutUpdatesFiles($storeId, $designArea) {
+    public function getLayoutUpdatesFiles($storeId, $designArea) {
         if (null === $storeId) {
             $storeId = Mage::app()->getStore()->getId();
         }
@@ -234,6 +259,6 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function isPanelVisible($panelTitle)
     {
-        return Mage::getStoreConfig('debug/options/debug_panel_' . strtolower($panelTitle) . '_visibility');
+        return (bool)Mage::getStoreConfig('sheep_debug/options/debug_panel_' . strtolower($panelTitle) . '_visibility');
     }
 }
