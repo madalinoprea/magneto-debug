@@ -12,6 +12,8 @@
  * @method string getSubTitle()
  * @method string getContent()
  * @method setContent(string $content)
+ * @method setIsContentSafe(bool $isSafe)
+ * @method bool getIsContentSafe()
  * @method string getContentUrl()
  */
 class Sheep_Debug_Block_Panel extends Sheep_Debug_Block_Abstract

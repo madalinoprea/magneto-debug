@@ -8,6 +8,6 @@
 </div> 
 <div class="djDebugPanelContent"> 
     <div class="scroll"> 
-        <code><?php echo $this->escapeHtml($this->getContent()) ?></code>
+        <code><?php echo $this->getIsContentSafe() ? $this->getContent() : $this->escapeHtml($this->getContent()) ?></code>
     </div> 
 </div>
