@@ -24,21 +24,22 @@ class Sheep_Debug_Block_Abstract extends Mage_Core_Block_Template
             ->getDefaultStoreId();
     }
 
-    public function _getViewVars() {
-        return $this->_viewVars;
-    }
 
     public function getShowTemplateHints()
     {
         return false;
     }
 
+
     /**
-     * TODO: use a request info model
-     * @return Sheep_Debug_Model_Observer
+     * Returns info about current request
+     *
+     * TODO: Return specified request info
+     *
+     * @return Sheep_Debug_Model_RequestInfo
      */
     public function getRequestInfo()
     {
-        return Mage::getSingleton('sheep_debug/observer');
+        return Mage::getSingleton('sheep_debug/observer')->getRequestInfo();
     }
 }
