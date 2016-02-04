@@ -30,6 +30,16 @@ class Sheep_Debug_Block_Abstract extends Mage_Core_Block_Template
         $this->helper = Mage::helper('sheep_debug');
     }
 
+    /**
+     * By default we don't cache our blocks
+     *
+     * @return null
+     */
+    public function getCacheLifetime()
+    {
+        return null;
+    }
+
 
     public function getDefaultStoreId(){
         return Mage::app()

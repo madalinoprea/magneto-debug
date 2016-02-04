@@ -23,6 +23,12 @@ class Sheep_Debug_Block_Logging extends Sheep_Debug_Block_Panel
     }
 
 
+    public function isVisible()
+    {
+        return $this->helper->isPanelVisible('logging');
+    }
+
+
     /**
      * @return Sheep_Debug_Model_Logging
      */

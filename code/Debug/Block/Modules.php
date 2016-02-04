@@ -11,6 +11,12 @@
 class Sheep_Debug_Block_Modules extends Sheep_Debug_Block_Panel
 {
 
+    public function isVisible()
+    {
+        return $this->helper->isPanelVisible('modules');
+    }
+
+
     /**
      * @return array
      */

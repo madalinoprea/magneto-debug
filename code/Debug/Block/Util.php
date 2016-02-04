@@ -10,6 +10,11 @@
  */
 class Sheep_Debug_Block_Util extends Sheep_Debug_Block_Panel
 {
+    public function isVisible()
+    {
+        return $this->helper->isPanelVisible('util');
+    }
+
     public function getFlushCacheUrl()
     {
         return Mage::helper('sheep_debug/url')->getFlushCacheUrl();

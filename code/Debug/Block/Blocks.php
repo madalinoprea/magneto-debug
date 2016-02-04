@@ -21,6 +21,12 @@ class Sheep_Debug_Block_Blocks extends Sheep_Debug_Block_Panel
     }
 
 
+    public function isVisible()
+    {
+        return $this->helper->isPanelVisible('blocks');
+    }
+
+
     /**
      * @return Sheep_Debug_Model_Block[]
      */

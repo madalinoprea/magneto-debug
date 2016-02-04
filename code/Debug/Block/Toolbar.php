@@ -21,7 +21,7 @@ class Sheep_Debug_Block_Toolbar extends Sheep_Debug_Block_Abstract
     public function renderView()
     {
         // Render Debug toolbar only if allowed 
-        if (!$this->helper->isRequestAllowed()) {
+        if (!$this->helper->canShowToolbar()) {
             return '';
         }
 

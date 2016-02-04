@@ -200,18 +200,18 @@
         <sheep_debug>
             <options>
                 <enable>1</enable>
-
-                <debug_panel_versions_visibility>1</debug_panel_versions_visibility>
-                <debug_panel_performance_visibility>1</debug_panel_performance_visibility>
-                <debug_panel_configuration_visibility>1</debug_panel_configuration_visibility>
-                <debug_panel_blocks_visibility>1</debug_panel_blocks_visibility>
-                <debug_panel_layout_visibility>1</debug_panel_layout_visibility>
-                <debug_panel_controller_visibility>1</debug_panel_controller_visibility>
-                <debug_panel_models_visibility>1</debug_panel_models_visibility>
-                <debug_panel_utilities_visibility>1</debug_panel_utilities_visibility>
-                <debug_panel_preferences_visibility>1</debug_panel_preferences_visibility>
-                <debug_panel_logs_visibility>1</debug_panel_logs_visibility>
             </options>
+
+            <panels>
+                <controller_visibility>1</controller_visibility>
+                <models_visibility>1</models_visibility>
+                <design_visibility>1</design_visibility>
+                <blocks_visibility>1</blocks_visibility>
+                <logging_visibility>1</logging_visibility>
+                <util_visibility>1</util_visibility>
+                <modules_visibility>1</modules_visibility>
+                <config_visibility>1</config_visibility>
+            </panels>
         </sheep_debug>
     </default>
 </config>

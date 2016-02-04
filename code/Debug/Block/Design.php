@@ -9,6 +9,12 @@ class Sheep_Debug_Block_Design extends Sheep_Debug_Block_Panel
     }
 
 
+    public function isVisible()
+    {
+        return $this->helper->isPanelVisible('design');
+    }
+
+
     public function getLayoutHandles()
     {
         return $this->getDesign()->getLayoutHandles();

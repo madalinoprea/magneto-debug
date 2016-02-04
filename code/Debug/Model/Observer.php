@@ -10,6 +10,13 @@
  */
 class Sheep_Debug_Model_Observer
 {
+    // This is initialised as soon as app is setup
+    protected $canCapture = true;
+
+    public function canCapture()
+    {
+        return $this->canCapture;
+    }
 
     /**
      * Returns request info model associated to current request.
@@ -29,6 +36,8 @@ class Sheep_Debug_Model_Observer
      */
     public function onControllerFrontInitBefore()
     {
+        $this->canCapture = Mage::helper('sheep_debug')->canCapture();
+
         $this->getRequestInfo()->setStoreId(Mage::app()->getStore()->getId());
         $this->getRequestInfo()->initLogging();
     }
@@ -47,6 +56,10 @@ class Sheep_Debug_Model_Observer
      */
     public function onActionPreDispatch(Varien_Event_Observer $observer)
     {
+        if (!$this->canCapture()) {
+            return;
+        }
+
         /** @noinspection PhpUndefinedMethodInspection */
         $action = $observer->getEvent()->getControllerAction();
 
@@ -80,6 +93,10 @@ class Sheep_Debug_Model_Observer
      */
     public function onLayoutGenerate(Varien_Event_Observer $observer)
     {
+        if (!$this->canCapture()) {
+            return;
+        }
+
         /** @var Mage_Core_Model_Layout $layout */
         /** @noinspection PhpUndefinedMethodInspection */
         $layout = $observer->getEvent()->getLayout();
@@ -106,6 +123,10 @@ class Sheep_Debug_Model_Observer
      */
     public function onBlockToHtml(Varien_Event_Observer $observer)
     {
+        if (!$this->canCapture()) {
+            return;
+        }
+
         /** @var $event Varien_Event */
         $event = $observer->getEvent();
         /* @var $block Mage_Core_Block_Abstract */
@@ -135,6 +156,10 @@ class Sheep_Debug_Model_Observer
      */
     public function onBlockToHtmlAfter(Varien_Event_Observer $observer)
     {
+        if (!$this->canCapture()) {
+            return;
+        }
+
         $event = $observer->getEvent();
         /* @var $block Mage_Core_Block_Abstract */
         $block = $event->getBlock();
@@ -157,6 +182,10 @@ class Sheep_Debug_Model_Observer
      */
     public function onActionPostDispatch(Varien_Event_Observer $event)
     {
+        if (!$this->canCapture()) {
+            return;
+        }
+
         /** @var Mage_Core_Controller_Varien_Action $action */
         /** @noinspection PhpUndefinedMethodInspection */
         $action = $event->getControllerAction();
@@ -173,6 +202,10 @@ class Sheep_Debug_Model_Observer
      */
     public function onCollectionLoad(Varien_Event_Observer $event)
     {
+        if (!$this->canCapture()) {
+            return;
+        }
+
         /** @var Mage_Core_Model_Resource_Db_Collection_Abstract */
         /** @noinspection PhpUndefinedMethodInspection */
         $collection = $event->getCollection();
@@ -187,14 +220,15 @@ class Sheep_Debug_Model_Observer
      */
     public function onModelLoad(Varien_Event_Observer $observer)
     {
+        if (!$this->canCapture()) {
+            return;
+        }
+
         $event = $observer->getEvent();
         /** @noinspection PhpUndefinedMethodInspection */
         $model = $event->getObject();
         $this->getRequestInfo()->addModel($model);
     }
-
-
-
 
 
     /**
@@ -204,6 +238,10 @@ class Sheep_Debug_Model_Observer
      */
     public function onControllerFrontSendResponseAfter(Varien_Event_Observer $observer)
     {
+        if (!$this->canCapture()) {
+            return;
+        }
+
         $this->getRequestInfo()->getLogging()->endRequest();
     }
 

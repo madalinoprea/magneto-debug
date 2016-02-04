@@ -12,7 +12,7 @@
 
             <groups>
                 <options translate="label">
-                    <label>Developer Debug Toolbar Options</label>
+                    <label>Options</label>
                     <sort_order>100</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
@@ -31,41 +31,18 @@
                                 System / Configuration / Developer / Developer Client Restrictions - Allowed IPS.]]></comment>
                             <sort_order>0</sort_order>
                         </enable>
+                    </fields>
+                </options>
 
-                        <debug_panel_versions_visibility>
-                            <label>Show Versions Panel</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>1</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <sort_order>1</sort_order>
-                        </debug_panel_versions_visibility>
-
-                        <debug_panel_performance_visibility>
-                            <label>Show Performance Panel</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>1</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <sort_order>2</sort_order>
-                        </debug_panel_performance_visibility>
-
-                        <debug_panel_configuration_visibility>
-                            <label>Show Configuration Panel</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>1</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <sort_order>3</sort_order>
-                        </debug_panel_configuration_visibility>
-
-                        <debug_panel_controller_visibility>
+                <panels>
+                    <label>Panels Visibility</label>
+                    <sort_order>500</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <fields>
+                        <controller_visibility>
                             <label>Show Controller Panel</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -73,10 +50,10 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                            <sort_order>4</sort_order>
-                        </debug_panel_controller_visibility>
+                            <sort_order>1</sort_order>
+                        </controller_visibility>
 
-                        <debug_panel_models_visibility>
+                        <models_visibility>
                             <label>Show Models Panel</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -84,21 +61,21 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                            <sort_order>5</sort_order>
-                        </debug_panel_models_visibility>
+                            <sort_order>2</sort_order>
+                        </models_visibility>
 
-                        <debug_panel_layout_visibility>
-                            <label>Show Layout Panel</label>
+                        <design_visibility>
+                            <label>Show Design Panel</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>1</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                            <sort_order>6</sort_order>
-                        </debug_panel_layout_visibility>
+                            <sort_order>3</sort_order>
+                        </design_visibility>
 
-                        <debug_panel_blocks_visibility>
+                        <blocks_visibility>
                             <label>Show Blocks Panel</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -106,11 +83,44 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                            <sort_order>7</sort_order>
-                        </debug_panel_blocks_visibility>
+                            <sort_order>4</sort_order>
+                        </blocks_visibility>
 
-                        <debug_panel_logs_visibility>
-                            <label>Show Logs Panel</label>
+                        <logging_visibility>
+                            <label>Show Logging Panel</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>5</sort_order>
+                        </logging_visibility>
+
+                        <util_visibility>
+                            <label>Show Utils Panel</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>6</sort_order>
+                        </util_visibility>
+
+                        <modules_visibility>
+                            <label>Show Modules Panel</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>7</sort_order>
+                        </modules_visibility>
+
+                        <config_visibility>
+                            <label>Show Configuration Panel</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>1</sort_order>
@@ -118,9 +128,9 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <sort_order>8</sort_order>
-                        </debug_panel_logs_visibility>
+                        </config_visibility>
                     </fields>
-                </options>
+                </panels>
             </groups>
         </sheep_debug>
     </sections>

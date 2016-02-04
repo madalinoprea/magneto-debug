@@ -12,6 +12,10 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
 {
     const DEBUG_OPTIONS_ENABLE_PATH = 'sheep_debug/options/enable';
 
+    public function isEnabled()
+    {
+        return (bool) Mage::getStoreConfig(self::DEBUG_OPTIONS_ENABLE_PATH);
+    }
 
     /**
      * Returns module name (e.g Sheep_Debug)
@@ -115,35 +119,41 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
 
 
     /**
-     * Check if client's ip is white listed
-     * TODO: Review this implementation
+     * Decides if we need to capture request information.
+     *
+     * For now, we'll not capture anything if we don't need to show the toolbar
+     */
+    public function canCapture()
+    {
+        return $this->canShowToolbar();
+    }
+
+
+    /**
+     * Decides if we need to render toolbar
+     *
+     * Rules:
+     *      - never show toolbar if it is disabled from Admin
+     *      - show toolbar if it's enabled and if developer mode is active
+     *      - show toolbar if it's enabled and if current ip is in the allowed list of ips
      *
      * @return bool
      */
-    public function isRequestAllowed()
+    public function canShowToolbar()
     {
-        $isDebugEnable = (int)Mage::getStoreConfig(self::DEBUG_OPTIONS_ENABLE_PATH);
-        $clientIp = $this->_getRequest()->getClientIp();
-        $allow = false;
-
-        if ($isDebugEnable) {
-            $allow = true;
-
-            // Code copy-pasted from core/helper, isDevAllowed method 
-            // I cannot use that method because the client ip is not always correct (e.g varnish)
-            $allowedIps = Mage::getStoreConfig('dev/restrict/allow_ips');
-            if ($isDebugEnable && !empty($allowedIps) && !empty($clientIp)) {
-                $allowedIps = preg_split('#\s*,\s*#', $allowedIps, null, PREG_SPLIT_NO_EMPTY);
-                if (array_search($clientIp, $allowedIps) === false
-                    && array_search(Mage::helper('core/http')->getHttpHost(), $allowedIps) === false
-                ) {
-                    $allow = false;
-                }
-            }
+        if (!$this->isEnabled()) {
+            return false;
         }
 
-        return $allow;
+        // ignore IP white listing if developer mode is on
+        if (Mage::getIsDeveloperMode()) {
+            return true;
+        }
+
+        // IP is the allowed list
+        return $this->isDevAllowed();
     }
+
 
     /**
      * Return readable file size
@@ -233,9 +243,13 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
     }
 
 
-    public function isPanelVisible($panelTitle)
+    /**
+     * @param $panelId
+     * @return bool
+     */
+    public function isPanelVisible($panelId)
     {
-        return (bool)Mage::getStoreConfig('sheep_debug/options/debug_panel_' . strtolower($panelTitle) . '_visibility');
+        return (bool)Mage::getStoreConfig('sheep_debug/panels/' . strtolower($panelId) . '_visibility');
     }
 
 

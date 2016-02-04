@@ -11,6 +11,12 @@
 class Sheep_Debug_Block_Config extends Sheep_Debug_Block_Panel
 {
 
+    public function isVisible()
+    {
+        return $this->helper->isPanelVisible('config');
+    }
+
+
     public function getDownloadConfigAsXmlUrl()
     {
         return Mage::helper('sheep_debug/url')->getDownloadConfig('xml');
