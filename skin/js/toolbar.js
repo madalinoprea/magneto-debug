@@ -4,14 +4,14 @@
 	if (!(j = window.jQuery) || version > j.fn.jquery || callback(j)) {
 		var script = document.createElement("script");
 		script.type = "text/javascript";
-		script.src = DEBUG_TOOLBAR_MEDIA_URL + "js/jquery.js";
+		script.src = DEBUG_TOOLBAR_MEDIA_URL + "js/jquery-2.2.0.min.js";
 		script.onload = script.onreadystatechange = function() {
 			if (!loaded && (!(d = this.readyState) || d == "loaded" || d == "complete")) {
 				callback((j = window.jQuery).noConflict(1), loaded = true);
 				j(script).remove();
 			}
 		};
-		
+
 		document.head.appendChild(script)
 	}
 })(window, document, "1.3", function($, jquery_loaded) {
@@ -20,6 +20,7 @@
 	$('head').append('<link rel="stylesheet" href="'+DEBUG_TOOLBAR_MEDIA_URL+'css/toolbar.css" type="text/css" />');
 	var COOKIE_NAME = 'djdt';
 	var djdt = {
+
 		init: function() {
 			$('#djDebug').show();
 			var current = null;
@@ -44,17 +45,38 @@
 				$('#djDebugToolbar li').removeClass('active');
 				return false;
 			});
+
+            // Always have an handler defined for back buttons
+            $('#djDebugWindow').on("click", ".djDebugBack", function() {
+                $(this).parent().parent().hide();
+                return false;
+            });
+
 			$('#djDebug a.remoteCall').click(function() {
 				$('#djDebugWindow').html('<div class="loader"></div>');
-				$('#djDebugWindow').load(this.href, {}, function() {
-					$('#djDebugWindow a.djDebugBack').click(function() {
-						$(this).parent().parent().hide();
-						return false;
-					});
-				});
+				$('#djDebugWindow').load(this.href);
 				$('#djDebugWindow').show();
 				return false;
 			});
+
+
+            // TODO: generic method to post data
+            $('#djDebug').find('a.sqlCall').click(function () {
+                var $sqlElement = $(this).nextAll('input.sqlData:first').eq(0);
+
+                $('#djDebugWindow').html('<div class="loader"></div>');
+                $.post(
+                    this.href, {
+                        query: $sqlElement.attr('data-sql'),
+                        queryParams: $sqlElement.attr('data-params')
+                    }, function (response) {
+                        $('#djDebugWindow').html(response);
+                    });
+
+                $('#djDebugWindow').show();
+                return false;
+            });
+
 			$('#debug-panel-Layout a.djTemplateShowContext').click(function() {
 				djdt.toggle_arrow($(this).children('.toggleArrow'))
 				djdt.toggle_content($(this).parent().next());
