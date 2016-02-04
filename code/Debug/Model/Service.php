@@ -129,4 +129,27 @@ class Sheep_Debug_Model_Service
         $config->saveConfig('dev/translate_inline/active', $status);
     }
 
+
+    /**
+     * @param string $query
+     * @return array
+     */
+    public function searchConfig($query)
+    {
+        $configs = Mage::app()->getConfig()->getNode();
+        $configArray = array();
+
+        Mage::helper('sheep_debug')->xml2array($configs, $configArray);
+
+        $results = array();
+        $configKeys = array_keys($configArray);
+        foreach ($configKeys as $configKey){
+            if (strpos($configKey, $query)!==FALSE){
+                $results[$configKey] = $configArray[$configKey];
+            }
+        }
+
+        return $results;
+    }
+
 }

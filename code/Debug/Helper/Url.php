@@ -169,4 +169,14 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
         return $this->getToolbarUrl('util/disableTranslate');
     }
 
+    public function getSearchConfigUrl()
+    {
+        return $this->getToolbarUrl('config/search');
+    }
+
+    public function getDownloadConfig($type = 'txt')
+    {
+        return $this->getToolbarUrl('config/download', array('type' => $type));
+    }
+
 }

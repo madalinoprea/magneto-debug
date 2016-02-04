@@ -64,7 +64,7 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
      * Returns results as assoc array for specified SQL query
      *
      * @param string $query
-     * @param array  $queryParams
+     * @param array $queryParams
      * @return array
      * @throws Zend_Db_Statement_Exception
      */
@@ -78,19 +78,31 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
-
     /**
-     * Cleans Magento's cache
-     *
-     * @return void
+     * @param $xml
+     * @param array $arr
+     * @param string $parentKey
      */
-    public function cleanCache()
+    public function xml2array(Mage_Core_Model_Config_Element $xml, array &$arr, $parentKey = '')
     {
-        Mage::app()->cleanCache();
+        if (!$xml) {
+            return;
+        }
+
+        if (count($xml->children()) == 0) {
+            $arr[$parentKey] = (string)$xml;
+        } else {
+            foreach ($xml->children() as $key => $item) {
+                $key = $parentKey ? $parentKey . DS . $key : $key;
+                $this->xml2array($item, $arr, $key);
+            }
+        }
     }
 
+
     /**
-     * Check if client's ip is whitelisted
+     * Check if client's ip is white listed
+     * TODO: Review this implementation
      *
      * @return bool
      */
@@ -171,7 +183,7 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
     /**
      * Returns all xml files that contains layout updates.
      *
-     * @param int    $storeId store identifier
+     * @param int $storeId store identifier
      * @param string $designArea
      * @return array
      */
