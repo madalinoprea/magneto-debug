@@ -23,7 +23,7 @@ class Sheep_Debug_Block_Panel extends Sheep_Debug_Block_Abstract
      */
     public function setTitle($title)
     {
-        $this->setData('title', $title);
+        $this->setData('title', $this->__($title));
     }
 
 
@@ -32,8 +32,9 @@ class Sheep_Debug_Block_Panel extends Sheep_Debug_Block_Abstract
      */
     public function setSubTitle($subTitle)
     {
-        $this->setData('sub_title', $subTitle);
+        $this->setData('sub_title', $this->__($subTitle));
     }
+
 
     /**
      * TODO: complete implementation

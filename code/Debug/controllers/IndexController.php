@@ -3,23 +3,6 @@
 class Sheep_Debug_IndexController extends Mage_Core_Controller_Front_Action
 {
     /**
-     * Return block content
-     *
-     * @param string $title   block title
-     * @param string $content body content
-     *
-     * @return string
-     */
-    private function _debugPanel($title, $content)
-    {
-        $block = $this->getLayout()->createBlock('debug/abstract');
-        $block->setTemplate('debug/simplepanel.phtml');
-        $block->assign('title', $title);
-        $block->assign('content', $content);
-        return $block->toHtml();
-    }
-
-    /**
      * @param null $defaultUrl
      * @return Mage_Core_Controller_Varien_Action
      */
@@ -29,97 +12,6 @@ class Sheep_Debug_IndexController extends Mage_Core_Controller_Front_Action
             Mage::app()->setCurrentStore($store);
         }
         return parent::_redirectReferer($defaultUrl);
-    }
-
-
-    /**
-     * @return void
-     */
-    public function viewFilesWithHandleAction()
-    {
-        $layoutHandle = $this->getRequest()->getParam('layout');
-        $storeId = $this->getRequest()->getParam('storeId');
-        $designArea = $this->getRequest()->getParam('area');
-
-        $title = "Files with layout updates for handle {$layoutHandle}";
-        if (!$layoutHandle) {
-
-        }
-
-        $updateFiles = Mage::helper('debug')->getLayoutUpdatesFiles($storeId, $designArea);
-
-        /* @var $designPackage Mage_Core_Model_Design_Package */
-        $designPackage = Mage::getModel('core/design_package');
-        $designPackage->setStore(Mage::app()->getStore($storeId));
-        $designPackage->setArea($designArea);
-
-        // search handle in these files
-        $handleFiles = array();
-        foreach ($updateFiles as $file) {
-            $filename = $designPackage->getLayoutFilename($file, array(
-                                                               '_area' => $designPackage->getArea(),
-                                                               '_package' => $designPackage->getPackageName(),
-                                                               '_theme' => $designPackage->getTheme('layout')
-                                                          ));
-            if (!is_readable($filename)) {
-                continue;
-            }
-            $fileStr = file_get_contents($filename);
-
-            $fileXml = simplexml_load_string($fileStr, Mage::getConfig()->getModelClassName('core/layout_element'));
-            if (!$fileXml instanceof SimpleXMLElement) {
-                continue;
-            }
-
-            $result = $fileXml->xpath("/layout/" . $layoutHandle);
-            if ($result) {
-                $handleFiles[$filename] = $result;
-            }
-        }
-
-        // Search updates for handle in DB
-        $bind = array(
-            'store_id'  => $storeId,
-            'area'      => $designArea,
-            'package'   => $designPackage->getPackageName(),
-            'theme'     => $designPackage->getTheme('layout'),
-            'layout_update_handle' => $layoutHandle
-        );
-
-        /* @var $layoutResourceModel Mage_Core_Model_Resource_Layout */
-        $layoutResourceModel = Mage::getResourceModel('core/layout');
-
-        /* @var $readAdapter Varien_Db_Adapter_Pdo_Mysql */
-        $readAdapter = Mage::getSingleton('core/resource')->getConnection('core_read');
-
-        /* @var $select Varien_Db_Select */
-        $select = $readAdapter->select()
-            ->from(array('layout_update' => $layoutResourceModel->getMainTable()), array('xml'))
-            ->join(array('link' => $layoutResourceModel->getTable('core/layout_link')),
-            'link.layout_update_id=layout_update.layout_update_id',
-            '')
-            ->where('link.store_id IN (0, :store_id)')
-            ->where('link.area = :area')
-            ->where('link.package = :package')
-            ->where('link.theme = :theme')
-            ->where('layout_update.handle = :layout_update_handle')
-            ->order('layout_update.sort_order ' . Varien_Db_Select::SQL_ASC);
-        
-        $result = $readAdapter->fetchCol($select, $bind);
-
-        if (count($result)) {
-            $handleFiles['DATABASE'] = array();
-            foreach ($result as $dbLayoutUpdate){
-                $handleFiles['DATABASE'][] = new Varien_Simplexml_Element($dbLayoutUpdate);
-            }
-        }
-
-        $block = $this->getLayout()->createBlock('debug/abstract');
-        $block->setTemplate('debug/handledetails.phtml');
-        $block->assign('title', $title);
-        $block->assign('handleFiles', $handleFiles);
-
-        $this->getResponse()->setBody($block->toHtml());
     }
 
 
@@ -218,41 +110,6 @@ class Sheep_Debug_IndexController extends Mage_Core_Controller_Front_Action
         $this->getResponse()->setBody($content);
     }
 
-    /**
-     * Toggle Sql profiler
-     *
-     * @return void
-     */
-    public function toggleSqlProfilerAction()
-    {
-        $localConfigFile = Mage::getBaseDir('etc') . DS . 'local.xml';
-        $localConfigBackupFile = Mage::getBaseDir('etc') . DS . 'local-magneto.xml_';
-
-        $configContent = file_get_contents($localConfigFile);
-        $xml = new SimpleXMLElement($configContent);
-
-        if ((int)$xml->global->resources->default_setup->connection->profiler != 1) {
-            $xml->global->resources->default_setup->connection->addChild('profiler', 1);
-        } else {
-            unset($xml->global->resources->default_setup->connection->profiler);
-        }
-
-        // backup config file
-        if (file_put_contents($localConfigBackupFile, $configContent) === FALSE) {
-            Mage::getSingleton('core/session')->addError($this->__('Operation aborted: couldn\'t create backup for config file'));
-            $this->_redirectReferer();
-        }
-
-        if ($xml->saveXML($localConfigFile) === FALSE) {
-            Mage::getSingleton('core/session')->addError($this->__("Couldn't save {$localConfigFile}: check write permissions."));
-            $this->_redirectReferer();
-        }
-        Mage::getSingleton('core/session')->addSuccess($this->__('SQL profiler status changed in local.xml'));
-
-        // Assure config cache and all full page cache is emptied
-        Mage::app()->cleanCache();
-        $this->_redirectReferer();
-    }
 
     /**
      * Search grouped class

@@ -102,4 +102,17 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
     {
         return $this->getToolbarUrl('block/viewTemplate', array('template' => $this->urlEncode($template)));
     }
+
+
+    /**
+     * @param string $layoutHandle
+     * @param int    $storeId
+     * @param string $area
+     * @return string
+     */
+    public function getViewHandleUrl($layoutHandle, $storeId, $area)
+    {
+        return $this->getToolbarUrl('design/viewHandle', array('handle' => $layoutHandle, 'store' => $storeId, 'area' => $area));
+    }
+
 }

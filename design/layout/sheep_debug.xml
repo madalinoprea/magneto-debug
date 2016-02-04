@@ -13,8 +13,8 @@
                     <action method="setTitle"><title>Models</title></action>
                 </block>
 
-                <block type="sheep_debug/layout" name="debug_layout_panel" template="sheep_debug/layout.phtml">
-                    <action method="setTitle"><title>Layout</title></action>
+                <block type="sheep_debug/design" name="debug_design_panel" template="sheep_debug/design.phtml">
+                    <action method="setTitle"><title>Design</title></action>
                     <action method="setSubTitle"><sub_title>Updates, Handlers</sub_title></action>
                 </block>
 

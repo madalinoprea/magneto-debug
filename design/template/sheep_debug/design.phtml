@@ -1,0 +1,77 @@
+<?php
+/* @var $this Sheep_Debug_Block_Design */
+
+$design = $this->getDesign();
+$layoutHandles = $this->getLayoutHandles();
+$layoutUpdates = $this->getLayoutUpdates();
+?>
+
+<h4><?php echo $this->__('Package information') ?></h4>
+<table>
+    <thead>
+    <tr>
+        <th><?php echo $this->__('Variable') ?></th>
+        <th><?php echo $this->__('Value') ?></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="djDebugOdd">
+        <td><?php echo $this->__('Design Area') ?></td>
+        <td><?php echo $this->escapeHtml($design->getArea()) ?></td>
+    </tr>
+    <tr class="djDebugEven">
+        <td><?php echo $this->__('Package Name') ?></td>
+        <td><?php echo $this->escapeHtml($design->getPackageName()) ?></td>
+    </tr>
+    <tr class="djDebugOdd">
+        <td><?php echo $this->__('Template Theme') ?></td>
+        <td><?php echo $this->escapeHtml($design->getThemeTemplate()) ?></td>
+    </tr>
+    </tbody>
+</table>
+
+<h4><?php echo $this->__('Handles for this request') ?> <?php echo $this->__('(%d)', count($layoutHandles)) ?></h4>
+<p>
+    <?php echo $this->__('Lists all layout handles loaded to complete this request.'); ?>
+</p>
+<table>
+    <thead>
+    <tr>
+        <th><?php echo $this->__('Handle') ?></th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php $row = 0; ?>
+    <?php foreach ($layoutHandles as $layoutHandle): ?>
+        <tr class="<?php echo $row % 2 ? 'djDebugOdd' : 'djDebugEven' ?>">
+            <td>
+                <a class="remoteCall toggleTemplate" href="<?php echo $this->getViewHandleUrl($layoutHandle) ?>"><?php echo $this->escapeHtml($layoutHandle) ?></a>
+            </td>
+        </tr>
+        <?php $row++; ?>
+    <?php endforeach ?>
+    </tbody>
+</table>
+
+<h4><?php echo $this->__('Layout updates') ?> (<?php echo count($layoutUpdates); ?>)</h4>
+<table>
+    <thead>
+    <tr>
+        <th><?php echo $this->__('#'); ?></th>
+        <th><?php echo $this->__('Update') ?></th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php $row = 0; ?>
+    <?php foreach ($layoutUpdates as $layoutUpdate): ?>
+        <tr class="<?php echo $row % 2 ? 'djDebugOdd' : 'djDebugEven' ?>">
+            <td><?php echo $row ?>.</td>
+            <td class="syntax">
+                <code><?php echo $this->escapeHtml($layoutUpdate) ?></code>
+            </td>
+        </tr>
+        <?php $row++; ?>
+    <?php endforeach ?>
+    </tbody>
+</table>
+

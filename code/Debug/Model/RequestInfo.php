@@ -2,8 +2,14 @@
 
 class Sheep_Debug_Model_RequestInfo
 {
+    /** @var int */
+    protected $storeId;
+
     /** @var Sheep_Debug_Model_Controller */
     protected $action;
+
+    /** @var Sheep_Debug_Model_Design */
+    protected $design;
 
     /** @var Sheep_Debug_Model_Block[] */
     protected $blocks = array();
@@ -19,13 +25,29 @@ class Sheep_Debug_Model_RequestInfo
 
 
     /**
+     * @return int
+     */
+    public function getStoreId()
+    {
+        return $this->storeId;
+    }
+
+    /**
+     * @param int $storeId
+     */
+    public function setStoreId($storeId)
+    {
+        $this->storeId = $storeId;
+    }
+
+    /**
      * @param Mage_Core_Controller_Varien_Action $action
      */
     public function addControllerAction(Mage_Core_Controller_Varien_Action $action)
     {
         if ($this->action) {
             $bp = true;
-            // remove bp
+            // TODO: remove bp
         }
 
         $this->action = Mage::getModel('sheep_debug/controller', $action);
@@ -38,6 +60,25 @@ class Sheep_Debug_Model_RequestInfo
     public function getController()
     {
         return $this->action;
+    }
+
+
+    /**
+     * @param Mage_Core_Model_Layout         $layout
+     * @param Mage_Core_Model_Design_Package $design
+     */
+    public function addLayout(Mage_Core_Model_Layout $layout, Mage_Core_Model_Design_Package $design)
+    {
+        $this->design = Mage::getModel('sheep_debug/design', array('design' => $design, 'layout' => $layout));
+    }
+
+
+    /**
+     * @return Sheep_Debug_Model_Design
+     */
+    public function getDesign()
+    {
+        return $this->design;
     }
 
 
@@ -165,4 +206,5 @@ class Sheep_Debug_Model_RequestInfo
 
         return $this->queries;
     }
+
 }
