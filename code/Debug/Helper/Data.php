@@ -222,7 +222,6 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
      */
     public function isMagentoEE()
     {
-        return true; //TODO: remove debug
         return method_exists('Mage', 'getEdition') && Mage::getEdition() == Mage::EDITION_ENTERPRISE;
     }
 }
