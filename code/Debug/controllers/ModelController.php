@@ -11,6 +11,36 @@
 class Sheep_Debug_ModelController extends Sheep_Debug_Controller_Front_Action
 {
 
+    public function enableSqlProfilerAction()
+    {
+        try {
+            $this->getService()->setSqlProfilerStatus(true);
+            $this->getService()->flushCache();
+
+            Mage::getSingleton('core/session')->addSuccess('SQL profiler was enabled.');
+        } catch (Exception $e) {
+            Mage::getSingleton('core/session')->addError('Unable to enable SQL profiler: ' . $e->getMessage());
+        }
+
+        $this->_redirectReferer();
+    }
+
+
+    public function disableSqlProfilerAction()
+    {
+        try {
+            $this->getService()->setSqlProfilerStatus(false);
+            $this->getService()->flushCache();
+
+            Mage::getSingleton('core/session')->addSuccess('SQL profiler was disabled.');
+        } catch (Exception $e) {
+            Mage::getSingleton('core/session')->addError('Unable to disable SQL profiler: ' . $e->getMessage());
+        }
+
+        $this->_redirectReferer();
+    }
+
+
     public function selectSqlAction()
     {
         $helper = Mage::helper('sheep_debug');

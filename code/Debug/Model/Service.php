@@ -58,8 +58,35 @@ class Sheep_Debug_Model_Service
 
         // save
         if ($configXml->saveXML($moduleConfigFile) === false) {
-            throw new Exception("Unable to save module configuration file {$moduleConfigFile}. Check to see if web server user has permissions.");
+            throw new Exception("Unable to save module configuration file {$moduleConfigFile}. Check to see if web server user has write permissions.");
         }
     }
 
+
+    public function getLocalXmlFilePath()
+    {
+        return Mage::getBaseDir('etc') . DS . 'local.xml';
+    }
+
+
+    public function setSqlProfilerStatus($isEnabled)
+    {
+        $filePath = $this->getLocalXmlFilePath();
+        $xml = simplexml_load_file($filePath);
+        if ($xml===false) {
+            throw new Exception("Unable to parse local.xml configuration file: {$filePath}");
+        }
+
+        /** @var SimpleXMLElement $connectionNode */
+        $connectionNode = $xml->global->resources->default_setup->connection;
+        if ($isEnabled) {
+            $connectionNode->profiler = '1';
+        } else {
+            unset($connectionNode->profiler);
+        }
+
+        if ($xml->saveXML($filePath) === false) {
+            throw new Exception("Unable to save {$filePath}: check if web server user has write permission");
+        }
+    }
 }
