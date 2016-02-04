@@ -10,6 +10,13 @@
  */
 class Sheep_Debug_Block_Controller extends Sheep_Debug_Block_Panel
 {
+
+    public function getSubTitle()
+    {
+        return $this->__('TIME: %ss MEM: %s', $this->helper->getScriptDuration(), $this->helper->getMemoryUsage());
+    }
+
+
     /**
      * @return Sheep_Debug_Model_Controller
      */

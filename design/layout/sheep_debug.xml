@@ -7,7 +7,6 @@
 
                 <block type="sheep_debug/controller" name="debug_controller_panel" template="sheep_debug/controller.phtml">
                     <action method="setTitle"><title>Controller</title></action>
-                    <action method="setSubTitle"><sub_title>Controller and Request</sub_title></action>
                 </block>
 
                 <block type="sheep_debug/models" name="debug_models_panel" template="sheep_debug/models.phtml">
@@ -39,9 +38,9 @@
                     <action method="setSubTitle"><sub_title>Magento Modules</sub_title></action>
                 </block>
 
-
                 <block type="sheep_debug/config" name="debug_config_panel" template="sheep_debug/config.phtml">
                     <action method="setTitle"><title>Configuration</title></action>
+                    <action method="setSubTitle"><sub_title>Search Configuration</sub_title></action>
                 </block>
 
                 <block type="sheep_debug/about" name="debug_about_panel">
@@ -50,4 +49,4 @@
             </block>
         </reference>
     </default>
-</layout>   
+</layout>
