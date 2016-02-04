@@ -79,6 +79,19 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
+
+    /**
+     * @return Zend_Db_Profiler
+     */
+    public function getSqlProfiler()
+    {
+        /** @var Magento_Db_Adapter_Pdo_Mysql $connection */
+        $connection = Mage::getSingleton('core/resource')->getConnection('core_write');
+
+        return $connection->getProfiler();
+    }
+
+
     /**
      * @param $xml
      * @param array $arr

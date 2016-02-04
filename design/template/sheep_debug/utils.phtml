@@ -31,6 +31,16 @@
         </button>
     <?php endif; ?>
 
+    <?php if ($this->isSqlProfilerEnabled()): ?>
+        <button class="button postButton" data-href="<?php echo $this->getDisableSqlProfilerUrl() ?>">
+            <?php echo $this->__('Disable SQL Profiler'); ?>
+        </button>
+    <?php else: ?>
+        <button class="button postButton" data-href="<?php echo $this->getEnableSqlProfilerUrl() ?>">
+            <?php echo $this->__('Enable SQL Profiler'); ?>
+        </button>
+    <?php endif; ?>
+
     <?php if ($this->isTranslateInlineEnable()): ?>
         <button href="#" class="button postButton" data-href="<?php echo $this->getDisableTranslateUrl() ?>">
             <?php echo $this->__('Disable Inline Translation'); ?>

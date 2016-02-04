@@ -204,11 +204,8 @@ class Sheep_Debug_Model_RequestInfo
     {
         $queryInfo = array();
 
-        /** @var Magento_Db_Adapter_Pdo_Mysql $connection */
-        $connection = Mage::getSingleton('core/resource')->getConnection('core_write');
-
-        $profiler = $connection->getProfiler();
-        if ($profiler) {
+        $profiler = Mage::helper('sheep_debug')->getSqlProfiler();
+        if ($profiler->getEnabled()) {
             /** @var Zend_Db_Profiler_Query[] $queries */
             $queryInfo = $profiler->getQueryProfiles() ?: array();
         }

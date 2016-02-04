@@ -15,10 +15,9 @@ class Sheep_Debug_Block_Util extends Sheep_Debug_Block_Panel
         return Mage::helper('sheep_debug/url')->getFlushCacheUrl();
     }
 
-
     public function isTemplateHintsEnabled()
     {
-        return (bool) Mage_Core_Block_Template::getShowTemplateHints();
+        return (bool)Mage_Core_Block_Template::getShowTemplateHints();
     }
 
     public function getEnableTemplateHintsUrl()
@@ -53,7 +52,7 @@ class Sheep_Debug_Block_Util extends Sheep_Debug_Block_Panel
 
     public function isTranslateInlineEnable()
     {
-        return (bool) Mage::getSingleton('core/translate_inline')->isAllowed();
+        return (bool)Mage::getSingleton('core/translate_inline')->isAllowed();
     }
 
     public function getEnableTranslateUrl()
@@ -66,5 +65,19 @@ class Sheep_Debug_Block_Util extends Sheep_Debug_Block_Panel
         return Mage::helper('sheep_debug/url')->getDisableTranslateUrl();
     }
 
+    public function isSqlProfilerEnabled()
+    {
+        return $this->helper->getSqlProfiler()->getEnabled();
+    }
+
+    public function getEnableSqlProfilerUrl()
+    {
+        return Mage::helper('sheep_debug/url')->getEnableSqlProfilerUrl();
+    }
+
+    public function getDisableSqlProfilerUrl()
+    {
+        return Mage::helper('sheep_debug/url')->getDisableSqlProfilerUrl();
+    }
 
 }
