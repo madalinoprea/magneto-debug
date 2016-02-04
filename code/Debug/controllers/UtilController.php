@@ -38,7 +38,7 @@ class Sheep_Debug_UtilController extends Sheep_Debug_Controller_Front_Action
             }
 
             $block = $this->getLayout()->createBlock('sheep_debug/array');
-            $block->setTemplate('sheep_debug/groupedclasssearch.phtml');
+            $block->setTemplate('sheep_debug/grouped_class_search.phtml');
             $block->assign('items', $items);
             $this->getResponse()->setBody($block->toHtml());
         } else {
