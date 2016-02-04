@@ -22,15 +22,14 @@
                     <action method="setTitle"><title>Blocks</title></action>
                 </block>
 
+                <block type="sheep_debug/logging" name="debug_logs_panel" template="sheep_debug/logs.phtml">
+                    <action method="setTitle"><title>Logs</title></action>
+                    <action method="setSubTitle"><sub_title>system.log, exception.log</sub_title></action>
+                </block>
 
                 <block type="sheep_debug/panel" name="debug_utils_panel" template="sheep_debug/utils.phtml">
                     <action method="setTitle"><title>Utils</title></action>
                     <action method="setSubTitle"><sub_title>Cache, Hints, etc</sub_title></action>
-                </block>
-
-                <block type="sheep_debug/panel" name="debug_logs_panel" template="sheep_debug/logs.phtml">
-                    <action method="setTitle"><title>Logs</title></action>
-                    <action method="setSubTitle"><sub_title>system.log, exception.log</sub_title></action>
                 </block>
 
                 <block type="sheep_debug/modules" name="debug_modules_panel" template="sheep_debug/modules.phtml">

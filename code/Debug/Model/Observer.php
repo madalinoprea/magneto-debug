@@ -23,37 +23,52 @@ class Sheep_Debug_Model_Observer
 
 
     /**
+     * Listens to controller_front_init_before event. An event that we can consider the start of the request.
+     * Current store is initialized.
      *
-     * TODO: Make this a setting
-     *
-     * @return bool
+     * @param Varien_Event_Observer $observer
      */
-    protected function _skipCoreBlocks()
+    public function onControllerFrontInitBefore(Varien_Event_Observer $observer)
     {
-        return false;
+        $this->getRequestInfo()->setStoreId(Mage::app()->getStore()->getId());
+        $this->getRequestInfo()->initLogging();
     }
 
 
     /**
-     * Logic that checks if we should ignore this block
+     * Listens to controller_action_predispatch event to prevent undesired access
+     * TODO: review access permissions
      *
-     * @param $block Mage_Core_Block_Abstract
-     * @return bool
+     * We listen to this event to filter access to actions defined by Debug module.
+     * We allow only actions if debug toolbar is on and ip is listed in Developer Client Restrictions
+     *
+     * @param Varien_Event_Observer $observer
+     *
+     * @return void
      */
-    protected function _skipBlock($block)
+    public function onActionPreDispatch(Varien_Event_Observer $observer)
     {
-        $blockClass = get_class($block);
+        $action = $observer->getEvent()->getControllerAction();
 
-        if ($this->_skipCoreBlocks() && strpos($blockClass, 'Mage_') === 0) {
-            return true;
-        }
+        // Record action that handled current request
+        $this->getRequestInfo()->addControllerAction($action);
 
-        // Skip our own blocks
-        if (strpos($blockClass, 'Sheep_Debug_Block') === 0) {
-            return true;
-        }
 
-        return false;
+//        $this->getRequestInfo()->getLogging()->startRequest();
+
+//        $moduleName = $action->getRequest()->getControllerModule();
+//
+//
+//        if (strpos($moduleName, "Sheep_Debug") === 0 && !Mage::helper('sheep_debug')->isRequestAllowed()) {
+//
+//            Mage::log("Access to Magneto_Debug's actions blocked: dev mode is set to false.");
+//            // $response = $action->getResponse();
+//            // $response->setHttpResponseCode(404);
+//            // $response->setBody('Site access denied.');
+//            //$action->setDispatched(true)
+//            //
+//            exit();
+//        }
     }
 
 
@@ -175,36 +190,51 @@ class Sheep_Debug_Model_Observer
     }
 
 
+
+
+
     /**
-     * Listens to controller_action_predispatch event to prevent undesired access
-     * TODO: review access permissions
-     *
-     * We listen to this event to filter access to actions defined by Debug module.
-     * We allow only actions if debug toolbar is on and ip is listed in Developer Client Restrictions
+     * Listens to controller_front_send_response_after. This event represents the end of a request.
      *
      * @param Varien_Event_Observer $observer
-     *
-     * @return void
      */
-    public function onActionPreDispatch(Varien_Event_Observer $observer)
+    public function onControllerFrontSendResponseAfter(Varien_Event_Observer $observer)
     {
-        $action = $observer->getEvent()->getControllerAction();
-        $this->getRequestInfo()->addControllerAction($action);
-        $this->getRequestInfo()->setStoreId(Mage::app()->getStore()->getId());
+        $this->getRequestInfo()->getLogging()->endRequest();
+    }
 
-//        $moduleName = $action->getRequest()->getControllerModule();
-//
-//
-//        if (strpos($moduleName, "Sheep_Debug") === 0 && !Mage::helper('sheep_debug')->isRequestAllowed()) {
-//
-//            Mage::log("Access to Magneto_Debug's actions blocked: dev mode is set to false.");
-//            // $response = $action->getResponse();
-//            // $response->setHttpResponseCode(404);
-//            // $response->setBody('Site access denied.');
-//            //$action->setDispatched(true)
-//            //
-//            exit();
-//        }
+    /**
+     *
+     * TODO: Make this a setting
+     *
+     * @return bool
+     */
+    protected function _skipCoreBlocks()
+    {
+        return false;
+    }
+
+
+    /**
+     * Logic that checks if we should ignore this block
+     *
+     * @param $block Mage_Core_Block_Abstract
+     * @return bool
+     */
+    protected function _skipBlock($block)
+    {
+        $blockClass = get_class($block);
+
+        if ($this->_skipCoreBlocks() && strpos($blockClass, 'Mage_') === 0) {
+            return true;
+        }
+
+        // Skip our own blocks
+        if (strpos($blockClass, 'Sheep_Debug_Block') === 0) {
+            return true;
+        }
+
+        return false;
     }
 
 }

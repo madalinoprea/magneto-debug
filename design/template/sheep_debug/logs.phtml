@@ -1,10 +1,14 @@
-<h4><?php echo $this->__('View content of logs file'); ?></h4>
+<?php
 
-<a class="remoteCall toggleTemplate"
-   href="<?php echo Mage::getUrl('debug/index/viewLog', array('file' => Mage::getStoreConfig('dev/log/file'))); ?>">
-    <?php echo Mage::getStoreConfig('dev/log/file'); ?>
-</a>
-<a class="remoteCall toggleTemplate"
-   href="<?php echo Mage::getUrl('debug/index/viewLog', array('file' => Mage::getStoreConfig('dev/log/exception_file'))); ?>">
-    <?php echo Mage::getStoreConfig('dev/log/exception_file'); ?>
-</a>
+/** @var Sheep_Debug_Block_Logging $this */
+?>
+
+<h4><?php echo $this->__('Logs'); ?></h4>
+
+<p>
+    <?php foreach ($this->getLogFiles() as $logFilename): ?>
+        <button class="remoteCall button" href="<?php echo $this->getViewLogUrl($logFilename) ?>">
+            <?php echo $this->escapeHtml($logFilename)?>
+        </button>
+    <?php endforeach; ?>
+</p>

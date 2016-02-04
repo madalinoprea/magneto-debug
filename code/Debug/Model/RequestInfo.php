@@ -5,6 +5,9 @@ class Sheep_Debug_Model_RequestInfo
     /** @var int */
     protected $storeId;
 
+    /** @var Sheep_Debug_Model_Logging */
+    protected $logging;
+
     /** @var Sheep_Debug_Model_Controller */
     protected $action;
 
@@ -23,6 +26,11 @@ class Sheep_Debug_Model_RequestInfo
     /** @var array Zend_Db_Profiler_Query */
     protected $queries = null;
 
+    public function __construct()
+    {
+
+    }
+
 
     /**
      * @return int
@@ -39,6 +47,30 @@ class Sheep_Debug_Model_RequestInfo
     {
         $this->storeId = $storeId;
     }
+
+
+    public function initLogging()
+    {
+        $helper = Mage::helper('sheep_debug');
+        $this->logging = Mage::getModel('sheep_debug/logging');
+
+        $this->logging->addFile($helper->getLogFilename($this->getStoreId()));
+        $this->logging->addFile($helper->getExceptionLogFilename($this->getStoreId()));
+
+        Mage::dispatchEvent('sheep_debug_init_logging', array('logging' => $this->logging));
+
+        $this->logging->startRequest();
+    }
+
+
+    /**
+     * @return Sheep_Debug_Model_Logging
+     */
+    public function getLogging()
+    {
+        return $this->logging;
+    }
+
 
     /**
      * @param Mage_Core_Controller_Varien_Action $action

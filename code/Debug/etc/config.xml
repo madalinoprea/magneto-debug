@@ -26,6 +26,16 @@
         </helpers>
 
         <events>
+            <!-- Start of request processing -->
+            <controller_front_init_before>
+                <observers>
+                    <sheep_debug>
+                        <type>singleton</type>
+                        <class>sheep_debug/observer</class>
+                        <method>onControllerFrontInitBefore</method>
+                    </sheep_debug>
+                </observers>
+            </controller_front_init_before>
 
             <!-- Records all instantiated blocks -->
             <controller_action_layout_generate_blocks_after>
@@ -113,6 +123,17 @@
                     </debug_observer>
                 </observers>
             </controller_action_predispatch>
+
+            <!-- last chance to save stuff -->
+            <controller_front_send_response_after>
+                <observers>
+                    <sheep_debug>
+                        <type>singleton</type>
+                        <class>sheep_debug/observer</class>
+                        <method>onControllerFrontSendResponseAfter</method>
+                    </sheep_debug>
+                </observers>
+            </controller_front_send_response_after>
         </events>
     </global>
 

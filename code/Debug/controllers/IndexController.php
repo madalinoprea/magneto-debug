@@ -1,6 +1,6 @@
 <?php
 
-class Sheep_Debug_IndexController extends Mage_Core_Controller_Front_Action
+class Sheep_Debug_IndexController extends Sheep_Debug_Controller_Front_Action
 {
     /**
      * @param null $defaultUrl
@@ -189,29 +189,25 @@ class Sheep_Debug_IndexController extends Mage_Core_Controller_Front_Action
      */
     public function viewLogAction()
     {
-        $file = $this->getRequest()->getParam('file');
+        $log = (string)$this->getRequest()->getParam('log');
+        $startPosition = (int)$this->getRequest()->getParam('start');
 
-        if (!empty($file)) {
-            // Accept only specific files
-            if ($file == Mage::getStoreConfig('dev/log/file') || $file == Mage::getStoreConfig('dev/log/exception_file')) {
-                // TODO: Review this..
-                $result = Mage::helper('debug')->getLastRows(Mage::getBaseDir('var') . DS . 'log' . DS . $file, 10);
-
-                if (!is_array($result)) {
-                    $result = array($result);
-                }
-
-                $block = $this->getLayout()->createBlock('debug/abstract');
-                $block->setTemplate('debug/logdetails.phtml');
-                $block->assign('title', 'Log details : ' . $file);
-                $block->assign('items', $result);
-
-                $this->getResponse()->setBody($block->toHtml());
-            } else {
-                $this->getResponse()->setHttpResponseCode(418)->setBody('I\'m a teapot.');
+        try {
+            if (!$log) {
+                throw new Exception('log parameter is missing');
             }
+
+            $logging = Mage::getModel('sheep_debug/logging');
+            $logging->addFile($log);
+            $logging->addRange($log, $startPosition);
+
+            $this->renderContent('Logs from ' . $log, $logging->getLoggedContent($log));
+        } catch (Exception $e) {
+            $this->getResponse()->setHttpResponseCode(500);
+            $this->getResponse()->setBody($e->getMessage());
         }
     }
+
 
     public function togglePageCacheDebugAction()
     {

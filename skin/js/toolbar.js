@@ -88,10 +88,12 @@
                 return false;
             });
 
-            $('#djDebug a.remoteCall').click(function () {
+            $('#djDebug .remoteCall').click(function () {
+                var loadUrl = this.getAttribute('href');
                 $('#djDebugWindow').html('<div class="loader"></div>');
-                $('#djDebugWindow').load(this.href);
+                $('#djDebugWindow').load(loadUrl);
                 $('#djDebugWindow').show();
+
                 return false;
             });
 
