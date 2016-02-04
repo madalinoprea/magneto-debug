@@ -111,40 +111,7 @@ class Sheep_Debug_IndexController extends Sheep_Debug_Controller_Front_Action
     }
 
 
-    /**
-     * Search grouped class
-     *
-     * @return void
-     */
-    public function searchGroupedClassAction()
-    {
-        if ($this->getRequest()->isPost()) {
-            $uri = $this->getRequest()->getPost('uri');
-            $groupType = $this->getRequest()->getPost('group');
 
-            if ($groupType=='all') {
-                $groupTypes = array('model', 'block', 'helper');
-            } else {
-                $groupTypes = array($groupType);
-            }
-
-            $items = array();
-
-            if (!empty($uri)) {
-                foreach ($groupTypes as $type) {
-                    $items[$type]['class'] = Mage::getConfig()->getGroupedClassName($type, $uri);
-                    $items[$type]['filepath'] = mageFindClassFile($items[$type]['class']);
-                }
-
-                $block = $this->getLayout()->createBlock('debug/abstract');
-                $block->setTemplate('debug/groupedclasssearch.phtml');
-                $block->assign('items', $items);
-                $this->getResponse()->setBody($block->toHtml());
-            } else {
-                $this->getResponse()->setBody($this->__('Please fill in a search query'));
-            }
-        }
-    }
 
     /**
      * Seach config
@@ -183,9 +150,9 @@ class Sheep_Debug_IndexController extends Sheep_Debug_Controller_Front_Action
         }
     }
 
+
     /**
-     * Return last 100 lines of log file.
-     *
+     * Returns lines from specified log file and starting position
      */
     public function viewLogAction()
     {

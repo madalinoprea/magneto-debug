@@ -125,4 +125,12 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
     {
         return $this->getToolbarUrl('index/viewLog', array('log' => $logfile, 'start' => $startPosition));
     }
+
+    /**
+     * @return string
+     */
+    public function getSearchGroupClassUrl()
+    {
+        return $this->getToolbarUrl('util/searchGroupClass');
+    }
 }
