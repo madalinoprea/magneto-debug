@@ -8,7 +8,20 @@
     <button class="button postButton" data-href="<?php echo $this->getFlushCacheUrl() ?>">
         <?php echo $this->__('Flush Cache'); ?>
     </button>
-    <?php if ($this->isTemplateHintsEnable()): ?>
+
+    <?php if ($this->hasFullPageCache()): ?>
+        <?php if ($this->isFPCDebugEnabled()): ?>
+            <button class="button postButton" data-href="<?php echo $this->getDisableFPCDebugUrl() ?>">
+                <?php echo $this->__('Disable FPC Debug'); ?>
+            </button>
+        <?php else: ?>
+            <button class="button postButton" data-href="<?php echo $this->getEnableFPCDebugUrl() ?>">
+                <?php echo $this->__('Enable FPC Hints'); ?>
+            </button>
+        <?php endif; ?>
+    <?php endif; ?>
+
+    <?php if ($this->isTemplateHintsEnabled()): ?>
         <button class="button postButton" data-href="<?php echo $this->getDisableTemplateHintsUrl() ?>">
             <?php echo $this->__('Disable Template Hints'); ?>
         </button>

@@ -201,4 +201,16 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
     {
         return (bool)Mage::getStoreConfig('sheep_debug/options/debug_panel_' . strtolower($panelTitle) . '_visibility');
     }
+
+
+    /**
+     * Checks if this is Magento Enterprise
+     *
+     * @return bool
+     */
+    public function isMagentoEE()
+    {
+        return true; //TODO: remove debug
+        return method_exists('Mage', 'getEdition') && Mage::getEdition() == Mage::EDITION_ENTERPRISE;
+    }
 }

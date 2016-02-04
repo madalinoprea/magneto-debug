@@ -15,7 +15,8 @@ class Sheep_Debug_Block_Util extends Sheep_Debug_Block_Panel
         return Mage::helper('sheep_debug/url')->getFlushCacheUrl();
     }
 
-    public function isTemplateHintsEnable()
+
+    public function isTemplateHintsEnabled()
     {
         return (bool) Mage_Core_Block_Template::getShowTemplateHints();
     }
@@ -28,6 +29,26 @@ class Sheep_Debug_Block_Util extends Sheep_Debug_Block_Panel
     public function getDisableTemplateHintsUrl()
     {
         return Mage::helper('sheep_debug/url')->getDisableTemplateHintsUrl();
+    }
+
+    public function hasFullPageCache()
+    {
+        return $this->helper->isMagentoEE();
+    }
+
+    public function isFPCDebugEnabled()
+    {
+        return Mage::getStoreConfig('system/page_cache/debug');
+    }
+
+    public function getEnableFPCDebugUrl()
+    {
+        return Mage::helper('sheep_debug/url')->getEnableFPCDebugUrl();
+    }
+
+    public function getDisableFPCDebugUrl()
+    {
+        return Mage::helper('sheep_debug/url')->getDisableFPCDebugUrl();
     }
 
     public function isTranslateInlineEnable()
@@ -44,5 +65,6 @@ class Sheep_Debug_Block_Util extends Sheep_Debug_Block_Panel
     {
         return Mage::helper('sheep_debug/url')->getDisableTranslateUrl();
     }
+
 
 }

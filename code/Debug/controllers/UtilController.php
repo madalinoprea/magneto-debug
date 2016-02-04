@@ -67,6 +67,52 @@ class Sheep_Debug_UtilController extends Sheep_Debug_Controller_Front_Action
     }
 
 
+    public function enableFPCDebugAction()
+    {
+        if (!$this->getRequest()->isPost()) {
+            $this->getResponse()->setHttpResponseCode(405);
+            $this->getResponse()->setBody('Method not allowed');
+        }
+
+        try {
+            $this->getService()->setFPCDebug(1);
+            $this->getService()->flushCache();
+
+            $content = $this->__('FPC debug was enabled');
+            $this->getSession()->addSuccess($content);
+        } catch (Exception $e) {
+            $content = $this->__('FPC debug cannot be enabled: %s', $e->getMessage());
+            $this->getSession()->addError($content);
+            $this->getResponse()->setHttpResponseCode(500);
+        }
+
+        $this->getResponse()->setBody($content);
+    }
+
+
+    public function disableFPCDebugAction()
+    {
+        if (!$this->getRequest()->isPost()) {
+            $this->getResponse()->setHttpResponseCode(405);
+            $this->getResponse()->setBody('Method not allowed');
+        }
+
+        try {
+            $this->getService()->setFPCDebug(0);
+            $this->getService()->flushCache();
+
+            $content = $this->__('FPC debug was disabled');
+            $this->getSession()->addSuccess($content);
+        } catch (Exception $e) {
+            $content = $this->__('FPC debug cannot be disabled: %s', $e->getMessage());
+            $this->getSession()->addError($content);
+            $this->getResponse()->setHttpResponseCode(500);
+        }
+
+        $this->getResponse()->setBody($content);
+    }
+
+
     public function enableTemplateHintsAction()
     {
         if (!$this->getRequest()->isPost()) {

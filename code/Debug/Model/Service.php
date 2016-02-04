@@ -93,6 +93,21 @@ class Sheep_Debug_Model_Service
 
     /**
      * @param $status
+     * @throws Exception
+     */
+    public function setFPCDebug($status)
+    {
+        if (!Mage::helper('sheep_debug')->isMagentoEE()) {
+            throw new Exception ('Cannot enable FPC debug for this Magento version.');
+        }
+
+        $config = Mage::app()->getConfig();
+        $config->saveConfig('system/page_cache/debug', $status);
+    }
+
+
+    /**
+     * @param $status
      */
     public function setTemplateHints($status)
     {
@@ -113,4 +128,5 @@ class Sheep_Debug_Model_Service
         $config = Mage::app()->getConfig();
         $config->saveConfig('dev/translate_inline/active', $status);
     }
+
 }

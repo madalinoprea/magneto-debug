@@ -149,6 +149,16 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
         return $this->getToolbarUrl('util/disableTemplateHints');
     }
 
+    public function getEnableFPCDebugUrl()
+    {
+        return $this->getToolbarUrl('util/enableFPCDebug');
+    }
+
+    public function getDisableFPCDebugUrl()
+    {
+        return $this->getToolbarUrl('util/disableFPCDebug');
+    }
+
     public function getEnableTranslateUrl()
     {
         return $this->getToolbarUrl('util/enableTranslate');
@@ -158,4 +168,5 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
     {
         return $this->getToolbarUrl('util/disableTranslate');
     }
+
 }
