@@ -56,6 +56,13 @@ class Sheep_Debug_Block_Models extends Sheep_Debug_Block_Panel
         return $this->getRequestInfo()->getCollections();
     }
 
+    public function getSortedCollections()
+    {
+        $collections = $this->getCollections();
+        $this->helper->sortByCount($collections);
+        return $collections;
+    }
+
 
     /**
      * @param Zend_Db_Profiler_Query $query
