@@ -65,23 +65,6 @@ class Sheep_Debug_Model_Observer
 
         // Record action that handled current request
         $this->getRequestInfo()->addControllerAction($action);
-
-
-//        $this->getRequestInfo()->getLogging()->startRequest();
-
-//        $moduleName = $action->getRequest()->getControllerModule();
-//
-//
-//        if (strpos($moduleName, "Sheep_Debug") === 0 && !Mage::helper('sheep_debug')->isRequestAllowed()) {
-//
-//            Mage::log("Access to Magneto_Debug's actions blocked: dev mode is set to false.");
-//            // $response = $action->getResponse();
-//            // $response->setHttpResponseCode(404);
-//            // $response->setBody('Site access denied.');
-//            //$action->setDispatched(true)
-//            //
-//            exit();
-//        }
     }
 
 

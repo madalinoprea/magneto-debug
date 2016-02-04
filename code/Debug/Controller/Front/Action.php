@@ -10,6 +10,23 @@
  */
 class Sheep_Debug_Controller_Front_Action extends Mage_Core_Controller_Front_Action
 {
+
+    /**
+     * Prevent access to our access if toolbar is disabled
+     *
+     * @throws Zend_Controller_Response_Exception
+     */
+    public function preDispatch()
+    {
+        parent::preDispatch();
+
+        if (!Mage::helper('sheep_debug')->isAllowed()) {
+            $this->setFlag('', 'no-dispatch', true);
+            $this->getResponse()->setHttpResponseCode(404);
+        }
+    }
+
+
     /**
      * Returns current session
      *
@@ -80,4 +97,5 @@ class Sheep_Debug_Controller_Front_Action extends Mage_Core_Controller_Front_Act
 
         $this->getResponse()->setBody($block->toHtml());
     }
+
 }

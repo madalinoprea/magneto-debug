@@ -156,6 +156,17 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
 
 
     /**
+     * Checks if current customer is allowed to access our controllers
+     *
+     * @return bool
+     */
+    public function isAllowed()
+    {
+        return $this->canShowToolbar();
+    }
+
+
+    /**
      * Return readable file size
      *
      * @param int $size size in bytes
