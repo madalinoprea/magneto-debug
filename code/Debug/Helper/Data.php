@@ -180,8 +180,8 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
      * Sort callback for objects that have getCount()
      * @see Sheep_Debug_Model_Model
      *
-     * @param $a
-     * @param $b
+     * @param Sheep_Debug_Model_Model|Sheep_Debug_Model_Collection $a
+     * @param Sheep_Debug_Model_Model|Sheep_Debug_Model_Collection $b
      * @return int
      */
     public static function sortModelCmp($a, $b)

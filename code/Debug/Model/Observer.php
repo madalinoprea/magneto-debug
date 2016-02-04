@@ -174,6 +174,7 @@ class Sheep_Debug_Model_Observer
     public function onCollectionLoad(Varien_Event_Observer $event)
     {
         /** @var Mage_Core_Model_Resource_Db_Collection_Abstract */
+        /** @noinspection PhpUndefinedMethodInspection */
         $collection = $event->getCollection();
         $this->getRequestInfo()->addCollection($collection);
     }
