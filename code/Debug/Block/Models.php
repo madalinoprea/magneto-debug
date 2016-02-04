@@ -36,8 +36,7 @@ class Sheep_Debug_Block_Models extends Sheep_Debug_Block_Panel
     public function getSortedModels()
     {
         $models = $this->getItems();
-        // TODO: sort models by count
-//        $this->helper->sortModelsByOccurrences($models);
+        $this->helper->sortByCount($models);
         return $models;
     }
 

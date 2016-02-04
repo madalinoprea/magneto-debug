@@ -163,16 +163,24 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
         }
     }
 
+    /**
+     * Sort callback for objects that have getCount()
+     * @see Sheep_Debug_Model_Model
+     *
+     * @param $a
+     * @param $b
+     * @return int
+     */
     public static function sortModelCmp($a, $b)
     {
-        if ($a['occurrences'] == $b['occurrences'])
+        if ($a->getCount() == $b->getCount())
             return 0;
-        return ($a['occurrences'] < $b['occurrences']) ? 1 : -1;
+        return ($a->getCount() < $b->getCount()) ? 1 : -1;
     }
 
-    public function sortModelsByOccurrences(&$models)
+    public function sortByCount(&$objects)
     {
-        usort($models, array('Sheep_Debug_Helper_Data', 'sortModelCmp'));
+        usort($objects, array('Sheep_Debug_Helper_Data', 'sortModelCmp'));
     }
 
     public function getBlockFilename($blockClass)
