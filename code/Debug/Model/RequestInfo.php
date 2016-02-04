@@ -210,7 +210,7 @@ class Sheep_Debug_Model_RequestInfo
         $profiler = $connection->getProfiler();
         if ($profiler) {
             /** @var Zend_Db_Profiler_Query[] $queries */
-            $queryInfo = $profiler->getQueryProfiles();
+            $queryInfo = $profiler->getQueryProfiles() ?: array();
         }
 
         return $queryInfo;

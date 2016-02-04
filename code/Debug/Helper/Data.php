@@ -202,7 +202,7 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
 
         // Find files with layout updates
         $updateFiles = array();
-        
+
         /** @var Mage_Core_Model_Config_Element $updateNode */
         foreach ($updatesRoot->children() as $updateNode) {
             if ($updateNode->file) {
