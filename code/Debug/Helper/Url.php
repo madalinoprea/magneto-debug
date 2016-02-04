@@ -8,7 +8,7 @@
  * @license  Copyright: Pirate Sheep, 2016, All Rights reserved.
  * @link     https://piratesheep.com
  */
-class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Abstract
+class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
 {
     const MODULE_ROUTE = 'sheep_debug/';
 
@@ -37,4 +37,69 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Abstract
         return $this->_getUrl($path, $params);
     }
 
+
+    /**
+     * @return string
+     */
+    public function getEnableSqlProfilerUrl()
+    {
+        return $this->getToolbarUrl('model/enableSqlProfiler');
+    }
+
+
+    public function getDisableSqlProfilerUrl()
+    {
+        return $this->getToolbarUrl('model/disableSqlProfiler');
+    }
+
+
+    /**
+     * @param Zend_Db_Profiler_Query $query
+     * @param  string                $type
+     * @return string
+     */
+    public function getQueryUrl(Zend_Db_Profiler_Query $query, $type)
+    {
+        return $query->getQueryType() == Zend_Db_Profiler::SELECT ? $this->getToolbarUrl('model/' . $type) : '#';
+    }
+
+
+    /**
+     * @param Zend_Db_Profiler_Query $query
+     * @return string
+     */
+    public function getSelectQueryUrl(Zend_Db_Profiler_Query $query)
+    {
+        return $this->getQueryUrl($query, 'selectSql');
+    }
+
+
+    /**
+     * @param Zend_Db_Profiler_Query $query
+     * @return string
+     */
+    public function getExplainQueryUrl(Zend_Db_Profiler_Query $query)
+    {
+        return $this->getQueryUrl($query, 'describeSql');
+    }
+
+
+    /**
+     * @param $blockClass
+     * @return string
+     */
+    public function getViewBlockUrl($blockClass)
+    {
+        return $this->getToolbarUrl('block/viewBlock', array('block' => $blockClass));
+    }
+
+
+    /**
+     * @param $template
+     * @return string
+     */
+    public function getViewTemplateUrl($template)
+    {
+        return $this->getToolbarUrl('block/viewTemplate', array('template' => $this->urlEncode($template)));
+    }
 }
