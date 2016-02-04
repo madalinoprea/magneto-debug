@@ -28,33 +28,7 @@ class Sheep_Debug_IndexController extends Sheep_Debug_Controller_Front_Action
         $this->_redirectReferer();
     }
 
-    /**
-     * Turn on/off translate inline
-     *
-     * @return void
-     */
-    public function toggleTranslateInlineAction()
-    {
-        $forStore = $this->getRequest()->getParam('store', 1);
 
-        $currentStatus = Mage::getStoreConfig('dev/translate_inline/active', $forStore);
-        $newStatus = !$currentStatus;
-
-        $config = Mage::app()->getConfig();
-        $config->saveConfig('dev/translate_inline/active', $newStatus, 'stores', $forStore);
-        $config->saveConfig('dev/translate_inline/active_admin', $newStatus, 'stores', $forStore);
-
-        // Toggle translate cache too
-        $allTypes = Mage::app()->useCache();
-        $allTypes['translate'] = !$newStatus; // Cache off when translate is on
-        Mage::app()->saveUseCache($allTypes);
-
-        // clear cache
-        Mage::app()->cleanCache(array(Mage_Core_Model_Config::CACHE_TAG, Mage_Core_Model_Translate::CACHE_TAG));
-
-        Mage::getSingleton('core/session')->addSuccess('Translate inline set to ' . var_export($newStatus, true));
-        $this->_redirectReferer();
-    }
 
     /**
      * Turn on/off template hints

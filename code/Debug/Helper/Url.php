@@ -133,4 +133,29 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
     {
         return $this->getToolbarUrl('util/searchGroupClass');
     }
+
+    public function getFlushCacheUrl()
+    {
+        return $this->getToolbarUrl('util/flushCache');
+    }
+
+    public function getEnableTemplateHintsUrl()
+    {
+        return $this->getToolbarUrl('util/enableTemplateHints');
+    }
+
+    public function getDisableTemplateHintsUrl()
+    {
+        return $this->getToolbarUrl('util/disableTemplateHints');
+    }
+
+    public function getEnableTranslateUrl()
+    {
+        return $this->getToolbarUrl('util/enableTranslate');
+    }
+
+    public function getDisableTranslateUrl()
+    {
+        return $this->getToolbarUrl('util/disableTranslate');
+    }
 }

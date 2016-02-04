@@ -89,4 +89,28 @@ class Sheep_Debug_Model_Service
             throw new Exception("Unable to save {$filePath}: check if web server user has write permission");
         }
     }
+
+
+    /**
+     * @param $status
+     */
+    public function setTemplateHints($status)
+    {
+        $config = Mage::app()->getConfig();
+        $config->saveConfig('dev/debug/template_hints', $status);
+        $config->saveConfig('dev/debug/template_hints_blocks', $status);
+    }
+
+
+    /**
+     * Changes status for inline translations
+     *
+     * @param $status
+     */
+    public function setTranslateInline($status)
+    {
+        $status = (int) $status;
+        $config = Mage::app()->getConfig();
+        $config->saveConfig('dev/translate_inline/active', $status);
+    }
 }

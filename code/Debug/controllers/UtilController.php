@@ -13,8 +13,6 @@ class Sheep_Debug_UtilController extends Sheep_Debug_Controller_Front_Action
 
     /**
      * Search grouped class
-     *
-     * @return void
      */
     public function searchGroupClassAction()
     {
@@ -48,4 +46,108 @@ class Sheep_Debug_UtilController extends Sheep_Debug_Controller_Front_Action
         }
     }
 
+
+    public function flushCacheAction()
+    {
+        if (!$this->getRequest()->isPost()) {
+            $this->getResponse()->setHttpResponseCode(405);
+            $this->getResponse()->setBody('Method not allowed');
+        }
+
+        try {
+            $this->getService()->flushCache();
+            $content = $this->__('Cache flushed.');
+            $this->getSession()->addSuccess('Cache flushed.');
+        } catch (Exception $e) {
+            $content = $this->__('Cache cannot be flushed: %s', $e->getMessage());
+            $this->getResponse()->setHttpResponseCode(500);
+        }
+
+        $this->getResponse()->setBody($content);
+    }
+
+
+    public function enableTemplateHintsAction()
+    {
+        if (!$this->getRequest()->isPost()) {
+            $this->getResponse()->setHttpResponseCode(405);
+            $this->getResponse()->setBody('Method not allowed');
+        }
+
+        try {
+            $this->getService()->setTemplateHints(1);
+            $this->getService()->flushCache();
+
+            $content = $this->__('Template hints were enabled');
+        } catch (Exception $e) {
+            $content = $this->__('Template hints cannot be enabled: %s', $e->getMessage());
+            $this->getResponse()->setHttpResponseCode(500);
+        }
+
+        $this->getResponse()->setBody($content);
+    }
+
+
+    public function disableTemplateHintsAction()
+    {
+        if (!$this->getRequest()->isPost()) {
+            $this->getResponse()->setHttpResponseCode(405);
+            $this->getResponse()->setBody('Method not allowed');
+        }
+
+        try {
+            $this->getService()->setTemplateHints(0);
+            $this->getService()->flushCache();
+
+            $content = $this->__('Template hints were disabled');
+            $this->getSession()->addSuccess($content);
+        } catch (Exception $e) {
+            $content = $this->__('Template hints cannot be disabled: %s', $e->getMessage());
+            $this->getResponse()->setHttpResponseCode(500);
+        }
+
+        $this->getResponse()->setBody($content);
+    }
+
+
+    public function enableTranslateAction()
+    {
+        if (!$this->getRequest()->isPost()) {
+            $this->getResponse()->setHttpResponseCode(405);
+            $this->getResponse()->setBody('Method not allowed');
+        }
+
+        try {
+            $this->getService()->setTranslateInline(1);
+            $this->getService()->flushCache();
+
+            $content = $this->__('Translate inline was enabled');
+        } catch (Exception $e) {
+            $content = $this->__('Translate inline cannot be enabled: %s', $e->getMessage());
+            $this->getResponse()->setHttpResponseCode(500);
+        }
+
+        $this->getResponse()->setBody($content);
+    }
+
+
+    public function disableTranslateAction()
+    {
+        if (!$this->getRequest()->isPost()) {
+            $this->getResponse()->setHttpResponseCode(405);
+            $this->getResponse()->setBody('Method not allowed');
+        }
+
+        try {
+            $this->getService()->setTranslateInline(0);
+            $this->getService()->flushCache();
+
+            $content = $this->__('Translate inline was disabled');
+        } catch (Exception $e) {
+            $content = $this->__('Translate inline cannot be disabled: %s', $e->getMessage());
+            $this->getResponse()->setHttpResponseCode(500);
+        }
+
+        $this->getResponse()->setBody($content);
+    }
 }

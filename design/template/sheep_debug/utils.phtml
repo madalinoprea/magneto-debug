@@ -1,9 +1,32 @@
 <?php
+/** @var Sheep_Debug_Block_Util $this */
 ?>
 
 <h4><?php echo $this->__('Quick Links') ?></h4>
+
 <p>
-    Some links
+    <button class="button postButton" data-href="<?php echo $this->getFlushCacheUrl() ?>">
+        <?php echo $this->__('Flush Cache'); ?>
+    </button>
+    <?php if ($this->isTemplateHintsEnable()): ?>
+        <button class="button postButton" data-href="<?php echo $this->getDisableTemplateHintsUrl() ?>">
+            <?php echo $this->__('Disable Template Hints'); ?>
+        </button>
+    <?php else: ?>
+        <button class="button postButton" data-href="<?php echo $this->getEnableTemplateHintsUrl() ?>">
+            <?php echo $this->__('Enable Template Hints'); ?>
+        </button>
+    <?php endif; ?>
+
+    <?php if ($this->isTranslateInlineEnable()): ?>
+        <button href="#" class="button postButton" data-href="<?php echo $this->getDisableTranslateUrl() ?>">
+            <?php echo $this->__('Disable Inline Translation'); ?>
+        </button>
+    <?php else: ?>
+        <button href="#" class="button postButton" data-href="<?php echo $this->getEnableTranslateUrl() ?>">
+            <?php echo $this->__('Enable Inline Translation'); ?>
+        </button>
+    <?php endif; ?>
 </p>
 
 <h4><?php echo $this->__('Grouped Class Search'); ?></h4>
@@ -34,6 +57,23 @@
                 parameters: Form.serialize($('class-search-form'))
             });
     }
+
+    // Registers any buttons
+    $$('.postButton').each(function (el) {
+        return el.observe('click', function () {
+            new Ajax.Request(this.getAttribute('data-href'), {
+                method: 'post',
+                onSuccess: function () {
+                    location.reload();
+                },
+                onFailure: function (transport) {
+                    alert(transport.responseText);
+                }
+            });
+        })
+    });
+
+
 </script>
 
 <div id="class-search-results">

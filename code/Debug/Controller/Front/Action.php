@@ -11,13 +11,13 @@
 class Sheep_Debug_Controller_Front_Action extends Mage_Core_Controller_Front_Action
 {
     /**
-     * Returns current customer session
+     * Returns current session
      *
-     * @return Mage_Customer_Model_Session
+     * @return Mage_Core_Model_Session
      */
     public function getSession()
     {
-        return Mage::getSingleton('customer/session');
+        return Mage::getSingleton('core/session');
     }
 
 
