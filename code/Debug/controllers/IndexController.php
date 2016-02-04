@@ -31,69 +31,6 @@ class Sheep_Debug_IndexController extends Mage_Core_Controller_Front_Action
         return parent::_redirectReferer($defaultUrl);
     }
 
-    /**
-     * Show source code of template
-     *
-     * @return string
-     */
-    public function viewTemplateAction()
-    {
-        $fileName = $this->getRequest()->get('template');
-
-        $absoluteFilePath = realpath(Mage::getBaseDir('design') . DS . $fileName);
-        $source = highlight_string(file_get_contents($absoluteFilePath), true);
-
-        $content = $this->_debugPanel("Template Source: <code>$fileName</code>", $source);
-        $this->getResponse()->setBody($content);
-    }
-
-    /**
-     * Show source code of block
-     *
-     * @return string
-     */
-    public function viewBlockAction()
-    {
-        $blockClass = $this->getRequest()->get('block');
-        $absoluteFilePath = Mage::helper('debug')->getBlockFilename($blockClass);
-
-        $source = highlight_string(file_get_contents($absoluteFilePath), true);
-
-        $content = $this->_debugPanel("Block Source: <code>{$blockClass}</code>", $source);
-        $this->getResponse()->setBody($content);
-    }
-
-    /**
-     * View sql query
-     *
-     * @return void
-     */
-    public function viewSqlSelectAction()
-    {
-        $con = Mage::getSingleton('core/resource')->getConnection('core_write');
-        $query = $this->getRequest()->getParam('sql');
-        $queryParams = $this->getRequest()->getParam('params');
-
-        $result = $con->query($query, $queryParams);
-
-        $items = array();
-        $headers = array();
-        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-            $items[] = $row;
-
-            if (empty($headers)) {
-                $headers = array_keys($row);
-            }
-        }
-
-        $block = $this->getLayout()->createBlock('debug/abstract');
-        $block->setTemplate('debug/arrayformat.phtml');
-        $block->assign('title', 'SQL Select');
-        $block->assign('headers', $headers);
-        $block->assign('items', $items);
-        $block->assign('query', $query);
-        $this->getResponse()->setBody($block->toHtml());
-    }
 
     /**
      * @return void
@@ -185,38 +122,7 @@ class Sheep_Debug_IndexController extends Mage_Core_Controller_Front_Action
         $this->getResponse()->setBody($block->toHtml());
     }
 
-    /**
-     * Show explain of sql query
-     *
-     * @return void
-     */
-    public function viewSqlExplainAction()
-    {
-        $con = Mage::getSingleton('core/resource')->getConnection('core_write');
-        $query = $this->getRequest()->getParam('sql');
-        $queryParams = $this->getRequest()->getParam('params');
 
-        $result = $con->query("EXPLAIN {$query}", $queryParams);
-
-        $items = array();
-        $headers = array();
-        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-            $items[] = $row;
-
-            if (empty($headers)) {
-                $headers = array_keys($row);
-            }
-        }
-
-        $block = $this->getLayout()->createBlock('debug/abstract');
-        $block->setTemplate('debug/arrayformat.phtml');
-        $block->assign('title', 'SQL Explain');
-        $block->assign('headers', $headers);
-        $block->assign('items', $items);
-        $block->assign('query', $query);
-
-        $this->getResponse()->setBody($block->toHtml());
-    }
 
     /**
      * Clear Magento cache
