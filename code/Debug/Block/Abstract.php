@@ -7,11 +7,16 @@
  * @package  Sheep_Subscription
  * @license  Copyright: Pirate Sheep, 2016, All Rights reserved.
  * @link     https://piratesheep.com
+ *
+ * @method setRequestInfo(Sheep_Debug_Model_RequestInfo $requestInfo)
  */
 class Sheep_Debug_Block_Abstract extends Mage_Core_Block_Template
 {
     /** @var Sheep_Debug_Helper_Data */
     protected $helper;
+
+    /** @var  Sheep_Debug_Model_RequestInfo */
+    protected $requestInfo;
 
 
     /**
@@ -41,7 +46,7 @@ class Sheep_Debug_Block_Abstract extends Mage_Core_Block_Template
 
 
     /**
-     * Returns info about current request
+     * Returns info attached to this block or returns request infor current request
      *
      * TODO: Return specified request info
      *
@@ -49,6 +54,10 @@ class Sheep_Debug_Block_Abstract extends Mage_Core_Block_Template
      */
     public function getRequestInfo()
     {
-        return Mage::getSingleton('sheep_debug/observer')->getRequestInfo();
+        if ($this->requestInfo === null) {
+            $this->requestInfo = Mage::registry('sheep_debug_request_info') ?: Mage::getSingleton('sheep_debug/observer')->getRequestInfo();
+        }
+
+        return $this->requestInfo;
     }
 }
