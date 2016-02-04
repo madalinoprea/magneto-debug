@@ -46,7 +46,7 @@ class Sheep_Debug_Block_Abstract extends Mage_Core_Block_Template
 
 
     /**
-     * Returns info attached to this block or returns request infor current request
+     * Returns info attached to this block or returns current request's info
      *
      * TODO: Return specified request info
      *

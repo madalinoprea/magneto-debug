@@ -52,7 +52,7 @@ class Sheep_Debug_Model_Block
             throw new Exception("Block {$this->name} is already marked as rendered");
         }
 
-        // Reinit data from block (some extension change block's template later)
+        // Re-init data from block (some extension might update dynamically block's template)
         $this->init($block);
 
         $this->isRendering = true;

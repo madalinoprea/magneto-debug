@@ -19,7 +19,6 @@ class Sheep_Debug_ConfigController extends Sheep_Debug_Controller_Front_Action
         }
 
         $query = (string)$this->getRequest()->getPost('query', '');
-        $result = array('error' => true, 'message' => '');
 
         if ($query) {
             $results = $this->getService()->searchConfig($query);

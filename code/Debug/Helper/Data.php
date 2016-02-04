@@ -31,6 +31,7 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
      */
     public function getModuleVersion()
     {
+        /** @var Mage_Core_Model_Config_Element $moduleConfig */
         $moduleConfig = Mage::getConfig()->getModuleConfig($this->getModuleName());
         return (string)$moduleConfig->version;
     }

@@ -80,6 +80,7 @@ class Sheep_Debug_Model_Service
         /** @var SimpleXMLElement $connectionNode */
         $connectionNode = $xml->global->resources->default_setup->connection;
         if ($isEnabled) {
+            /** @noinspection PhpUndefinedFieldInspection */
             $connectionNode->profiler = '1';
         } else {
             unset($connectionNode->profiler);

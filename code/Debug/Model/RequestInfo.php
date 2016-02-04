@@ -77,11 +77,6 @@ class Sheep_Debug_Model_RequestInfo
      */
     public function addControllerAction(Mage_Core_Controller_Varien_Action $action)
     {
-        if ($this->action) {
-            $bp = true;
-            // TODO: remove bp
-        }
-
         $this->action = Mage::getModel('sheep_debug/controller', $action);
     }
 
@@ -122,11 +117,6 @@ class Sheep_Debug_Model_RequestInfo
     {
         $blockInfo = Mage::getModel('sheep_debug/block', $block);
         $key = $blockInfo->getName();
-
-        // TODO: remove bp
-        if (array_key_exists($key, $this->blocks)) {
-            $bp = true;
-        }
 
         return $this->blocks[$key] = $blockInfo;
     }

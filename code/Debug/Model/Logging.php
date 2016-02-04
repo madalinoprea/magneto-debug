@@ -35,7 +35,7 @@ class Sheep_Debug_Model_Logging
     {
         $this->ranges[$logFile] = array(
             'start' => $start,
-            'end'   => 0
+            'end'   => $end
         );
     }
 

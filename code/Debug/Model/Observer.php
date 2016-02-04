@@ -26,9 +26,8 @@ class Sheep_Debug_Model_Observer
      * Listens to controller_front_init_before event. An event that we can consider the start of the request.
      * Current store is initialized.
      *
-     * @param Varien_Event_Observer $observer
      */
-    public function onControllerFrontInitBefore(Varien_Event_Observer $observer)
+    public function onControllerFrontInitBefore()
     {
         $this->getRequestInfo()->setStoreId(Mage::app()->getStore()->getId());
         $this->getRequestInfo()->initLogging();
@@ -48,6 +47,7 @@ class Sheep_Debug_Model_Observer
      */
     public function onActionPreDispatch(Varien_Event_Observer $observer)
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         $action = $observer->getEvent()->getControllerAction();
 
         // Record action that handled current request
@@ -81,6 +81,7 @@ class Sheep_Debug_Model_Observer
     public function onLayoutGenerate(Varien_Event_Observer $observer)
     {
         /** @var Mage_Core_Model_Layout $layout */
+        /** @noinspection PhpUndefinedMethodInspection */
         $layout = $observer->getEvent()->getLayout();
         $requestInfo = $this->getRequestInfo();
 
@@ -157,6 +158,7 @@ class Sheep_Debug_Model_Observer
     public function onActionPostDispatch(Varien_Event_Observer $event)
     {
         /** @var Mage_Core_Controller_Varien_Action $action */
+        /** @noinspection PhpUndefinedMethodInspection */
         $action = $event->getControllerAction();
 
         $this->getRequestInfo()->addControllerAction($action);
@@ -185,6 +187,7 @@ class Sheep_Debug_Model_Observer
     public function onModelLoad(Varien_Event_Observer $observer)
     {
         $event = $observer->getEvent();
+        /** @noinspection PhpUndefinedMethodInspection */
         $model = $event->getObject();
         $this->getRequestInfo()->addModel($model);
     }

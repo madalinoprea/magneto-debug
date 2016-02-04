@@ -70,6 +70,7 @@ class Sheep_Debug_DesignController extends Sheep_Debug_Controller_Front_Action
             $results = $fileXml->xpath("/layout/{$handle}");
             if ($results) {
                 $handleFiles[$file] = array();
+                /** @var SimpleXMLElement $result */
                 foreach ($results as $result) {
                     $handleFiles[$file][] = $result->asXML();
                 }
