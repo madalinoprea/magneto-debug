@@ -1,51 +1,36 @@
 <?php
 
+/**
+ * Class Sheep_Debug_IndexController
+ *
+ * @category Sheep
+ * @package  Sheep_Subscription
+ * @license  Copyright: Pirate Sheep, 2016, All Rights reserved.
+ * @link     https://piratesheep.com
+ */
 class Sheep_Debug_IndexController extends Sheep_Debug_Controller_Front_Action
 {
     /**
-     * @param null $defaultUrl
-     * @return Mage_Core_Controller_Varien_Action
+     * Returns lines from log file
      */
-    protected function _redirectReferer($defaultUrl = null)
+    public function viewLogAction()
     {
-        if ($store = $this->getRequest()->getParam('store')) {
-            Mage::app()->setCurrentStore($store);
+        $log = (string)$this->getRequest()->getParam('log');
+        $startPosition = (int)$this->getRequest()->getParam('start');
+
+        try {
+            if (!$log) {
+                throw new Exception('log parameter is missing');
+            }
+
+            $logging = Mage::getModel('sheep_debug/logging');
+            $logging->addFile($log);
+            $logging->addRange($log, $startPosition);
+
+            $this->renderContent('Logs from ' . $log, $logging->getLoggedContent($log));
+        } catch (Exception $e) {
+            $this->getResponse()->setHttpResponseCode(500);
+            $this->getResponse()->setBody($e->getMessage());
         }
-        return parent::_redirectReferer($defaultUrl);
     }
-
-
-
-
-    /**
-     * Download config as XML file
-     *
-     * @return string
-     */
-    public function downloadConfigAction()
-    {
-        $this->getResponse()->setHeader('Content-type', 'text/xml', true);
-        $this->getResponse()->setBody(Mage::app()->getConfig()->getNode()->asXML());
-    }
-
-    /**
-     * Download config as text
-     *
-     * @return void
-     */
-    public function downloadConfigAsTextAction()
-    {
-        $items = array();
-        $configs = Mage::app()->getConfig()->getNode();
-        Magneto_Debug_Block_Config::xml2array($configs, $items);
-
-        $content = '';
-        foreach ($items as $key => $value) {
-            $content .= "$key = $value\n";
-        }
-
-        $this->getResponse()->setHeader('Content-type', 'text/plain', true);
-        $this->getResponse()->setBody($content);
-    }
-
 }
