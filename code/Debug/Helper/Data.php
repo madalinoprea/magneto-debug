@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Class Sheep_Debug_Helper_Data
+ *
+ * @category Sheep
+ * @package  Sheep_Subscription
+ * @license  Copyright: Pirate Sheep, 2016, All Rights reserved.
+ * @link     https://piratesheep.com
+ */
 class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
 {
     const DEBUG_OPTIONS_ENABLE_PATH = 'sheep_debug/options/enable';
@@ -138,16 +146,12 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
     /**
      * Returns all xml files that contains layout updates.
      *
-     * @param int|null $storeId store identifier
-     *
-     * @param          $designArea
+     * @param int    $storeId store identifier
+     * @param string $designArea
      * @return array
      */
     public function getLayoutUpdatesFiles($storeId, $designArea)
     {
-        if (null === $storeId) {
-            $storeId = Mage::app()->getStore()->getId();
-        }
         $updatesRoot = Mage::app()->getConfig()->getNode($designArea . '/layout/updates');
 
         // Find files with layout updates
@@ -161,11 +165,12 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
                 $updateFiles[] = (string)$updateNode->file;
             }
         }
-        // custom local layout updates file - load always last
+        // custom local layout updates file
         $updateFiles[] = 'local.xml';
 
         return $updateFiles;
     }
+
 
     /**
      * Read last lines of file (able to read huge file)
