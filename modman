@@ -2,14 +2,14 @@
 Sheep_Debug.xml                 app/etc/modules/Sheep_Debug.xml
 code/Debug                      app/code/community/Sheep/Debug
 
-# skin
-skin                            skin/frontend/base/default/sheep_debug/
-
 # frontend
 design/layout/sheep_debug.xml   app/design/frontend/base/default/layout/sheep_debug.xml
 design/template/sheep_debug     app/design/frontend/base/default/template/sheep_debug
+skin                            skin/frontend/base/default/sheep_debug/
 
 # adminhtml
 design/layout/sheep_debug.xml   app/design/adminhtml/base/default/layout/sheep_debug.xml
 design/template/sheep_debug     app/design/adminhtml/base/default/template/sheep_debug
+skin                            skin/adminhtml/default/default/sheep_debug/
+
 #connect/Magneto_Debug.xml      var/connect/Magneto_Debug.xml
