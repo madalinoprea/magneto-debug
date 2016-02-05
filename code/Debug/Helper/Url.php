@@ -51,6 +51,25 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
 
 
     /**
+     * @param string $moduleName
+     * @return string
+     */
+    public function getEnableModuleUrl($moduleName)
+    {
+        return $this->getUrl('module/enable', array('module' => $moduleName));
+    }
+
+
+    /**
+     * @param string $moduleName
+     * @return string
+     */
+    public function getDisableModuleUrl($moduleName)
+    {
+        return $this->getUrl('module/disable', array('module' => $moduleName));
+    }
+
+    /**
      * @return string
      */
     public function getEnableSqlProfilerUrl()

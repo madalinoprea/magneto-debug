@@ -51,7 +51,7 @@ class Sheep_Debug_Block_Modules extends Sheep_Debug_Block_Panel
      */
     public function getEnableModuleUrl($moduleName)
     {
-        return Mage::helper('sheep_debug/url')->getToolbarUrl('module/enable', array('module' => $moduleName));
+        return Mage::helper('sheep_debug/url')->getEnableModuleUrl($moduleName);
     }
 
 
@@ -61,7 +61,7 @@ class Sheep_Debug_Block_Modules extends Sheep_Debug_Block_Panel
      */
     public function getDisableModuleUrl($moduleName)
     {
-        return Mage::helper('sheep_debug/url')->getToolbarUrl('module/disable', array('module' => $moduleName));
+        return Mage::helper('sheep_debug/url')->getDisableModuleUrl($moduleName);
     }
 }
 
