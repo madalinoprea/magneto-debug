@@ -44,7 +44,7 @@
 
                         <persist_expiration> 
                             <label>Persisted Request Lifetime (number of days)</label> 
-                            <comment>Number of days after which persisted requests are cleared.</comment> 
+                            <comment>Number of days after which persisted requests are cleared. Requests are not delete if configuration is set to 0.</comment> 
                             <depends>
                                 <persist>1</persist>
                             </depends>

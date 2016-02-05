@@ -212,6 +212,19 @@
         </layout>
     </adminhtml>
 
+    <crontab>
+        <jobs>
+            <sheep_debug_delete_expired_requests>
+                <schedule>
+                    <cron_expr>0 5 * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>sheep_debug/cron::deleteExpiredRequests</model>
+                </run>
+            </sheep_debug_delete_expired_requests>
+        </jobs>
+    </crontab>
+
     <!-- Default settings -->
     <default>
         <sheep_debug>
