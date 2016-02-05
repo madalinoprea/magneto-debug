@@ -1,93 +1,101 @@
-# Magento Debug Toolbar
-Based on robhudson's awesome work (<https://github.com/robhudson/django-debug-toolbar>) we've created a debug toolbar for Magento.
-It is installed as a Magento module without hacking Magento's core.
 
-Basic features are implemented and few others will come soon. Check the screenshots for current features: <https://github.com/madalinoprea/magneto-debug/wiki>
+This repository represents an extension for Magento 1.x that offers a debug toolbar. The idea came from robhudson's [django-debug-toolbar](https://github.com/robhudson/django-debug-toolbar).  
 
-Or demo video on YouTube: http://www.youtube.com/watch?v=aqvgrmebcu4
+![Toolbar](docs/images/toolbar.png)
 
-## INSTALLATION
+# Features 
+- **Request and Controller information**: lists request attributes and controller that handled the request
+- **Models**: lists all models and collections loaded during the request; all executed SQL queries are listed
+ when SQL Profiler is enabled
+- **Module listing**: lists available Magento modules with their status and their version; 
+ also offers the ability to enable/disable them
+- **Design Objects**: lists layout handlers loaded during current request and adds ability to see layout files
+updates to a specific handle
+- **Blocks**: offers information about instantiated and rendered block
+- **Logs**: shows log lines added to system and exception 'during' the request.
+- **Utils**: contains quick links to flush cache, enable template hints, enable SQL profiler
+- **Configuration** offers ability to search Magento configurations (review cronjobs, event observers, etc)
 
-### A) Via Modman - Recommended (https://github.com/colinmollenhour/modman)
+# Installation 
 
-#### 1) Install Modman:
 
-```
-bash < <(wget -O - https://raw.github.com/colinmollenhour/modman/master/modman-installer)
-```
+## Using Modman
 
-or
+- Make sure you have [Modman](https://github.com/colinmollenhour/modman) installed
+- Allow symlinks for the templates directory (required for installations via Modman)
+    - For newer Magento versions (1.5.1.0 & above) you just need enable 'Allow Symlinks' from System - Configuration / Advanced / Developer / Template Settings
+    - For older Magento versions you need to change some code http://www.tonigrigoriu.com/magento/magento-how-to-fix-template-path-errors-when-using-symlinks/
+- Install Debug Toolbar module:
+    ```bash
+    cd [magento root folder]
+    modman init
+    modman clone https://github.com/madalinoprea/magneto-debug.git
+    ```
+- Flush Magento's cache 
 
-```
-bash < <(curl -s https://raw.github.com/colinmollenhour/modman/master/modman-installer)
-source ~/.profile
-```
-
-#### 2) Allow symlinks for the templates directory (required for installation via Modman)
-
- - For newer Magento versions (1.5.1.0 & above) you just need enable 'Allow Symlinks' from System - Configuration / Advanced / Developer / Template Settings
- - For older Magento versions: http://www.tonigrigoriu.com/magento/magento-how-to-fix-template-path-errors-when-using-symlinks/
-
-#### 3) Install Debug Toolbar module:
-
+### How to update
+I'm pretty lazy and I don't like to create Magento Connect packages. With modman you can effortlessly grab latest changes from github.
 ```
 cd [magento root folder]
-modman init
-modman clone https://github.com/madalinoprea/magneto-debug.git
-```
-
- - Make sure you've cleaned Magento's cache to enable the new module; hit refresh
-
-#### How to update
-I'm pretty lazy and I don't like to create Magento Connect packages. With modman you can effortlessly grab the latest changes from github.
-`
 modman update magneto-debug
-`
- - Clean Magento's cache to make sure new changes will be enabled.
+```
+- Flush Magento's cache
 
-### B) Via Magento Connect
-Extension is not updated regularly. I recommend using modman.
+## Via Magento Connect
 
-`
+Extension is not updated regularly on Magento Connect. My recommendation is to use modman. 
+
+```bash
 cd [magento root folder]
 sudo ./mage install community MagnetoDebug
-`
+```
 
 Magento Connect extension package is available here: http://www.magentocommerce.com/magento-connect/sstoiana/extension/6714/magnetodebug
 
-## FEATURES
- - Now available in Admin (1.0.1 RC - fancy for I'm laizy to create Magento Connect package)
- - Magento module listing; Toggle Magento modules on the fly
- - Search configuration keys
- - Display peak memory usage, script execution time
- - Request information (controller name, action name, cookies variables, session variables, GET and POST variables)
- - Models instantiated
- - SQL queries executed for current request; ability to see queries' result or queries' execution plan (EXPLAIN)
- - List Magento configuration
- - Print layout handles for current request
- - Find xml files where a specific layout handle is defined
- - Created blocks, their associated templates; Preview templates' source code
- - Quick actions:
-    - Toggle template hints
-    - Clear cache
-    - Toggle inline translation
+# Issues, Ideas or Feedback
 
-## KNOWN ISSUES
-We're working to correct these:
+Use [issue tracker on GitHub](https://github.com/madalinoprea/magneto-debug/issues) to report issues, ideas or any feedback.
 
- - To enable SQL profiler manually you have to add in your local.xml profiler tag `<profiler>1</profiler>` under connection, like in the example below:
+# Common Issues
 
-```
-<default_setup>
-    <connection>
-        <host><![CDATA[/var/run/mysqld/mysqld.sock]]></host>
-        <username><![CDATA[root]]></username>
-        <password><![CDATA[]]></password>
-        <dbname><![CDATA[magento]]></dbname>
-        <active>1</active>
-        <profiler>1</profiler>
-    </connection>
-</default_setup>
-```
+- 'Mage Registry key already exists' exception is raised after installation
+    - `Mage registry key "_singleton/debug/observer" already exists` is reported when cache regeneration was corrupted. 
+    Please try to flush Magento cache.
+  
+- I can't see toolbar.
+    - Toolbar is displayed in these conditions:
+        - module is installed and enabled
+        - toolbar is enabled from Admin / System / Configuration / Advanced - Developer Debug Toolbar (by default it's enabled)
+        - Magento is running in developer mode (MAGE_IS_DEVELOPER_MODE) Or your ip is listed under under 'Developer Client Restrictions'
+    - Check that module name Sheep_Debug is installed and enabled
+    - Check that 'Allow Symlinks' configuration is enabled for Modman installation
 
- - `Disable SQL Profiler` is not working, but `Enable SQL Profiler` works like a charm (or not)
+- I can't see toolbar on specific page
+    - Toolbar is added to all pages that have a structural block named `before_body_end`. By default this block is available on all Magento pages.
+    Eliminate a possible cache problem by disabling all caches. Try to determine if there are any customizations that have removed `before_body_end`.
+
+# Change Log
+- **1.2.0**: 
+    - Fixes SELECT and DESCRIBE operations for long queries
+    - Better way to identify what logging lines were added during request
+    - Various minor UI improvements (order of the panel, panel titles)
+    - Structural changes to improve stability and prepare new features
+    - And ma
+
+# Authors, contributors
+
+- [Mario O](https://twitter.com/madalinoprea)
+- [Other contributors](https://github.com/madalinoprea/magneto-debug/graphs/contributors)
+
+# License
+
+[MIT License](LICENSE.txt)
+	
+# Roadmap
+- Replace jQuery with prototype 
+- Persist request info and add ability to view previous requests, including Ajax or API requests
+- Reduce toolbar weight: simplify presented information, add separate request info view page
+- Add request info listing (shows persisted request infos)
+- Add unit tests
+- Add Travis
+- Add more detailed documentation
