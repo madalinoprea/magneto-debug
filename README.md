@@ -16,8 +16,9 @@ updates to a specific handle
 - **Utils**: contains quick links to flush cache, enable template hints, enable SQL profiler
 - **Configuration** offers ability to search Magento configurations (review cronjobs, event observers, etc)
 
-# Installation 
+Don't forget to check out [screenshots gallery](docs/images.md)
 
+# Installation 
 
 ## Using Modman
 
