@@ -329,4 +329,16 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
         return (int) Mage::getStoreConfig(self::DEBUG_OPTION_PERSIST_EXPIRATION_PATH);
     }
 
+
+    /**
+     * Returns a list of php extension name required by current Magento version
+     * TODO: read array dynamically from app/code/core/Mage/Install/etc/install.xml, verify when this file was added
+     *
+     * @return array
+     */
+    public function getExtensionRequirements()
+    {
+        return array('spl', 'dom', 'simplexml', 'mcrypt', 'hash', 'curl', 'iconv', 'ctype', 'gd', 'soap', 'mbstring');
+    }
+
 }
