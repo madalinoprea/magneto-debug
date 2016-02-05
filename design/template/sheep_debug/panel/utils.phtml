@@ -2,114 +2,70 @@
 /** @var Sheep_Debug_Block_Util $this */
 ?>
 
-<h4><?php echo $this->__('Quick Links') ?></h4>
+<div class="sf-toolbar-block sf-toolbar-block-config  sf-toolbar-block-right">
+    <a href="<?php echo $this->getRequestViewUrl() ?>#utils">
+        <div class="sf-toolbar-icon">
+            <span class="sf-toolbar-label">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" height="24" viewBox="0 0 24 24"
+                     xml:space="preserve">
+                    <path fill="#AAAAAA"
+                          d="m 2.571,17.5 18.859,0 c 0.87,0 1.57,0.7 1.57,1.57 l 0,1.57 c 0,0.87 -0.7,1.57 -1.57,1.57 l -18.859,0 C 1.702,22.21 1,21.51 1,20.64 L 1,19.07 C 1,18.2 1.702,17.5 2.571,17.5 Z M 1,11.21 1,12.79 c 0,0.86 0.702,1.56 1.571,1.56 l 18.859,0 c 0.87,0 1.57,-0.7 1.57,-1.56 l 0,-1.58 C 23,10.35 22.3,9.644 21.43,9.644 l -18.859,0 C 1.702,9.644 1,10.35 1,11.21 Z M 1,3.357 1,4.929 c 0,0.869 0.702,1.572 1.571,1.572 l 18.859,0 C 22.3,6.501 23,5.798 23,4.929 L 23,3.357 C 23,2.489 22.3,1.786 21.43,1.786 l -18.859,0 C 1.702,1.786 1,2.489 1,3.357 Z"/>
+                </svg>
+            </span>
+            <span class="sf-toolbar-value"><?php echo $this->__('Tools'); ?></span>
+        </div>
+    </a>
 
-<p>
-    <button class="button postButton" data-href="<?php echo $this->getFlushCacheUrl() ?>">
-        <?php echo $this->__('Flush Cache'); ?>
-    </button>
+    <div class="sf-toolbar-info">
+        <div class="sf-toolbar-info-piece">
+            <b><?php echo $this->__('Cache'); ?></b>
+            <span>
+                <a href="<?php echo $this->getFlushCacheUrl() ?>"><?php echo $this->__('Flush'); ?></a>
+            </span>
+        </div>
 
-    <?php if ($this->hasFullPageCache()): ?>
-        <?php if ($this->isFPCDebugEnabled()): ?>
-            <button class="button postButton" data-href="<?php echo $this->getDisableFPCDebugUrl() ?>">
-                <?php echo $this->__('Disable FPC Debug'); ?>
-            </button>
-        <?php else: ?>
-            <button class="button postButton" data-href="<?php echo $this->getEnableFPCDebugUrl() ?>">
-                <?php echo $this->__('Enable FPC Hints'); ?>
-            </button>
+        <?php if ($this->hasFullPageCache()): ?>
+            <b><?php echo $this->__('Full Page Cache Hints'); ?></b>
+            <span>
+                <?php if ($this->isFPCDebugEnabled()): ?>
+                    <a href="<?php echo $this->getDisableFPCDebugUrl() ?>"><?php echo $this->__('Disable'); ?></a>
+                <?php else: ?>
+                    <a href="<?php echo $this->getEnableFPCDebugUrl() ?>"><?php echo $this->__('Enable'); ?></a>
+                <?php endif; ?>
+            </span>
         <?php endif; ?>
-    <?php endif; ?>
 
-    <?php if ($this->isTemplateHintsEnabled()): ?>
-        <button class="button postButton" data-href="<?php echo $this->getDisableTemplateHintsUrl() ?>">
-            <?php echo $this->__('Disable Template Hints'); ?>
-        </button>
-    <?php else: ?>
-        <button class="button postButton" data-href="<?php echo $this->getEnableTemplateHintsUrl() ?>">
-            <?php echo $this->__('Enable Template Hints'); ?>
-        </button>
-    <?php endif; ?>
+        <div class="sf-toolbar-info-piece">
+            <b><?php echo $this->__('Template Hints'); ?></b>
+            <span>
+                <?php if ($this->isTemplateHintsEnabled()): ?>
+                    <a href="<?php echo $this->getDisableTemplateHintsUrl() ?>"><?php echo $this->__('Disable'); ?></a>
+                <?php else: ?>
+                    <a href="<?php echo $this->getEnableTemplateHintsUrl() ?>"><?php echo $this->__('Enable'); ?></a>
+                <?php endif; ?>
+            </span>
+        </div>
 
-    <?php if ($this->isSqlProfilerEnabled()): ?>
-        <button class="button postButton" data-href="<?php echo $this->getDisableSqlProfilerUrl() ?>">
-            <?php echo $this->__('Disable SQL Profiler'); ?>
-        </button>
-    <?php else: ?>
-        <button class="button postButton" data-href="<?php echo $this->getEnableSqlProfilerUrl() ?>">
-            <?php echo $this->__('Enable SQL Profiler'); ?>
-        </button>
-    <?php endif; ?>
+        <div class="sf-toolbar-info-piece">
+            <b><?php echo $this->__('SQL Profiler'); ?></b>
+            <span>
+                <?php if ($this->isSqlProfilerEnabled()): ?>
+                    <a href="<?php echo $this->getDisableSqlProfilerUrl() ?>"><?php echo $this->__('Disable'); ?></a>
+                <?php else: ?>
+                    <a href="<?php echo $this->getEnableSqlProfilerUrl() ?>"><?php echo $this->__('Enable'); ?></a>
+                <?php endif; ?>
+            </span>
+        </div>
 
-    <?php if ($this->isTranslateInlineEnable()): ?>
-        <button href="#" class="button postButton" data-href="<?php echo $this->getDisableTranslateUrl() ?>">
-            <?php echo $this->__('Disable Inline Translation'); ?>
-        </button>
-    <?php else: ?>
-        <button href="#" class="button postButton" data-href="<?php echo $this->getEnableTranslateUrl() ?>">
-            <?php echo $this->__('Enable Inline Translation'); ?>
-        </button>
-    <?php endif; ?>
-</p>
-
-<h4><?php echo $this->__('Grouped Class Search'); ?></h4>
-
-<form action="#" id="class-search-form" onSubmit="submitGroupedClassSearch(); return false;">
-    <input name="uri" class="input-text required-entry" type="search" size="40"/>
-    <select name="group" class="input-select required-entry">
-        <option>all</option>
-        <option>model</option>
-        <option>block</option>
-        <option>helper</option>
-    </select>
-
-    <button class="button" onClick="submitGroupedClassSearch()"><?php echo $this->__('Search Grouped Class') ?></button>
-</form>
-
-<p>
-    <?php echo $this->__('Search examples:') ?> <em>catalog/product</em>, <em>core/url</em>
-</p>
-
-<script type="text/javascript">
-    function submitGroupedClassSearch() {
-        var request = new Ajax.Updater(
-            'class-search-results',
-            '<?php echo Mage::helper('sheep_debug/url')->getSearchGroupClassUrl() ?>',
-            {
-                method: 'post',
-                parameters: Form.serialize($('class-search-form'))
-            });
-    }
-
-    // Registers any buttons
-    $$('.postButton').each(function (el) {
-        return el.observe('click', function () {
-            new Ajax.Request(this.getAttribute('data-href'), {
-                method: 'post',
-                onSuccess: function () {
-                    location.reload();
-                },
-                onFailure: function (transport) {
-                    alert(transport.responseText);
-                }
-            });
-        })
-    });
-
-
-</script>
-
-<div id="class-search-results">
-    <table>
-        <thead>
-        <tr>
-            <th><?php echo $this->__('#') ?></th>
-            <th><?php echo $this->__('Group Type') ?></th>
-            <th><?php echo $this->__('Class') ?></th>
-            <th><?php echo $this->__('File path') ?></th>
-        </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
+        <div class="sf-toolbar-info-piece">
+            <b><?php echo $this->__('Inline Translation'); ?></b>
+            <span>
+                <?php if ($this->isTranslateInlineEnable()): ?>
+                    <a href="<?php echo $this->getDisableTranslateUrl() ?>"><?php echo $this->__('Disable'); ?></a>
+                <?php else: ?>
+                    <a href="<?php echo $this->getEnableTranslateUrl() ?>"><?php echo $this->__('Enable'); ?></a>
+                <?php endif; ?>
+            </span>
+        </div>
+    </div>
 </div>
