@@ -80,7 +80,6 @@ Use [issue tracker on GitHub](https://github.com/madalinoprea/magneto-debug/issu
     - Better way to identify what logging lines were added during request
     - Various minor UI improvements (order of the panel, panel titles)
     - Structural changes to improve stability and prepare new features
-    - And ma
 
 # Authors, contributors
 
