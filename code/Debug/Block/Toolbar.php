@@ -39,7 +39,7 @@ class Sheep_Debug_Block_Toolbar extends Sheep_Debug_Block_Abstract
 
 
     /**
-     * Returns visible debug panels
+     * Returns sorted visible debug panels
      *
      * @return Sheep_Debug_Block_Panel[]
      */

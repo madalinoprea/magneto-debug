@@ -41,7 +41,8 @@ class Sheep_Debug_Block_Abstract extends Mage_Core_Block_Template
     }
 
 
-    public function getDefaultStoreId(){
+    public function getDefaultStoreId()
+    {
         return Mage::app()
             ->getWebsite()
             ->getDefaultGroup()
@@ -69,6 +70,18 @@ class Sheep_Debug_Block_Abstract extends Mage_Core_Block_Template
         }
 
         return $this->requestInfo;
+    }
+
+    public function getRequestListUrl()
+    {
+        return Mage::helper('sheep_debug/url')->getRequestListUrl();
+    }
+
+
+    public function getRequestViewUrl($token = null)
+    {
+        $token = $token ?: $this->getRequestInfo()->getToken();
+        return Mage::helper('sheep_debug/url')->getRequestViewUrl($token);
     }
 
     /**
