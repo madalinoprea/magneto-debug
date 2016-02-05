@@ -1,6 +1,14 @@
 <?php
 
-class Sheep_Debug_Model_RequestInfo
+/**
+ * Class Sheep_Debug_Model_RequestInfo
+ *
+ * @category Sheep
+ * @package  Sheep_Subscription
+ * @license  Copyright: Pirate Sheep, 2016, All Rights reserved.
+ * @link     https://piratesheep.com
+ */
+class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
 {
     /** @var int */
     protected $storeId;
@@ -25,11 +33,6 @@ class Sheep_Debug_Model_RequestInfo
 
     /** @var array Zend_Db_Profiler_Query */
     protected $queries = null;
-
-    public function __construct()
-    {
-
-    }
 
 
     /**
@@ -224,6 +227,13 @@ class Sheep_Debug_Model_RequestInfo
         }
 
         return $this->queries;
+    }
+
+    protected $_eventPrefix = 'sheep_debug_requestInfo';
+
+    protected function _construct()
+    {
+        $this->_init('sheep_debug/requestInfo');
     }
 
 }
