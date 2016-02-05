@@ -1,0 +1,61 @@
+<?php
+/* @var Sheep_Debug_Block_Blocks $this */
+
+$templateDirs = $this->getTemplateDirs();
+$blocks = $this->getItems();
+?>
+
+<h4><?php echo $this->__('Template path') ?></h4>
+<?php if ($templateDirs): ?>
+    <ol>
+        <?php foreach ($templateDirs as $template): ?>
+            <li><?php echo $template; ?></li>
+        <?php endforeach; ?>
+    </ol>
+<?php else: ?>
+    <p><?php echo $this->__('None'); ?></p>
+<?php endif; ?>
+
+
+<h4><?php echo $this->__('Rendered Blocks') ?></h4>
+
+<p><?php echo $this->__('Lists all created blocks.') ?></p>
+
+<table>
+    <thead>
+    <tr>
+        <th>#</th>
+        <th><?php echo $this->__('name in layout') ?></th>
+        <th><?php echo $this->__('class') ?></th>
+        <th><?php echo $this->__('template') ?></th>
+        <th><?php echo $this->__('time') ?></th>
+        <th><?php echo $this->__('count') ?></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <?php $row = 0; ?>
+    <?php foreach ($blocks as $block): ?>
+        <tr class="<?php echo $row % 2 ? 'djDebugOdd' : 'djDebugEven' ?>">
+            <td><?php echo $row ?></td>
+            <td><?php echo $this->escapeHtml($block->getName()) ?></td>
+            <td>
+                <a href="<?php echo $this->getViewBlockUrl($block->getClass()) ?>" class="remoteCall">
+                    <?php echo $this->escapeHtml($block->getClass()) ?>
+                </a>
+            </td>
+            <td>
+                <?php if ($block->getTemplateFile()): ?>
+                    <a href="<?php echo $this->getViewTemplateUrl($block->getTemplateFile()) ?>"
+                       class="remoteCall">
+                        <?php echo $this->escapeHtml($block->getTemplateFile()) ?>
+                    </a>
+                <?php endif; ?>
+            </td>
+            <td><?php echo $this->getRenderingTime($block) ?></td>
+            <td><?php echo $block->getRenderedCount() ?></td>
+        </tr>
+        <?php $row++; ?>
+    <?php endforeach ?>
+    </tbody>
+</table>

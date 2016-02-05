@@ -1,45 +1,79 @@
 <?php
-class Magneto_Debug_Block_Models extends Magneto_Debug_Block_Abstract
+
+/**
+ * Class Sheep_Debug_Block_Models
+ *
+ * @category Sheep
+ * @package  Sheep_Debug
+ * @license  Copyright: Pirate Sheep, 2016, All Rights reserved.
+ * @link     https://piratesheep.com
+ */
+class Sheep_Debug_Block_Models extends Sheep_Debug_Block_Panel
 {
-    const SQL_SELECT_ACTION = 'viewSqlSelect';
-    const SQL_EXPLAIN_ACTION = 'viewSqlExplain';
 
-    protected function getItems() {
-    	return Mage::getSingleton('debug/observer')->getModels();
+    /**
+     * @return string
+     */
+    public function getSubTitle()
+    {
+        $modelsCount = count($this->getRequestInfo()->getModels());
+        $queriesCount = count($this->getRequestInfo()->getQueries());
+
+        return $this->__('%d models loaded, %d queries', $modelsCount, $queriesCount);
     }
-	
-	protected function getQueries() {
-		return Mage::getSingleton('debug/observer')->getQueries();
-	}
 
-    protected function getCollections() {
-        return Mage::getSingleton('debug/observer')->getCollections();
+    public function isVisible()
+    {
+        return $this->helper->isPanelVisible('models');
+    }
+
+
+    public function getItems()
+    {
+        return $this->getRequestInfo()->getModels();
     }
 
     /**
-     * $viewType can be 'Select' or 'Explain'
-     * @param \Zend_Db_Profiler_Query $query
-     * @param string $viewType
+     * @return Sheep_Debug_Model_Model[]
+     */
+    public function getSortedModels()
+    {
+        $models = $this->getItems();
+        $this->helper->sortByCount($models);
+        return $models;
+    }
+
+    /**
+     * @return Zend_Db_Profiler_Query[]
+     */
+    public function getQueries()
+    {
+        return $this->getRequestInfo()->getQueries();
+    }
+
+    /**
+     * @return Sheep_Debug_Model_Collection[]
+     */
+    public function getCollections()
+    {
+        return $this->getRequestInfo()->getCollections();
+    }
+
+    public function getSortedCollections()
+    {
+        $collections = $this->getCollections();
+        $this->helper->sortByCount($collections);
+        return $collections;
+    }
+
+
+    /**
+     * @param Zend_Db_Profiler_Query $query
      * @return string
      */
-    protected function getSqlUrl(Zend_Db_Profiler_Query $query, $viewType=self::SQL_SELECT_ACTION) {
-        $queryType = $query->getQueryType();
-        if ($queryType == Zend_Db_Profiler::SELECT) {
-            return Mage::getUrl('debug/index/' . $viewType, 
-                array(
-                    '_query' => array('sql' => $query->getQuery(), 'params' => $query->getQueryParams()),
-                    '_store' => $this->getDefaultStoreId()
-                 ));
-        } else {
-            return '';
-        }
+    public function getEncryptedSql(Zend_Db_Profiler_Query $query)
+    {
+        return Mage::helper('core')->encrypt($query->getQuery());
     }
 
-    public function getSqlSelectUrl(Zend_Db_Profiler_Query $query) {
-        return $this->getSqlUrl($query, self::SQL_SELECT_ACTION);
-    }
-
-    public function getSqlExplainUrl(Zend_Db_Profiler_Query $query) {
-        return $this->getSqlUrl($query, self::SQL_EXPLAIN_ACTION);
-    }
 }

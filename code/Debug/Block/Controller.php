@@ -1,11 +1,33 @@
 <?php
-class Magneto_Debug_Block_Controller extends Magneto_Debug_Block_Abstract
+
+/**
+ * Class Sheep_Debug_Block_Controller
+ *
+ * @category Sheep
+ * @package  Sheep_Debug
+ * @license  Copyright: Pirate Sheep, 2016, All Rights reserved.
+ * @link     https://piratesheep.com
+ */
+class Sheep_Debug_Block_Controller extends Sheep_Debug_Block_Panel
 {
-    protected function getItems() {
-    	return Mage::getSingleton('debug/debug')->getBlocks();
+
+    public function getSubTitle()
+    {
+        return $this->__('TIME: %ss MEM: %s', $this->helper->getScriptDuration(), $this->helper->getMemoryUsage());
     }
-	
-	protected function getTemplateDirs() {
-		return NULL;
-	}
+
+    public function isVisible()
+    {
+        return $this->helper->isPanelVisible('controller');
+    }
+
+
+    /**
+     * @return Sheep_Debug_Model_Controller
+     */
+    public function getController()
+    {
+        return $this->getRequestInfo()->getController();
+    }
+
 }

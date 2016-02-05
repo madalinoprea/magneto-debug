@@ -1,211 +1,52 @@
 <?php
-class Magneto_Debug_Model_Observer {
 
-    private $_actions = array();
-    // List of assoc array with class, type and sql keys
-    private $collections= array();
-	// private $layoutUpdates = array();
-	private $models = array();
-	private $blocks = array();
-    private $layoutBlocks = array();
+/**
+ * Class Sheep_Debug_Model_Observer
+ *
+ * @category Sheep
+ * @package  Sheep_Debug
+ * @license  Copyright: Pirate Sheep, 2016, All Rights reserved.
+ * @link     https://piratesheep.com
+ */
+class Sheep_Debug_Model_Observer
+{
+    // This is initialised as soon as app is setup
+    protected $canCapture = true;
 
-	public function getModels() { return $this->models; }
-    public function getBlocks() { return $this->blocks; }
-    public function getLayoutBlocks() { return $this->layoutBlocks; }
-    public function getCollections() { return $this->collections; }
-    // public function getLayoutUpdates() { return $this->layoutUpdates; }
-
-    /**
-     *
-     * TODO: Make this a setting
-     *
-     * @return bool
-     */
-    protected function _skipCoreBlocks(){
-        return false;
-    }
-
-    /**
-     * Logic that checks if we should ignore this block
-     *
-     * @param $block Mage_Core_Block_Abstract
-     * @return bool
-     */
-    protected function _skipBlock($block) {
-        $blockClass = get_class($block);
-
-        if( $this->_skipCoreBlocks() && strpos($blockClass, 'Mage_') === 0 ) {
-            return true;
-        }
-
-        // Don't list blocks from Debug module
-        if( strpos($blockClass, 'Magneto_Debug_Block')===0 ) {
-            return true;
-        }
-
-        return false;
-    }
-
-	public function getQueries() {
-		//TODO: implement profiler for connections other than 'core_write'  
-		$profiler = Mage::getSingleton('core/resource')->getConnection('core_write')->getProfiler();
-		$queries = array();
-		
-		if( $profiler ) {
-			$queries = $profiler->getQueryProfiles();
-		}
-		
-		return $queries;
-	 }
-
-    public function onLayoutGenerate(Varien_Event_Observer $observer)
+    public function canCapture()
     {
-        $layout = $observer->getEvent()->getLayout();
-        $layoutBlocks = $layout->getAllBlocks();
-
-        // After layout generates all the blocks
-        foreach ($layoutBlocks as $block) {
-            $blockStruct = array();
-            $blockStruct['class'] = get_class($block);
-            $blockStruct['layout_name'] = $block->getNameInLayout();
-            if( method_exists($block, 'getTemplateFile') ) {
-                $blockStruct['template'] = $block->getTemplateFile();
-            } else {
-                $blockStruct['template'] = '';
-            }
-            if( method_exists($block, 'getViewVars') ) {
-                $blockStruct['context'] = $block->getViewVars();
-            } else {
-                $blockStruct['context'] = NULL;
-            }
-            $this->layoutBlocks[] = $blockStruct;
-        }
+        return $this->canCapture;
     }
 
     /**
-     * Listens to core_block_abstract_to_html_before event and records blocks
-     * that are about to being rendered.
+     * Returns request info model associated to current request.
      *
-     * @param Varien_Event_Observer $observer
-     * @return Magneto_Debug_Model_Observer
+     * @return Sheep_Debug_Model_RequestInfo
      */
-    public function onBlockToHtml(Varien_Event_Observer $observer) {
-        /** @var $event Varien_Event */
-        $event = $observer->getEvent();
-        /* @var $block Mage_Core_Block_Abstract */
-        $block = $event->getBlock();
-
-        if( $this->_skipBlock($block) ) {
-            return $this;
-        }
-
-        $blockStruct = array();
-        $blockStruct['class'] = get_class($block);
-        $blockStruct['layout_name'] = $block->getNameInLayout();
-        $blockStruct['rendered_at'] = microtime(true);
-
-		if( method_exists($block, 'getTemplateFile') ) {
-        	$blockStruct['template'] = $block->getTemplateFile();
-		} else {
-			$blockStruct['template'] = '';
-		}
-		if( method_exists($block, 'getViewVars') ) {
-        	$blockStruct['context'] = $block->getViewVars();
-		} else {
-			$blockStruct['context'] = NULL;
-		}
-
-		$this->blocks[$block->getNameInLayout()] = $blockStruct;
-
-        return $this;
+    public function getRequestInfo()
+    {
+        return Mage::getSingleton('sheep_debug/requestInfo');
     }
+
 
     /**
-     * Listens to core_block_abstract_to_html_after event end computes the time
-     * spent in block's _toHtml (rendering time).
+     * Listens to controller_front_init_before event. An event that we can consider the start of the request.
+     * Current store is initialized.
      *
-     * @param Varien_Event_Observer $observer
-     * @return Magneto_Debug_Model_Observer
      */
-    public function onBlockToHtmlAfter(Varien_Event_Observer $observer) {
-        $event = $observer->getEvent();
-        /* @var $block Mage_Core_Block_Abstract */
-        $block = $event->getBlock();
+    public function onControllerFrontInitBefore()
+    {
+        $this->canCapture = Mage::helper('sheep_debug')->canCapture();
 
-        // Don't list blocks from Debug module
-        if( $this->_skipBlock($block) ) {
-            return $this;
-        }
-
-        $blockStruct = $this->blocks[$block->getNameInLayout()];
-
-        $duration = microtime(true) - $blockStruct['rendered_at'];
-        $this->blocks[$block->getNameInLayout()]['rendered_in'] = $duration;
-    }
-
-    function onActionPostDispatch(Varien_Event_Observer $event) {
-        $action = $event->getControllerAction();
-
-        $actionStruct = array();
-        $actionStruct['class'] = get_class($action);
-        $actionStruct['action_name'] = $action->getFullActionName();
-        $actionStruct['route_name'] = $action->getRequest()->getRouteName();
-
-        $this->_actions[] = $actionStruct;
+        $this->getRequestInfo()->setStoreId(Mage::app()->getStore()->getId());
+        $this->getRequestInfo()->initLogging();
     }
 
 
-    // controller_action_layout_generate_blocks_after
-    function onCollectionLoad(Varien_Event_Observer $event) {
-        /** @var Mage_Core_Model_Mysql4_Store_Collection */
-        $collection = $event->getCollection();          
-
-        $collectionStruct = array();
-        $collectionStruct['sql'] = $collection->getSelectSql(true);
-        $collectionStruct['type'] = 'mysql';
-        $collectionStruct['class'] = get_class($collection);
-        $this->collections[] = $collectionStruct;
-    }
-
-    function onEavCollectionLoad(Varien_Event_Observer $event) {
-        $collection = $event->getCollection();
-        $sqlStruct = array();
-        $sqlStruct['sql'] = $collection->getSelectSql(true);
-        $sqlStruct['type'] = 'eav';
-        $sqlStruct['class'] = get_class($collection);
-        $this->collections[] = $sqlStruct;
-    }
-	
-    /*function onPrepareLayout(Varien_Event_Observer $observer){
-		$block = $observer->getEvent()->getBlock();
-		var_dump(array_keys($observer->getEvent()->getData()));
-        // Mage::log('onPrepareLayout: ' . get_class($observer) . 'block=";
-
-		$layoutUpdate = array();
-		$layoutUpdate['block'] = get_class($observer->getBlock());
-		$layoutUpdate['name'] = get_class($observer->getName());
-		$this->layoutUpdates[] = $layoutUpdate;
-    }*/
-
-	function onModelLoad(Varien_Event_Observer $observer){
-		$event = $observer->getEvent();
-		$object = $event->getObject();
-		$key = get_class($object);
-		
-		if( array_key_exists($key, $this->models) ) {
-			$this->models[$key]['occurrences']++;
-		} else {
-			$model = array();
-			$model['class'] = get_class($object);
-			$model['resource_name'] = $object->getResourceName();
-			$model['occurrences'] = 1;
-			$this->models[$key] = $model;
-		}
-		
-		return $this;
-	}
-
-    /** 
+    /**
+     * Listens to controller_action_predispatch event to prevent undesired access
+     * TODO: review access permissions
+     *
      * We listen to this event to filter access to actions defined by Debug module.
      * We allow only actions if debug toolbar is on and ip is listed in Developer Client Restrictions
      *
@@ -213,19 +54,212 @@ class Magneto_Debug_Model_Observer {
      *
      * @return void
      */
-    function onActionPreDispatch(Varien_Event_Observer $observer){
-        $action = $observer->getEvent()->getControllerAction();
-        $moduleName = $action->getRequest()->getControllerModule();
-        if( strpos($moduleName, "Magneto_Debug") === 0 && !Mage::helper('debug')->isRequestAllowed() ){
-
-            Mage::log("Access to Magneto_Debug's actions blocked: dev mode is set to false.");
-            // $response = $action->getResponse();
-            // $response->setHttpResponseCode(404);
-            // $response->setBody('Site access denied.');
-            //$action->setDispatched(true)
-            //
-            exit();
+    public function onActionPreDispatch(Varien_Event_Observer $observer)
+    {
+        if (!$this->canCapture()) {
+            return;
         }
+
+        /** @noinspection PhpUndefinedMethodInspection */
+        $action = $observer->getEvent()->getControllerAction();
+
+        // Record action that handled current request
+        $this->getRequestInfo()->addControllerAction($action);
+    }
+
+
+    /**
+     * Listens to controller_action_layout_generate_blocks_after and records
+     * instantiated blocks
+     *
+     * @param Varien_Event_Observer $observer
+     */
+    public function onLayoutGenerate(Varien_Event_Observer $observer)
+    {
+        if (!$this->canCapture()) {
+            return;
+        }
+
+        /** @var Mage_Core_Model_Layout $layout */
+        /** @noinspection PhpUndefinedMethodInspection */
+        $layout = $observer->getEvent()->getLayout();
+        $requestInfo = $this->getRequestInfo();
+
+        // Adds block description for all blocks generated by layout
+        $layoutBlocks = $layout->getAllBlocks();
+        foreach ($layoutBlocks as $block) {
+            $requestInfo->addBlock($block);
+        }
+
+        // Add design
+        /** @var Mage_Core_Model_Design_Package $design */
+        $design = Mage::getSingleton('core/design_package');
+        $requestInfo->addLayout($layout, $design);
+    }
+
+
+    /**
+     * Listens to core_block_abstract_to_html_before event and records blocks
+     * that are about to being rendered.
+     *
+     * @param Varien_Event_Observer $observer
+     */
+    public function onBlockToHtml(Varien_Event_Observer $observer)
+    {
+        if (!$this->canCapture()) {
+            return;
+        }
+
+        /** @var $event Varien_Event */
+        $event = $observer->getEvent();
+        /* @var $block Mage_Core_Block_Abstract */
+        $block = $event->getBlock();
+        $requestInfo = $this->getRequestInfo();
+
+        if ($this->_skipBlock($block)) {
+            return;
+        }
+
+        try {
+            $blockInfo = $requestInfo->getBlock($block->getNameInLayout());
+        } catch (Exception $e) {
+            // block was not found - lets add it now
+            $blockInfo = $requestInfo->addBlock($block);
+        }
+
+        $blockInfo->startRendering($block);
+    }
+
+
+    /**
+     * Listens to core_block_abstract_to_html_after event and computes time spent in
+     * block's _toHtml (rendering time).
+     *
+     * @param Varien_Event_Observer $observer
+     */
+    public function onBlockToHtmlAfter(Varien_Event_Observer $observer)
+    {
+        if (!$this->canCapture()) {
+            return;
+        }
+
+        $event = $observer->getEvent();
+        /* @var $block Mage_Core_Block_Abstract */
+        $block = $event->getBlock();
+
+        // Don't list blocks from Debug module
+        if ($this->_skipBlock($block)) {
+            return;
+        }
+
+        $blockInfo = $this->getRequestInfo()->getBlock($block->getNameInLayout());
+        $blockInfo->completeRendering($block);
+    }
+
+
+    /**
+     * Listens to controller_action_postdispatch event and captures route and controller
+     * information.
+     *
+     * @param Varien_Event_Observer $event
+     */
+    public function onActionPostDispatch(Varien_Event_Observer $event)
+    {
+        if (!$this->canCapture()) {
+            return;
+        }
+
+        /** @var Mage_Core_Controller_Varien_Action $action */
+        /** @noinspection PhpUndefinedMethodInspection */
+        $action = $event->getControllerAction();
+
+        $this->getRequestInfo()->addControllerAction($action);
+    }
+
+
+    /**
+     * Listens to core_collection_abstract_load_before and eav_collection_abstract_load_before events
+     * and records loaded collections
+     *
+     * @param Varien_Event_Observer $event
+     */
+    public function onCollectionLoad(Varien_Event_Observer $event)
+    {
+        if (!$this->canCapture()) {
+            return;
+        }
+
+        /** @var Mage_Core_Model_Resource_Db_Collection_Abstract */
+        /** @noinspection PhpUndefinedMethodInspection */
+        $collection = $event->getCollection();
+        $this->getRequestInfo()->addCollection($collection);
+    }
+
+
+    /**
+     * Listens to model_load_after and records loaded models
+     *
+     * @param Varien_Event_Observer $observer
+     */
+    public function onModelLoad(Varien_Event_Observer $observer)
+    {
+        if (!$this->canCapture()) {
+            return;
+        }
+
+        $event = $observer->getEvent();
+        /** @noinspection PhpUndefinedMethodInspection */
+        $model = $event->getObject();
+        $this->getRequestInfo()->addModel($model);
+    }
+
+
+    /**
+     * Listens to controller_front_send_response_after. This event represents the end of a request.
+     *
+     * @param Varien_Event_Observer $observer
+     */
+    public function onControllerFrontSendResponseAfter(Varien_Event_Observer $observer)
+    {
+        if (!$this->canCapture()) {
+            return;
+        }
+
+        $this->getRequestInfo()->getLogging()->endRequest();
+    }
+
+    /**
+     *
+     * TODO: Make this a setting
+     *
+     * @return bool
+     */
+    protected function _skipCoreBlocks()
+    {
+        return false;
+    }
+
+
+    /**
+     * Logic that checks if we should ignore this block
+     *
+     * @param $block Mage_Core_Block_Abstract
+     * @return bool
+     */
+    protected function _skipBlock($block)
+    {
+        $blockClass = get_class($block);
+
+        if ($this->_skipCoreBlocks() && strpos($blockClass, 'Mage_') === 0) {
+            return true;
+        }
+
+        // Skip our own blocks
+        if (strpos($blockClass, 'Sheep_Debug_Block') === 0) {
+            return true;
+        }
+
+        return false;
     }
 
 }

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Sheep_Debug>
+            <active>true</active>
+            <codePool>community</codePool>
+        </Sheep_Debug>
+    </modules>
+</config>

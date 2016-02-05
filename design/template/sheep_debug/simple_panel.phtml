@@ -1,0 +1,19 @@
+<?php
+/** @var Sheep_Debug_Block_Panel $this */
+?>
+
+<div class="djDebugPanelTitle">
+    <a class="djDebugClose djDebugBack" href=""><?php echo $this->__('Back'); ?></a>
+    <h3><?php echo $this->escapeHtml($this->getTitle()) ?></h3>
+</div>
+<div class="djDebugPanelContent">
+    <div class="scroll">
+        <code>
+            <?php if ($this->getContent()): ?>
+                <?php echo $this->getIsContentSafe() ? $this->getContent() : $this->escapeHtml($this->getContent()) ?>
+            <?php else: ?>
+                <?php echo $this->__('Empty Content'); ?>
+            <?php endif; ?>
+        </code>
+    </div>
+</div>

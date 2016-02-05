@@ -1,0 +1,37 @@
+<?php
+/** @var Sheep_Debug_Block_Array $this */
+?>
+<div class="djDebugPanelTitle">
+    <a class="djDebugClose djDebugBack" href=""><?php echo $this->__('Back'); ?></a>
+    <h3><?php echo $this->escapeHtml($this->getTitle()) ?></h3>
+</div>
+
+<div class="djDebugPanelContent">
+    <div class="scroll">
+        <dl>
+            <dt><?php echo $this->escapeHtml($this->getTitle()) ?></dt>
+            <dd><?php echo $this->escapeHtml($this->getDescription()); ?></dd>
+        </dl>
+
+        <table class="djSqlExplain">
+            <thead>
+            <tr>
+                <?php foreach ($this->getHeader() as $header): ?>
+                    <th><?php echo $this->escapeHtml($header); ?></th>
+                <?php endforeach; ?>
+            </tr>
+            </thead>
+
+            <tbody>
+            <?php $row = 0; ?>
+            <?php foreach ($this->getArray() as $row): ?>
+                <tr class="<?php echo $row % 2 ? 'djDebugOdd' : 'djDebugEven' ?>">
+                    <?php foreach ($row as $key => $value): ?>
+                        <td><?php echo $this->escapeHtml($value); ?></td>
+                    <?php endforeach; ?>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</div>

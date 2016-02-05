@@ -1,107 +1,71 @@
 <?xml version="1.0"?>
+
 <config>
     <modules>
-        <Magneto_Debug>
-            <version>1.1.0</version>
-        </Magneto_Debug>
+        <Sheep_Debug>
+            <version>1.2.0</version>
+        </Sheep_Debug>
     </modules>
-    <frontend>
-        <routers>
-            <debug>
-                <use>standard</use>
-                <args>
-                    <module>Magneto_Debug</module>
-                    <frontName>debug</frontName>
-                </args>
-            </debug>
-        </routers>
-        <layout>
-            <updates>
-                <debug>
-                    <file>debug.xml</file>
-                </debug>
-            </updates>
-        </layout>
-        <enterprise>
-            <websiterestriction>
-                <full_action_names>
-                    <generic>
-                        <debug_index_clearCache />
-                        <debug_index_downloadConfig />
-                        <debug_index_downloadConfigAsText />
-                        <debug_index_searchConfig />
-                        <debug_index_searchGroupedClass />
-                        <debug_index_toggleModuleStatus />
-                        <debug_index_togglePageCacheDebug />
-                        <debug_index_toggleSqlProfiler />
-                        <debug_index_toggleTemplateHints />
-                        <debug_index_toggleTranslateInline />
-                        <debug_index_viewBlock />
-                        <debug_index_viewFilesWithHandle />
-                        <debug_index_viewLog />
-                        <debug_index_viewSqlExplain />
-                        <debug_index_viewSqlSelect />
-                        <debug_index_viewTemplate />
-                    </generic>
-                </full_action_names>
-            </websiterestriction>
-        </enterprise>
-    </frontend>
+
     <global>
         <models>
-            <debug>
-                <class>Magneto_Debug_Model</class>
-            </debug>
+            <sheep_debug>
+                <class>Sheep_Debug_Model</class>
+            </sheep_debug>
         </models>
-        <resources>
-            <debug_write>
-                <connection>
-                    <use>core_write</use>
-                </connection>
-            </debug_write>
-            <debug_read>
-                <connection>
-                    <use>core_read</use>
-                </connection>
-            </debug_read>
-        </resources>
+
         <blocks>
-            <debug>
-                <class>Magneto_Debug_Block</class>
-            </debug>
+            <sheep_debug>
+                <class>Sheep_Debug_Block</class>
+            </sheep_debug>
         </blocks>
+
         <helpers>
-            <debug>
-                <class>Magneto_Debug_Helper</class>
-            </debug>
+            <sheep_debug>
+                <class>Sheep_Debug_Helper</class>
+            </sheep_debug>
         </helpers>
 
         <events>
+            <!-- Start of request processing -->
+            <controller_front_init_before>
+                <observers>
+                    <sheep_debug>
+                        <type>singleton</type>
+                        <class>sheep_debug/observer</class>
+                        <method>onControllerFrontInitBefore</method>
+                    </sheep_debug>
+                </observers>
+            </controller_front_init_before>
+
+            <!-- Records all instantiated blocks -->
             <controller_action_layout_generate_blocks_after>
                 <observers>
                     <debug_observer>
                         <type>singleton</type>
-                        <class>debug/observer</class>
+                        <class>sheep_debug/observer</class>
                         <method>onLayoutGenerate</method>
                     </debug_observer>
                 </observers>
             </controller_action_layout_generate_blocks_after>
 
+            <!-- Records rendered block and rendering start time -->
             <core_block_abstract_to_html_before>
                 <observers>
                     <debug_observer>
                         <type>singleton</type>
-                        <class>debug/observer</class>
+                        <class>sheep_debug/observer</class>
                         <method>onBlockToHtml</method>
                     </debug_observer>
                 </observers>
             </core_block_abstract_to_html_before>
 
+            <!-- Records block rendering end time -->
             <core_block_abstract_to_html_after>
                 <observers>
                     <debug_observer>
                         <type>singleton</type>
-                        <class>debug/observer</class>
+                        <class>sheep_debug/observer</class>
                         <method>onBlockToHtmlAfter</method>
                     </debug_observer>
                 </observers>
@@ -111,111 +75,143 @@
                 <observers>
                     <debug_observer>
                         <type>singleton</type>
-                        <class>debug/observer</class>
+                        <class>sheep_debug/observer</class>
                         <method>onActionPostDispatch</method>
                     </debug_observer>
                 </observers>
             </controller_action_postdispatch>
 
+            <!-- Records loaded collections -->
             <core_collection_abstract_load_before>
                 <observers>
                     <debug_observer>
                         <type>singleton</type>
-                        <class>debug/observer</class>
+                        <class>sheep_debug/observer</class>
                         <method>onCollectionLoad</method>
                     </debug_observer>
                 </observers>
             </core_collection_abstract_load_before>
 
+            <!-- Records collection load -->
             <eav_collection_abstract_load_before>
                 <observers>
                     <debug_observer>
                         <type>singleton</type>
-                        <class>debug/observer</class>
-                        <method>onEavCollectionLoad</method>
+                        <class>sheep_debug/observer</class>
+                        <method>onCollectionLoad</method>
                     </debug_observer>
                 </observers>
             </eav_collection_abstract_load_before>
 
-
-            <!-- <core_block_abstract_prepare_layout_after> -->
-            <!--     <observers> -->
-            <!--         <debug_observer> -->
-            <!--             <type>singleton</type> -->
-            <!--             <class>debug/observer</class> -->
-            <!--             <method>onPrepareLayout</method> -->
-            <!--         </debug_observer> -->
-            <!--     </observers> -->
-            <!-- </core_block_abstract_prepare_layout_after> -->
-
+            <!-- Records model load -->
             <model_load_after>
                 <observers>
                     <debug_observer>
                         <type>singleton</type>
-                        <class>debug/observer</class>
+                        <class>sheep_debug/observer</class>
                         <method>onModelLoad</method>
                     </debug_observer>
                 </observers>
             </model_load_after>
 
+
             <controller_action_predispatch>
                 <observers>
                     <debug_observer>
                         <type>singleton</type>
-                        <class>debug/observer</class>
+                        <class>sheep_debug/observer</class>
                         <method>onActionPreDispatch</method>
                     </debug_observer>
                 </observers>
             </controller_action_predispatch>
+
+            <!-- last chance to save stuff -->
+            <controller_front_send_response_after>
+                <observers>
+                    <sheep_debug>
+                        <type>singleton</type>
+                        <class>sheep_debug/observer</class>
+                        <method>onControllerFrontSendResponseAfter</method>
+                    </sheep_debug>
+                </observers>
+            </controller_front_send_response_after>
         </events>
     </global>
 
-    <default>
-        <debug>
-            <options>
-                <enable>1</enable>
-                <debug_panel_versions_visibility>1</debug_panel_versions_visibility>
-                <debug_panel_performance_visibility>1</debug_panel_performance_visibility>
-                <debug_panel_configuration_visibility>1</debug_panel_configuration_visibility>
-                <debug_panel_blocks_visibility>1</debug_panel_blocks_visibility>
-                <debug_panel_layout_visibility>1</debug_panel_layout_visibility>
-                <debug_panel_controller_visibility>1</debug_panel_controller_visibility>
-                <debug_panel_models_visibility>1</debug_panel_models_visibility>
-                <debug_panel_utilities_visibility>1</debug_panel_utilities_visibility>
-                <debug_panel_preferences_visibility>1</debug_panel_preferences_visibility>
-                <debug_panel_logs_visibility>1</debug_panel_logs_visibility>
-            </options>
-        </debug>
-    </default>
+    <frontend>
+        <routers>
+            <sheep_debug>
+                <use>standard</use>
+                <args>
+                    <module>Sheep_Debug</module>
+                    <frontName>sheep_debug</frontName>
+                </args>
+            </sheep_debug>
+        </routers>
 
-    <adminhtml>
-        <acl>
-            <resources>
-                <admin>
-                    <children>
-                        <debug>
-                            <title>Debug Toolbar</title>
-                            <sort_order>10</sort_order>
-                        </debug>
-                        <system>
-                            <children>
-                                <config>
-                                    <children>
-                                        <debug>Debug Toolbar Options</debug>
-                                    </children>
-                                </config>
-                            </children>
-                        </system>
-                    </children>
-                </admin>
-            </resources>
-        </acl>
         <layout>
             <updates>
-                <debugadmin>
-                    <file>debug.xml</file>
-                </debugadmin>
+                <sheep_debug>
+                    <file>sheep_debug.xml</file>
+                </sheep_debug>
+            </updates>
+        </layout>
+
+        <enterprise>
+            <!-- TODO: Update whitelisted actions after module renaming -->
+            <websiterestriction>
+                <full_action_names>
+                    <generic>
+                        <debug_index_clearCache/>
+                        <debug_index_downloadConfig/>
+                        <debug_index_downloadConfigAsText/>
+                        <debug_index_searchConfig/>
+                        <debug_index_searchGroupedClass/>
+                        <debug_index_toggleModuleStatus/>
+                        <debug_index_togglePageCacheDebug/>
+                        <debug_index_toggleSqlProfiler/>
+                        <debug_index_toggleTemplateHints/>
+                        <debug_index_toggleTranslateInline/>
+                        <debug_index_viewBlock/>
+                        <debug_index_viewFilesWithHandle/>
+                        <debug_index_viewLog/>
+                        <debug_index_viewSqlExplain/>
+                        <debug_index_viewSqlSelect/>
+                        <debug_index_viewTemplate/>
+                    </generic>
+                </full_action_names>
+            </websiterestriction>
+        </enterprise>
+    </frontend>
+
+    <!-- adminhtml configuration -->
+    <adminhtml>
+        <layout>
+            <updates>
+                <sheep_debug>
+                    <file>sheep_debug.xml</file>
+                </sheep_debug>
             </updates>
         </layout>
     </adminhtml>
+
+    <!-- Default settings -->
+    <default>
+        <sheep_debug>
+            <options>
+                <enable>1</enable>
+            </options>
+
+            <panels>
+                <controller_visibility>1</controller_visibility>
+                <models_visibility>1</models_visibility>
+                <design_visibility>1</design_visibility>
+                <blocks_visibility>1</blocks_visibility>
+                <logging_visibility>1</logging_visibility>
+                <util_visibility>1</util_visibility>
+                <modules_visibility>1</modules_visibility>
+                <config_visibility>1</config_visibility>
+            </panels>
+        </sheep_debug>
+    </default>
 </config>
