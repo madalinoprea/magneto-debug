@@ -22,9 +22,9 @@
                     <action method="setTitle"><title>Controller</title></action>
                 </block>
 
-                <!--<block type="sheep_debug/models" name="debug_models_panel" template="sheep_debug/panel/models.phtml">-->
-                    <!--<action method="setTitle"><title>Models</title></action>-->
-                <!--</block>-->
+                <block type="sheep_debug/models" name="debug_models_panel" template="sheep_debug/panel/models.phtml">
+                    <action method="setTitle"><title>Models</title></action>
+                </block>
 
                 <!--<block type="sheep_debug/design" name="debug_design_panel" template="sheep_debug/panel/design.phtml">-->
                     <!--<action method="setTitle"><title>Design</title></action>-->

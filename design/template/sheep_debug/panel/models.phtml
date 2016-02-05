@@ -8,105 +8,40 @@ $collections = $this->getSortedCollections();
 $queries = $this->getQueries();
 ?>
 
-<h4><?php echo $this->__('Models') ?></h4>
-<table>
-    <thead>
-    <tr>
-        <th><?php echo $this->__('Resource Name') ?></th>
-        <th><?php echo $this->__('Class') ?></th>
-        <th><?php echo $this->__('Count') ?></th>
-    </tr>
-    </thead>
-    <tbody>
-    <?php $row = 0; ?>
-    <?php foreach ($models as $model): ?>
-        <tr class="<?php echo $row % 2 ? 'djDebugOdd' : 'djDebugEven' ?>">
-            <td><?php echo $this->escapeHtml($model->getResource()) ?></td>
-            <td><?php echo $this->escapeHtml($model->getClass()) ?></td>
-            <td><?php echo $model->getCount() ?></td>
-        </tr>
-        <?php $row++; ?>
-    <?php endforeach ?>
-    </tbody>
-</table>
+<div class="sf-toolbar-block">
+    <a href="<?php echo $this->getRequestViewUrl() ?>#models">
+        <div class="sf-toolbar-icon">
+            <span class="sf-toolbar-value"><?php echo count($queries) ?></span>
+            <span class="sf-toolbar-label"><?php echo $this->__('queries'); ?></span>
+        </div>
+    </a>
+    <div class="sf-toolbar-info">
+        <div class="sf-toolbar-info-group">
+            <div class="sf-toolbar-info-piece">
+                <b><?php echo $this->__('Models'); ?></b>
+                <span><?php echo count($models) ?></span>
+            </div>
 
-<h4><?php echo $this->__('Collections') ?></h4>
-<table>
-    <thead>
-    <tr>
-        <th><?php echo $this->__('Type') ?></th>
-        <th><?php echo $this->__('Class') ?></th>
-        <th><?php echo $this->__('Count') ?></th>
-        <th><?php echo $this->__('SQL') ?></th>
-    </tr>
-    </thead>
-    <tbody>
-    <?php $row = 0; ?>
-    <?php foreach ($collections as $collection): ?>
-        <tr class="<?php echo $row % 2 ? 'djDebugOdd' : 'djDebugEven' ?>">
-            <td><?php echo strtoupper($collection->getType()) ?></td>
-            <td><?php echo $this->escapeHtml($collection->getClass()) ?></td>
-            <td><?php echo $collection->getCount() ?></td>
-            <td><?php echo $this->escapeHtml($collection->getQuery()) ?></td>
-        </tr>
-        <?php $row++; ?>
-    <?php endforeach ?>
-    </tbody>
-</table>
+            <div class="sf-toolbar-info-piece">
+                <b><?php echo $this->__('Collections'); ?></b>
+                <span><?php echo count($collections) ?></span>
+            </div>
 
-<h4><?php echo $this->__('Queries') ?></h4>
-<?php if ($queries): ?>
-    <p>
-        <a class="toggleTemplate" href="<?php echo Mage::helper('sheep_debug/url')->getDisableSqlProfilerUrl() ?>">
-            <?php echo $this->__('Disable SQL Profiler'); ?>
-        </a>
-    </p>
+            <div class="sf-toolbar-info-piece">
+                <b><?php echo $this->__('Queries'); ?></b>
+                <span><?php echo count($queries) ?></span>
+            </div>
+        </div>
 
-    <table>
-        <thead>
-        <tr>
-            <th><?php echo $this->__('Time') ?></th>
-            <th><?php echo $this->__('Action') ?></th>
-            <th><?php echo $this->__('Query') ?></th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php $row = 0; ?>
-        <?php foreach ($queries as $query): ?>
-            <tr class="<?php echo $row % 2 ? 'djDebugOdd' : 'djDebugEven' ?>">
-                <td>
-                    <div class=""><?php echo sprintf("%.4f", $query->getElapsedSecs()) ?>&nbsp;s</div>
-                </td>
-                <td>
-                    <?php if ($query->getQueryType() == Zend_Db_Profiler::SELECT): ?>
-                        <a class="sqlCall" href="<?php echo Mage::helper('sheep_debug/url')->getSelectQueryUrl($query) ?>"><?php echo $this->__('Select'); ?></a><br/>
-                        <a class="sqlCall" href="<?php echo Mage::helper('sheep_debug/url')->getExplainQueryUrl($query) ?>"><?php echo $this->__('Explain'); ?></a><br/>
+        <div class="sf-toolbar-info-group">
+            <div class="sf-toolbar-info-piece">
+                <b><?php echo $this->__('SQL Profiler Status'); ?></b>
+                <?php if ($this->isSqlProfilerEnabled()): ?>
+                    <span class="sf-toolbar-status sf-toolbar-status-green">on</span>
+                <?php else: ?>
+                    <span class="sf-toolbar-status sf-toolbar-status-red">off</span>
+                <?php endif ?>
+            </div>
+        </div>
+</div>
 
-                        <input type="hidden" class="sqlData" data-sql="<?php echo $this->getEncryptedSql($query) ?>"
-                               data-params='<?php echo $coreHelper->urlEncode($coreHelper->jsonEncode($query->getQueryParams())) ?>'>
-                    <?php endif; ?>
-                </td>
-                <td class="syntax">
-                    <div class="djDebugSqlWrap">
-                        <div class="djDebugSql">
-                            <?php echo $this->escapeHtml($query->getQuery()) ?>
-                            <?php if (count($query->getQueryParams())): ?>
-                                <br/><strong><?php echo $this->__('Params:'); ?></strong> <?php echo $this->escapeHtml(implode(', ', $query->getQueryParams())) ?>
-                            <?php endif; ?>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-            <?php $row++; ?>
-        <?php endforeach ?>
-        </tbody>
-    </table>
-<?php else: ?>
-    <p>
-        <?php echo $this->__('Zend SQL Profiler is not enabled.'); ?>
-
-        <a class="toggleTemplate" href="<?php echo Mage::helper('sheep_debug/url')->getEnableSqlProfilerUrl() ?>">
-            <?php echo $this->__('Enable SQL Profiler'); ?>
-        </a>
-    </p>
-<?php endif; ?> 

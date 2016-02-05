@@ -67,6 +67,11 @@ class Sheep_Debug_Block_Models extends Sheep_Debug_Block_Panel
     }
 
 
+    public function isSqlProfilerEnabled()
+    {
+        return $this->helper->getSqlProfiler()->getEnabled();
+    }
+
     /**
      * @param Zend_Db_Profiler_Query $query
      * @return string
