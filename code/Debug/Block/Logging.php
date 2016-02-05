@@ -10,6 +10,7 @@
  */
 class Sheep_Debug_Block_Logging extends Sheep_Debug_Block_Panel
 {
+    protected $logLineCount = null;
 
     public function getSubTitle()
     {
@@ -25,7 +26,7 @@ class Sheep_Debug_Block_Logging extends Sheep_Debug_Block_Panel
 
     public function isVisible()
     {
-        return $this->helper->isPanelVisible('logging');
+        return $this->helper->isPanelVisible('logging') && $this->getLogLineCount() > 0;
     }
 
 
@@ -41,6 +42,23 @@ class Sheep_Debug_Block_Logging extends Sheep_Debug_Block_Panel
     public function getLogFiles()
     {
         return $this->getLogging()->getFiles();
+    }
+
+
+    /**
+     * Returns number of log lines added in all of registered logs
+     * @return int
+     */
+    public function getLogLineCount()
+    {
+        if ($this->logLineCount === null) {
+            $this->logLineCount = 0;
+            foreach ($this->getLogFiles() as $log) {
+                $this->logLineCount += $this->getLogging()->getLineCount($log);
+            }
+        }
+
+        return $this->logLineCount;
     }
 
 
