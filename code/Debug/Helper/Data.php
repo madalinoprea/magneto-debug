@@ -12,6 +12,7 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
 {
     const DEBUG_OPTIONS_ENABLE_PATH = 'sheep_debug/options/enable';
     const DEBUG_OPTION_PERSIST_PATH = 'sheep_debug/options/persist';
+    const DEBUG_OPTION_PERSIST_EXPIRATION_PATH = 'sheep_debug/options/persist_expiration';
 
     public function isEnabled()
     {
@@ -173,7 +174,7 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
      * @param $number
      * @return string
      */
-    public function formatNumber($number, $precision=2)
+    public function formatNumber($number, $precision = 2)
     {
         $locale = Mage::app()->getLocale()->getLocale();
         return Zend_Locale_Format::toNumber($number, array('locale' => $locale, 'precision' => $precision));
@@ -194,7 +195,7 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
             return $this->__('n/a');
         } else {
             $value = round($size / pow(1024, ($i = floor(log($size, 1024)))), $precision);
-            $unitIndex = (int) $i;
+            $unitIndex = (int)$i;
             return $this->__('%d%s', $this->formatNumber($value), $sizes[$unitIndex]);
         }
     }
@@ -312,7 +313,18 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
      */
     public function canPersist()
     {
-        return (bool) Mage::getStoreConfig(self::DEBUG_OPTION_PERSIST_PATH);
+        return (bool)Mage::getStoreConfig(self::DEBUG_OPTION_PERSIST_PATH);
+    }
+
+
+    /**
+     * Lifetime of persisted requests
+     *
+     * @return int
+     */
+    public function getPersistLifetime()
+    {
+        return (int) Mage::getStoreConfig(self::DEBUG_OPTION_PERSIST_EXPIRATION_PATH);
     }
 
 }

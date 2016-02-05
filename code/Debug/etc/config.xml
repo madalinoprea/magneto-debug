@@ -218,6 +218,7 @@
             <options>
                 <enable>1</enable>
                 <persist>1</persist>
+                <persist_expiration>1</persist_expiration>
             </options>
 
             <panels>

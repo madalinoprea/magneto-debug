@@ -41,6 +41,21 @@
                             <show_in_store>0</show_in_store>
                             <comment>Allows to view information about previous requests.</comment>
                         </persist>
+
+                        <persist_expiration> 
+                            <label>Persisted Request Lifetime (number of days)</label> 
+                            <comment>Number of days after which persisted requests are cleared.</comment> 
+                            <depends>
+                                <persist>1</persist>
+                            </depends>
+                            <frontend_type>text</frontend_type> 
+                            <validate>validate-not-negative-number</validate>
+                            <sort_order>20</sort_order> 
+                             <show_in_default>1</show_in_default> 
+                            <show_in_website>0</show_in_website>
+                             <show_in_store>0</show_in_store> 
+                        </persist_expiration>
+
                     </fields>
                 </options>
 
