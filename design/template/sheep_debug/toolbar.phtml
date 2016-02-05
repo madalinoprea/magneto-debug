@@ -4,68 +4,34 @@
 $panels = $this->getVisiblePanels();
 ?>
 
-<style type="text/css">@media print { #djDebug {display:none;}}</style>
-<script type="text/javascript">
-// <![CDATA[
-var DEBUG_TOOLBAR_MEDIA_URL = "<?php echo $this->getDebugMediaUrl(); ?>";
-// ]]>
-</script>
-<script type="text/javascript" src="<?php echo $this->getDebugMediaUrl(); ?>js/toolbar.js"></script>
-
-<div id="djDebug" style="display:none;">
-	<div style="display:none;" id="djDebugToolbar">
-		<ul id="djDebugPanelList">
-            <?php if( $panels ): ?>
-            <li><a id="djHideToolBarButton" href="#" title="<?php echo $this->__('Hide Toolbar'); ?>"><?php echo $this->__('Hide') ?> &raquo;</a></li>
-            <?php else: ?>
-			<li id="djDebugButton"><?php echo $this->__('DEBUG'); ?></li>
-            <?php endif; ?>
-
-            <?php foreach ($panels as $panel): ?>
-				<li>
-                    <?php if($panel->hasContent()): ?>
-                        <a href="<?php echo $panel->getContentUrl() ?: '#' ?>" title="<?php $this->escapeHtml($panel->getTitle()) ?>" class="<?php echo $panel->getContentId() ?>">
-                    <?php else: ?>
-					    <div class="contentless">
-                    <?php endif; ?>
-
-                    <?php echo $this->escapeHtml($panel->getTitle()) ?>
-
-                    <?php if($panel->getSubTitle()): ?>
-                        <br /><small><?php echo $this->escapeHtml($panel->getSubTitle()) ?></small>
-                    <?php endif; ?>
-
-                    <?php if($panel->hasContent()): ?>
-                        </a>
-                    <?php else: ?>
-                        </div>
-                    <?php endif; ?>
-				</li>
-            <?php endforeach; ?>
-		</ul>
-	</div>
-
-	<div style="display:none;" id="djDebugToolbarHandle">
-        <a title="<?php echo $this->__('Show Toolbar'); ?>" id="djShowToolBarButton" href="#">&laquo;</a>
-	</div>
-
-    <?php
-    /** @var Sheep_Debug_Block_Panel $panel */
-    foreach ($this->getSortedChildBlocks() as $panel): ?>
-        <?php if($panel->hasContent()): ?>
-            <div id="<?php echo $panel->getContentId() ?>" class="panelContent">
-                <div class="djDebugPanelTitle">
-                    <a href="" class="djDebugClose"><?php echo $this->__('Close'); ?></a>
-                    <h3><?php echo $this->escapeHtml($panel->getTitle()) ?></h3>
-                </div>
-                <div class="djDebugPanelContent">
-                    <div class="scroll">
-                        <?php echo $panel->toHtml() ?>
-                    </div>
-                </div>
+<div id="sfToolbarMainContent" class="sf-toolbarreset clear-fix">
+    <div class="sf-toolbar-block">
+        <a href="#">
+            <div class="sf-toolbar-icon">
+                <span class="sf-toolbar-value">Simple</span>
+                <span class="sf-toolbar-label">Test</span>
             </div>
-        <?php endif; ?>
+        </a>
+        <div class="sf-toolbar-info">
+            <div class="sf-toolbar-info-piece">
+                <b>Attribute</b>
+                <span>Value</span>
+            </div>
 
-    <?php endforeach; ?>
-	<div id="djDebugWindow" class="panelContent"></div>
+            <div class="sf-toolbar-info-piece">
+                <b>Attribute 2</b>
+                <span>Value 2</span>
+            </div>
+        </div>
+    </div>
+
+    <a class="hide-button">
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" height="24" viewBox="0 0 24 24"
+             enable-background="new 0 0 24 24" xml:space="preserve">
+            <path fill="#AAAAAA" d="M21.1,18.3c0.8,0.8,0.8,2,0,2.8c-0.4,0.4-0.9,0.6-1.4,0.6s-1-0.2-1.4-0.6L12,14.8l-6.3,6.3
+    c-0.4,0.4-0.9,0.6-1.4,0.6s-1-0.2-1.4-0.6c-0.8-0.8-0.8-2,0-2.8L9.2,12L2.9,5.7c-0.8-0.8-0.8-2,0-2.8c0.8-0.8,2-0.8,2.8,0L12,9.2
+    l6.3-6.3c0.8-0.8,2-0.8,2.8,0c0.8,0.8,0.8,2,0,2.8L14.8,12L21.1,18.3z">
+            </path>
+        </svg>
+    </a>
 </div>

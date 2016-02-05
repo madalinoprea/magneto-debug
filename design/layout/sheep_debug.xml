@@ -18,46 +18,46 @@
         <reference name="before_body_end">
             <block type="sheep_debug/toolbar" name="debug_panels" template="sheep_debug/toolbar.phtml" before="-">
 
-                <block type="sheep_debug/controller" name="debug_controller_panel" template="sheep_debug/panel/controller.phtml">
-                    <action method="setTitle"><title>Controller</title></action>
-                </block>
+                <!--<block type="sheep_debug/controller" name="debug_controller_panel" template="sheep_debug/panel/controller.phtml">-->
+                    <!--<action method="setTitle"><title>Controller</title></action>-->
+                <!--</block>-->
 
-                <block type="sheep_debug/models" name="debug_models_panel" template="sheep_debug/panel/models.phtml">
-                    <action method="setTitle"><title>Models</title></action>
-                </block>
+                <!--<block type="sheep_debug/models" name="debug_models_panel" template="sheep_debug/panel/models.phtml">-->
+                    <!--<action method="setTitle"><title>Models</title></action>-->
+                <!--</block>-->
 
-                <block type="sheep_debug/design" name="debug_design_panel" template="sheep_debug/panel/design.phtml">
-                    <action method="setTitle"><title>Design</title></action>
-                    <action method="setSubTitle"><sub_title>Updates, Handlers</sub_title></action>
-                </block>
+                <!--<block type="sheep_debug/design" name="debug_design_panel" template="sheep_debug/panel/design.phtml">-->
+                    <!--<action method="setTitle"><title>Design</title></action>-->
+                    <!--<action method="setSubTitle"><sub_title>Updates, Handlers</sub_title></action>-->
+                <!--</block>-->
 
-                <block type="sheep_debug/blocks" name="debug_blocks_panel" template="sheep_debug/panel/blocks.phtml">
-                    <action method="setTitle"><title>Blocks</title></action>
-                </block>
+                <!--<block type="sheep_debug/blocks" name="debug_blocks_panel" template="sheep_debug/panel/blocks.phtml">-->
+                    <!--<action method="setTitle"><title>Blocks</title></action>-->
+                <!--</block>-->
 
-                <block type="sheep_debug/logging" name="debug_logs_panel" template="sheep_debug/panel/logs.phtml">
-                    <action method="setTitle"><title>Logs</title></action>
-                    <action method="setSubTitle"><sub_title>system.log, exception.log</sub_title></action>
-                </block>
+                <!--<block type="sheep_debug/logging" name="debug_logs_panel" template="sheep_debug/panel/logs.phtml">-->
+                    <!--<action method="setTitle"><title>Logs</title></action>-->
+                    <!--<action method="setSubTitle"><sub_title>system.log, exception.log</sub_title></action>-->
+                <!--</block>-->
 
-                <block type="sheep_debug/util" name="debug_utils_panel" template="sheep_debug/panel/utils.phtml">
-                    <action method="setTitle"><title>Utils</title></action>
-                    <action method="setSubTitle"><sub_title>Cache, Hints, etc</sub_title></action>
-                </block>
+                <!--<block type="sheep_debug/util" name="debug_utils_panel" template="sheep_debug/panel/utils.phtml">-->
+                    <!--<action method="setTitle"><title>Utils</title></action>-->
+                    <!--<action method="setSubTitle"><sub_title>Cache, Hints, etc</sub_title></action>-->
+                <!--</block>-->
 
-                <block type="sheep_debug/modules" name="debug_modules_panel" template="sheep_debug/panel/modules.phtml">
-                    <action method="setTitle"><title>Modules</title></action>
-                    <action method="setSubTitle"><sub_title>Magento Modules</sub_title></action>
-                </block>
+                <!--<block type="sheep_debug/modules" name="debug_modules_panel" template="sheep_debug/panel/modules.phtml">-->
+                    <!--<action method="setTitle"><title>Modules</title></action>-->
+                    <!--<action method="setSubTitle"><sub_title>Magento Modules</sub_title></action>-->
+                <!--</block>-->
 
-                <block type="sheep_debug/config" name="debug_config_panel" template="sheep_debug/panel/config.phtml">
-                    <action method="setTitle"><title>Configuration</title></action>
-                    <action method="setSubTitle"><sub_title>Search Configuration</sub_title></action>
-                </block>
+                <!--<block type="sheep_debug/config" name="debug_config_panel" template="sheep_debug/panel/config.phtml">-->
+                    <!--<action method="setTitle"><title>Configuration</title></action>-->
+                    <!--<action method="setSubTitle"><sub_title>Search Configuration</sub_title></action>-->
+                <!--</block>-->
 
-                <block type="sheep_debug/about" name="debug_about_panel">
-                    <action method="setTitle"><title>About</title></action>
-                </block>
+                <!--<block type="sheep_debug/about" name="debug_about_panel">-->
+                    <!--<action method="setTitle"><title>About</title></action>-->
+                <!--</block>-->
             </block>
         </reference>
     </default>
