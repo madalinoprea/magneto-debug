@@ -10,6 +10,27 @@
  */
 class Sheep_Debug_IndexController extends Sheep_Debug_Controller_Front_Action
 {
+
+    /**
+     * View request profile list
+     * TODO: complete implementation for searchAction
+     */
+    public function searchAction()
+    {
+    }
+
+
+    /**
+     * View request profile page
+     * TODO: complete implementation for viewAction
+     */
+    public function viewAction()
+    {
+        $token = (string) $this->getRequest()->getParam('token');
+
+    }
+
+
     /**
      * Returns lines from log file
      */

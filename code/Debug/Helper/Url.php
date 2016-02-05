@@ -23,12 +23,24 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
     }
 
 
+    public function getRequestListUrl()
+    {
+        return $this->getUrl('index/search');
+    }
+
+
+    public function getRequestViewUrl($token)
+    {
+        return $this->getUrl('index/view', array('token' => $token));
+    }
+
+
     /**
      * @param string $path Contains controller and action. Route will be added.
      * @param array  $params
      * @return string
      */
-    public function getToolbarUrl($path, array $params = array())
+    public function getUrl($path, array $params = array())
     {
         $path = self::MODULE_ROUTE . $path;
         $params['_store'] = $this->getRouteStoreId();
@@ -43,13 +55,13 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
      */
     public function getEnableSqlProfilerUrl()
     {
-        return $this->getToolbarUrl('model/enableSqlProfiler');
+        return $this->getUrl('model/enableSqlProfiler');
     }
 
 
     public function getDisableSqlProfilerUrl()
     {
-        return $this->getToolbarUrl('model/disableSqlProfiler');
+        return $this->getUrl('model/disableSqlProfiler');
     }
 
 
@@ -60,7 +72,7 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
      */
     public function getQueryUrl(Zend_Db_Profiler_Query $query, $type)
     {
-        return $query->getQueryType() == Zend_Db_Profiler::SELECT ? $this->getToolbarUrl('model/' . $type) : '#';
+        return $query->getQueryType() == Zend_Db_Profiler::SELECT ? $this->getUrl('model/' . $type) : '#';
     }
 
 
@@ -90,7 +102,7 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
      */
     public function getViewBlockUrl($blockClass)
     {
-        return $this->getToolbarUrl('block/viewBlock', array('block' => $blockClass));
+        return $this->getUrl('block/viewBlock', array('block' => $blockClass));
     }
 
 
@@ -100,7 +112,7 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
      */
     public function getViewTemplateUrl($template)
     {
-        return $this->getToolbarUrl('block/viewTemplate', array('template' => $this->urlEncode($template)));
+        return $this->getUrl('block/viewTemplate', array('template' => $this->urlEncode($template)));
     }
 
 
@@ -112,7 +124,7 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
      */
     public function getViewHandleUrl($layoutHandle, $storeId, $area)
     {
-        return $this->getToolbarUrl('design/viewHandle', array('handle' => $layoutHandle, 'store' => $storeId, 'area' => $area));
+        return $this->getUrl('design/viewHandle', array('handle' => $layoutHandle, 'store' => $storeId, 'area' => $area));
     }
 
 
@@ -123,60 +135,70 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
      */
     public function getViewLogUrl($logfile, $startPosition)
     {
-        return $this->getToolbarUrl('index/viewLog', array('log' => $logfile, 'start' => $startPosition));
+        return $this->getUrl('index/viewLog', array('log' => $logfile, 'start' => $startPosition));
     }
+
 
     /**
      * @return string
      */
     public function getSearchGroupClassUrl()
     {
-        return $this->getToolbarUrl('util/searchGroupClass');
+        return $this->getUrl('util/searchGroupClass');
     }
+
 
     public function getFlushCacheUrl()
     {
-        return $this->getToolbarUrl('util/flushCache');
+        return $this->getUrl('util/flushCache');
     }
+
 
     public function getEnableTemplateHintsUrl()
     {
-        return $this->getToolbarUrl('util/enableTemplateHints');
+        return $this->getUrl('util/enableTemplateHints');
     }
+
 
     public function getDisableTemplateHintsUrl()
     {
-        return $this->getToolbarUrl('util/disableTemplateHints');
+        return $this->getUrl('util/disableTemplateHints');
     }
+
 
     public function getEnableFPCDebugUrl()
     {
-        return $this->getToolbarUrl('util/enableFPCDebug');
+        return $this->getUrl('util/enableFPCDebug');
     }
+
 
     public function getDisableFPCDebugUrl()
     {
-        return $this->getToolbarUrl('util/disableFPCDebug');
+        return $this->getUrl('util/disableFPCDebug');
     }
+
 
     public function getEnableTranslateUrl()
     {
-        return $this->getToolbarUrl('util/enableTranslate');
+        return $this->getUrl('util/enableTranslate');
     }
+
 
     public function getDisableTranslateUrl()
     {
-        return $this->getToolbarUrl('util/disableTranslate');
+        return $this->getUrl('util/disableTranslate');
     }
+
 
     public function getSearchConfigUrl()
     {
-        return $this->getToolbarUrl('config/search');
+        return $this->getUrl('config/search');
     }
+
 
     public function getDownloadConfig($type = 'txt')
     {
-        return $this->getToolbarUrl('config/download', array('type' => $type));
+        return $this->getUrl('config/download', array('type' => $type));
     }
 
 }
