@@ -11,7 +11,11 @@
 class Sheep_Debug_Model_Controller
 {
     protected $httpMethod;
+    // request url path
+    protected $requestOriginalPath;
+    // request url path after rewrite (internal url path)
     protected $requestPath;
+
     protected $routeName;
     protected $module;
     protected $class;
@@ -33,6 +37,7 @@ class Sheep_Debug_Model_Controller
         $request = $action->getRequest();
 
         $this->httpMethod = $request->getMethod();
+        $this->requestOriginalPath = $request->getOriginalPathInfo();
         $this->requestPath = $request->getPathInfo();
         $this->routeName = $request->getRouteName();
         $this->module = $request->getControllerModule();
@@ -165,6 +170,14 @@ class Sheep_Debug_Model_Controller
     public function getHttpMethod()
     {
         return $this->httpMethod;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRequestOriginalPath()
+    {
+        return $this->requestOriginalPath;
     }
 
 

@@ -7,6 +7,23 @@
  * @package  Sheep_Subscription
  * @license  Copyright: Pirate Sheep, 2016, All Rights reserved.
  * @link     https://piratesheep.com
+ *
+ * @method string getToken()
+ * @method Sheep_Debug_Model_RequestInfo setToken(string $value)
+ * @method string getHttpMethod()
+ * @method Sheep_Debug_Model_RequestInfo setHttpMethod(string $value)
+ * @method string getRequestPath()
+ * @method Sheep_Debug_Model_RequestInfo setRequestPath(string $value)
+ * @method int getResponseCode()
+ * @method Sheep_Debug_Model_RequestInfo setResponseCode(int $value)
+ * @method string getSessionId()
+ * @method Sheep_Debug_Model_RequestInfo setSessionId(string $value)
+ * @method string getDate()
+ * @method Sheep_Debug_Model_RequestInfo setDate(string $value)
+ * @method Sheep_Debug_Model_RequestInfo setTime(float $value)
+ * @method Sheep_Debug_Model_RequestInfo setPeakMemory(int $value)
+ * @method  getInfo()
+ * @method Sheep_Debug_Model_RequestInfo setInfo($value)
  */
 class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
 {
@@ -42,6 +59,7 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
     {
         return $this->storeId;
     }
+
 
     /**
      * @param int $storeId
@@ -94,7 +112,7 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
 
 
     /**
-     * @param Mage_Core_Model_Layout         $layout
+     * @param Mage_Core_Model_Layout $layout
      * @param Mage_Core_Model_Design_Package $design
      */
     public function addLayout(Mage_Core_Model_Layout $layout, Mage_Core_Model_Design_Package $design)
@@ -229,11 +247,85 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
         return $this->queries;
     }
 
+    /**
+     * Returns peak memory in bytes.
+     *
+     * @return int
+     */
+    public function getPeakMemory()
+    {
+        return $this->hasData('peak_memory') ? $this->getData('peak_memory') : Mage::helper('sheep_debug')->getMemoryUsage();
+    }
+
+    /**
+     * Returns script execution time in seconds
+     *
+     * @return float
+     */
+    public function getTime()
+    {
+        return $this->hasData('time') ? $this->getData('time') : Mage::helper('sheep_debug')->getCurrentScriptDuration();
+    }
+
+
+
     protected $_eventPrefix = 'sheep_debug_requestInfo';
+
 
     protected function _construct()
     {
         $this->_init('sheep_debug/requestInfo');
+    }
+
+    protected function generateToken()
+    {
+        return md5(uniqid($this->action->getSessionId(), true));
+    }
+
+    protected function getSerializedInfo()
+    {
+        return json_encode(array(
+            'logging' => $this->logging,
+            'action' => $this->action,
+            'design' => $this->design,
+            'blocks' => $this->blocks,
+            'models' => $this->models,
+            'collections' => $this->collections,
+            'queries' => $this->queries
+        ));
+    }
+
+    protected function getUnserializedInfo()
+    {
+        return json_decode($this->getInfo(), true);
+    }
+
+    protected function _beforeSave()
+    {
+        parent::_beforeSave();
+
+        if ($this->isObjectNew()) {
+            $this->setToken($this->generateToken());
+            $this->setHttpMethod($this->action->getHttpMethod());
+            $this->setRequestPath($this->action->getRequestOriginalPath());
+            $this->setResponseCode($this->action->getResponseCode());
+            $this->setSessionId($this->action->getSessionId());
+
+            $this->setInfo($this->getSerializedInfo());
+        }
+
+        return $this;
+    }
+
+    protected function _afterLoad()
+    {
+        $info = $this->getUnserializedInfo();
+
+        $this->logging = $info['logging'];
+        $this->action = $info['action'];
+
+
+        return parent::_afterLoad();
     }
 
 }

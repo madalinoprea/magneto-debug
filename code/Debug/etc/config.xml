@@ -217,6 +217,7 @@
         <sheep_debug>
             <options>
                 <enable>1</enable>
+                <persist>1</persist>
             </options>
 
             <panels>

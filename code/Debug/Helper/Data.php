@@ -11,10 +11,11 @@
 class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
 {
     const DEBUG_OPTIONS_ENABLE_PATH = 'sheep_debug/options/enable';
+    const DEBUG_OPTION_PERSIST_PATH = 'sheep_debug/options/persist';
 
     public function isEnabled()
     {
-        return (bool) Mage::getStoreConfig(self::DEBUG_OPTIONS_ENABLE_PATH);
+        return (bool)Mage::getStoreConfig(self::DEBUG_OPTIONS_ENABLE_PATH);
     }
 
     /**
@@ -167,35 +168,60 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
 
 
     /**
+     * Returns specified number formatted based on current locale
+     *
+     * @param $number
+     * @return string
+     */
+    public function formatNumber($number, $precision=2)
+    {
+        $locale = Mage::app()->getLocale()->getLocale();
+        return Zend_Locale_Format::toNumber($number, array('locale' => $locale, 'precision' => $precision));
+    }
+
+
+    /**
      * Return readable file size
      *
      * @param int $size size in bytes
-     *
+     * @param int $precision
      * @return string
      */
-    public function formatSize($size)
+    public function formatMemorySize($size, $precision = 2)
     {
         $sizes = array(" Bytes", " KB", " MB", " GB", " TB", " PB", " EB", " ZB", " YB");
         if ($size == 0) {
-            return ('n/a');
+            return $this->__('n/a');
         } else {
-            return (round($size / pow(1024, ($i = floor(log($size, 1024)))), 2) . $sizes[$i]);
+            $value = round($size / pow(1024, ($i = floor(log($size, 1024)))), $precision);
+            $unitIndex = (int) $i;
+            return $this->__('%d%s', $this->formatNumber($value), $sizes[$unitIndex]);
         }
     }
 
+
+    /**
+     * Returns peak memory in bytes
+     *
+     * @return int
+     */
     public function getMemoryUsage()
     {
-        return $this->formatSize(memory_get_peak_usage(TRUE));
+        return memory_get_peak_usage(TRUE);
     }
 
-    public function getScriptDuration()
+
+    /**
+     * Returns current script duration in seconds.
+     * NULL if we cannot determine.
+     *
+     * @return float|NULL
+     */
+    public function getCurrentScriptDuration()
     {
-        if (function_exists('xdebug_time_index')) {
-            return sprintf("%0.2f", xdebug_time_index());
-        } else {
-            return 'n/a';
-        }
+        return function_exists('xdebug_time_index') ? xdebug_time_index() : null;
     }
+
 
     /**
      * Sort callback for objects that have getCount()
@@ -212,10 +238,12 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
         return ($a->getCount() < $b->getCount()) ? 1 : -1;
     }
 
+
     public function sortByCount(&$objects)
     {
         usort($objects, array('Sheep_Debug_Helper_Data', 'sortModelCmp'));
     }
+
 
     public function getBlockFilename($blockClass)
     {
@@ -255,6 +283,8 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
 
 
     /**
+     * Checks configuration to see if we can display toolbar panel
+     *
      * @param $panelId
      * @return bool
      */
@@ -273,4 +303,16 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
     {
         return method_exists('Mage', 'getEdition') && Mage::getEdition() == Mage::EDITION_ENTERPRISE;
     }
+
+
+    /**
+     * Checks configuration if we can save request profile information
+     *
+     * @return bool
+     */
+    public function canPersist()
+    {
+        return (bool) Mage::getStoreConfig(self::DEBUG_OPTION_PERSIST_PATH);
+    }
+
 }

@@ -70,4 +70,15 @@ class Sheep_Debug_Block_Abstract extends Mage_Core_Block_Template
 
         return $this->requestInfo;
     }
+
+    /**
+     * Returns number formatted based on current locale
+     *
+     * @param $number
+     * @return string
+     */
+    public function formatNumber($number)
+    {
+        return $this->helper->formatNumber($number);
+    }
 }
