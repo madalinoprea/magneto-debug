@@ -10,9 +10,12 @@ $installer->startSetup();
 
 $table = $installer->getConnection()
     ->newTable($installer->getTable('sheep_debug/request_info'))
-    ->addColumn('token', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
+    ->addColumn('id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
         'nullable'  => false,
         'primary' => 'true',
+    ), 'Id')
+    ->addColumn('token', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
+        'nullable'  => false,
     ), 'Request Token')
     ->addColumn('http_method', Varien_Db_Ddl_Table::TYPE_VARCHAR, 32, array(
         'nullable' => false,
@@ -39,6 +42,7 @@ $table = $installer->getConnection()
         'nullable' => false,
         'default' => '',
     ), 'Serialized Info')
+    ->addIndex($this->getIdxName('sheep_debug/request_info', array('token')), array('token'))
     ->addIndex($this->getIdxName('sheep_debug/request_info', array('session_id')), array('session_id'))
     ->addIndex($this->getIdxName('sheep_debug/request_info', array('request_path')), array('request_path'))
 ;

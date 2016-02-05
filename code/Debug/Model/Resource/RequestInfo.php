@@ -10,13 +10,12 @@
  */
 class Sheep_Debug_Model_Resource_RequestInfo extends Mage_Core_Model_Resource_Db_Abstract
 {
-
     /**
      * Resource initialization
      */
     protected function _construct()
     {
-        $this->_init('sheep_debug/request_info', 'token');
+        $this->_init('sheep_debug/request_info', 'id');
     }
 
 }
