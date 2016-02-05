@@ -279,7 +279,7 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
 
     protected function generateToken()
     {
-        return md5(uniqid($this->action->getSessionId(), true));
+        return sprintf('%x', crc32(uniqid($this->action->getSessionId(), true)));
     }
 
     protected function getSerializedInfo()
