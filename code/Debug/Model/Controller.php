@@ -10,18 +10,21 @@
  */
 class Sheep_Debug_Model_Controller
 {
-    protected $path;
+    protected $httpMethod;
+    protected $requestPath;
     protected $routeName;
     protected $module;
     protected $class;
     protected $action;
 
+    protected $sessionId;
     protected $cookies;
     protected $session;
     protected $getParameters;
     protected $postParameters;
 
     protected $responseCode;
+    protected $responseHeaders;
 
 
     public function __construct(Mage_Core_Controller_Varien_Action $action)
@@ -29,24 +32,38 @@ class Sheep_Debug_Model_Controller
         /** @var Mage_Core_Controller_Request_Http $request */
         $request = $action->getRequest();
 
-        $this->path = $request->getPathInfo();
+        $this->httpMethod = $request->getMethod();
+        $this->requestPath = $request->getPathInfo();
         $this->routeName = $request->getRouteName();
         $this->module = $request->getControllerModule();
         $this->class = get_class($action);
         $this->action = $action->getActionMethodName($request->getActionName());
         $this->cookies = $_COOKIE;
         $this->session = $_SESSION;
+        $this->sessionId  = Mage::getSingleton('core/session')->getEncryptedSessionId();
         $this->getParameters = $_GET;
         $this->postParameters = $_POST;
     }
 
 
     /**
+     * Initialize response properties
+     *
+     * @param Mage_Core_Controller_Response_Http $httpResponse
+     */
+    public function addResponseInfo(Mage_Core_Controller_Response_Http $httpResponse)
+    {
+        $this->responseCode = $httpResponse->getHttpResponseCode();
+        $this->responseHeaders = $httpResponse->getHeaders();
+    }
+
+
+    /**
      * @return string
      */
-    public function getPath()
+    public function getRequestPath()
     {
-        return $this->path;
+        return $this->requestPath;
     }
 
 
@@ -132,6 +149,22 @@ class Sheep_Debug_Model_Controller
     public function getResponseCode()
     {
         return $this->responseCode;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSessionId()
+    {
+        return $this->sessionId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHttpMethod()
+    {
+        return $this->httpMethod;
     }
 
 
