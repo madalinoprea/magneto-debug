@@ -172,7 +172,9 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
      * Returns specified number formatted based on current locale
      *
      * @param $number
+     * @param int $precision
      * @return string
+     * @throws Zend_Locale_Exception
      */
     public function formatNumber($number, $precision = 2)
     {

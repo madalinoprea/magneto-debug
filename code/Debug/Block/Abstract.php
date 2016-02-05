@@ -88,10 +88,11 @@ class Sheep_Debug_Block_Abstract extends Mage_Core_Block_Template
      * Returns number formatted based on current locale
      *
      * @param $number
+     * @param int $precision
      * @return string
      */
-    public function formatNumber($number)
+    public function formatNumber($number, $precision = 2)
     {
-        return $this->helper->formatNumber($number);
+        return $this->helper->formatNumber($number, $precision);
     }
 }
