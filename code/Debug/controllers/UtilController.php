@@ -49,151 +49,109 @@ class Sheep_Debug_UtilController extends Sheep_Debug_Controller_Front_Action
 
     public function flushCacheAction()
     {
-        if (!$this->getRequest()->isPost()) {
-            $this->getResponse()->setHttpResponseCode(405);
-            $this->getResponse()->setBody('Method not allowed');
-        }
-
         try {
             $this->getService()->flushCache();
-            $content = $this->__('Cache flushed.');
             $this->getSession()->addSuccess('Cache flushed.');
         } catch (Exception $e) {
-            $content = $this->__('Cache cannot be flushed: %s', $e->getMessage());
-            $this->getResponse()->setHttpResponseCode(500);
+            $message = $this->__('Cache cannot be flushed: %s', $e->getMessage());
+            $this->getSession()->addError($message);
         }
 
-        $this->getResponse()->setBody($content);
+        $this->_redirectReferer();
     }
 
 
     public function enableFPCDebugAction()
     {
-        if (!$this->getRequest()->isPost()) {
-            $this->getResponse()->setHttpResponseCode(405);
-            $this->getResponse()->setBody('Method not allowed');
-        }
-
         try {
             $this->getService()->setFPCDebug(1);
             $this->getService()->flushCache();
 
-            $content = $this->__('FPC debug was enabled');
-            $this->getSession()->addSuccess($content);
+            $message = $this->__('FPC debug was enabled');
+            $this->getSession()->addSuccess($message);
         } catch (Exception $e) {
-            $content = $this->__('FPC debug cannot be enabled: %s', $e->getMessage());
-            $this->getSession()->addError($content);
-            $this->getResponse()->setHttpResponseCode(500);
+            $message = $this->__('FPC debug cannot be enabled: %s', $e->getMessage());
+            $this->getSession()->addError($message);
         }
 
-        $this->getResponse()->setBody($content);
+        $this->_redirectReferer();
     }
 
 
     public function disableFPCDebugAction()
     {
-        if (!$this->getRequest()->isPost()) {
-            $this->getResponse()->setHttpResponseCode(405);
-            $this->getResponse()->setBody('Method not allowed');
-        }
-
         try {
             $this->getService()->setFPCDebug(0);
             $this->getService()->flushCache();
 
-            $content = $this->__('FPC debug was disabled');
-            $this->getSession()->addSuccess($content);
+            $message = $this->__('FPC debug was disabled');
+            $this->getSession()->addSuccess($message);
         } catch (Exception $e) {
-            $content = $this->__('FPC debug cannot be disabled: %s', $e->getMessage());
-            $this->getSession()->addError($content);
-            $this->getResponse()->setHttpResponseCode(500);
+            $message = $this->__('FPC debug cannot be disabled: %s', $e->getMessage());
+            $this->getSession()->addError($message);
         }
 
-        $this->getResponse()->setBody($content);
+        $this->_redirectReferer();
     }
 
 
     public function enableTemplateHintsAction()
     {
-        if (!$this->getRequest()->isPost()) {
-            $this->getResponse()->setHttpResponseCode(405);
-            $this->getResponse()->setBody('Method not allowed');
-        }
-
         try {
             $this->getService()->setTemplateHints(1);
             $this->getService()->flushCache();
+            // no need to notify customer - is obvious if they were enabled
 
-            $content = $this->__('Template hints were enabled');
         } catch (Exception $e) {
-            $content = $this->__('Template hints cannot be enabled: %s', $e->getMessage());
-            $this->getResponse()->setHttpResponseCode(500);
+            $message = $this->__('Template hints cannot be enabled: %s', $e->getMessage());
+            $this->getSession()->addError($message);
         }
 
-        $this->getResponse()->setBody($content);
+        $this->_redirectReferer();
     }
 
 
     public function disableTemplateHintsAction()
     {
-        if (!$this->getRequest()->isPost()) {
-            $this->getResponse()->setHttpResponseCode(405);
-            $this->getResponse()->setBody('Method not allowed');
-        }
-
         try {
             $this->getService()->setTemplateHints(0);
             $this->getService()->flushCache();
 
-            $content = $this->__('Template hints were disabled');
-            $this->getSession()->addSuccess($content);
         } catch (Exception $e) {
-            $content = $this->__('Template hints cannot be disabled: %s', $e->getMessage());
-            $this->getResponse()->setHttpResponseCode(500);
+            $message = $this->__('Template hints cannot be disabled: %s', $e->getMessage());
+            $this->getSession()->addError($message);
         }
 
-        $this->getResponse()->setBody($content);
+        $this->_redirectReferer();
     }
 
 
     public function enableTranslateAction()
     {
-        if (!$this->getRequest()->isPost()) {
-            $this->getResponse()->setHttpResponseCode(405);
-            $this->getResponse()->setBody('Method not allowed');
-        }
-
         try {
             $this->getService()->setTranslateInline(1);
             $this->getService()->flushCache();
-
-            $content = $this->__('Translate inline was enabled');
         } catch (Exception $e) {
-            $content = $this->__('Translate inline cannot be enabled: %s', $e->getMessage());
-            $this->getResponse()->setHttpResponseCode(500);
+            $message = $this->__('Translate inline cannot be enabled: %s', $e->getMessage());
+            $this->getSession()->addError($message);
         }
 
-        $this->getResponse()->setBody($content);
+        $this->_redirectReferer();
     }
 
 
     public function disableTranslateAction()
     {
-        if (!$this->getRequest()->isPost()) {
-            $this->getResponse()->setHttpResponseCode(405);
-            $this->getResponse()->setBody('Method not allowed');
-        }
-
         try {
             $this->getService()->setTranslateInline(0);
             $this->getService()->flushCache();
 
-            $content = $this->__('Translate inline was disabled');
         } catch (Exception $e) {
-            $content = $this->__('Translate inline cannot be disabled: %s', $e->getMessage());
-            $this->getResponse()->setHttpResponseCode(500);
+            $message = $this->__('Translate inline cannot be disabled: %s', $e->getMessage());
+            $this->getSession()->addError($message);
         }
 
-        $this->getResponse()->setBody($content);
+        $this->_redirectReferer();
     }
+
 }
