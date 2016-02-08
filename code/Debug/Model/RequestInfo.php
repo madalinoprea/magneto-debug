@@ -284,7 +284,7 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
 
     protected function getSerializedInfo()
     {
-        return json_encode(array(
+        return serialize(array(
             'logging' => $this->logging,
             'action' => $this->action,
             'design' => $this->design,
@@ -297,14 +297,21 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
 
     protected function getUnserializedInfo()
     {
-        return json_decode($this->getInfo(), true);
+        return unserialize($this->getInfo());
     }
+
+
+    public function getAbsoluteUrl()
+    {
+        return Mage::getUrl('', array('_store' => $this->getStoreId(), '_direct' => $this->getRequestPath()));
+    }
+
 
     protected function _beforeSave()
     {
         parent::_beforeSave();
 
-        if ($this->isObjectNew()) {
+        if (!$this->getId()) {
             $this->setToken($this->generateToken());
             $this->setHttpMethod($this->action->getHttpMethod());
             $this->setRequestPath($this->action->getRequestOriginalPath());
@@ -323,7 +330,11 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
 
         $this->logging = $info['logging'];
         $this->action = $info['action'];
-
+        $this->design = $info['design'];
+        $this->blocks = $info['blocks'];
+        $this->models = $info['models'];
+        $this->collections = $info['collections'];
+        $this->queries  = $info['queries'];
 
         return parent::_afterLoad();
     }
