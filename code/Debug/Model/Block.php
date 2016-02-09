@@ -10,6 +10,9 @@
  */
 class Sheep_Debug_Model_Block
 {
+    static $startRenderingTime;
+    static $endRenderingTime;
+
     /** @var string */
     protected $name;
     /** @var string */
@@ -25,7 +28,7 @@ class Sheep_Debug_Model_Block
     protected $renderedCompletedAt;
     protected $renderedDuration;
     /** @var array */
-    protected $data;
+    protected $data = array();
 
 
     public function __construct(Mage_Core_Block_Abstract $block)
@@ -41,7 +44,8 @@ class Sheep_Debug_Model_Block
         $this->name = $block->getNameInLayout();
         $this->class = get_class($block);
         $this->templateFile = $block instanceof Mage_Core_Block_Template ? $block->getTemplateFile() : '';
-        $this->data = $block->getData();
+        // TODO: make sure we copy only serializable data
+//        $this->data = $block->getData();
     }
 
 
@@ -58,6 +62,10 @@ class Sheep_Debug_Model_Block
         $this->isRendering = true;
         $this->renderedCount++;
         $this->renderedAt = microtime(true);
+
+        if (self::$startRenderingTime===null) {
+            self::$startRenderingTime = $this->renderedAt;
+        }
     }
 
 
@@ -66,6 +74,8 @@ class Sheep_Debug_Model_Block
         $this->isRendering = false;
         $this->renderedCompletedAt = microtime(true);
         $this->renderedDuration += ($this->renderedCompletedAt - $this->renderedAt);
+
+        self::$endRenderingTime = $this->renderedCompletedAt;
     }
 
     /**
@@ -140,6 +150,12 @@ class Sheep_Debug_Model_Block
     public function getData()
     {
         return $this->data;
+    }
+
+
+    static public function getTotalRenderingTime()
+    {
+        return self::$endRenderingTime - self::$startRenderingTime;
     }
 
 }
