@@ -1,0 +1,46 @@
+<?php
+/** @var Mage_Page_Block_Html $this */
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="noindex,nofollow" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title><?php echo $this->escapeHtml($this->getHeaderTitle()) ?></title>
+    <link rel="stylesheet" href="<?php echo $this->getSkinUrl('sheep_debug/css/profile.css') ?>">
+    <link rel="stylesheet" href="<?php echo $this->getSkinUrl('sheep_debug/css/profile_overwrites.css') ?>">
+</head>
+
+<body>
+<!-- TODO: complete header -->
+<div id="header">
+    <div class="container">
+        <h1>
+            <a href="https://www.piratesheep.com"><img src="<?php echo $this->getSkinUrl('sheep_debug/img/pirate_sheep.png') ?>" alt="Pirate Sheep" height="24"></a>
+            Magento <span>Profiler</span>
+        </h1>
+    </div>
+</div>
+
+<?php echo $this->getChildHtml('sheep_debug_summary'); ?>
+
+
+<div id="content" class="container">
+    <div id="main">
+
+        <div id="collector-wrapper">
+            <div id="collector-content">
+                <?php echo $this->getChildHtml('sheep_debug_content') ;?>
+            </div>
+        </div>
+
+        <div id="sidebar">
+            <?php echo $this->getChildHtml('sheep_debug_sidebar') ?>
+        </div>
+    </div>
+</div>
+
+<script src="<?php echo $this->getSkinUrl('sheep_debug/js/profile.js') ?>"></script>
+</body>
+</html>

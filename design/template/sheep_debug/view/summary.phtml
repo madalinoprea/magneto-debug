@@ -1,0 +1,34 @@
+<?php
+/** @var Sheep_Debug_Block_View $this */
+
+/** @var Sheep_Debug_Model_RequestInfo $info */
+$info = $this->getRequestInfo();
+$absoluteUrl = $info->getAbsoluteUrl();
+?>
+<div id="summary">
+
+    <div class="status status-success">
+        <div class="container">
+            <h2 class="break-long-words">
+                <a href="<?php echo $absoluteUrl ?>"><?php echo $this->escapeHtml($absoluteUrl) ?></a>
+            </h2>
+
+            <dl class="metadata">
+                <dt><?php echo $this->__('Method'); ?></dt>
+                <dd><?php echo $this->escapeHtml($info->getController()->getHttpMethod()); ?></dd>
+
+                <dt><?php echo $this->__('HTTP Status'); ?></dt>
+                <dd><?php echo $info->getResponseCode() ?></dd>
+
+                <dt><?php echo $this->__('Time'); ?></dt>
+                <dd><?php echo $this->__('%s seconds', $this->formatNumber($info->getTime(), 2)); ?></dd>
+
+                <dt><?php echo $this->__('Profiled on'); ?></dt>
+                <dd><?php echo $this->formatDate($info->getDate(), 'medium', true) ?></dd>
+
+                <dt><?php echo $this->__('Token'); ?></dt>
+                <dd><?php echo $this->escapeHtml($info->getToken()); ?></dd>
+            </dl>
+        </div>
+    </div>
+</div>
