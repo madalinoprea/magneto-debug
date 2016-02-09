@@ -1,0 +1,55 @@
+<?php
+/** @var Sheep_Debug_Block_View $this */
+
+$info = $this->getRequestInfo();
+$controller = $info->getController();
+
+?>
+<div class="sf-tabs">
+    <div class="tab">
+        <h3 class="tab-title"><?php echo $this->__('Request'); ?></h3>
+
+        <div class="tab-content">
+            <h3><?php echo $this->__('GET Parameters'); ?></h3>
+            <?php echo $this->renderArray($controller->getGetParameters(), 'No GET parameters'); ?>
+
+            <h3><?php echo $this->__('POST Parameters'); ?></h3>
+            <?php echo $this->renderArray($controller->getPostParameters(), 'No POST parameters'); ?>
+
+            <h3><?php echo $this->__('Request Attributes'); ?></h3>
+            <?php echo $this->renderArray($controller->getRequestAttributes()) ?>
+
+            <h3><?php echo $this->__('Cookies'); ?></h3>
+            <?php echo $this->renderArray($controller->getCookies()) ?>
+
+
+            <h3><?php echo $this->__('Request Headers'); ?></h3>
+            <?php echo $this->renderArray($controller->getRequestHeaders(), 'No Data', array('Header', 'Value')) ?>
+
+
+            <h3><?php echo $this->__('Server Parameters'); ?></h3>
+            <?php echo $this->renderArray($controller->getServerParameters()) ?>
+        </div>
+    </div>
+
+    <div class="tab">
+        <h3 class="tab-title"><?php echo $this->__('Response'); ?></h3>
+
+        <div class="tab-content">
+            <h3><?php echo $this->__('Response Headers'); ?></h3>
+            <?php echo $this->renderArray($controller->getResponseHeaders(), 'No Data', array('Header', 'Value')) ?>
+        </div>
+    </div>
+
+    <div class="tab">
+        <h3 class="tab-title"><?php echo $this->__('Session'); ?></h3>
+
+        <!-- TODO: Add session meta data -->
+
+        <div class="tab-content">
+            <h3><?php echo $this->__('Session Attributes'); ?></h3>
+            <?php echo $this->renderArray($controller->getSession()) ?>
+        </div>
+    </div>
+
+</div>
