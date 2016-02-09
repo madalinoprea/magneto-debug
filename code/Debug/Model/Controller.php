@@ -10,11 +10,14 @@
  */
 class Sheep_Debug_Model_Controller
 {
+    protected $serverParameters;
+
     protected $httpMethod;
     // request url path
     protected $requestOriginalPath;
     // request url path after rewrite (internal url path)
     protected $requestPath;
+    protected $requestHeaders;
 
     protected $routeName;
     protected $module;
@@ -36,9 +39,13 @@ class Sheep_Debug_Model_Controller
         /** @var Mage_Core_Controller_Request_Http $request */
         $request = $action->getRequest();
 
+        $this->serverParameters = $_SERVER;
+
         $this->httpMethod = $request->getMethod();
         $this->requestOriginalPath = $request->getOriginalPathInfo();
         $this->requestPath = $request->getPathInfo();
+        $this->requestHeaders = getallheaders();
+
         $this->routeName = $request->getRouteName();
         $this->module = $request->getControllerModule();
         $this->class = get_class($action);
@@ -59,7 +66,12 @@ class Sheep_Debug_Model_Controller
     public function addResponseInfo(Mage_Core_Controller_Response_Http $httpResponse)
     {
         $this->responseCode = $httpResponse->getHttpResponseCode();
-        $this->responseHeaders = $httpResponse->getHeaders();
+
+        $this->responseHeaders = array();
+        $headers = $httpResponse->getHeaders();
+        foreach ($headers as $header) {
+            $this->responseHeaders[$header['name']] = $header['value'];
+        }
     }
 
 
@@ -148,6 +160,16 @@ class Sheep_Debug_Model_Controller
         return $this->postParameters;
     }
 
+
+    public function getRequestAttributes()
+    {
+        return array(
+            'route' => $this->routeName,
+            'module' => $this->module,
+            'action' => $this->getReference()
+        );
+    }
+
     /**
      * @return mixed
      */
@@ -178,6 +200,30 @@ class Sheep_Debug_Model_Controller
     public function getRequestOriginalPath()
     {
         return $this->requestOriginalPath;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRequestHeaders()
+    {
+        return $this->requestHeaders;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getServerParameters()
+    {
+        return $this->serverParameters;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getResponseHeaders()
+    {
+        return $this->responseHeaders;
     }
 
 
