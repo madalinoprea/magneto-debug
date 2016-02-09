@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<layout version="1.2.0">
+<layout version="1.3.0">
     <default>
         <reference name="head">
             <reference name="head">
@@ -59,4 +59,34 @@
             </block>
         </reference>
     </default>
+
+    <sheep_debug translate="label" module="sheep_debug">
+        <label>Developer Toolbar</label>
+        <block type="page/html" name="root" output="toHtml" template="sheep_debug/view/1column.phtml">
+
+            <block type="sheep_debug/view" name="sheep_debug_summary" as="sheep_debug_summary" template="sheep_debug/view/summary.phtml"/>
+
+            <!-- Insert your blocks here -->
+            <block type="core/text_list" name="sheep_debug_content" translate="label">
+                <label>Debug Main Content</label>
+
+                <!-- children blocks are dynamically added -->
+            </block>
+
+            <block type="core/text_list" name="sheep_debug_sidebar">
+                <block type="sheep_debug/view" name="sheep_debug_sidebar_shortcuts" template="sheep_debug/view/sidebar_shortcuts.phtml"/>
+                <block type="sheep_debug/view" name="sheep_debug_sidebar_menu" template="sheep_debug/view/sidebar_menu.phtml"/>
+            </block>
+
+        </block>
+    </sheep_debug>
+
+    <sheep_debug_index_view>
+        <update handle="sheep_debug"/>
+    </sheep_debug_index_view>
+
+    <sheep_debug_index_search>
+        <update handle="sheep_debug"/>
+    </sheep_debug_index_search>
+
 </layout>

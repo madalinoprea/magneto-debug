@@ -17,17 +17,45 @@ class Sheep_Debug_IndexController extends Sheep_Debug_Controller_Front_Action
      */
     public function searchAction()
     {
+        $this->loadLayout('sheep_debug');
+        $this->renderLayout();
     }
 
 
     /**
      * View request profile page
-     * TODO: complete implementation for viewAction
      */
     public function viewAction()
     {
         $token = (string) $this->getRequest()->getParam('token');
+        if (!$token) {
+            $this->getResponse()->setHttpResponseCode(400);
+            return $this->_getRefererUrl();
+        }
 
+        $requestInfo = Mage::getModel('sheep_debug/requestInfo')->load($token, 'token');
+        if (!$requestInfo->getId()) {
+            $this->getResponse()->setHttpResponseCode(404);
+            return $this->_getRefererUrl();
+        }
+
+        $section = $this->getRequest()->getParam('panel', 'request');
+        if (!in_array($section, array('request', 'db'))) {
+            $section = 'request';
+        }
+
+        Mage::register('sheep_debug_request_info', $requestInfo);
+
+        $blockName = 'sheep_debug_' . $section;
+        $blockTemplate = "sheep_debug/view/panel/{$section}.phtml";
+
+        // Add section block to content area
+        $this->loadLayout();
+        $layout = $this->getLayout();
+        $sectionBlock = $layout->createBlock('sheep_debug/view', $blockName , array('template' => $blockTemplate));
+        $layout->getBlock('sheep_debug_content')->insert($sectionBlock);
+
+        $this->renderLayout();
     }
 
 
