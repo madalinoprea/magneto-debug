@@ -7,6 +7,10 @@
  * @package  Sheep_Debug
  * @license  Copyright: Pirate Sheep, 2016, All Rights reserved.
  * @link     https://piratesheep.com
+ *
+ *
+ * TODO: clarify stages where request info's data is updated and when should be changed..
+ * TODO: what do we generate when saving is not enabled !? Do we use persist data in cache for 30-60 minutes?
  */
 class Sheep_Debug_Model_Observer
 {
@@ -55,8 +59,17 @@ class Sheep_Debug_Model_Observer
         $requestInfo = $this->getRequestInfo();
         $helper = Mage::helper('sheep_debug');
 
-        $requestInfo->getController()->addResponseInfo($response);
+        // update query information
+        $requestInfo->prepareQueries();
+
+        // capture log ranges
         $requestInfo->getLogging()->endRequest();
+
+        // save rendering time
+        $requestInfo->setRenderingTime(Sheep_Debug_Model_Block::getTotalRenderingTime());
+
+        // first tentative to save response code
+        $requestInfo->getController()->addResponseInfo($response);
         $requestInfo->setPeakMemory($helper->getMemoryUsage());
         $requestInfo->setTime($helper->getCurrentScriptDuration());
     }
@@ -67,8 +80,17 @@ class Sheep_Debug_Model_Observer
      */
     public function shutdown()
     {
+        $requestInfo = $this->getRequestInfo();
+        $helper = Mage::helper('sheep_debug');
+
+        // Last chance to update request profile info
+        $requestInfo->setPeakMemory($helper->getMemoryUsage());
+        $requestInfo->setTime($helper->getCurrentScriptDuration());
+        $requestInfo->setResponseCode(http_response_code());
+
         $this->saveProfiling();
     }
+
 
     /**
      * Saves request info model.
