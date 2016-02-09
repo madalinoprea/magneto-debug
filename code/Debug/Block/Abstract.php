@@ -78,10 +78,10 @@ class Sheep_Debug_Block_Abstract extends Mage_Core_Block_Template
     }
 
 
-    public function getRequestViewUrl($token = null)
+    public function getRequestViewUrl($panel = null, $token = null)
     {
         $token = $token ?: $this->getRequestInfo()->getToken();
-        return Mage::helper('sheep_debug/url')->getRequestViewUrl($token);
+        return Mage::helper('sheep_debug/url')->getRequestViewUrl($token, $panel);
     }
 
     /**

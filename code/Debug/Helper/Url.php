@@ -29,9 +29,9 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
     }
 
 
-    public function getRequestViewUrl($token)
+    public function getRequestViewUrl($token, $panel)
     {
-        return $this->getUrl('index/view', array('token' => $token));
+        return $this->getUrl('index/view', array('token' => $token, 'panel' => $panel));
     }
 
 
