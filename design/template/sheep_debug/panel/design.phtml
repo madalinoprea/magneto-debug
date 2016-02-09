@@ -16,8 +16,8 @@ $blocks = $this->getBlocks();
     V20.1z M5,5h14v3H5V5z M5,10h3v9H5V10z M10,10h9v9h-9V10z">
                 </path>
             </svg>
-            <span class="sf-toolbar-value"><?php echo count($blocks) ?></span>
-            <span class="sf-toolbar-label"><?php echo $this->__('blocks'); ?></span>
+            <span class="sf-toolbar-value"><?php echo sprintf('%0.2f', $this->getRequestInfo()->getRenderingTime()) ?></span>
+            <span class="sf-toolbar-label"><?php echo $this->__('s'); ?></span>
         </div>
     </a>
 
