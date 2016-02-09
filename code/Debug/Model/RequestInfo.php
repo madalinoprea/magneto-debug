@@ -20,6 +20,11 @@
  * @method Sheep_Debug_Model_RequestInfo setSessionId(string $value)
  * @method string getDate()
  * @method Sheep_Debug_Model_RequestInfo setDate(string $value)
+ * @method Sheep_Debug_Model_RequestInfo setRenderingTime(float $value)
+ * @method float getQueryTime()
+ * @method Sheep_Debug_Model_RequestInfo setQueryTime(float $value)
+ * @method int getQueryCount()
+ * @method Sheep_Debug_Model_RequestInfo setQueryCount(int $value)
  * @method Sheep_Debug_Model_RequestInfo setTime(float $value)
  * @method Sheep_Debug_Model_RequestInfo setPeakMemory(int $value)
  * @method  getInfo()
@@ -195,6 +200,28 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
 
 
     /**
+     * Returns captured collection as array
+     *
+     * @return array
+     */
+    public function getCollectionsAsArray()
+    {
+        $data = array();
+
+        foreach ($this->collections as $collection) {
+            $data[] = array(
+                'type' => $collection->getType(),
+                'class' => $collection->getClass(),
+                'sql' => $collection->getQuery(),
+                'count' => $collection->getCount()
+            );
+        }
+
+        return $data;
+    }
+
+
+    /**
      * Adds model load
      *
      * @param Mage_Core_Model_Abstract $model
@@ -220,6 +247,24 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
         return $this->models;
     }
 
+    /**
+     * @return array
+     */
+    public function getModelsAsArray()
+    {
+        $data = array();
+
+        foreach ($this->models as $model) {
+            $data[] = array(
+                'resource_name' => $model->getResource(),
+                'class' => $model->getClass(),
+                'count' => $model->getCount()
+            );
+        }
+
+        return $data;
+    }
+
 
     public function prepareQueries()
     {
@@ -229,6 +274,8 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
         if ($profiler->getEnabled()) {
             /** @var Zend_Db_Profiler_Query[] $queries */
             $queryInfo = $profiler->getQueryProfiles() ?: array();
+            $this->setQueryCount($profiler->getTotalNumQueries());
+            $this->setQueryTime($profiler->getTotalElapsedSecs());
         }
 
         return $queryInfo;
@@ -247,6 +294,7 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
         return $this->queries;
     }
 
+
     /**
      * Returns peak memory in bytes.
      *
@@ -256,6 +304,7 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
     {
         return $this->hasData('peak_memory') ? $this->getData('peak_memory') : Mage::helper('sheep_debug')->getMemoryUsage();
     }
+
 
     /**
      * Returns script execution time in seconds
@@ -268,7 +317,17 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
     }
 
 
+    /**
+     * Returns rendering time in seconds
+     *
+     * @return float
+     */
+    public function getRenderingTime()
+    {
+        return $this->hasData('rendering_time') ? $this->getData('rendering_time') : Sheep_Debug_Model_Block::getTotalRenderingTime();
+    }
 
+    
     protected $_eventPrefix = 'sheep_debug_requestInfo';
 
 
@@ -314,12 +373,12 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
         if (!$this->getId()) {
             $this->setToken($this->generateToken());
             $this->setHttpMethod($this->action->getHttpMethod());
-            $this->setRequestPath($this->action->getRequestOriginalPath());
-            $this->setResponseCode($this->action->getResponseCode());
-            $this->setSessionId($this->action->getSessionId());
-
-            $this->setInfo($this->getSerializedInfo());
         }
+
+        $this->setRequestPath($this->action->getRequestOriginalPath());
+        $this->setResponseCode($this->action->getResponseCode());
+        $this->setSessionId($this->action->getSessionId());
+        $this->setInfo($this->getSerializedInfo());
 
         return $this;
     }

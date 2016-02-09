@@ -33,6 +33,15 @@ $table = $installer->getConnection()
     ->addColumn('date', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
         'nullable' => false,
     ), 'Date')
+    ->addColumn('rendering_time', Varien_Db_Ddl_Table::TYPE_DECIMAL, array(15, 2), array(
+        'nullable' => true,
+    ), 'Total Rendering Time')
+    ->addColumn('query_time', Varien_Db_Ddl_Table::TYPE_DECIMAL, array(15, 2), array(
+        'nullable' => true,
+    ), 'Total Query Time')
+    ->addColumn('query_count', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
+        'nullable' => false
+    ), 'Total number of queries')
     ->addColumn('time', Varien_Db_Ddl_Table::TYPE_DECIMAL, array(15, 2), array(
         'nullable' => true,
     ), 'Total Time')
