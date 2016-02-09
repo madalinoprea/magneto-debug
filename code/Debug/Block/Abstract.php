@@ -78,6 +78,12 @@ class Sheep_Debug_Block_Abstract extends Mage_Core_Block_Template
     }
 
 
+    public function getLatestRequestViewUrl($panel = null)
+    {
+        return Mage::helper('sheep_debug/url')->getLatestRequestViewUrl($panel);
+    }
+
+
     public function getRequestViewUrl($panel = null, $token = null)
     {
         $token = $token ?: $this->getRequestInfo()->getToken();
