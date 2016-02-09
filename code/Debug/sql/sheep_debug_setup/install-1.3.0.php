@@ -21,12 +21,18 @@ $table = $installer->getConnection()
     ->addColumn('http_method', Varien_Db_Ddl_Table::TYPE_VARCHAR, 32, array(
         'nullable' => false,
     ), 'Http Method')
+    ->addColumn('store_id', Varien_Db_Ddl_Table::TYPE_TINYINT, null, array(
+        'nullable' => false,
+    ), 'Store Id')
     ->addColumn('request_path', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
         'nullable' => false,
     ), 'Request Path')
     ->addColumn('response_code', Varien_Db_Ddl_Table::TYPE_TINYINT, null, array(
         'nullable' => false,
     ), 'Http Response Status Code')
+    ->addColumn('ip', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
+        'nullable' => true,
+    ), 'Customer IP')
     ->addColumn('session_id', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
         'nullable' => true,
     ), 'Session Id')

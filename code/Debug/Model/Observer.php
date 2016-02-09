@@ -42,9 +42,10 @@ class Sheep_Debug_Model_Observer
         $this->canCapture = Mage::helper('sheep_debug')->canCapture();
 
         $requestInfo = $this->getRequestInfo();
-        $requestInfo->setDate(date('Y-m-d H:i:s'));
         $requestInfo->setStoreId(Mage::app()->getStore()->getId());
+        $requestInfo->setIp(Mage::helper('core/http')->getRemoteAddr());
         $requestInfo->setRequestPath($httpRequest->getOriginalPathInfo());
+        $requestInfo->setDate(date('Y-m-d H:i:s'));
         $requestInfo->initLogging();
     }
 

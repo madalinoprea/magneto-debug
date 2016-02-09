@@ -12,10 +12,14 @@
  * @method Sheep_Debug_Model_RequestInfo setToken(string $value)
  * @method string getHttpMethod()
  * @method Sheep_Debug_Model_RequestInfo setHttpMethod(string $value)
+ * @method int getStoreId()
+ * @method Sheep_Debug_Model_RequestInfo setStoreId(int $value)
  * @method string getRequestPath()
  * @method Sheep_Debug_Model_RequestInfo setRequestPath(string $value)
  * @method int getResponseCode()
  * @method Sheep_Debug_Model_RequestInfo setResponseCode(int $value)
+ * @method string getIp()
+ * @method Sheep_Debug_Model_RequestInfo setIp(string $value)
  * @method string getSessionId()
  * @method Sheep_Debug_Model_RequestInfo setSessionId(string $value)
  * @method string getDate()
@@ -32,9 +36,6 @@
  */
 class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
 {
-    /** @var int */
-    protected $storeId;
-
     /** @var Sheep_Debug_Model_Logging */
     protected $logging;
 
@@ -55,24 +56,6 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
 
     /** @var array Zend_Db_Profiler_Query */
     protected $queries = null;
-
-
-    /**
-     * @return int
-     */
-    public function getStoreId()
-    {
-        return $this->storeId;
-    }
-
-
-    /**
-     * @param int $storeId
-     */
-    public function setStoreId($storeId)
-    {
-        $this->storeId = $storeId;
-    }
 
 
     public function initLogging()
