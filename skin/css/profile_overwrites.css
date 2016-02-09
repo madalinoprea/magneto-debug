@@ -1,0 +1,11 @@
+/*
+Additions to profile.css
+*/
+
+.header-info {
+    width: 100%;
+}
+
+th.sortable  {
+    cursor: pointer;
+}
