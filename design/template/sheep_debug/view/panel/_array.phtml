@@ -1,0 +1,30 @@
+<?php
+/** @var Sheep_Debug_Block_View $this */
+
+$data = $this->getData('array');
+$header = $this->getData('header') ?: array('Key', 'Value');
+$noDataLabel = $this->getData('no_data_label');
+
+?>
+
+<?php if ($data && count($data)): ?>
+    <?php ksort($data) ?>
+    <table>
+        <thead>
+        <tr>
+            <th scope="col" class="key"><?php echo $this->__($header[0]) ?></th>
+            <th scope="col"><?php echo $this->__($header[1]) ?></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($data as $key => $value): ?>
+        <tr>
+            <th><?php echo $this->escapeHtml($key); ?></th>
+            <td><?php echo $this->renderValue($value); ?></td>
+        </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php else: ?>
+    <div class="empty"><?php echo $this->__($noDataLabel); ?></div>
+<?php endif; ?>
