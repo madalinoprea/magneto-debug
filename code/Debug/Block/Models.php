@@ -72,13 +72,4 @@ class Sheep_Debug_Block_Models extends Sheep_Debug_Block_Panel
         return $this->helper->getSqlProfiler()->getEnabled();
     }
 
-    /**
-     * @param Zend_Db_Profiler_Query $query
-     * @return string
-     */
-    public function getEncryptedSql(Zend_Db_Profiler_Query $query)
-    {
-        return Mage::helper('core')->encrypt($query->getQuery());
-    }
-
 }
