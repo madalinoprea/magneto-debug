@@ -49,7 +49,7 @@ class Sheep_Debug_Model_Resource_RequestInfo_Collection extends Mage_Core_Model_
      */
     public function addRequestPathFilter($requestPath)
     {
-        return $this->addFieldToFilter('request_path', array('like' => $requestPath));
+        return $this->addFieldToFilter('request_path', array('like' => '%' . $requestPath . '%'));
     }
 
     /**
