@@ -52,8 +52,9 @@ class Sheep_Debug_Block_Controller extends Sheep_Debug_Block_Panel
      */
     public function getStatusColor()
     {
-        // TODO: also use yellow :
-        return $this->getResponseCode() == 200 ?'green' : 'red';
+        $responseCode = $this->getResponseCode();
+
+        return $responseCode > 399 ? 'red' : ( $responseCode > 299 ? 'yellow' :  'green');
     }
 
 }
