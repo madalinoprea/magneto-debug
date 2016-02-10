@@ -63,7 +63,7 @@ class Sheep_Debug_Controller_Front_Action extends Mage_Core_Controller_Front_Act
      *
      * @param string $title
      * @param string $content
-     * @param bool   $isContentSafe
+     * @param bool $isContentSafe
      * @throws Zend_Controller_Response_Exception
      */
     public function renderContent($title, $content, $isContentSafe = false)
@@ -83,19 +83,18 @@ class Sheep_Debug_Controller_Front_Action extends Mage_Core_Controller_Front_Act
     /**
      * Renders specifies array
      *
-     * @param array  $data
-     * @param string $title
-     * @param string $description
+     * @param array $data
+     * @param array $fields
+     * @param string $noDataLabel
+     * @return string
      */
-    public function renderArray(array $data, $title = '', $description = '')
+    public function renderArray(array $data, array $fields = array(), $noDataLabel = 'No Data')
     {
-        /** @var Sheep_Debug_Block_Array $block */
-        $block = $this->getLayout()->createBlock('sheep_debug/array');
-        $block->setTitle($title);
-        $block->setArray($data);
-        $block->setDescription($description);
+        /** @var Sheep_Debug_Block_View $block */
+        $block = $this->getLayout()->createBlock('sheep_debug/view');
+        $html = $block->renderArrayFields($data, $fields, $noDataLabel);
 
-        $this->getResponse()->setBody($block->toHtml());
+        $this->getResponse()->setHttpResponseCode(200)->setBody($html);
     }
 
 }
