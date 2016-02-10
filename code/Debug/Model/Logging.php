@@ -12,6 +12,7 @@ class Sheep_Debug_Model_Logging
 {
     protected $files = array();
     protected $ranges = array();
+    protected $logLineCount;
 
 
     public function addFile($filename)
@@ -141,6 +142,23 @@ class Sheep_Debug_Model_Logging
     {
         $content = $this->getLoggedContent($logFile);
         return substr_count($content, "\n");
+    }
+
+    /**
+     * Returns number of log lines added in all of registered logs
+     *
+     * @return int
+     */
+    public function getTotalLineCount()
+    {
+        if ($this->logLineCount === null) {
+            $this->logLineCount = 0;
+            foreach ($this->getFiles() as $log) {
+                $this->logLineCount += $this->getLineCount($log);
+            }
+        }
+
+        return $this->logLineCount;
     }
 
 

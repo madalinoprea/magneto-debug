@@ -120,7 +120,7 @@ class Sheep_Debug_IndexController extends Sheep_Debug_Controller_Front_Action
         }
 
         $section = $this->getRequest()->getParam('panel', 'request');
-        if (!in_array($section, array('request', 'db'))) {
+        if (!in_array($section, array('request', 'db', 'logger'))) {
             $section = 'request';
         }
 
@@ -146,22 +146,26 @@ class Sheep_Debug_IndexController extends Sheep_Debug_Controller_Front_Action
      */
     public function viewLogAction()
     {
-        $log = (string)$this->getRequest()->getParam('log');
-        $startPosition = (int)$this->getRequest()->getParam('start');
+        $token = $this->getRequest()->getParam('token');
+        $log = $this->getRequest()->getParam('log');
+
+        if (!$token || !$log) {
+            $this->getResponse()->setHttpResponseCode(400)->setBody('Invalid parameters');
+            return;
+        }
+
+        /** @var Sheep_Debug_Model_RequestInfo $requestProfile */
+        $requestProfile = Mage::getModel('sheep_debug/requestInfo')->load($token, 'token');
+        if (!$requestProfile->getId()) {
+            $this->getResponse()->setHttpResponseCode(404)->setBody('Request profile not found');
+            return;
+        }
 
         try {
-            if (!$log) {
-                throw new Exception('log parameter is missing');
-            }
-
-            $logging = Mage::getModel('sheep_debug/logging');
-            $logging->addFile($log);
-            $logging->addRange($log, $startPosition);
-
-            $this->renderContent('Logs from ' . $log, $logging->getLoggedContent($log));
+            $content = $requestProfile->getLogging()->getLoggedContent($log);
+            $this->getResponse()->setHttpResponseCode(200)->setBody($content);
         } catch (Exception $e) {
-            $this->getResponse()->setHttpResponseCode(500);
-            $this->getResponse()->setBody($e->getMessage());
+            $this->getResponse()->setHttpResponseCode(200)->setBody('Unable to retrieve logged content');
         }
     }
 }

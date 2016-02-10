@@ -143,13 +143,13 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
 
 
     /**
-     * @param $logfile
-     * @param $startPosition
+     * @param string $token
+     * @param string $logfile
      * @return string
      */
-    public function getViewLogUrl($logfile, $startPosition)
+    public function getViewLogUrl($token, $logfile)
     {
-        return $this->getUrl('index/viewLog', array('log' => $logfile, 'start' => $startPosition));
+        return $this->getUrl('index/viewLog', array('token' => $token, 'log' => $logfile));
     }
 
 

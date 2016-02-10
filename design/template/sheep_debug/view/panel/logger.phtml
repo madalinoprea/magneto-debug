@@ -1,0 +1,43 @@
+<?php
+/** @var Sheep_Debug_Block_View $this */
+
+$info = $this->getRequestInfo();
+$logging = $info->getLogging();
+?>
+<h2><?php echo $this->__('Log Messages'); ?></h2>
+
+<div class="sf-tabs">
+    <?php $row = 0; ?>
+    <?php foreach ($logging->getFiles()  as $logFile): ?>
+        <?php $lineCount = $logging->getLineCount($logFile) ?>
+        <div class="tab <?php if (!$lineCount):?>disabled<?php endif; ?>" >
+            <h3 class="tab-title">
+                <?php echo $this->escapeHtml($logFile); ?>
+                <span class="badge"><?php echo $lineCount ?></span>
+            </h3>
+
+            <div class="tab-content">
+                <?php if ($lineCount): ?>
+                    <div class="text-small font-normal">
+                        <a class="link-inverse"
+                           href="<?php echo Mage::helper('sheep_debug/url')->getViewLogUrl($info->getToken(), $logFile) ?>"
+                           onclick="return fetchData(this);"
+                           title="<?php echo $this->__('Show Logs'); ?>"
+                           data-target-id="log-<?php echo $row ?>">
+                            <?php echo $this->__('Show Logs'); ?>
+                        </a>
+                    </div>
+
+                    <div class="sf-dump">
+                        <pre id="log-<?php echo $row ?>"></pre>
+                    </div>
+                <?php else: ?>
+                    <div class="empty">
+                        <p><?php echo $this->__('No log messages available.'); ?></p>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+        <?php $row++; ?>
+    <?php endforeach; ?>
+</div>
