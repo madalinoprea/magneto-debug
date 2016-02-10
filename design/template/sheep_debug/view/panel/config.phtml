@@ -2,121 +2,116 @@
 /** @var Sheep_Debug_Block_View $this */
 
 $info = $this->getRequestInfo();
-
-$coreHelper = Mage::helper('core');
-$design = $info->getDesign();
-$blocks = $info->getBlocksAsArray();
-$handles = $design->getLayoutHandles();
-$updates = $design->getLayoutUpdates();
+$requestStore = Mage::app()->getStore($info->getStoreId());
+$extensionStatus = Mage::helper('sheep_debug/config')->getExtensionStatus();
 
 ?>
-<h2><?php echo $this->__('Layout'); ?></h2>
-
-<div class="metrics">
-    <div class="metric">
-        <span class="value">
-            <?php echo $this->formatNumber($info->getRenderingTime() ) ?>
-            <span class="unit"><?php echo $this->__('s'); ?></span>
-        </span>
-        <span class="label"><?php echo $this->__('Render time'); ?></span>
-    </div>
-
-    <div class="metric">
-        <span class="value">
-            <?php echo $this->formatNumber(count($blocks), 0) ?>
-        </span>
-        <span class="label"><?php echo $this->__('Blocks'); ?></span>
-    </div>
 
 
-    <div class="metric">
-        <span class="value">
-            <?php echo $this->formatNumber(count($updates), 0) ?>
-        </span>
-        <span class="label"><?php echo $this->__('Layout Updates'); ?></span>
-    </div>
-
-    <div class="metric">
-        <span class="value">
-            <?php echo $this->formatNumber(count($handles), 0) ?>
-        </span>
-        <span class="label"><?php echo $this->__('Layout Handles'); ?></span>
-    </div>
-
-</div>
 
 <div class="sf-tabs">
-    <div class="tab <?php if (!count($blocks)): ?>disabled<?php endif; ?>">
+    <div class="tab">
         <h3 class="tab-title">
-            <?php echo $this->__('Blocks'); ?>
-            <span class="badge"><?php echo $this->formatNumber(count($blocks), 0) ?></span>
+            <?php echo $this->__('Magento'); ?>
         </h3>
 
         <div class="tab-content">
-            <?php echo $this->renderArrayFields($blocks); ?>
-        </div>
-    </div>
 
-    <div class="tab <?php if (!count($updates)): ?>disabled<?php endif; ?>">
-        <h3 class="tab-title">
-            <?php echo $this->__('Layout Updates'); ?>
-            <span class="badge"><?php echo $this->formatNumber(count($updates), 0) ?></span>
-        </h3>
+            <h3><?php echo $this->__('Magento Configuration'); ?></h3>
+            <p class="help"><?php echo $this->__('These are real time metrics.'); ?></p>
 
-        <div class="tab-content">
-            <a href="<?php echo Mage::helper('sheep_debug/url')->getLayoutUpdatesUrl($info->getToken())  ?>"
-               onclick="return fetchData(this);" data-target-id="layout-updates-container"
-               title="<?php echo $this->__('Layout Updates'); ?>"><?php echo $this->__('Fetch Updates'); ?></a>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="value"><?php echo $this->escapeHtml(Mage::getVersion()) ?></span>
+                    <span class="label"><?php echo $this->__('Magento Version'); ?></span>
+                </div>
 
-            <div id="layout-updates-container"><?php echo $this->__('Loading ...'); ?></div>
-        </div>
-    </div>
+                <div class="metric">
+                    <span class="value"><?php echo $this->escapeHtml($requestStore->getWebsite()->getName()) ?></span>
+                    <span class="label"><?php echo $this->__('Website Name'); ?></span>
+                </div>
 
-    <div class="tab <?php if (!count($handles)): ?>disabled<?php endif; ?>"">
-        <h3 class="tab-title">
-            <?php echo $this->__('Layout Handles'); ?>
-            <span class="badge"><?php echo $this->formatNumber(count($handles), 0) ?></span>
-        </h3>
+                <div class="metric">
+                    <span class="value"><?php echo $this->escapeHtml($requestStore->getName()) ?></span>
+                    <span class="label"><?php echo $this->__('Store Name'); ?></span>
+                </div>
+            </div>
 
-        <div class="tab-content">
-            <h3><?php echo $this->__('Layout Handles'); ?></h3>
-            <p class="help"><?php echo $this->__('Click on each handle to see their associated layout updates.'); ?></p>
-
-            <?php if ($handles): ?>
-                <table>
-                    <?php $row = 0; ?>
-                    <?php foreach ($handles as $handle): ?>
-                        <tr>
+            <h3><?php echo $this->__('Magento Modules'); ?></h3>
+            <table>
+                <thead>
+                <tr>
+                    <th><?php echo $this->__('Module'); ?></th>
+                    <th><?php echo $this->__('Version'); ?></th>
+                    <th><?php echo $this->__('Status'); ?></th>
+                    <th><?php echo $this->__('Action'); ?></th>
+                </tr>
+                </thead>
+                <tbody>
+                    <?php foreach (Mage::helper('sheep_debug/config')->getModules() as $item): ?>
+                        <tr class="<?php if(!$item['active']): ?>status-warning<?php endif; ?>">
+                            <td><?php echo $this->escapeHtml($item['module']) ?></td>
+                            <td><?php echo $this->escapeHtml($item['version']) ?></td>
+                            <td><?php echo $item['active'] ? $this->__('Active') : $this->__('Disabled') ?></td>
                             <td>
-                                <?php echo $this->escapeHtml($handle); ?>
-                                <div class="text-small font-normal">
-                                    <a class="link-inverse"
-                                       href="<?php echo Mage::helper('sheep_debug/url')->getViewHandleUrl($handle, $info->getStoreId(), $design->getArea()) ?>"
-                                       onclick="return fetchData(this);"
-                                       title="<?php echo $this->__('Show Details'); ?>"
-                                       data-target-id="handle-details-<?php echo $row ?>">
-                                        <?php echo $this->__('Show Details') ?>
+                                <?php if ($item['active']): ?>
+                                    <a href="<?php echo Mage::helper('sheep_debug/url')->getDisableModuleUrl($item['module']) ?>">
+                                        <?php echo $this->__('Disable'); ?>
                                     </a>
-                                </div>
-
-                                <div id="handle-details-<?php echo $row; ?>"></div>
+                                <?php else: ?>
+                                    <a href="<?php echo Mage::helper('sheep_debug/url')->getEnableModuleUrl($item['module']) ?>">
+                                        <?php echo $this->__('Enable'); ?>
+                                    </a>
+                                <?php endif; ?>
                             </td>
                         </tr>
-                        <?php $row++; ?>
                     <?php endforeach; ?>
-                </table>
-            <?php else: ?>
-                <div class="empty"><?php echo $this->__('This request didn\'t load any layout handles.'); ?></div>
-            <?php endif; ?>
+                </tbody>
+            </table>
         </div>
     </div>
 
     <div class="tab">
-        <h3 class="tab-title"><?php echo $this->__('Package Information'); ?></h3>
+        <h3 class="tab-title">
+            <?php echo $this->__('PHP'); ?>
+        </h3>
 
-        <div id="collections" class="tab-content">
-            <h3><?php echo $this->__('Package Information'); ?></h3>
-            <?php echo $this->renderArray($design->getInfoAsArray()) ?>
+        <div class="tab-content">
+            <h3><?php echo $this->__('PHP Configuration'); ?></h3>
+
+            <div class="metrics">
+                <div class="metric">
+                    <span class="value"><?php echo $this->escapeHtml(phpversion()) ?></span>
+                    <span class="label"><?php echo $this->__('PHP Version'); ?></span>
+                </div>
+            </div>
+
+            <div class="metrics metrics-horizontal">
+                <?php foreach ($extensionStatus as $extension => $status): ?>
+                    <div class="metric">
+                        <span class="value">
+                            <?php if ($status): ?>
+                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" height="28" viewBox="0 0 12 12" enable-background="new 0 0 12 12" xml:space="preserve">
+                                    <path fill="#5E976E" d="M12,3.1c0,0.4-0.1,0.8-0.4,1.1L5.9,9.8c-0.3,0.3-0.6,0.4-1,0.4c-0.4,0-0.7-0.1-1-0.4L0.4,6.3
+                                        C0.1,6,0,5.6,0,5.2c0-0.4,0.2-0.7,0.4-0.9C0.6,4,1,3.9,1.3,3.9c0.4,0,0.8,0.1,1.1,0.4l2.5,2.5l4.7-4.7c0.3-0.3,0.7-0.4,1-0.4
+                                        c0.4,0,0.7,0.2,0.9,0.4C11.8,2.4,12,2.7,12,3.1z">
+                                    </path>
+                                </svg>
+                            <?php else: ?>
+                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" height="28" viewBox="0 0 12 12" enable-background="new 0 0 12 12" xml:space="preserve">
+                                    <path fill="#B0413E" d="M10.4,8.4L8,6l2.4-2.4c0.8-0.8,0.7-1.6,0.2-2.2C10,0.9,9.2,0.8,8.4,1.6L6,4L3.6,1.6C2.8,0.8,2,0.9,1.4,1.4
+                                        C0.9,2,0.8,2.8,1.6,3.6L4,6L1.6,8.4C0.8,9.2,0.9,10,1.4,10.6c0.6,0.6,1.4,0.6,2.2-0.2L6,8l2.4,2.4c0.8,0.8,1.6,0.7,2.2,0.2
+                                        C11.1,10,11.2,9.2,10.4,8.4z">
+                                    </path>
+                                </svg>
+                            <?php endif; ?>
+                        </span>
+                        <span class="label"><?php echo $this->escapeHtml($extension); ?></span>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+
+            <p><a href="<?php echo Mage::helper('sheep_debug/url')->getPhpInfoUrl() ?>"><?php echo $this->__('View full PHP configuration'); ?></a></p>
         </div>
     </div>
 

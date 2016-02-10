@@ -211,6 +211,10 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
         return $this->getUrl('util/disableTranslate');
     }
 
+    public function getPhpInfoUrl()
+    {
+        return $this->getUrl('config/phpinfo');
+    }
 
     public function getSearchConfigUrl()
     {

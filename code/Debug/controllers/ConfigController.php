@@ -10,6 +10,10 @@
  */
 class Sheep_Debug_ConfigController extends Sheep_Debug_Controller_Front_Action
 {
+    public function phpinfoAction()
+    {
+        phpinfo();
+    }
 
     public function searchAction()
     {

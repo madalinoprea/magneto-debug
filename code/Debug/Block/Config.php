@@ -19,7 +19,7 @@ class Sheep_Debug_Block_Config extends Sheep_Debug_Block_Panel
 
     public function getMagentoVersion()
     {
-        return Mage::getVersion();
+        return Mage::helper('sheep_debug/config')->getMagentoVersion();
     }
 
 
@@ -31,14 +31,7 @@ class Sheep_Debug_Block_Config extends Sheep_Debug_Block_Panel
 
     public function getExtensionStatus()
     {
-        $status = array();
-
-        $extensions = $this->helper->getExtensionRequirements();
-        foreach ($extensions as $extension) {
-            $status [$extension] = extension_loaded($extension);
-        }
-
-        return $status;
+        return Mage::helper('sheep_debug/config')->getExtensionStatus();
     }
 
 
@@ -46,6 +39,6 @@ class Sheep_Debug_Block_Config extends Sheep_Debug_Block_Panel
     {
         $currentStore = $this->_getApp()->getStore();
         return sprintf("%s / %s", $currentStore->getWebsite()->getName(),  $currentStore->getName());
-
     }
+
 }
