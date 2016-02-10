@@ -4,6 +4,26 @@
 $panels = $this->getVisiblePanels();
 ?>
 
+<div id="sfMiniToolbar" class="sf-minitoolbar">
+    <a href="javascript:void(0);" title="<?php echo $this->__('Show toolbar'); ?>" tabindex="-1" accesskey="D" onclick="
+            var elem = this.parentNode;
+            if (elem.style.display == 'none') {
+                document.getElementById('sfToolbarMainContent').style.display = 'none';
+                document.getElementById('sfToolbarClearer').style.display = 'none';
+                elem.style.display = 'block';
+            } else {
+                document.getElementById('sfToolbarMainContent').style.display = 'block';
+                document.getElementById('sfToolbarClearer').style.display = 'block';
+                elem.style.display = 'none'
+            }
+
+            Sfjs.setPreference('toolbar/displayState', 'block');">
+        <img src="<?php echo $this->getSkinUrl('sheep_debug/img/pirate_sheep.png') ?>" alt="<?php echo $this->__('Show'); ?>">
+    </a>
+</div>
+
+<div id="sfToolbarClearer" style="clear: both; height: 36px;"></div>
+
 <div id="sfToolbarMainContent" class="sf-toolbarreset clear-fix">
     <?php
     /** @var Sheep_Debug_Block_Panel $panel */
@@ -11,7 +31,14 @@ $panels = $this->getVisiblePanels();
         <?php echo $panel->toHtml() ?>
     <?php endforeach; ?>
 
-    <a class="hide-button">
+
+    <a class="hide-button" onclick="
+            var p = this.parentNode;
+            p.style.display = 'none';
+            (p.previousElementSibling || p.previousSibling).style.display = 'none';
+            document.getElementById('sfMiniToolbar').style.display = 'block';
+            Sfjs.setPreference('toolbar/displayState', 'none');"
+    >
         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" height="24" viewBox="0 0 24 24"
              enable-background="new 0 0 24 24" xml:space="preserve">
             <path fill="#AAAAAA" d="M21.1,18.3c0.8,0.8,0.8,2,0,2.8c-0.4,0.4-0.9,0.6-1.4,0.6s-1-0.2-1.4-0.6L12,14.8l-6.3,6.3

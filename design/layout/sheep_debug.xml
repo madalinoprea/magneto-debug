@@ -9,6 +9,10 @@
                     <name>sheep_debug/js/toolbar.js</name>
                 </action>
                 <action method="addItem">
+                    <type>skin_js</type>
+                    <name>sheep_debug/js/profile.js</name>
+                </action>
+                <action method="addItem">
                     <type>skin_css</type>
                     <name>sheep_debug/css/toolbar.css</name>
                 </action>
