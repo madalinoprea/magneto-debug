@@ -37,6 +37,9 @@ $extensionStatus = Mage::helper('sheep_debug/config')->getExtensionStatus();
                 </div>
             </div>
 
+            <a href="<?php echo Mage::helper('sheep_debug/url')->getDownloadConfig('txt') ?>" class="btn"><?php echo $this->__('Download Config (TEXT)'); ?></a>
+            <a href="<?php echo Mage::helper('sheep_debug/url')->getDownloadConfig('xml') ?>" class="btn"><?php echo $this->__('Download Config (XML)'); ?></a>
+
             <h3><?php echo $this->__('Magento Modules'); ?></h3>
             <table>
                 <thead>
