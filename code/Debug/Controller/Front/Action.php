@@ -59,28 +59,6 @@ class Sheep_Debug_Controller_Front_Action extends Mage_Core_Controller_Front_Act
 
 
     /**
-     * Renders content as panel
-     *
-     * @param string $title
-     * @param string $content
-     * @param bool $isContentSafe
-     * @throws Zend_Controller_Response_Exception
-     */
-    public function renderContent($title, $content, $isContentSafe = false)
-    {
-        /** @var Sheep_Debug_Block_Panel $block */
-        $block = $this->getLayout()->createBlock('sheep_debug/panel');
-        $block->setTemplate('sheep_debug/simple_panel.phtml');
-        $block->setTitle($title);
-        $block->setContent($content);
-        $block->setIsContentSafe($isContentSafe);
-
-        $this->getResponse()->setBody($block->toHtml());
-        $this->getResponse()->setHttpResponseCode(200);
-    }
-
-
-    /**
      * Renders specified array
      *
      * @param array $data

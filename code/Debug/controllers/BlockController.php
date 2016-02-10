@@ -23,7 +23,7 @@ class Sheep_Debug_BlockController extends Sheep_Debug_Controller_Front_Action
         $absoluteFilePath = realpath(Mage::getBaseDir('design') . DS . $fileName);
         $source = highlight_string(file_get_contents($absoluteFilePath), true);
 
-        $this->renderContent("Template Source: {$fileName}", $source, true);
+        $this->getResponse()->setBody($source);
     }
 
 
@@ -39,7 +39,7 @@ class Sheep_Debug_BlockController extends Sheep_Debug_Controller_Front_Action
         $absoluteFilePath = $helper->getBlockFilename($blockClass);
 
         $source = highlight_string(file_get_contents($absoluteFilePath), true);
-        $this->renderContent("Block Source: {$blockClass}", $source, true);
+        $this->getResponse()->setBody($source);
     }
 
 }
