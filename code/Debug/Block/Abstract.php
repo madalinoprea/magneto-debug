@@ -74,7 +74,7 @@ class Sheep_Debug_Block_Abstract extends Mage_Core_Block_Template
 
     public function getRequestListUrl($filters = array())
     {
-        return Mage::helper('sheep_debug/url')->getRequestListUrl();
+        return Mage::helper('sheep_debug/url')->getRequestListUrl($filters);
     }
 
 
