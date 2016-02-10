@@ -1,0 +1,98 @@
+<?php
+/** @var Sheep_Debug_Block_View $this */
+
+$info = $this->getRequestInfo();
+
+$coreHelper = Mage::helper('core');
+$controller = $info->getController();
+
+?>
+<div class="sf-tabs">
+    <div class="tab">
+        <h3 class="tab-title"><?php echo $this->__('Queries'); ?></h3>
+
+        <div class="tab-content">
+            <h3><?php echo $this->__('SQL Queries'); ?></h3>
+
+            <?php if ($info->getQueries()): ?>
+                <table class="alt queries-table">
+                    <thead>
+                    <tr>
+                        <th class="sortable" onclick="javascript:sortTable(this, 0, 'queries')"><?php echo $this->__('#'); ?><span class="text-muted">&#9650;</span</th>
+                        <th class="nowrap sortable" onclick="javascript:sortTable(this, 1, 'queries')"><?php echo $this->__('Time'); ?><span></span></th>
+                        <th class="header-info"><?php echo $this->__('Info'); ?></th>
+                    </tr>
+                    </thead>
+                    <tbody id="queries">
+                        <?php $row = 0; ?>
+                        <?php foreach ($info->getQueries() as $query): ?>
+                            <tr>
+                                <td class="nowrap"><?php echo $row ?></td>
+                                <td class="nowrap"><?php echo sprintf("%.2f", $query->getElapsedSecs() * 1000) ?> <?php echo $this->__('ms'); ?></td>
+                                <td>
+                                    <?php echo $this->escapeHtml($query->getQuery()) ?>
+
+                                    <?php if ($query->getQueryParams()): ?>
+                                    <div>
+                                        <strong class="font-normal text-small"><?php echo $this->__('Parameters:'); ?></strong>
+                                        <?php echo $this->renderArrayAsText($query->getQueryParams()) ?>
+                                    </div>
+                                    <?php endif; ?>
+
+                                    <?php if ($query->getQueryType() == Zend_Db_Profiler::SELECT): ?>
+                                        <div class="text-small font-normal">
+                                            <a class="link-inverse"
+                                               href="<?php echo Mage::helper('sheep_debug/url')->getSelectQueryUrl($info->getToken(), $row) ?>"
+                                               onclick="return fetchData(this);"
+                                               title="<?php echo $this->__('Select Query'); ?>"
+                                               data-target-id="select-<?php echo $row ?>">
+                                                <?php echo $this->__('Select Query'); ?>
+                                            </a>
+                                            &nbsp; &nbsp;
+                                            <a class="link-inverse"
+                                               href="<?php echo Mage::helper('sheep_debug/url')->getExplainQueryUrl($info->getToken(), $row) ?>"
+                                               onclick="return fetchData(this);"
+                                               title="<?php echo $this->__('Explain Query'); ?>"
+                                               data-target-id="explain-<?php echo $row ?>">
+                                                <?php echo $this->__('Explain Query'); ?>
+                                            </a>
+
+                                            <input type="hidden" class="sqlData" data-sql="<?php echo $this->getEncryptedSql($query) ?>"
+                                                   data-params='<?php echo $coreHelper->urlEncode($coreHelper->jsonEncode($query->getQueryParams())) ?>'>
+                                        </div>
+                                    <?php endif; ?>
+
+                                    <div class="query-results" id="select-<?php echo $row ?>"></div>
+                                    <div class="query-explain" id="explain-<?php echo $row ?>"></div>
+                                </td>
+                            </tr>
+                            <?php $row++; ?>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php else: ?>
+                <div class="empty"><?php echo $this->__('No database queries were performed.'); ?></div>
+            <?php endif; ?>
+        </div>
+    </div>
+
+    <div class="tab">
+        <h3 class="tab-title"><?php echo $this->__('Models'); ?></h3>
+
+        <div class="tab-content">
+            <h3><?php echo $this->__('Response Headers'); ?></h3>
+            <?php echo $this->renderArrayFields($info->getModelsAsArray()) ?>
+        </div>
+    </div>
+
+    <div class="tab">
+        <h3 class="tab-title"><?php echo $this->__('Collections'); ?></h3>
+
+        <div id="collections" class="tab-content">
+            <h3><?php echo $this->__('Loaded Collections'); ?></h3>
+            <p><?php echo $this->__('Collections loaded during this request.'); ?></p>
+            <?php echo $this->renderArrayFields($info->getCollectionsAsArray()) ?>
+        </div>
+    </div>
+
+</div>
