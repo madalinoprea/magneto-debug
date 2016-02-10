@@ -384,4 +384,66 @@ Sfjs.addEventListener(window, 'load', function() {
     Sfjs.createToggles();
 });
 
+/**
+ * Based on symfony's explain()
+ *
+ * @param link
+ * @returns {boolean}
+ */
+function fetchData(link) {
+    "use strict";
+
+    var targetId = link.getAttribute('data-target-id');
+    var targetElement = document.getElementById(targetId);
+
+    if (targetElement.style.display != 'block') {
+        Sfjs.load(targetId, link.href, null, function(xhr, el) {
+            el.innerHTML = 'An error occurred while loading query.';
+        });
+
+        targetElement.style.display = 'block';
+        link.innerHTML = 'Hide';
+    } else {
+        targetElement.style.display = 'none';
+        link.innerHTML = link.title;
+    }
+
+    return false;
+}
+
+
+function sortTable(header, column, targetId) {
+    "use strict";
+
+    var direction = parseInt(header.getAttribute('data-sort-direction')) || 1,
+        items = [],
+        target = document.getElementById(targetId),
+        rows = target.children,
+        headers = header.parentElement.children,
+        i;
+
+    for (i = 0; i < rows.length; ++i) {
+        items.push(rows[i]);
+    }
+
+    for (i = 0; i < headers.length; ++i) {
+        headers[i].removeAttribute('data-sort-direction');
+        if (headers[i].children.length > 0) {
+            headers[i].children[0].innerHTML = '';
+        }
+    }
+
+    header.setAttribute('data-sort-direction', (-1*direction).toString());
+    header.children[0].innerHTML = direction > 0 ? '<span class="text-muted">&#9650;</span>' : '<span class="text-muted">&#9660;</span>';
+
+    items.sort(function(a, b) {
+        return direction * (parseFloat(a.children[column].innerHTML) - parseFloat(b.children[column].innerHTML));
+    });
+
+    for (i = 0; i < items.length; ++i) {
+        Sfjs.removeClass(items[i], i % 2 ? 'even' : 'odd');
+        Sfjs.addClass(items[i], i % 2 ? 'odd' : 'even');
+        target.appendChild(items[i]);
+    }
+}
 

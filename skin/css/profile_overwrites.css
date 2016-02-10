@@ -11,6 +11,12 @@ th.sortable  {
 }
 
 /* we really want nowrap */
-th.nowrap {
+
+#queries th {
     white-space: nowrap;
+}
+
+#collections td {
+    word-break: normal;
+    white-space: normal;
 }
