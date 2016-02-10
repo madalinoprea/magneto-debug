@@ -1,5 +1,6 @@
 <?php
-/** @var Sheep_Debug_Block_View $this */
+/** @var Sheep_Debug_Block_View_Sidebar $this */
+
 ?>
 <div id="sidebar-shortcuts">
     <div class="shortcuts">
@@ -25,53 +26,41 @@
             <span class="hidden-small"><?php echo $this->__('Search'); ?></span>
         </a>
 
-        <div id="sidebar-search">
+        <div id="sidebar-search" class="<?php if ($this->getData('show_search_form')): ?>sf-toggle-visible<?php endif; ?>">
             <form action="<?php echo $this->getRequestListUrl() ?>" method="get">
                 <div class="form-group">
                     <label for="ip"><?php echo $this->__('IP'); ?></label>
-                    <input type="text" name="ip" id="ip" value="">
+                    <input type="text" name="ip" id="ip" value="<?php echo $this->escapeHtml($this->getRequest()->getParam('ip', '')); ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="method"><?php echo $this->__('Method'); ?></label>
-                    <select name="method" id="method">
-                        <option value="">Any</option>
-                        <option ><?php echo $this->__('DELETE'); ?></option>
-                        <option ><?php echo $this->__('GET'); ?></option>
-                        <option ><?php echo $this->__('HEAD'); ?></option>
-                        <option ><?php echo $this->__('PATCH'); ?></option>
-                        <option ><?php echo $this->__('POST'); ?></option>
-                        <option ><?php echo $this->__('PUT'); ?></option>
-                    </select>
+                    <?php echo $this->getHttpMethodsSelect() ?>
                 </div>
 
                 <div class="form-group">
                     <label for="path"><?php echo $this->__('Request Path'); ?></label>
-                    <input type="text" name="path" id="path" value="">
+                    <input type="text" name="path" id="path" value="<?php echo $this->escapeHtml($this->getRequest()->getParam('path')); ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="token"><?php echo $this->__('Token'); ?></label>
-                    <input type="text" name="token" id="token" value="">
+                    <input type="text" name="token" id="token" value="<?php echo $this->escapeHtml($this->getRequest()->getParam('token')); ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="start"><?php echo $this->__('From'); ?></label>
-                    <input type="date" name="start" id="start" value="">
+                    <input type="date" name="start" id="start" value="<?php echo $this->escapeHtml($this->getRequest()->getParam('start')); ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="end"><?php echo $this->__('Until'); ?></label>
-                    <input type="date" name="end" id="end" value="">
+                    <input type="date" name="end" id="end" value="<?php echo $this->escapeHtml($this->getRequest()->getParam('end')); ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="limit"><?php echo $this->__('Results'); ?></label>
-                    <select name="limit" id="limit">
-                        <option >10</option>
-                        <option >50</option>
-                        <option >100</option>
-                    </select>
+                    <?php echo $this->getLimitOptionsSelect() ?>
                 </div>
 
                 <div class="form-group">

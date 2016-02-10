@@ -74,7 +74,7 @@
             </block>
 
             <block type="core/text_list" name="sheep_debug_sidebar">
-                <block type="sheep_debug/view" name="sheep_debug_sidebar_shortcuts" template="sheep_debug/view/sidebar_shortcuts.phtml"/>
+                <block type="sheep_debug/view_sidebar" name="sheep_debug_sidebar_shortcuts" template="sheep_debug/view/sidebar_shortcuts.phtml"/>
                 <block type="sheep_debug/view" name="sheep_debug_sidebar_menu" template="sheep_debug/view/sidebar_menu.phtml"/>
             </block>
 
