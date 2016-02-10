@@ -27,6 +27,22 @@ class Sheep_Debug_Block_View extends Sheep_Debug_Block_Abstract
 
 
     /**
+     * Returns url for request list with current filters
+     *
+     * @param array $filters
+     * @return string
+     */
+    public function getFilteredRequestListUrl($filters = array())
+    {
+        // Preserver current filter
+        $currentFilters = Mage::helper('sheep_debug/filter')->getRequestFilters($this->getRequest());
+        $filters = array_merge($currentFilters, $filters);
+
+        return parent::getRequestListUrl($filters);
+    }
+
+
+    /**
      * Renders an array as text
      *
      * @param $array
