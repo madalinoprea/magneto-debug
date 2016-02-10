@@ -160,6 +160,10 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
         return $this->getUrl('index/viewLog', array('token' => $token, 'log' => $logfile));
     }
 
+    public function getPurgeProfilesAction()
+    {
+        return $this->getUrl('index/purgeProfiles');
+    }
 
     /**
      * @return string

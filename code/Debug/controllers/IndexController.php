@@ -168,4 +168,17 @@ class Sheep_Debug_IndexController extends Sheep_Debug_Controller_Front_Action
             $this->getResponse()->setHttpResponseCode(200)->setBody('Unable to retrieve logged content');
         }
     }
+
+
+    /**
+     * Deletes all request profiles
+     */
+    public function purgeProfilesAction()
+    {
+        $count = $this->getService()->purgeAllProfiles();
+        $this->getSession()->addSuccess($this->__('%d request profiles were deleted', $count));
+
+        $this->_redirect('/');
+    }
+
 }

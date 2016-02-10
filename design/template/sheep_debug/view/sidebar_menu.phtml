@@ -169,4 +169,9 @@ $info = $this->getRequestInfo();
             </span>
         </a>
     </li>
+
+    <hr>
+    <li>
+        <a class="btn btn-sm btn-danger" href="<?php echo Mage::helper('sheep_debug/url')->getPurgeProfilesAction() ?>"><?php echo $this->__('Delete All Request Profiles'); ?></a>
+    </li>
 </ul>

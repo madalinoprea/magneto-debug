@@ -153,4 +153,25 @@ class Sheep_Debug_Model_Service
         return $results;
     }
 
+
+    /**
+     * Deletes all saved request profiles
+     *
+     * @return int
+     * @throws Zend_Db_Statement_Exception
+     */
+    public function purgeAllProfiles()
+    {
+        $table = Mage::getResourceModel('sheep_debug/requestInfo')->getMainTable();
+        $deleteSql = "DELETE FROM {$table}";
+
+        /** @var Magento_Db_Adapter_Pdo_Mysql $connection */
+        $connection = Mage::getSingleton('core/resource')->getConnection('core_write');
+
+        /** @var Varien_Db_Statement_Pdo_Mysql $result */
+        $result = $connection->query($deleteSql);
+
+        return $result->rowCount();
+    }
+
 }
