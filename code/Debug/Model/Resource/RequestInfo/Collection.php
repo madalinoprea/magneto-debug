@@ -17,6 +17,15 @@ class Sheep_Debug_Model_Resource_RequestInfo_Collection extends Mage_Core_Model_
     }
 
     /**
+     * @param string $sessionId
+     * @return Sheep_Debug_Model_Resource_RequestInfo_Collection
+     */
+    public function addSessionIdFilter($sessionId)
+    {
+        return $this->addFieldToFilter('session_id', $sessionId);
+    }
+
+    /**
      * @param string $token
      * @return Sheep_Debug_Model_Resource_RequestInfo_Collection
      */
