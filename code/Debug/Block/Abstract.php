@@ -102,6 +102,26 @@ class Sheep_Debug_Block_Abstract extends Mage_Core_Block_Template
         return $this->helper->formatNumber($number, $precision);
     }
 
+
+    /**
+     * Returns an option array where evey element has its value and label filled in
+     * with elements from passed array
+     *
+     * @param array $data
+     * @return array
+     */
+    public function getOptionArray(array $data)
+    {
+        $options = array();
+
+        foreach ($data as $value) {
+            $options[] = array('value' => $value, 'label' => $value);
+        }
+
+        return $options;
+    }
+
+
     /**
      * Returns CSS class based on response status code
      *
