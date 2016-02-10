@@ -17,19 +17,35 @@ class Sheep_Debug_Block_Config extends Sheep_Debug_Block_Panel
     }
 
 
-    public function getDownloadConfigAsXmlUrl()
+    public function getMagentoVersion()
     {
-        return Mage::helper('sheep_debug/url')->getDownloadConfig('xml');
+        return Mage::getVersion();
     }
 
-    public function getDownloadConfigAsTextUrl()
+
+    public function isDeveloperMode()
     {
-        return Mage::helper('sheep_debug/url')->getDownloadConfig('txt');
+        return Mage::getIsDeveloperMode();
     }
 
-    public function getSearchConfigUrl()
+
+    public function getExtensionStatus()
     {
-        return Mage::helper('sheep_debug/url')->getSearchConfigUrl();
+        $status = array();
+
+        $extensions = $this->helper->getExtensionRequirements();
+        foreach ($extensions as $extension) {
+            $status [$extension] = extension_loaded($extension);
+        }
+
+        return $status;
     }
 
+
+    public function getCurrentStore()
+    {
+        $currentStore = $this->_getApp()->getStore();
+        return sprintf("%s / %s", $currentStore->getWebsite()->getName(),  $currentStore->getName());
+
+    }
 }

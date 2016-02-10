@@ -37,7 +37,7 @@
                 </block>
 
                 <!-- Aligned to right -->
-                <block type="sheep_debug/about" name="debug_about_panel" template="sheep_debug/panel/about.phtml">
+                <block type="sheep_debug/config" name="debug_config_panel" template="sheep_debug/panel/config.phtml">
                     <action method="setTitle"><title>About</title></action>
                 </block>
 

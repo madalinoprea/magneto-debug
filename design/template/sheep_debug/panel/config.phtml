@@ -1,52 +1,66 @@
 <?php
-/* @var $this Sheep_Debug_Block_Config */
+/** @var Sheep_Debug_Block_Config $this */
 ?>
 
-<h4><?php echo $this->__('something here'); ?></h4>
-<p>
-    <button class="button" onclick="window.location.href = '<?php echo $this->getDownloadConfigAsTextUrl() ?>'">
-        <?php echo $this->__('Download Config (TEXT)'); ?>
-    </button>
-    <button class="button" onclick="window.location.href = '<?php echo $this->getDownloadConfigAsXmlUrl() ?>'">
-        <?php echo $this->__('Download Config (XML)'); ?>
-    </button>
-</p>
 
-<h4><?php echo $this->__('Configuration Search'); ?></h4>
+<div class="sf-toolbar-block sf-toolbar-block-config sf-toolbar-block-right">
+    <a href="<?php echo $this->getRequestViewUrl('config') ?>">
+        <div class="sf-toolbar-icon">
+            <span class="sf-toolbar-label">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" height="24" viewBox="0 0 24 24"
+                     enable-background="new 0 0 24 24" xml:space="preserve">
+                    <path fill="#AAAAAA"
+                          d="M11,5.1C11,3.4,9.6,2,7.9,2H5.1C3.4,2,2,3.4,2,5.1v12.9C2,19.6,3.4,21,5.1,21h2.9c1.7,0,3.1-1.4,3.1-3.1V5.1z M5.2,4h2.7C8.4,4,9,4.8,9,5.3V11H4V5.3C4,4.8,4.6,4,5.2,4z M22,5.1C22,3.4,20.6,2,18.9,2h-2.9C14.4,2,13,3.4,13,5.1v12.9c0,1.7,1.4,3.1,3.1,3.1h2.9c1.7,0,3.1-1.4,3.1-3.1V5.1z M16,4h2.8C19.4,4,20,4.8,20,5.3V8h-5V5.3C15,4.8,15.5,4,16,4z"/>
+                </svg>
+            </span>
+        <span class="sf-toolbar-value"><?php echo $this->getMagentoVersion() ?></span>
+        </div>
+    </a>
 
-<form action="#" id="config-search-form" onSubmit="searchConfiguration(); return false;">
-    <input name="query" class="input-text required-entry" type="search" size="40"/>
-    <button class="button" onClick="handlerFunction()"><?php echo $this->__('Search Config') ?></button>
-</form>
+    <div class="sf-toolbar-info">
 
-<p>
-    Search examples: <em>default/system</em>, <em>global/resources/default_setup</em>, <em>frontend/events</em> or <em>modules</em>.
-    If you don't know what to search check all the <a class="toggleTemplate" href="<?php echo $this->getDownloadConfigAsTextUrl() ?>">configuration keys</a>.
-</p>
+        <div class="sf-toolbar-info-group">
+            <div class="sf-toolbar-info-piece">
+                <b><?php echo $this->__('Profiler Token'); ?></b>
+                <span><?php echo $this->escapeHtml($this->getRequestInfo()->getToken()); ?></span>
+            </div>
 
-<script type="text/javascript">
-    function searchConfiguration() {
-        new Ajax.Updater(
-            'config-search-results',
-            '<?php echo $this->getSearchConfigUrl() ?>',
-            {
-                method: 'post',
-                parameters: Form.serialize($('config-search-form'))
-            });
-        return false;
-    }
-</script>
+            <div class="sf-toolbar-info-piece">
+                <b><?php echo $this->__('Store / Website'); ?></b>
+                <span><?php echo $this->escapeHtml($this->getCurrentStore()); ?></span>
+            </div>
 
-<div id="config-search-results">
-    <table>
-        <thead>
-        <tr>
-            <th><?php echo $this->__('#') ?></th>
-            <th><?php echo $this->__('Config') ?></th>
-            <th><?php echo $this->__('Value') ?></th>
-        </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
+            <div class="sf-toolbar-info-piece">
+                <b><?php echo $this->__('Developer Mode'); ?></b>
+                    <span>
+                        <?php if ($this->isDeveloperMode()): ?>
+                            <span class="sf-toolbar-status sf-toolbar-status-green">on</span>
+                        <?php else: ?>
+                            <span class="sf-toolbar-status sf-toolbar-status-red">off</span>
+                        <?php endif; ?>
+                    </span>
+            </div>
+        </div>
+
+        <div class="sf-toolbar-info-group">
+            <div class="sf-toolbar-info-piece">
+                <b><?php echo $this->__('PHP Version'); ?></b>
+                <span><?php echo phpversion() ?></span>
+            </div>
+
+            <div class="sf-toolbar-info-piece">
+                <b><?php echo $this->__('PHP Extensions'); ?></b>
+                <?php
+                $count = 0;
+                foreach ($this->getExtensionStatus()  as $extensionName => $status): ?>
+                    <span class="sf-toolbar-status sf-toolbar-status-<?php echo $status ? 'green' : 'red' ?>">
+                            <?php echo $extensionName ?>
+                        </span>
+                    <?php $count++; ?>
+                    <?php if (($count % 3) == 0): ?><br><?php endif; ?>
+                <?php endforeach ?>
+            </div>
+        </div>
+    </div>
 </div>
+
