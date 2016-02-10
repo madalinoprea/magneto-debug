@@ -17,6 +17,51 @@ class Sheep_Debug_Model_Resource_RequestInfo_Collection extends Mage_Core_Model_
     }
 
     /**
+     * @param string $token
+     * @return Sheep_Debug_Model_Resource_RequestInfo_Collection
+     */
+    public function addTokenFilter($token)
+    {
+        return $this->addFieldToFilter('token', $token);
+    }
+
+    /**
+     * @param string $method
+     * @return Sheep_Debug_Model_Resource_RequestInfo_Collection
+     */
+    public function addHttpMethodFilter($method)
+    {
+        return $this->addFieldToFilter('http_method', $method);
+    }
+
+    /**
+     * @param string $requestPath
+     * @return Sheep_Debug_Model_Resource_RequestInfo_Collection
+     */
+    public function addRequestPathFilter($requestPath)
+    {
+        return $this->addFieldToFilter('request_path', array('like' => $requestPath));
+    }
+
+    /**
+     * @param int $code
+     * @return Sheep_Debug_Model_Resource_RequestInfo_Collection
+     */
+    public function addResponseCodeFilter($code)
+    {
+        return $this->addFieldToFilter('response_code', $code);
+    }
+
+    /**
+     * @param string $ip
+     * @return Sheep_Debug_Model_Resource_RequestInfo_Collection
+     */
+    public function addIpFilter($ip)
+    {
+        return $this->addFieldToFilter('ip', $ip);
+    }
+
+    /**
      * Filters requests that were processed before specified data
      *
      * @param string $date Date string using format Y-m-d H
@@ -29,5 +74,18 @@ class Sheep_Debug_Model_Resource_RequestInfo_Collection extends Mage_Core_Model_
             'datetime' => true,
         ));
     }
+
+    /**
+     * @param string $date
+     * @return Sheep_Debug_Model_Resource_RequestInfo_Collection
+     */
+    public function addAfterFilter($date)
+    {
+        return $this->addFieldToFilter('date', array(
+            'from' => $date,
+            'datetime' => true
+        ));
+    }
+
 
 }
