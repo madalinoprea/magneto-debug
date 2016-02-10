@@ -26,7 +26,7 @@ class Sheep_Debug_Block_Logging extends Sheep_Debug_Block_Panel
 
     public function isVisible()
     {
-        return $this->helper->isPanelVisible('logging') && $this->getLogLineCount() > 0;
+        return $this->helper->isPanelVisible('logging') && $this->getLogging()->getTotalLineCount();
     }
 
 
@@ -42,38 +42,6 @@ class Sheep_Debug_Block_Logging extends Sheep_Debug_Block_Panel
     public function getLogFiles()
     {
         return $this->getLogging()->getFiles();
-    }
-
-
-    /**
-     * Returns number of log lines added in all of registered logs
-     * @return int
-     */
-    public function getLogLineCount()
-    {
-        if ($this->logLineCount === null) {
-            $this->logLineCount = 0;
-            foreach ($this->getLogFiles() as $log) {
-                $this->logLineCount += $this->getLogging()->getLineCount($log);
-            }
-        }
-
-        return $this->logLineCount;
-    }
-
-
-    /**
-     * @param $logFile
-     * @return string
-     */
-    public function getViewLogUrl($logFile)
-    {
-        // TODO: add request info id to use log file ranges on from that record
-        // end log position is saved after layout is rendered
-
-        $range = $this->getLogging()->getRange($logFile);
-
-        return Mage::helper('sheep_debug/url')->getViewLogUrl($logFile, $range['start']);
     }
 
 }

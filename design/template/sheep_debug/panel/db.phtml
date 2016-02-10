@@ -1,11 +1,12 @@
 <?php
-/* @var $this Sheep_Debug_Block_Models */
+/* @var $this Sheep_Debug_Block_Db */
 
 $coreHelper = Mage::helper('core');
 
-$models = $this->getSortedModels();
-$collections = $this->getSortedCollections();
-$queries = $this->getQueries();
+$info = $this->getRequestInfo();
+$models = $info->getModels();
+$collections = $info->getCollections();
+$queries = $info->getQueries();
 ?>
 
 <div class="sf-toolbar-block">
@@ -19,7 +20,6 @@ $queries = $this->getQueries();
             <span class="sf-toolbar-label"><?php echo $this->__('s'); ?></span>
         </div>
     </a>
-
 
     <div class="sf-toolbar-info">
         <?php if ($this->isSqlProfilerEnabled()): ?>

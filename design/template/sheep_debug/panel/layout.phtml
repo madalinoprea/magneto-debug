@@ -1,10 +1,11 @@
 <?php
-/* @var $this Sheep_Debug_Block_Design */
+/* @var $this Sheep_Debug_Block_Layout */
 
-$design = $this->getDesign();
-$layoutHandles = $this->getLayoutHandles();
-$layoutUpdates = $this->getLayoutUpdates();
-$blocks = $this->getBlocks();
+$info = $this->getRequestInfo();
+$design = $info->getDesign();
+$layoutHandles = $design->getLayoutHandles();
+$layoutUpdates = $design->getLayoutUpdates();
+$blocks = $info->getBlocks();
 ?>
 
 <div class="sf-toolbar-block">

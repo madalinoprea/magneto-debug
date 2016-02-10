@@ -22,7 +22,9 @@
         <div class="sf-toolbar-info-group">
             <div class="sf-toolbar-info-piece">
                 <b><?php echo $this->__('Profiler Token'); ?></b>
-                <span><?php echo $this->escapeHtml($this->getRequestInfo()->getToken()); ?></span>
+                <span>
+                    <a href="<?php echo $this->getRequestViewUrl() ?>"><?php echo $this->escapeHtml($this->getRequestInfo()->getToken()); ?></a>
+                </span>
             </div>
 
             <div class="sf-toolbar-info-piece">
@@ -34,9 +36,9 @@
                 <b><?php echo $this->__('Developer Mode'); ?></b>
                     <span>
                         <?php if ($this->isDeveloperMode()): ?>
-                            <span class="sf-toolbar-status sf-toolbar-status-green">on</span>
+                            <span class="sf-toolbar-status sf-toolbar-status-green"><?php echo $this->__('on'); ?></span>
                         <?php else: ?>
-                            <span class="sf-toolbar-status sf-toolbar-status-red">off</span>
+                            <span class="sf-toolbar-status sf-toolbar-status-red"><?php echo $this->__('off'); ?></span>
                         <?php endif; ?>
                     </span>
             </div>
@@ -45,7 +47,10 @@
         <div class="sf-toolbar-info-group">
             <div class="sf-toolbar-info-piece">
                 <b><?php echo $this->__('PHP Version'); ?></b>
-                <span><?php echo phpversion() ?></span>
+                <span>
+                    <?php echo Mage::helper('sheep_debug/config')->getPhpVersion() ?>
+                    <a href="<?php echo Mage::helper('sheep_debug/url')->getPhpInfoUrl() ?>">phpinfo()</a>
+                </span>
             </div>
 
             <div class="sf-toolbar-info-piece">

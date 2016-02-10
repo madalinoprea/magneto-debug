@@ -7,7 +7,7 @@ $absoluteUrl = $info->getAbsoluteUrl();
 ?>
 <div id="summary">
 
-    <div class="status status-success">
+    <div class="status <?php echo $this->getStatusCodeClass($info->getResponseCode()) ?>">
         <div class="container">
             <h2 class="break-long-words">
                 <a href="<?php echo $absoluteUrl ?>"><?php echo $this->escapeHtml($absoluteUrl) ?></a>
