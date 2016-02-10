@@ -9,3 +9,8 @@ Additions to profile.css
 th.sortable  {
     cursor: pointer;
 }
+
+/* we really want nowrap */
+th.nowrap {
+    white-space: nowrap;
+}
