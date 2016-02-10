@@ -105,7 +105,7 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
      */
     public function addLayout(Mage_Core_Model_Layout $layout, Mage_Core_Model_Design_Package $design)
     {
-        $this->design = Mage::getModel('sheep_debug/design', array('design' => $design, 'layout' => $layout));
+        $this->design->init($layout, $design);
     }
 
 
@@ -338,6 +338,7 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
     protected function _construct()
     {
         $this->_init('sheep_debug/requestInfo');
+        $this->design = Mage::getModel('sheep_debug/design');
     }
 
     protected function generateToken()

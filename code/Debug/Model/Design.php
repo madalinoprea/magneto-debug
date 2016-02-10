@@ -23,13 +23,9 @@ class Sheep_Debug_Model_Design
     protected $layoutUpdates;
     protected $uncompressedLayoutUpdates;
 
-    public function __construct(array $params)
-    {
-        /** @var Mage_Core_Model_Design_Package $designPackage */
-        $designPackage = $params['design'];
-        /** @var Mage_Core_Model_Layout $layout */
-        $layout = $params['layout'];
 
+    public function init(Mage_Core_Model_Layout $layout, Mage_Core_Model_Design_Package $designPackage)
+    {
         $this->area = $designPackage->getArea();
         $this->packageName = $designPackage->getPackageName();
         $this->themeLayout = $designPackage->getTheme('layout');
@@ -65,7 +61,8 @@ class Sheep_Debug_Model_Design
     public function getLayoutUpdates()
     {
         if ($this->uncompressedLayoutUpdates===null) {
-            $this->uncompressedLayoutUpdates = json_decode(gzuncompress($this->layoutUpdates), true);
+            $this->uncompressedLayoutUpdates = $this->layoutUpdates ?
+                json_decode(gzuncompress($this->layoutUpdates), true) : array();
         }
 
         return $this->uncompressedLayoutUpdates;
