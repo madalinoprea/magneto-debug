@@ -345,7 +345,7 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
 
     public function getAbsoluteUrl()
     {
-        return Mage::getUrl('', array('_store' => $this->getStoreId(), '_direct' => $this->getRequestPath()));
+        return Mage::getUrl('', array('_store' => $this->getStoreId(), '_direct' => ltrim($this->getRequestPath(), '/')));
     }
 
 
