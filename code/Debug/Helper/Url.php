@@ -89,33 +89,24 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
 
 
     /**
-     * @param Zend_Db_Profiler_Query $query
-     * @param  string                $type
+     * @param string $token
+     * @param int $index
      * @return string
      */
-    public function getQueryUrl(Zend_Db_Profiler_Query $query, $type)
+    public function getSelectQueryUrl($token, $index)
     {
-        return $query->getQueryType() == Zend_Db_Profiler::SELECT ? $this->getUrl('model/' . $type) : '#';
+        return $this->getUrl('model/selectSql', array('token' => $token, 'index' => $index));
     }
 
 
     /**
-     * @param Zend_Db_Profiler_Query $query
+     * @param string $token
+     * @param int $index
      * @return string
      */
-    public function getSelectQueryUrl(Zend_Db_Profiler_Query $query)
+    public function getExplainQueryUrl($token, $index)
     {
-        return $this->getQueryUrl($query, 'selectSql');
-    }
-
-
-    /**
-     * @param Zend_Db_Profiler_Query $query
-     * @return string
-     */
-    public function getExplainQueryUrl(Zend_Db_Profiler_Query $query)
-    {
-        return $this->getQueryUrl($query, 'describeSql');
+        return $this->getUrl('model/describeSql', array('token' => $token, 'index' => $index));
     }
 
 

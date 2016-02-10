@@ -43,27 +43,54 @@ class Sheep_Debug_ModelController extends Sheep_Debug_Controller_Front_Action
 
     public function selectSqlAction()
     {
-        $helper = Mage::helper('sheep_debug');
-
-        $encryptedQuery = (string)$this->getRequest()->getParam('query');
-        $query = $helper->decrypt($encryptedQuery);
-        $params = $helper->jsonDecode($helper->urlDecode($this->getRequest()->getParam('queryParams', '')));
-
-        $results = $helper->runSql($query, $params);
-        $this->renderArray($results, $helper->__('SQL Select'), $query);
+        if ($query = $this->_initQuery()) {
+            $helper = Mage::helper('sheep_debug');
+            $results = $helper->runSql($query->getQuery(), $query->getQueryParams());
+            $this->renderArray($results);
+        }
     }
 
 
     public function describeSqlAction()
     {
-        $helper = Mage::helper('sheep_debug');
+        if ($query = $this->_initQuery()) {
+            $helper = Mage::helper('sheep_debug');
+            $results = $helper->runSql('EXPLAIN EXTENDED ' . $query->getQuery(), $query->getQueryParams());
+            $this->renderArray($results);
+        }
+    }
 
-        $encryptedQuery = (string)$this->getRequest()->getParam('query');
-        $query = $helper->decrypt($encryptedQuery);
-        $params = $helper->jsonDecode($helper->urlDecode($this->getRequest()->getParam('queryParams', '')));
 
-        $results = $helper->runSql('EXPLAIN EXTENDED ' . $query, $params);
-        $this->renderArray($results, $helper->__('SQL Explain', $query));
+    /**
+     * Returns query references in request parameters
+     *
+     * @return Zend_Db_Profiler_Query
+     */
+    protected function _initQuery()
+    {
+        $token = $this->getRequest()->getParam('token');
+        $index = $this->getRequest()->getParam('index');
+
+        if ($token === null || $index === null) {
+            $this->getResponse()->setHttpResponseCode(400)->setBody('Invalid parameters');
+            return null;
+        }
+
+        /** @var Sheep_Debug_Model_RequestInfo $requestProfile */
+        $requestProfile = Mage::getModel('sheep_debug/requestInfo')->load($token, 'token');
+        if (!$requestProfile->getId()) {
+            $this->getResponse()->setHttpResponseCode(404)->setBody('Request profile not found');
+            return null;
+        }
+
+        $queries = $requestProfile->getQueries();
+        if (!$queries || !($index < count($queries))) {
+            $this->getResponse()->setHttpResponseCode(404)->setBody('Query not found');
+            return null;
+        }
+
+        /** @var Zend_Db_Profiler_Query $query */
+        return $queries[(int)$index];
     }
 
 }
