@@ -249,19 +249,20 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
     }
 
 
-    public function prepareQueries()
+    /**
+     * Sets request query from current sql profiler
+     */
+    public function initQueries()
     {
-        $queryInfo = array();
+        $this->queries = array();
 
         $profiler = Mage::helper('sheep_debug')->getSqlProfiler();
         if ($profiler->getEnabled()) {
             /** @var Zend_Db_Profiler_Query[] $queries */
-            $queryInfo = $profiler->getQueryProfiles() ?: array();
+            $this->queries = $profiler->getQueryProfiles() ?: array();
             $this->setQueryCount($profiler->getTotalNumQueries());
             $this->setQueryTime($profiler->getTotalElapsedSecs());
         }
-
-        return $queryInfo;
     }
 
 
@@ -271,7 +272,7 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
     public function getQueries()
     {
         if ($this->queries === null) {
-            $this->queries = $this->prepareQueries();
+            $this->initQueries();
         }
 
         return $this->queries;
@@ -327,13 +328,13 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
     protected function getSerializedInfo()
     {
         return serialize(array(
-            'logging' => $this->logging,
-            'action' => $this->action,
-            'design' => $this->design,
-            'blocks' => $this->blocks,
-            'models' => $this->models,
-            'collections' => $this->collections,
-            'queries' => $this->queries
+            'logging' => $this->getLogging(),
+            'action' => $this->getController(),
+            'design' => $this->getDesign(),
+            'blocks' => $this->getBlocks(),
+            'models' => $this->getModels(),
+            'collections' => $this->getCollections(),
+            'queries' => $this->getQueries()
         ));
     }
 
@@ -358,8 +359,8 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
             $this->setHttpMethod($this->action->getHttpMethod());
         }
 
-        $this->setRequestPath($this->action->getRequestOriginalPath());
         $this->setResponseCode($this->action->getResponseCode());
+        $this->setRequestPath($this->action->getRequestOriginalPath());
         $this->setSessionId($this->action->getSessionId());
         $this->setInfo($this->getSerializedInfo());
 

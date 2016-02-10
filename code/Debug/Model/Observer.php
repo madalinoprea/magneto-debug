@@ -61,7 +61,7 @@ class Sheep_Debug_Model_Observer
         $helper = Mage::helper('sheep_debug');
 
         // update query information
-        $requestInfo->prepareQueries();
+        $requestInfo->initQueries();
 
         // capture log ranges
         $requestInfo->getLogging()->endRequest();
@@ -88,6 +88,9 @@ class Sheep_Debug_Model_Observer
         $requestInfo->setPeakMemory($helper->getMemoryUsage());
         $requestInfo->setTime($helper->getCurrentScriptDuration());
         $requestInfo->setResponseCode(http_response_code());
+
+        // Sets latest queries
+        $requestInfo->initQueries();
 
         $this->saveProfiling();
     }
