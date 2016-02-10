@@ -1,0 +1,108 @@
+<?php
+/** @var Sheep_Debug_Block_View $this */
+
+$info = $this->getRequestInfo();
+
+$coreHelper = Mage::helper('core');
+$design = $info->getDesign();
+$blocks = $info->getBlocksAsArray();
+$handles = $design->getLayoutHandles();
+$updates = $design->getLayoutUpdates();
+
+?>
+<h2><?php echo $this->__('Layout'); ?></h2>
+
+<div class="metrics">
+    <div class="metric">
+        <span class="value">
+            <?php echo $this->formatNumber($info->getRenderingTime() ) ?>
+            <span class="unit"><?php echo $this->__('s'); ?></span>
+        </span>
+        <span class="label"><?php echo $this->__('Render time'); ?></span>
+    </div>
+
+    <div class="metric">
+        <span class="value">
+            <?php echo $this->formatNumber(count($blocks), 0) ?>
+        </span>
+        <span class="label"><?php echo $this->__('Blocks'); ?></span>
+    </div>
+
+
+    <div class="metric">
+        <span class="value">
+            <?php echo $this->formatNumber(count($updates), 0) ?>
+        </span>
+        <span class="label"><?php echo $this->__('Layout Updates'); ?></span>
+    </div>
+
+    <div class="metric">
+        <span class="value">
+            <?php echo $this->formatNumber(count($handles), 0) ?>
+        </span>
+        <span class="label"><?php echo $this->__('Layout Handles'); ?></span>
+    </div>
+
+</div>
+
+<div class="sf-tabs">
+    <div class="tab <?php if (!count($blocks)): ?>disabled<?php endif; ?>">
+        <h3 class="tab-title">
+            <?php echo $this->__('Blocks'); ?>
+            <span class="badge"><?php echo $this->formatNumber(count($blocks), 0) ?></span>
+        </h3>
+
+        <div class="tab-content">
+            <?php echo $this->renderArrayFields($blocks); ?>
+        </div>
+    </div>
+
+    <div class="tab <?php if (!count($handles)): ?>disabled<?php endif; ?>"">
+        <h3 class="tab-title">
+            <?php echo $this->__('Layout Handles'); ?>
+            <span class="badge"><?php echo $this->formatNumber(count($handles), 0) ?></span>
+        </h3>
+
+        <div class="tab-content">
+            <h3><?php echo $this->__('Layout Handles'); ?></h3>
+            <p class="help"><?php echo $this->__('Click on each handle to see their associated layout updates.'); ?></p>
+
+            <?php if ($handles): ?>
+                <table>
+                    <?php $row = 0; ?>
+                    <?php foreach ($handles as $handle): ?>
+                        <tr>
+                            <td>
+                                <?php echo $this->escapeHtml($handle); ?>
+                                <div class="text-small font-normal">
+                                    <a class="link-inverse"
+                                       href="<?php echo Mage::helper('sheep_debug/url')->getViewHandleUrl($handle, $info->getStoreId(), $design->getArea()) ?>"
+                                       onclick="return fetchData(this);"
+                                       title="<?php echo $this->__('Show Details'); ?>"
+                                       data-target-id="handle-details-<?php echo $row ?>">
+                                        <?php echo $this->__('Show Details') ?>
+                                    </a>
+                                </div>
+
+                                <div id="handle-details-<?php echo $row; ?>"></div>
+                            </td>
+                        </tr>
+                        <?php $row++; ?>
+                    <?php endforeach; ?>
+                </table>
+            <?php else: ?>
+                <div class="empty"><?php echo $this->__('This request didn\'t load any layout handles.'); ?></div>
+            <?php endif; ?>
+        </div>
+    </div>
+
+    <div class="tab">
+        <h3 class="tab-title"><?php echo $this->__('Package Information'); ?></h3>
+
+        <div id="collections" class="tab-content">
+            <h3><?php echo $this->__('Package Information'); ?></h3>
+            <?php echo $this->renderArray($design->getInfoAsArray()) ?>
+        </div>
+    </div>
+
+</div>

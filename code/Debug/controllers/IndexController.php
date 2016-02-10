@@ -120,7 +120,7 @@ class Sheep_Debug_IndexController extends Sheep_Debug_Controller_Front_Action
         }
 
         $section = $this->getRequest()->getParam('panel', 'request');
-        if (!in_array($section, array('request', 'db', 'logger'))) {
+        if (!in_array($section, array('request', 'db', 'logger', 'layout'))) {
             $section = 'request';
         }
 

@@ -11,21 +11,23 @@
 class Sheep_Debug_DesignController extends Sheep_Debug_Controller_Front_Action
 {
 
+    /**
+     * View layout handle details
+     */
     public function viewHandleAction()
     {
         $area = $this->getRequest()->getParam('area');
         $storeId = (int)$this->getRequest()->getParam('store');
         $handle = $this->getRequest()->getParam('handle');
 
-        $handleFiles = $this->getFileUpdatesWithHandle($handle, $storeId, $area);
-        $handleFiles['Database'] = $this->getDatabaseUpdatesWithHandle($handle, $storeId, $area);
+        $updatesByFile = $this->getFileUpdatesWithHandle($handle, $storeId, $area);
+        $databaseUpdates = $this->getDatabaseUpdatesWithHandle($handle, $storeId, $area);
 
-
-        /** @var Sheep_Debug_Block_Array $block */
-        $block = $this->getLayout()->createBlock('sheep_debug/array');
-        $block->setTemplate('sheep_debug/layout_handle.phtml');
-        $block->setTitle($this->__("Files with layout updates for handle '{$handle}''"));
-        $block->setArray($handleFiles);
+        $block = $this->getLayout()->createBlock('sheep_debug/view', '', array(
+            'template' => 'sheep_debug/view/panel/_layout_updates.phtml',
+            'file_updates' => $updatesByFile,
+            'db_updates' => $databaseUpdates
+        ));
 
         $this->getResponse()->setBody($block->toHtml());
     }

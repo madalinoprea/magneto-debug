@@ -21,6 +21,7 @@ class Sheep_Debug_Model_Design
     protected $layoutHandles = array();
     /** @var string */
     protected $layoutUpdates;
+    protected $uncompressedLayoutUpdates;
 
     public function __construct(array $params)
     {
@@ -63,7 +64,11 @@ class Sheep_Debug_Model_Design
      */
     public function getLayoutUpdates()
     {
-        return json_decode(gzuncompress($this->layoutUpdates), true);
+        if ($this->uncompressedLayoutUpdates===null) {
+            $this->uncompressedLayoutUpdates = json_decode(gzuncompress($this->layoutUpdates), true);
+        }
+
+        return $this->uncompressedLayoutUpdates;
     }
 
 
@@ -120,4 +125,12 @@ class Sheep_Debug_Model_Design
         return $this->themeLocale;
     }
 
+    public function getInfoAsArray()
+    {
+        return array(
+            'design_area' => $this->getArea(),
+            'package_name' => $this->getPackageName(),
+            'template_theme' => $this->getThemeTemplate()
+        );
+    }
 }

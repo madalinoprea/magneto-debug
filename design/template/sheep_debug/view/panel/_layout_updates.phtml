@@ -1,0 +1,28 @@
+<?php
+/** @var Sheep_Debug_Block_View $this */
+
+$layoutUpdates = $this->getData('file_updates');
+$dbUpdates = $this->getData('db_updates');
+?>
+
+<?php if ($layoutUpdates): ?>
+    <table>
+    <tbody>
+    <?php foreach ($layoutUpdates as $filename => $updates): ?>
+        <tr><th><?php echo $this->escapeHtml($filename); ?></th></tr>
+        <?php foreach ($updates as $update): ?>
+            <tr>
+                <td>
+                    <?php echo highlight_string($update, true); ?>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    <?php endforeach; ?>
+    </tbody>
+    </table>
+<?php else: ?>
+    <div class="empty"><?php echo $this->__('No Data'); ?></div>
+<?php endif; ?>
+
+<h3><?php echo $this->__('Database Layout Updates'); ?></h3>
+<?php echo $this->renderArrayFields($dbUpdates) ?>

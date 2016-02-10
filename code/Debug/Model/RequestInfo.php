@@ -159,6 +159,26 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
         return $this->blocks;
     }
 
+    /**
+     * @return array
+     */
+    public function getBlocksAsArray()
+    {
+        $helper = Mage::helper('sheep_debug');
+        $data = array();
+        foreach ($this->blocks as $block) {
+            $data[] = array(
+                'name' => $block->getName(),
+                'class'          => $block->getClass(),
+                'template'       => $block->getTemplateFile(),
+                'time (s)'      => $block->getRenderedDuration() ? $helper->formatNumber($block->getRenderedDuration(), 3) : '',
+                'count'          => $block->getRenderedCount()
+            );
+        }
+
+        return $data;
+    }
+
 
     public function addCollection(Varien_Data_Collection_Db $collection)
     {
@@ -193,9 +213,9 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
 
         foreach ($this->collections as $collection) {
             $data[] = array(
-                'type' => $collection->getType(),
+                'type'  => $collection->getType(),
                 'class' => $collection->getClass(),
-                'sql' => $collection->getQuery(),
+                'sql'   => $collection->getQuery(),
                 'count' => $collection->getCount()
             );
         }
@@ -240,8 +260,8 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
         foreach ($this->models as $model) {
             $data[] = array(
                 'resource_name' => $model->getResource(),
-                'class' => $model->getClass(),
-                'count' => $model->getCount()
+                'class'         => $model->getClass(),
+                'count'         => $model->getCount()
             );
         }
 
@@ -311,7 +331,7 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
         return $this->hasData('rendering_time') ? $this->getData('rendering_time') : Sheep_Debug_Model_Block::getTotalRenderingTime();
     }
 
-    
+
     protected $_eventPrefix = 'sheep_debug_requestInfo';
 
 
@@ -328,13 +348,13 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
     protected function getSerializedInfo()
     {
         return serialize(array(
-            'logging' => $this->getLogging(),
-            'action' => $this->getController(),
-            'design' => $this->getDesign(),
-            'blocks' => $this->getBlocks(),
-            'models' => $this->getModels(),
+            'logging'     => $this->getLogging(),
+            'action'      => $this->getController(),
+            'design'      => $this->getDesign(),
+            'blocks'      => $this->getBlocks(),
+            'models'      => $this->getModels(),
             'collections' => $this->getCollections(),
-            'queries' => $this->getQueries()
+            'queries'     => $this->getQueries()
         ));
     }
 
@@ -377,7 +397,7 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
         $this->blocks = $info['blocks'];
         $this->models = $info['models'];
         $this->collections = $info['collections'];
-        $this->queries  = $info['queries'];
+        $this->queries = $info['queries'];
 
         return parent::_afterLoad();
     }
