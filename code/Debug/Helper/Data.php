@@ -123,11 +123,27 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
     /**
      * Decides if we need to capture request information.
      *
-     * For now, we'll not capture anything if we don't need to show the toolbar
+     * We don't capture requests if:
+     *      - requests belons to our module
+     *      - we're not allowed to show toolbar (module disabled, dev mod is off)
      */
     public function canCapture()
     {
-        return $this->canShowToolbar();
+        return !$this->isSheepDebugRequest($this->_getRequest()) && $this->canShowToolbar();
+    }
+
+
+    /**
+     * Checks if current request belongs to our module by verifying if its request path starts with our route name.
+     *
+     * We cannot verify controller module becuase request is not yet dispatched.
+     *
+     * @param Mage_Core_Controller_Request_Http $request
+     * @return bool
+     */
+    public function isSheepDebugRequest(Mage_Core_Controller_Request_Http $request)
+    {
+        return strpos($request->getPathInfo(), '/sheep_debug/') === 0;
     }
 
 
