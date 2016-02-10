@@ -10,7 +10,6 @@
  */
 class Sheep_Debug_Block_View_Sidebar extends Sheep_Debug_Block_View
 {
-    const DEFAULT_LIMIT = 10;
 
     /**
      * Returns available http method filters
@@ -19,11 +18,7 @@ class Sheep_Debug_Block_View_Sidebar extends Sheep_Debug_Block_View
      */
     public function getHttpMethodOptions()
     {
-        $httpMethods = array(
-            'DELETE', 'GET', 'HEAD', 'PATCH', 'POST', 'PUT'
-        );
-
-        return $this->getOptionArray($httpMethods);
+        return $this->getOptionArray(Mage::helper('sheep_debug/filter')->getHttpMethodValues());
     }
 
 
@@ -51,19 +46,6 @@ class Sheep_Debug_Block_View_Sidebar extends Sheep_Debug_Block_View
 
 
     /**
-     * Returns available options for limit
-     *
-     * @return array
-     */
-    public function getLimitOptions()
-    {
-        $options = array(self::DEFAULT_LIMIT, 50, 100);
-
-        return $this->getOptionArray($options);
-    }
-
-
-    /**
      * Returns html for limit selects
      *
      * @return string
@@ -71,13 +53,16 @@ class Sheep_Debug_Block_View_Sidebar extends Sheep_Debug_Block_View
      */
     public function getLimitOptionsSelect()
     {
+        /** @var Sheep_Debug_Helper_Filter $filterHelper */
+        $filterHelper = Mage::helper('sheep_debug/filter');
+
         /** @var Mage_Core_Block_Html_Select $select */
         $select = $this->getLayout()->createBlock('core/html_select');
 
         $select->setName('limit')
             ->setId('limit')
-            ->setValue($this->getRequest()->getParam('limit', self::DEFAULT_LIMIT))
-            ->setOptions($this->getLimitOptions());
+            ->setValue($this->getRequest()->getParam('limit', $filterHelper->getLimitDefaultValue()))
+            ->setOptions($this->getOptionArray($filterHelper->getLimitValues()));
 
         return $select->getHtml();
     }
