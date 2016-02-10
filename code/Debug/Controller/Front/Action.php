@@ -81,14 +81,32 @@ class Sheep_Debug_Controller_Front_Action extends Mage_Core_Controller_Front_Act
 
 
     /**
-     * Renders specifies array
+     * Renders specified array
+     *
+     * @param array $data
+     * @param string $noDataLabel   Label when array is empty.
+     * @param null $header          An array with column label.
+     * @return string
+     */
+    public function renderArray(array $data, $noDataLabel = 'No Data', $header = null)
+    {
+        /** @var Sheep_Debug_Block_View $block */
+        $block = $this->getLayout()->createBlock('sheep_debug/view');
+        $html = $block->renderArray($data, $noDataLabel, $header);
+
+        $this->getResponse()->setHttpResponseCode(200)->setBody($html);
+    }
+
+
+    /**
+     * Renders specified table (array of arrays)
      *
      * @param array $data
      * @param array $fields
      * @param string $noDataLabel
      * @return string
      */
-    public function renderArray(array $data, array $fields = array(), $noDataLabel = 'No Data')
+    public function renderTable(array $data, array $fields = array(), $noDataLabel = 'No Data')
     {
         /** @var Sheep_Debug_Block_View $block */
         $block = $this->getLayout()->createBlock('sheep_debug/view');

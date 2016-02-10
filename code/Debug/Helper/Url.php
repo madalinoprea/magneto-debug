@@ -141,6 +141,14 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
         return $this->getUrl('design/viewHandle', array('handle' => $layoutHandle, 'store' => $storeId, 'area' => $area));
     }
 
+    /**
+     * @param $token
+     * @return string
+     */
+    public function getLayoutUpdatesUrl($token)
+    {
+        return $this->getUrl('design/layoutUpdates', array('token' => $token));
+    }
 
     /**
      * @param string $token

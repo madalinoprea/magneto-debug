@@ -33,6 +33,24 @@ class Sheep_Debug_DesignController extends Sheep_Debug_Controller_Front_Action
     }
 
 
+    public function layoutUpdatesAction()
+    {
+        $token = $this->getRequest()->getParam('token');
+        if (!$token) {
+            return $this->getResponse()->setHttpResponseCode(400)->setBody('Invalid parameters');
+        }
+
+        /** @var Sheep_Debug_Model_RequestInfo $requestProfile */
+        $requestProfile = Mage::getModel('sheep_debug/requestInfo')->load($token, 'token');
+        if (!$requestProfile->getId()) {
+            return $this->getResponse()->setHttpResponseCode(404)->setBody('Request profile not found');
+        }
+
+        $layoutUpdates = $requestProfile->getDesign()->getLayoutUpdates();
+        $this->renderArray($layoutUpdates, 'No Data', array('#', 'XML'));
+    }
+
+
     /**
      * @param string $handle
      * @param int    $storeId

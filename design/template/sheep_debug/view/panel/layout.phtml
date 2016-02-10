@@ -57,6 +57,21 @@ $updates = $design->getLayoutUpdates();
         </div>
     </div>
 
+    <div class="tab <?php if (!count($updates)): ?>disabled<?php endif; ?>">
+        <h3 class="tab-title">
+            <?php echo $this->__('Layout Updates'); ?>
+            <span class="badge"><?php echo $this->formatNumber(count($updates), 0) ?></span>
+        </h3>
+
+        <div class="tab-content">
+            <a href="<?php echo Mage::helper('sheep_debug/url')->getLayoutUpdatesUrl($info->getToken())  ?>"
+               onclick="return fetchData(this);" data-target-id="layout-updates-container"
+               title="<?php echo $this->__('Layout Updates'); ?>"><?php echo $this->__('Fetch Updates'); ?></a>
+
+            <div id="layout-updates-container"><?php echo $this->__('Loading ...'); ?></div>
+        </div>
+    </div>
+
     <div class="tab <?php if (!count($handles)): ?>disabled<?php endif; ?>"">
         <h3 class="tab-title">
             <?php echo $this->__('Layout Handles'); ?>

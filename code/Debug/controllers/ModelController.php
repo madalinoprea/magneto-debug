@@ -46,7 +46,7 @@ class Sheep_Debug_ModelController extends Sheep_Debug_Controller_Front_Action
         if ($query = $this->_initQuery()) {
             $helper = Mage::helper('sheep_debug');
             $results = $helper->runSql($query->getQuery(), $query->getQueryParams());
-            $this->renderArray($results);
+            $this->renderTable($results);
         }
     }
 
@@ -56,7 +56,7 @@ class Sheep_Debug_ModelController extends Sheep_Debug_Controller_Front_Action
         if ($query = $this->_initQuery()) {
             $helper = Mage::helper('sheep_debug');
             $results = $helper->runSql('EXPLAIN EXTENDED ' . $query->getQuery(), $query->getQueryParams());
-            $this->renderArray($results);
+            $this->renderTable($results);
         }
     }
 
