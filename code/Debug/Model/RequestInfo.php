@@ -357,9 +357,9 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
         if (!$this->getId()) {
             $this->setToken($this->generateToken());
             $this->setHttpMethod($this->action->getHttpMethod());
+            $this->setResponseCode($this->action->getResponseCode());
         }
 
-        $this->setResponseCode($this->action->getResponseCode());
         $this->setRequestPath($this->action->getRequestOriginalPath());
         $this->setSessionId($this->action->getSessionId());
         $this->setInfo($this->getSerializedInfo());
