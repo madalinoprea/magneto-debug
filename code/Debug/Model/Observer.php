@@ -100,7 +100,7 @@ class Sheep_Debug_Model_Observer
      */
     public function saveProfiling()
     {
-        if (!Mage::helper('sheep_debug')->canPersist()) {
+        if (!$this->canCapture() || !Mage::helper('sheep_debug')->canPersist()) {
             return;
         }
 
