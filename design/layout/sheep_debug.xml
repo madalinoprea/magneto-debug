@@ -87,6 +87,19 @@
 
     <sheep_debug_index_search>
         <update handle="sheep_debug"/>
+
+        <!-- remove summary on listing page -->
+        <remove name="sheep_debug_summary"/>
+        <remove name="sheep_debug_sidebar_menu"/>
+
+        <reference name="sheep_debug_sidebar_shortcuts">
+            <action method="setData"><key>show_search_form</key><value>1</value></action>
+        </reference>
+
+        <reference name="sheep_debug_content">
+            <block type="sheep_debug/view" name="sheep_debug_list" template="sheep_debug/view/list.phtml"/>
+        </reference>
+
     </sheep_debug_index_search>
 
 </layout>

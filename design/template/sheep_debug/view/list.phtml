@@ -1,0 +1,92 @@
+<?php
+/** @var Sheep_Debug_Block_View $this */
+
+/** @var Sheep_Debug_Model_RequestInfo[] $results */
+$results = $this->getData('results');
+?>
+
+<?php if (count($results)): ?>
+    <table id="search-results">
+        <thead>
+        <tr>
+            <th scope="col" class="text-center"><?php echo $this->__('Status'); ?></th>
+            <th scope="col"><?php echo $this->__('Session Id'); ?></th>
+            <th scope="col"><?php echo $this->__('IP'); ?></th>
+            <th scope="col"><?php echo $this->__('Method'); ?></th>
+            <th scope="col"><?php echo $this->__('URL'); ?></th>
+            <th scope="col"><?php echo $this->__('Time'); ?></th>
+            <th scope="col"><?php echo $this->__('Token'); ?></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($results as $requestProfile): ?>
+            <tr>
+                <td class="text-center">
+                    <span class="label <?php echo $this->getStatusCodeClass($requestProfile->getResponseCode()) ?>">
+                        <?php echo $requestProfile->getResponseCode() ?>
+                    </span>
+                </td>
+
+                <td>
+                    <span class="nowrap"><?php echo $this->escapeHtml($requestProfile->getSessionId()); ?></span>
+                    <a href="<?php echo $this->getFilteredRequestListUrl(array('session_id' => $requestProfile->getSessionId())) ?>" title="<?php echo $this->__('Search'); ?>">
+                        <span title="<?php echo $this->__('Search'); ?>" class="sf-icon sf-search">
+                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" height="24" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve">
+                                <path fill="#AAAAAA" d="M11.61,0.357c-4.4,0-7.98,3.58-7.98,7.98c0,1.696,0.526,3.308,1.524,4.679l-4.374,4.477
+                                    c-0.238,0.238-0.369,0.554-0.369,0.891c0,0.336,0.131,0.653,0.369,0.891c0.238,0.238,0.554,0.369,0.891,0.369
+                                    c0.336,0,0.653-0.131,0.893-0.371l4.372-4.475c1.369,0.996,2.98,1.521,4.674,1.521c4.4,0,7.98-3.58,7.98-7.98
+                                    S16.01,0.357,11.61,0.357z M17.07,8.337c0,3.011-2.449,5.46-5.46,5.46c-3.011,0-5.46-2.449-5.46-5.46s2.449-5.46,5.46-5.46
+                                    C14.62,2.877,17.07,5.326,17.07,8.337z"></path>
+                            </svg>
+                        </span>
+                    </a>
+                </td>
+
+                <td>
+                    <span class="nowrap"><?php echo $this->escapeHtml($requestProfile->getIp()); ?></span>
+                    <a href="<?php echo $this->getFilteredRequestListUrl(array('ip' => $requestProfile->getIp())) ?>" title="<?php echo $this->__('Search'); ?>">
+                        <span title="<?php echo $this->__('Search'); ?>" class="sf-icon sf-search">
+                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" height="24" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve">
+                                <path fill="#AAAAAA" d="M11.61,0.357c-4.4,0-7.98,3.58-7.98,7.98c0,1.696,0.526,3.308,1.524,4.679l-4.374,4.477
+                                    c-0.238,0.238-0.369,0.554-0.369,0.891c0,0.336,0.131,0.653,0.369,0.891c0.238,0.238,0.554,0.369,0.891,0.369
+                                    c0.336,0,0.653-0.131,0.893-0.371l4.372-4.475c1.369,0.996,2.98,1.521,4.674,1.521c4.4,0,7.98-3.58,7.98-7.98
+                                    S16.01,0.357,11.61,0.357z M17.07,8.337c0,3.011-2.449,5.46-5.46,5.46c-3.011,0-5.46-2.449-5.46-5.46s2.449-5.46,5.46-5.46
+                                    C14.62,2.877,17.07,5.326,17.07,8.337z"></path>
+                            </svg>
+                        </span>
+                    </a>
+                </td>
+
+                <td>
+                    <?php echo $requestProfile->getHttpMethod() ?>
+                    <a href="<?php echo $this->getFilteredRequestListUrl(array('method' => $requestProfile->getHttpMethod())) ?>" title="<?php echo $this->__('Search'); ?>">
+                        <span title="<?php echo $this->__('Search'); ?>" class="sf-icon sf-search">
+                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" height="24" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve">
+                                <path fill="#AAAAAA" d="M11.61,0.357c-4.4,0-7.98,3.58-7.98,7.98c0,1.696,0.526,3.308,1.524,4.679l-4.374,4.477
+                                    c-0.238,0.238-0.369,0.554-0.369,0.891c0,0.336,0.131,0.653,0.369,0.891c0.238,0.238,0.554,0.369,0.891,0.369
+                                    c0.336,0,0.653-0.131,0.893-0.371l4.372-4.475c1.369,0.996,2.98,1.521,4.674,1.521c4.4,0,7.98-3.58,7.98-7.98
+                                    S16.01,0.357,11.61,0.357z M17.07,8.337c0,3.011-2.449,5.46-5.46,5.46c-3.011,0-5.46-2.449-5.46-5.46s2.449-5.46,5.46-5.46
+                                    C14.62,2.877,17.07,5.326,17.07,8.337z"></path>
+                            </svg>
+                        </span>
+                    </a>
+                </td>
+
+                <td class="break-long-words">
+                    <?php echo $this->escapeHtml($requestProfile->getAbsoluteUrl()) ?>
+                </td>
+
+                <td class="text-small">
+                    <span class="nowrap"><?php echo $this->formatDate($requestProfile->getDate(), 'medium') ?></span>
+                    <span class="nowrap newline"><?php echo $this->formatTime($requestProfile->getDate()) ?></span>
+                </td>
+                <td class="nowrap"><a href="<?php echo $this->getRequestViewUrl(null, $requestProfile->getToken()) ?>"><?php echo $this->escapeHtml($requestProfile->getToken()); ?></a></td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php else: ?>
+    <div class="empty">
+        <p><?php echo $this->__('The query returned no result.'); ?></p>
+    </div>
+<?php endif; ?>
