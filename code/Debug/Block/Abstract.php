@@ -72,7 +72,7 @@ class Sheep_Debug_Block_Abstract extends Mage_Core_Block_Template
         return $this->requestInfo;
     }
 
-    public function getRequestListUrl()
+    public function getRequestListUrl($filters = array())
     {
         return Mage::helper('sheep_debug/url')->getRequestListUrl();
     }
@@ -100,5 +100,23 @@ class Sheep_Debug_Block_Abstract extends Mage_Core_Block_Template
     public function formatNumber($number, $precision = 2)
     {
         return $this->helper->formatNumber($number, $precision);
+    }
+
+    /**
+     * Returns CSS class based on response status code
+     *
+     * @param int $statusCode
+     * @return string
+     */
+    public function getStatusCodeClass($statusCode)
+    {
+        $cssClass = 'status-success';
+        if ($statusCode > 399) {
+            $cssClass = 'status-error';
+        } else if ($statusCode > 299) {
+            $cssClass = 'status-warning';
+        }
+
+        return $cssClass;
     }
 }

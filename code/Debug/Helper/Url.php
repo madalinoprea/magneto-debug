@@ -23,9 +23,9 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
     }
 
 
-    public function getRequestListUrl()
+    public function getRequestListUrl($filters = array())
     {
-        return $this->getUrl('index/search');
+        return $this->getUrl('index/search', $filters);
     }
 
     public function getLatestRequestViewUrl($panel = 'request')
