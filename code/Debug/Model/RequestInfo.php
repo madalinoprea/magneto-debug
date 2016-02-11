@@ -58,6 +58,8 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
     protected $queries = null;
 
     protected $timers = array();
+    protected $events;
+    protected $observers;
 
     public function initLogging()
     {
@@ -79,6 +81,61 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
     {
         return $this->timers;
     }
+
+
+    /**
+     * Returns a list of events
+     *
+     * @return array
+     */
+    public function getEvents()
+    {
+        if ($this->events === null) {
+            $this->events = array();
+
+            foreach ($this->getTimers() as $timerName => $timer) {
+                if (strpos($timerName, 'DISPATCH EVENT:') === 0) {
+                    $this->events[str_replace('DISPATCH EVENT:', '', $timerName)] = array(
+                        'name'     => str_replace('DISPATCH EVENT:', '', $timerName),
+                        'count'    => $timer['count'],
+                        'sum'      => round($timer['sum'] * 1000, 2), // ms
+                        'mem_diff' => $timer['realmem'] / pow (1024, 2), // mb
+                    );
+                }
+            }
+        }
+
+        return $this->events;
+    }
+
+
+    /**
+     * Returns a list of called observers during request.
+     *
+     * Observers are determined based on recorded events
+     *
+     * @return array
+     */
+    public function getObservers()
+    {
+        if ($this->observers === null) {
+            $this->observers = array();
+
+            foreach ($this->getTimers() as $timerName => $timer) {
+                if (strpos($timerName, 'OBSERVER') === 0) {
+                    $this->observers[] = array(
+                        'name'     => $timerName,
+                        'count'    => $timer['count'],
+                        'sum'      => round($timer['sum'] * 1000, 2), // ms
+                        'mem_diff' => $timer['realmem'] / pow(1024, 2), // MB
+                    );
+                }
+            }
+        }
+
+        return $this->observers;
+    }
+
 
     /**
      * @param array $timers
@@ -377,6 +434,7 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
         ));
     }
 
+
     protected function getUnserializedInfo()
     {
         return unserialize($this->getInfo());
@@ -405,6 +463,7 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
 
         return $this;
     }
+
 
     protected function _afterLoad()
     {
