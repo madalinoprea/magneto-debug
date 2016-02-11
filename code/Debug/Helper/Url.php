@@ -231,4 +231,14 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
         return $this->getUrl('config/download', array('type' => $type));
     }
 
+    public function getEnableVarienProfilerUrl()
+    {
+        return $this->getUrl('config/enableVarienProfiler');
+    }
+
+    public function getDisableVarienProfilerUrl()
+    {
+        return $this->getUrl('config/disableVarienProfiler');
+    }
+
 }

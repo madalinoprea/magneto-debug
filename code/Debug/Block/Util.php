@@ -75,6 +75,11 @@ class Sheep_Debug_Block_Util extends Sheep_Debug_Block_Panel
         return $this->helper->getSqlProfiler()->getEnabled();
     }
 
+    public function isVarienProfilerEnabled()
+    {
+        return count(Varien_Profiler::getTimers()) > 0;
+    }
+
     public function getEnableSqlProfilerUrl()
     {
         return Mage::helper('sheep_debug/url')->getEnableSqlProfilerUrl();
@@ -83,6 +88,16 @@ class Sheep_Debug_Block_Util extends Sheep_Debug_Block_Panel
     public function getDisableSqlProfilerUrl()
     {
         return Mage::helper('sheep_debug/url')->getDisableSqlProfilerUrl();
+    }
+
+    public function getEnableVarienProfilerUrl()
+    {
+        return Mage::helper('sheep_debug/url')->getEnableVarienProfilerUrl();
+    }
+
+    public function getDisableVarienProfilerUrl()
+    {
+        return Mage::helper('sheep_debug/url')->getDisableVarienProfilerUrl();
     }
 
 }

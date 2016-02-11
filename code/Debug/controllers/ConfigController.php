@@ -73,4 +73,22 @@ class Sheep_Debug_ConfigController extends Sheep_Debug_Controller_Front_Action
         $this->_prepareDownloadResponse('config.xml', $configNode->asXML(), 'text/xml');
     }
 
+
+    public function enableVarienProfilerAction()
+    {
+        $this->getService()->setVarienProfilerStatus(1);
+        $this->getService()->flushCache();
+
+        $this->_redirectReferer();
+    }
+
+
+    public function disableVarienProfilerAction()
+    {
+        $this->getService()->setVarienProfilerStatus(0);
+        $this->getService()->flushCache();
+
+        $this->_redirectReferer();
+    }
+
 }

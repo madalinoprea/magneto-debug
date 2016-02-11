@@ -10,29 +10,29 @@ $observers = $info->getObservers();
 <h2><?php echo $this->__('Events'); ?></h2>
 
 <div class="sf-tabs">
-    <div class="tab">
-        <h3 class="tab-title <?php if(!$events): ?>disabled<?php endif; ?>">
+    <div class="tab <?php if (!$events): ?>disabled<?php endif;?>">
+        <h3 class="tab-title">
             <?php echo $this->__('Events'); ?>
             <span class="badge"><?php echo count($events) ?></span>
         </h3>
 
         <div class="tab-content">
             <h3><?php echo $this->__('Events'); ?></h3>
-            <p class="help">All events raised during request.</p>
+            <p class="help"><?php echo $this->__('All events raised during request.'); ?>/p>
 
             <?php echo $this->renderArrayFields($events) ?>
         </div>
     </div>
 
-    <div class="tab">
-        <h3 class="tab-title <?php if(!$observers): ?>disabled<?php endif; ?>">
+    <div class="tab <?php if(!$observers): ?>disabled<?php endif; ?>">
+        <h3 class="tab-title">
             <?php echo $this->__('Observers'); ?>
             <span class="badge"><?php echo count($observers) ?></span>
         </h3>
 
         <div class="tab-content">
             <h3><?php echo $this->__('Observers'); ?></h3>
-            <p class="help">All observers executed during current request.</p>
+            <p class="help"><?php echo $this->__('All observers executed during current request.<'); ?>/p>
 
             <?php echo $this->renderArrayFields($observers) ?>
         </div>

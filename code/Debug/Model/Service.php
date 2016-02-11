@@ -93,6 +93,18 @@ class Sheep_Debug_Model_Service
 
 
     /**
+     * Enables/Disables to automatically force varien profiler
+     *
+     * @param int $isEnabled
+     */
+    public function setVarienProfilerStatus($isEnabled)
+    {
+        $config = Mage::app()->getConfig();
+        $config->saveConfig(Sheep_Debug_Helper_Data::DEBUG_OPTION_FORCE_VARIEN_PROFILE_PATH, (int)$isEnabled);
+    }
+
+
+    /**
      * @param $status
      * @throws Exception
      */

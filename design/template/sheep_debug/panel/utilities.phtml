@@ -58,6 +58,17 @@
         </div>
 
         <div class="sf-toolbar-info-piece">
+            <b><?php echo $this->__('Varien Profiler'); ?></b>
+            <span>
+                <?php if ($this->isVarienProfilerEnabled()): ?>
+                    <a href="<?php echo $this->getDisableVarienProfilerUrl() ?>"><?php echo $this->__('Disable'); ?></a>
+                <?php else: ?>
+                    <a href="<?php echo $this->getEnableVarienProfilerUrl() ?>"><?php echo $this->__('Enable'); ?></a>
+                <?php endif; ?>
+            </span>
+        </div>
+
+        <div class="sf-toolbar-info-piece">
             <b><?php echo $this->__('Inline Translation'); ?></b>
             <span>
                 <?php if ($this->isTranslateInlineEnable()): ?>
