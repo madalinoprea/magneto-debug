@@ -57,9 +57,9 @@ class Sheep_Debug_Model_Observer
     /**
      * Executed after response is send. Now is safe to capture properties like response code, request time or peak memory usage.
      *
-     * @param $response
      */
-    public function completeProfiling(Mage_Core_Controller_Response_Http $response)
+    public function updateProfiling()
+
     {
         $requestInfo = $this->getRequestInfo();
         $helper = Mage::helper('sheep_debug');
@@ -74,10 +74,10 @@ class Sheep_Debug_Model_Observer
         $requestInfo->setRenderingTime(Sheep_Debug_Model_Block::getTotalRenderingTime());
 
         // first tentative to save response code
-        $requestInfo->getController()->addResponseInfo($response);
         $requestInfo->setPeakMemory($helper->getMemoryUsage());
         $requestInfo->setTime($helper->getCurrentScriptDuration());
         $requestInfo->setTimers(Varien_Profiler::getTimers());
+        $requestInfo->setResponseCode(http_response_code());
     }
 
 
@@ -86,16 +86,8 @@ class Sheep_Debug_Model_Observer
      */
     public function shutdown()
     {
-        $requestInfo = $this->getRequestInfo();
-        $helper = Mage::helper('sheep_debug');
-
-        // Last chance to update request profile info
-        $requestInfo->setPeakMemory($helper->getMemoryUsage());
-        $requestInfo->setTime($helper->getCurrentScriptDuration());
-        $requestInfo->setResponseCode(http_response_code());
-
-        // Sets latest queries
-        $requestInfo->initQueries();
+        // Last time to update request profile information
+        $this->updateProfiling();
 
         $this->saveProfiling();
     }
@@ -174,7 +166,7 @@ class Sheep_Debug_Model_Observer
             if ($this->_skipBlock($block)) {
                 continue;
             }
-            
+
             $requestInfo->addBlock($block);
         }
 
@@ -202,6 +194,12 @@ class Sheep_Debug_Model_Observer
 
         /* @var $block Mage_Core_Block_Abstract */
         $block = $observer->getData('block');
+
+        // Last chance before rendering toolbar to fetch updates (queries triggered from blocks)
+        if ($block->getNameInLayout() == 'debug_panels') {
+            $this->updateProfiling();
+        }
+
         if ($this->_skipBlock($block)) {
             return;
         }
@@ -310,8 +308,10 @@ class Sheep_Debug_Model_Observer
         /** @var Mage_Core_Controller_Varien_Front $front */
         $front = $observer->getData('front');
 
-        $this->completeProfiling($front->getResponse());
+        $this->updateProfiling();
+        $this->getRequestInfo()->getController()->addResponseInfo($front->getResponse());
     }
+
 
     /**
      *

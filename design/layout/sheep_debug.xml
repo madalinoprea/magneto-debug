@@ -20,7 +20,7 @@
         </reference>
 
         <reference name="before_body_end">
-            <block type="sheep_debug/toolbar" name="debug_panels" template="sheep_debug/toolbar.phtml" before="-">
+            <block type="sheep_debug/toolbar" name="debug_panels" template="sheep_debug/toolbar.phtml" after="-">
 
                 <block type="sheep_debug/controller" name="debug_controller_panel" template="sheep_debug/panel/controller.phtml">
                     <action method="setTitle"><title>Controller</title></action>
