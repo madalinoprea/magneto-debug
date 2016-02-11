@@ -4,7 +4,6 @@
 $info = $this->getRequestInfo();
 
 $coreHelper = Mage::helper('core');
-$controller = $info->getController();
 
 ?>
 <div class="sf-tabs">
@@ -71,6 +70,10 @@ $controller = $info->getController();
                     </tbody>
                 </table>
             <?php else: ?>
+                <?php if ($info->getModelsAsArray()): ?>
+                    <p class="label status-warning"><strong><?php echo $this->__('You need to enable SQL Profiler to capture executed SQL queries.'); ?></strong></p>
+                <?php endif; ?>
+
                 <div class="empty"><?php echo $this->__('No database queries were performed.'); ?></div>
             <?php endif; ?>
         </div>

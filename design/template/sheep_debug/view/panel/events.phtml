@@ -9,6 +9,10 @@ $observers = $info->getObservers();
 ?>
 <h2><?php echo $this->__('Events'); ?></h2>
 
+<?php if (!count($events)): ?>
+    <p class="label status-warning"><strong><?php echo $this->__('You need to enable Varien Profiler to capture event information.'); ?></strong></p>
+<?php endif; ?>
+
 <div class="sf-tabs">
     <div class="tab <?php if (!$events): ?>disabled<?php endif;?>">
         <h3 class="tab-title">
@@ -18,7 +22,7 @@ $observers = $info->getObservers();
 
         <div class="tab-content">
             <h3><?php echo $this->__('Events'); ?></h3>
-            <p class="help"><?php echo $this->__('All events raised during request.'); ?>/p>
+            <p class="help"><?php echo $this->__('All events raised during request.'); ?></p>
 
             <?php echo $this->renderArrayFields($events) ?>
         </div>

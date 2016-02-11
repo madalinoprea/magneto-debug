@@ -119,10 +119,12 @@ $info = $this->getRequestInfo();
                     </svg>
                 </span>
                 <strong><?php echo $this->__('Database'); ?></strong>
+                <?php if ($info->getQueryCount()): ?>
                 <span class="count">
                     <span><?php echo $this->__('%d', $info->getQueryCount()) ?></span>
                     <span><?php echo $this->__('%0.2f sec', $info->getQueryTime()) ?></span>
                 </span>
+                <?php endif; ?>
             </span>
         </a>
     </li>

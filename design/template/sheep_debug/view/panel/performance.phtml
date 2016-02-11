@@ -26,6 +26,11 @@ $timerData = Mage::helper('sheep_debug/performance')->convertTimers($info);
 
 <h2><?php echo $this->__('Execution timeline'); ?></h2>
 
+
+<?php if (!$info->getEvents()): ?>
+    <p class="label status-warning"><strong><?php echo $this->__('You need to enable Varien Profiler to render timeline.'); ?></strong></p>
+<?php endif; ?>
+
 <form id="timeline-control" action="" method="get">
     <input type="hidden" name="panel" value="time">
     <label for="threshold"><?php echo $this->__('Threshold'); ?></label>
