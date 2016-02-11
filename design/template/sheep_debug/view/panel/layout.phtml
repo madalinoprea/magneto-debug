@@ -64,11 +64,11 @@ $updates = $design->getLayoutUpdates();
         </h3>
 
         <div class="tab-content">
-            <a href="<?php echo Mage::helper('sheep_debug/url')->getLayoutUpdatesUrl($info->getToken())  ?>"
+            <a class="btn btn-sm" href="<?php echo Mage::helper('sheep_debug/url')->getLayoutUpdatesUrl($info->getToken())  ?>"
                onclick="return fetchData(this);" data-target-id="layout-updates-container"
-               title="<?php echo $this->__('Layout Updates'); ?>"><?php echo $this->__('Fetch Updates'); ?></a>
+               title="<?php echo $this->__('Layout Updates'); ?>"><?php echo $this->__('Retrieve Updates'); ?></a>
 
-            <div id="layout-updates-container"><?php echo $this->__('Loading ...'); ?></div>
+            <div id="layout-updates-container"></div>
         </div>
     </div>
 
