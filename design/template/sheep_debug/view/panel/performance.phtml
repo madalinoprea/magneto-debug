@@ -1,0 +1,79 @@
+<?php
+/** @var Sheep_Debug_Block_View $this */
+
+$info = $this->getRequestInfo();
+$timerData = Mage::helper('sheep_debug/performance')->convertTimers($info);
+
+?>
+<h2><?php echo $this->__('Performance metrics'); ?></h2>
+
+<div class="metrics">
+    <div class="metric">
+        <span class="value">
+            <?php echo $this->formatNumber($info->getTime() * 1000, 0) ?>
+            <span class="unit"><?php echo $this->__('ms'); ?></span>
+        </span>
+        <span class="label"><?php echo $this->__('Total execution time'); ?></span>
+    </div>
+
+    <div class="metric">
+        <span class="value">
+            <?php echo $this->formatNumber($info->getPeakMemory() / pow(1024, 2)) ?>
+            <span class="unit"><?php echo $this->__('MB'); ?></span></span>
+        <span class="label"><?php echo $this->__('Peak memory usage'); ?></span>
+    </div>
+</div>
+
+<h2><?php echo $this->__('Execution timeline'); ?></h2>
+
+<form id="timeline-control" action="" method="get">
+    <input type="hidden" name="panel" value="time">
+    <label for="threshold"><?php echo $this->__('Threshold'); ?></label>
+    <input type="number" size="3" name="threshold" id="threshold" value="3" min="0"> ms
+    <span class="help"><?php echo $this->__('(timeline only displays events with a duration longer than this threshold)'); ?></span>
+</form>
+
+<div class="sf-profiler-timeline">
+    <div class="legends">
+        <span data-color="#999" style="border-left-color: rgb(153, 153, 153);">default</span>
+        <span data-color="#444" style="border-left-color: rgb(68, 68, 68);">section</span>
+        <span data-color="#00B8F5" style="border-left-color: rgb(0, 184, 245);">events</span>
+        <span data-color="#66CC00" style="border-left-color: rgb(102, 204, 0);">layout</span>
+        <span data-color="#FF6633" style="border-left-color: rgb(255, 102, 51);">database</span>
+    </div>
+    <canvas width="2120" height="1216" id="timeline_<?php echo $info->getToken() ?>" class="timeline" style="width: 1060px; height: 608px;"></canvas>
+</div>
+
+<script>//<![CDATA[
+    window.onload = function() {
+        var requests_data = <?php echo json_encode($timerData) ?>;
+        canvasManager = new CanvasManager(requests_data.requests, requests_data.max);
+
+        query('input[name="threshold"]').value = canvasManager.getThreshold();
+        canvasManager.drawAll();
+
+        // Update the colors of legends.
+        var timelineLegends = document.querySelectorAll('.sf-profiler-timeline > .legends > span[data-color]');
+
+        for (var i = 0; i < timelineLegends.length; ++i) {
+            var timelineLegend = timelineLegends[i];
+
+            timelineLegend.style.borderLeftColor = timelineLegend.getAttribute('data-color');
+        }
+
+        // Bind event handlers
+        var elementTimelineControl = query('#timeline-control'),
+            elementThresholdControl = query('input[name="threshold"]');
+
+        window.onresize = canvasAutoUpdateOnResizeAndSubmit;
+        elementTimelineControl.onsubmit = canvasAutoUpdateOnResizeAndSubmit;
+
+        elementThresholdControl.onclick = canvasAutoUpdateOnThresholdChange;
+        elementThresholdControl.onchange = canvasAutoUpdateOnThresholdChange;
+        elementThresholdControl.onkeyup = canvasAutoUpdateOnThresholdChange;
+
+        window.setTimeout(function () {
+            canvasAutoUpdateOnThresholdChange(null);
+        }, 50);
+    };
+    //]]></script>
