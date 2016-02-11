@@ -13,6 +13,7 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
     const DEBUG_OPTIONS_ENABLE_PATH = 'sheep_debug/options/enable';
     const DEBUG_OPTION_PERSIST_PATH = 'sheep_debug/options/persist';
     const DEBUG_OPTION_PERSIST_EXPIRATION_PATH = 'sheep_debug/options/persist_expiration';
+    const DEBUG_OPTION_FORCE_VARIEN_PROFILE_PATH = 'sheep_debug/options/force_varien_profile';
 
     public function isEnabled()
     {
@@ -342,7 +343,18 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
      */
     public function getPersistLifetime()
     {
-        return (int) Mage::getStoreConfig(self::DEBUG_OPTION_PERSIST_EXPIRATION_PATH);
+        return (int)Mage::getStoreConfig(self::DEBUG_OPTION_PERSIST_EXPIRATION_PATH);
+    }
+
+
+    /**
+     * Checks if configuration allows to enable Varien Profiler
+     *
+     * @return bool
+     */
+    public function canEnableVarienProfiler()
+    {
+        return (bool)Mage::getStoreConfig(self::DEBUG_OPTION_FORCE_VARIEN_PROFILE_PATH);
     }
 
 }

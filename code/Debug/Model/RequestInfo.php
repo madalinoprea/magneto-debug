@@ -57,6 +57,7 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
     /** @var array Zend_Db_Profiler_Query */
     protected $queries = null;
 
+    protected $timers = array();
 
     public function initLogging()
     {
@@ -69,6 +70,22 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
         Mage::dispatchEvent('sheep_debug_init_logging', array('logging' => $this->logging));
 
         $this->logging->startRequest();
+    }
+
+    /**
+     * @return array
+     */
+    public function getTimers()
+    {
+        return $this->timers;
+    }
+
+    /**
+     * @param array $timers
+     */
+    public function setTimers($timers)
+    {
+        $this->timers = $timers;
     }
 
 
@@ -168,11 +185,11 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
         $data = array();
         foreach ($this->blocks as $block) {
             $data[] = array(
-                'name' => $block->getName(),
-                'class'          => $block->getClass(),
-                'template'       => $block->getTemplateFile(),
-                'time (s)'      => $block->getRenderedDuration() ? $helper->formatNumber($block->getRenderedDuration(), 3) : '',
-                'count'          => $block->getRenderedCount()
+                'name'     => $block->getName(),
+                'class'    => $block->getClass(),
+                'template' => $block->getTemplateFile(),
+                'time (s)' => $block->getRenderedDuration() ? $helper->formatNumber($block->getRenderedDuration(), 3) : '',
+                'count'    => $block->getRenderedCount()
             );
         }
 
@@ -355,7 +372,8 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
             'blocks'      => $this->getBlocks(),
             'models'      => $this->getModels(),
             'collections' => $this->getCollections(),
-            'queries'     => $this->getQueries()
+            'queries'     => $this->getQueries(),
+            'timers'      => $this->getTimers(),
         ));
     }
 
@@ -399,6 +417,7 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
         $this->models = $info['models'];
         $this->collections = $info['collections'];
         $this->queries = $info['queries'];
+        $this->timers = $info['timers'];
 
         return parent::_afterLoad();
     }

@@ -47,6 +47,10 @@ class Sheep_Debug_Model_Observer
         $requestInfo->setRequestPath($httpRequest->getOriginalPathInfo());
         $requestInfo->setDate(date('Y-m-d H:i:s'));
         $requestInfo->initLogging();
+
+        if (Mage::helper('sheep_debug')->canEnableVarienProfiler()) {
+            Varien_Profiler::enable();
+        }
     }
 
 
@@ -73,6 +77,7 @@ class Sheep_Debug_Model_Observer
         $requestInfo->getController()->addResponseInfo($response);
         $requestInfo->setPeakMemory($helper->getMemoryUsage());
         $requestInfo->setTime($helper->getCurrentScriptDuration());
+        $requestInfo->setTimers(Varien_Profiler::getTimers());
     }
 
 
