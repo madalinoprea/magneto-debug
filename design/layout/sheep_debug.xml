@@ -35,7 +35,7 @@
                     <action method="setSubTitle"><sub_title>Updates, Handlers</sub_title></action>
                 </block>
 
-                <block type="sheep_debug/logging" name="debug_logs_panel" template="sheep_debug/panel/logs.phtml">
+                <block type="sheep_debug/logging" name="debug_logs_panel" template="sheep_debug/panel/logging.phtml">
                     <action method="setTitle"><title>Logs</title></action>
                     <action method="setSubTitle"><sub_title>system.log, exception.log</sub_title></action>
                 </block>
