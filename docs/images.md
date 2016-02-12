@@ -1,38 +1,30 @@
 # Images
 
-## Toolbar
-![Toolbar](images/toolbar.png)
+## Toolbar In Frontend
+![Toolbar](images/frontend_toolbar_request.png)
 
 ## Configuration Panel from Admin
-![Configuration Panel from Admin](images/admin_configuration.png)
+![Configuration Panel from Admin](images/admin_toolbar_tools.png)
 
-## Controller
-![](images/controller.png)
+## Request Profile Grid 
+![](images/view_grid.png)
 
-## Models
-![](images/models_models.png)
+## Request, Response & Session
+![](images/view_request.png)
+![](images/view_response.png)
+![](images/view_session_config.png)
+![](images/view_404.png)
+![](images/view_post_ajax.png)
 
-![](images/models_queries.png)
+## Performance
+![](images/view_timeline.png)
 
-![](images/models_sql_select.png)
+## Events
+![](images/view_post_events.png)
 
-![](images/models_sql_explain.png)
+## Database
+![](images/view_ajax_database.png)
 
-## Design
-![](images/design.png)
-![](images/design_layout_handle.png)
+## E-mails
+![](images/view_post_emails.png)
 
-## Blocks
-![](images/blocks.png)
-
-## Logs
-![](images/logs.png)
-
-## Utils
-![](images/utils.png)
-
-## Modules
-![](images/modules.png)
-
-## Configuration
-![](images/configuration_search.png)

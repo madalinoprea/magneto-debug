@@ -1,23 +1,26 @@
 
-This repository represents an extension for Magento 1.x that offers a debug toolbar. The idea came from robhudson's [django-debug-toolbar](https://github.com/robhudson/django-debug-toolbar).  
+This repository represents an extension for Magento 1.x that offers a developer debug toolbar. The idea came from robhudson's [django-debug-toolbar](https://github.com/robhudson/django-debug-toolbar).  
+Latest version is based on Symfony's WebProfilerBundle.
 
-![Toolbar](docs/images/toolbar.png)
+![Toolbar](docs/images/frontend_toolbar_request.png)
 
 # Features 
-- **Request and Controller information**: lists request attributes and controller that handled the request
-- **Models**: lists all models and collections loaded during the request; all executed SQL queries are listed
+- **Request and Controller information**: lists request attributes and controller that handled the request, including Ajax and POST requests
+- **Execution Timeline**: shows execution timeline based on Varien Profiler timers
+- **Logs**: shows log lines added to system and exception 'during' the request
+- **Events**: shows all raised events and called observers
+- **Database**: lists all models and collections loaded during the request; all executed SQL queries are listed
  when SQL Profiler is enabled
-- **Module listing**: lists available Magento modules with their status and their version; 
+- **E-mails**: lists e-mail information and preview
+ **Layout**: lists layout handlers loaded during current request and adds ability to see layout files
+updates to a specific handle; offers information about instantiated and rendered block
+- **Configuration**: lists available Magento modules with their status and their version; 
  also offers the ability to enable/disable them
-- **Design Objects**: lists layout handlers loaded during current request and adds ability to see layout files
-updates to a specific handle
-- **Blocks**: offers information about instantiated and rendered block
-- **Logs**: shows log lines added to system and exception 'during' the request.
-- **Utils**: contains quick links to flush cache, enable template hints, enable SQL profiler
-- **Configuration** offers ability to search Magento configurations (review cronjobs, event observers, etc)
+- **Toolbar Tools**: contains quick links to flush cache, enable template hints, enable SQL profiler, enable Varien Profiler
+
+Don't forget to check out [screenshots gallery](docs/images.md)
 
 # Installation 
-
 
 ## Using Modman
 
@@ -75,6 +78,13 @@ Use [issue tracker on GitHub](https://github.com/madalinoprea/magneto-debug/issu
     Eliminate a possible cache problem by disabling all caches. Try to determine if there are any customizations that have removed `before_body_end`.
 
 # Change Log
+- **1.3.0**:
+    - UI reimplemented based on Symphony's web debug toolbar 
+    - Ability to view POST and Ajax requests
+    - Ability to view sent e-mails
+    - Ability to view raised events and called observers
+    - Ability to see an execution timeline based on Varien Profiler timers
+    
 - **1.2.0**: 
     - Fixes SELECT and DESCRIBE operations for long queries
     - Better way to identify what logging lines were added during request
@@ -91,10 +101,7 @@ Use [issue tracker on GitHub](https://github.com/madalinoprea/magneto-debug/issu
 [MIT License](LICENSE.txt)
 	
 # Roadmap
-- Replace jQuery with prototype 
-- Persist request info and add ability to view previous requests, including Ajax or API requests
-- Reduce toolbar weight: simplify presented information, add separate request info view page
-- Add request info listing (shows persisted request infos)
+- Re-add ability to search configuration
 - Add unit tests
 - Add Travis
 - Add more detailed documentation
