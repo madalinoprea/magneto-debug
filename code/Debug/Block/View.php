@@ -27,6 +27,15 @@ class Sheep_Debug_Block_View extends Sheep_Debug_Block_Abstract
 
 
     /**
+     * @return Sheep_Debug_Model_Service
+     */
+    public function getService()
+    {
+        return Mage::getSingleton('sheep_debug/service');
+    }
+
+
+    /**
      * Returns url for request list with current filters
      *
      * @param array $filters

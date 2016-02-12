@@ -5,6 +5,8 @@ $info = $this->getRequestInfo();
 
 $coreHelper = Mage::helper('core');
 
+$databaseConfigurations = $this->getService()->searchConfig('default_setup');
+
 ?>
 <div class="sf-tabs">
     <div class="tab">
@@ -131,6 +133,15 @@ $coreHelper = Mage::helper('core');
             <?php else: ?>
                 <div class="empty"><?php echo $this->__('No collections were loaded.'); ?></div>
             <?php endif; ?>
+        </div>
+    </div>
+
+    <div class="tab">
+        <h3 class="tab-title"><?php echo $this->__('Database Configuration'); ?></h3>
+
+        <div class="tab-content">
+            <p class="help"><?php echo $this->__('Current configurations related to database.'); ?></p>
+            <?php echo $this->renderArray($databaseConfigurations); ?>
         </div>
     </div>
 
