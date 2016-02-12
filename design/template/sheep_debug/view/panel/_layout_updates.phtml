@@ -13,7 +13,7 @@ $dbUpdates = $this->getData('db_updates');
         <?php foreach ($updates as $update): ?>
             <tr>
                 <td>
-                    <?php echo highlight_string($update, true); ?>
+                    <pre><code class="xml lazy-code-snippet"><?php echo $this->escapeHtml($update) ?></code></pre>
                 </td>
             </tr>
         <?php endforeach; ?>

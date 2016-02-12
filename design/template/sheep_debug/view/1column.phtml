@@ -10,6 +10,7 @@
     <title><?php echo $this->escapeHtml($this->getHeaderTitle()) ?></title>
     <link rel="stylesheet" href="<?php echo $this->getSkinUrl('sheep_debug/css/profile.css') ?>">
     <link rel="stylesheet" href="<?php echo $this->getSkinUrl('sheep_debug/css/profile_overwrites.css') ?>">
+    <link rel="stylesheet" href="<?php echo $this->getSkinUrl('sheep_debug/css/idea.css') ?>">
 </head>
 
 <body>
@@ -42,5 +43,9 @@
 </div>
 
 <script src="<?php echo $this->getSkinUrl('sheep_debug/js/profile.js') ?>"></script>
+<script src="<?php echo $this->getSkinUrl('sheep_debug/js/highlight.pack.js') ?>"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
 </body>
 </html>

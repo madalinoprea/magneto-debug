@@ -16,7 +16,6 @@ th.sortable  {
     white-space: nowrap;
 }
 
-#collections td {
-    word-break: normal;
+#collections-table pre {
     white-space: normal;
 }

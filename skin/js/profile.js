@@ -397,9 +397,18 @@ function fetchData(link) {
     var targetElement = document.getElementById(targetId);
 
     if (targetElement.style.display != 'block') {
-        Sfjs.load(targetId, link.href, null, function(xhr, el) {
-            el.innerHTML = 'An error occurred while loading query.';
-        });
+        Sfjs.load(targetId, link.href, function() {
+                if (hljs) {
+                    var codeSnippets = document.getElementsByClassName('lazy-code-snippet');
+                    for (var i=0; i<codeSnippets.length; i++) {
+                        hljs.highlightBlock(codeSnippets[i]);
+                    }
+                }
+            },
+            function(xhr, el) {
+                el.innerHTML = 'An error occurred while loading query.';
+            }
+        );
 
         targetElement.style.display = 'block';
         link.innerHTML = 'Hide';
