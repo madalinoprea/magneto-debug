@@ -21,6 +21,12 @@
                     </request_info>
                 </entities>
             </sheep_debug_resource>
+            <core>
+                <rewrite>
+                    <email>Sheep_Debug_Model_Core_Email</email>
+                    <email_template>Sheep_Debug_Model_Core_Email_Template</email_template>
+                </rewrite>
+            </core>
         </models>
 
         <resources>

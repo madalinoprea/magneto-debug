@@ -69,5 +69,9 @@
             </form>
         </div>
 
+        <hr>
+        <a class="btn btn-sm status-error" title="<?php echo $this->__('Delete all request profiles'); ?>" href="<?php echo Mage::helper('sheep_debug/url')->getPurgeProfilesAction() ?>">
+            <?php echo $this->__('Purge All'); ?>
+        </a>
     </div>
 </div>

@@ -61,6 +61,9 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
     protected $events;
     protected $observers;
 
+    /** @var Sheep_Debug_Model_Email[] */
+    protected $emails = array();
+
     public function initLogging()
     {
         $helper = Mage::helper('sheep_debug');
@@ -99,7 +102,7 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
                         'name'     => str_replace('DISPATCH EVENT:', '', $timerName),
                         'count'    => $timer['count'],
                         'sum'      => round($timer['sum'] * 1000, 2), // ms
-                        'mem_diff' => $timer['realmem'] / pow (1024, 2), // mb
+                        'mem_diff' => $timer['realmem'] / pow(1024, 2), // mb
                     );
                 }
             }
@@ -143,6 +146,20 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
     public function setTimers($timers)
     {
         $this->timers = $timers;
+    }
+
+
+    public function addEmail(Sheep_Debug_Model_Email $email)
+    {
+        $this->emails[] = $email;
+    }
+
+    /**
+     * @return Sheep_Debug_Model_Email[]
+     */
+    public function getEmails()
+    {
+        return $this->emails;
     }
 
 
@@ -431,6 +448,7 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
             'collections' => $this->getCollections(),
             'queries'     => $this->getQueries(),
             'timers'      => $this->getTimers(),
+            'emails'      => $this->getEmails()
         ));
     }
 
@@ -477,6 +495,7 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
         $this->collections = $info['collections'];
         $this->queries = $info['queries'];
         $this->timers = $info['timers'];
+        $this->emails = $info['emails'];
 
         return parent::_afterLoad();
     }

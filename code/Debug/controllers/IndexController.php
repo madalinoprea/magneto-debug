@@ -11,6 +11,12 @@
 class Sheep_Debug_IndexController extends Sheep_Debug_Controller_Front_Action
 {
 
+    public function indexAction()
+    {
+        $this->_forward('search');
+    }
+
+
     /**
      * @return Sheep_Debug_Model_Resource_RequestInfo_Collection
      */
@@ -120,7 +126,7 @@ class Sheep_Debug_IndexController extends Sheep_Debug_Controller_Front_Action
         }
 
         $section = $this->getRequest()->getParam('panel', 'request');
-        if (!in_array($section, array('request', 'performance', 'events', 'db', 'logging', 'layout', 'config'))) {
+        if (!in_array($section, array('request', 'performance', 'events', 'db', 'logging', 'email', 'layout', 'config'))) {
             $section = 'request';
         }
 

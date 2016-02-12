@@ -241,4 +241,9 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
         return $this->getUrl('config/disableVarienProfiler');
     }
 
+    public function getEmailBodyUrl($token, $row)
+    {
+        return $this->getUrl('email/getBody', array('token' => $token, 'index' => $row));
+    }
+
 }

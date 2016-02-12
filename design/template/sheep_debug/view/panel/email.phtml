@@ -1,0 +1,112 @@
+<?php
+/** @var Sheep_Debug_Block_View $this */
+
+$info = $this->getRequestInfo();
+$emails = $info->getEmails();
+$emailConfigs = Mage::getModel('sheep_debug/service')->searchConfig('email');
+?>
+
+<h2 xmlns="http://www.w3.org/1999/html"><?php echo $this->__('E-mails'); ?></h2>
+
+<div class="sf-tabs">
+    <div class="tab <?php if (!count($emails)): ?>disabled<?php endif; ?>">
+        <h3 class="tab-title">
+            <?php echo $this->__('E-mails'); ?>
+            <span class="badge"><?php echo $this->formatNumber(count($emails), 0) ?></span>
+        </h3>
+
+        <div class="tab-content">
+            <p class="help"><?php echo $this->__('E-mails sent during this request.'); ?></p>
+
+            <?php if ($emails): ?>
+                <table id="emails">
+                    <thead>
+                    <tr>
+                        <th><?php echo $this->__('#'); ?></th>
+                        <th><?php echo $this->__('To'); ?></th>
+                        <th><?php echo $this->__('Subject'); ?></th>
+                        <th><?php echo $this->__('From'); ?></th>
+                        <th><?php echo $this->__('Status'); ?></th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <?php $row = 0; ?>
+                    <?php foreach ($emails as $email): ?>
+                        <tr>
+                            <td><?php echo $row + 1; ?></td>
+                            <td>
+                                <?php echo $this->renderValue($email->getToName()); ?>
+                                <?php echo $this->renderValue($email->getToEmail()); ?>
+                            </td>
+
+                            <td>
+                                <?php echo $this->escapeHtml($email->getSubject()); ?>
+
+                                <div class="text-small font-normal">
+                                    <a class="link-inverse"
+                                       href="<?php echo Mage::helper('sheep_debug/url')->getEmailBodyUrl($info->getToken(), $row) ?>"
+                                       onclick="return fetchData(this);"
+                                       title="<?php echo $this->__('Retrieve E-mail Body'); ?>"
+                                       data-target-id="email-body-<?php echo $row ?>">
+                                        <?php echo $this->__('Retrieve E-mail Body'); ?>
+                                    </a>
+                                </div>
+                            </td>
+
+                            <td>
+                                <?php echo $this->escapeHtml($email->getFromName()); ?><br>
+                                <?php echo $this->escapeHtml($email->getFromEmail()); ?>
+                            </td>
+
+                            <td>
+                                <?php if ($email->isIsSmtpDisabled()): ?>
+                                    <span class="label status-error"><?php echo $this->__('SMTP Disabled'); ?></span>
+                                <?php else: ?>
+                                    <span class="label status-success"><?php echo $this->__('SMTP Enabled'); ?></span>
+                                <?php endif; ?>
+
+                                <?php if ($email->isAccepted()): ?>
+                                    <span class="label status-success"><?php echo $this->__('Accepted'); ?></span>
+                                <?php else: ?>
+                                    <span class="label label-danger"><?php echo $this->__('Not Sent'); ?></span>
+                                <?php endif; ?>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td colspan="4">
+                                <?php echo $this->renderValue($email->getVariables()) ?>
+                            </td>
+                        </tr>
+                        <tr bgcolor="#6495ed">
+                            <td></td>
+                            <td bgcolor="#00008b" colspan="4">
+                                <div id="email-body-<?php echo $row ?>"></div>
+                                &nbsp;
+                            </td>
+                        </tr>
+                        <?php $row++; ?>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php else: ?>
+
+            <?php endif; ?>
+        </div>
+    </div>
+
+    <div class="tab">
+        <h3 class="tab-title">
+            <?php echo $this->__('E-mail Configuration'); ?>
+            <span class="badge"><?php echo $this->formatNumber(count($emailConfigs), 0) ?></span>
+        </h3>
+
+        <div id="collections" class="tab-content">
+            <p class="help"><?php echo $this->__('Current configuration related to e-mails.'); ?></p>
+            <?php echo $this->renderArray($emailConfigs, 'No Data', array('Configuration Path', 'Value')); ?>
+        </div>
+    </div>
+
+</div>
