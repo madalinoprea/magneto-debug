@@ -3,7 +3,7 @@
 
 $info = $this->getRequestInfo();
 $controller = $info->getController();
-
+$sessionConfigurations = $this->getService()->searchConfig('session');
 ?>
 <div class="sf-tabs">
     <div class="tab">
@@ -52,4 +52,12 @@ $controller = $info->getController();
         </div>
     </div>
 
+    <div class="tab">
+        <h3 class="tab-title"><?php echo $this->__('Session Configurations'); ?></h3>
+
+        <div class="tab-content">
+            <h3><?php echo $this->__('Configurations'); ?></h3>
+            <?php echo $this->renderArray($sessionConfigurations, 'No Data', array('Configuration Path', 'Value')) ?>
+        </div>
+    </div>
 </div>
