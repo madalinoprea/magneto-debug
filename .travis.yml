@@ -29,7 +29,7 @@ before_script:
   # install Magento
   - echo "install magento"
   - rm -rf magento/
-  - ./n98-magerun.phar install --magentoVersion "$MAGENTO_VERSION" --installationFolder="magento" --dbHost=“127.0.0.1” --dbUser=“root” --dbPass=“” --dbName="magento_test" installSampleData=no --useDefaultConfigParams=yes --baseUrl="http://magento.localdomain/"
+  - ./n98-magerun.phar install --magentoVersion "$MAGENTO_VERSION" --installationFolder "magento" --dbHost "127.0.0.1" --dbUser "root" --dbName "magento_test" --baseUrl "http://testmagento.local"
   - cd magento
   - # install dependencies
   - # install module
