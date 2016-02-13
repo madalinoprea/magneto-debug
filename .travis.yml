@@ -10,8 +10,9 @@ services:
 
 install:
   # clean up
+  - echo $TRAVIS_BUILD_DIR
   - rm -rf magento; mkdir magento;
-  - cd ~/magento
+  - cd magento
 
   # install composer
   - wget -O composer-setup.php https://getcomposer.org/installer
@@ -28,7 +29,8 @@ install:
   - ./n98-magerun.phar --version
 
 before_script:
-  - cd ~
+  - ls -al
+  - cd $TRAVIS_BUILD_DIR
   # Clean mysql database
   - mysql -e "DROP DATABASE IF EXISTS magento_test; CREATE DATABASE IF NOT EXISTS magento_test;" -uroot
 
@@ -42,7 +44,6 @@ before_script:
   # install dependencies
   - cd magento
   - ls -al
-
 
 script:
   - cd magento
