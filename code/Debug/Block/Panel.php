@@ -8,56 +8,8 @@
  * @license  Copyright: Pirate Sheep, 2016, All Rights reserved.
  * @link     https://piratesheep.com
  *
- * @method string getTitle()
- * @method string getSubTitle()
- * @method string getContent()
- * @method setContent(string $content)
- * @method setIsContentSafe(bool $isSafe)
- * @method bool getIsContentSafe()
- * @method string getContentUrl()
  */
 class Sheep_Debug_Block_Panel extends Sheep_Debug_Block_Abstract
 {
-    /**
-     * @param string $title
-     */
-    public function setTitle($title)
-    {
-        $this->setData('title', $this->__($title));
-    }
-
-
-    /**
-     * @param string $subTitle
-     */
-    public function setSubTitle($subTitle)
-    {
-        $this->setData('sub_title', $this->__($subTitle));
-    }
-
-
-    /**
-     * TODO: complete implementation
-     *
-     * @return bool
-     */
-    public function isVisible()
-    {
-        return true;
-    }
-
-
-    /**
-     * @return bool
-     */
-    public function hasContent()
-    {
-        return true;
-    }
-
-    public function getContentId()
-    {
-        return $this->getNameInLayout();
-    }
 
 }

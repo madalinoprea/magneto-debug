@@ -4,18 +4,12 @@
  * Class Sheep_Debug_Block_Config
  *
  * @category Sheep
- * @package  Sheep_Subscription
+ * @package  Sheep_Debug
  * @license  Copyright: Pirate Sheep, 2016, All Rights reserved.
  * @link     https://piratesheep.com
  */
 class Sheep_Debug_Block_Config extends Sheep_Debug_Block_Panel
 {
-
-    public function isVisible()
-    {
-        return $this->helper->isPanelVisible('config');
-    }
-
 
     public function getMagentoVersion()
     {
@@ -25,7 +19,7 @@ class Sheep_Debug_Block_Config extends Sheep_Debug_Block_Panel
 
     public function isDeveloperMode()
     {
-        return Mage::getIsDeveloperMode();
+        return $this->helper->getIsDeveloperMode();
     }
 
 
