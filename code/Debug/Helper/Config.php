@@ -54,16 +54,17 @@ class Sheep_Debug_Helper_Config extends Mage_Core_Helper_Abstract
             'module'   => 'Magento',
             'codePool' => 'core',
             'active'   => true,
-            'version'  => Mage::getVersion());
+            'version'  => $this->getMagentoVersion()
+        );
 
         $modulesConfig = Mage::getConfig()->getModuleConfig();
         foreach ($modulesConfig as $node) {
             foreach ($node as $module => $data) {
                 $items[] = array(
                     'module'   => $module,
-                    'codePool' => $data->codePool,
+                    'codePool' => (string)$data->codePool,
                     'active'   => $data->active == 'true',
-                    'version'  => $data->version
+                    'version'  => (string)$data->version
                 );
             }
         }
