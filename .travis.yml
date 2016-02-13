@@ -16,12 +16,13 @@ before_install:
 
   # install n98-magerun
   - wget https://files.magerun.net/n98-magerun.phar
-  - chmod +x ./n98-magerun.phar
+  - chmod +x n98-magerun.phar
 
 install:
   - ls -al
   - composer --version
   - modman --version
+  - php n98-magerun.phar --version
   - n98-magerun.phar --version
   # TODO: install Magento using modman
   - ls -al
