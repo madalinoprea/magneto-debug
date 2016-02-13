@@ -47,7 +47,7 @@ class Sheep_Debug_Block_View extends Sheep_Debug_Block_Abstract
         $currentFilters = Mage::helper('sheep_debug/filter')->getRequestFilters($this->getRequest());
         $filters = array_merge($currentFilters, $filters);
 
-        return parent::getRequestListUrl($filters);
+        return $this->getRequestListUrl($filters);
     }
 
 
@@ -153,13 +153,4 @@ class Sheep_Debug_Block_View extends Sheep_Debug_Block_Abstract
         return $output;
     }
 
-
-    /**
-     * @param Zend_Db_Profiler_Query $query
-     * @return string
-     */
-    public function getEncryptedSql(Zend_Db_Profiler_Query $query)
-    {
-        return Mage::helper('core')->encrypt($query->getQuery());
-    }
 }

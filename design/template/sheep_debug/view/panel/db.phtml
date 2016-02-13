@@ -57,9 +57,6 @@ $databaseConfigurations = $this->getService()->searchConfig('default_setup');
                                                data-target-id="explain-<?php echo $row ?>">
                                                 <?php echo $this->__('Explain Query'); ?>
                                             </a>
-
-                                            <input type="hidden" class="sqlData" data-sql="<?php echo $this->getEncryptedSql($query) ?>"
-                                                   data-params='<?php echo $coreHelper->urlEncode($coreHelper->jsonEncode($query->getQueryParams())) ?>'>
                                         </div>
                                     <?php endif; ?>
 

@@ -197,6 +197,6 @@ class Sheep_Debug_Test_Block_Util extends EcomDev_PHPUnit_Test_Case
         $actual = $block->getDisableVarienProfilerUrl();
         $this->assertEquals('disable varien profiler url', $actual);
     }
-    
+
 }
 
