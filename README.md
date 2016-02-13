@@ -1,5 +1,6 @@
 
-![Build Status](https://img.shields.io/travis/madalinoprea/magneto-debug/master.svg)
+[![Build Status](https://travis-ci.org/madalinoprea/magneto-debug.svg)](https://travis-ci.org/madalinoprea/magneto-debug)
+
 
 This repository represents an extension for Magento 1.x that offers a developer debug toolbar. The idea came from robhudson's [django-debug-toolbar](https://github.com/robhudson/django-debug-toolbar).  
 Latest version is based on Symfony's WebProfilerBundle.
