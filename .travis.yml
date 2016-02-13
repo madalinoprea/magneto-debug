@@ -24,6 +24,10 @@ install:
   - chmod +x phpunit
   - phpunit --version
 
+  # install coveralls
+   - wget https://github.com/satooshi/php-coveralls/releases/download/v1.0.0/coveralls.phar
+   - chmod +x coveralls.phar
+
   # install modman
   - bash < <(wget -q --no-check-certificate -O - https://raw.github.com/colinmollenhour/modman/master/modman-installer)
   - modman --version
@@ -63,5 +67,12 @@ before_script:
 
 
 script:
+  - cd $TRAVIS_BUILD_DIR/build
+  - mkdir logs
+
   - cd $TRAVIS_BUILD_DIR/build/magento
-  - phpunit --group Sheep_Debug
+  - phpunit --group Sheep_Debug --coverage-clover ../logs/clover.xml
+
+after_success:
+  - cd $TRAVIS_BUILD_DIR/build
+  - ./coveralls.phar -x logs/clover.xml
