@@ -4,7 +4,7 @@
  * Class Sheep_Debug_Test_Block_View_Sidebar
  *
  * @category Sheep
- * @package  Sheep_Subscription
+ * @package  Sheep_Debug
  * @license  Copyright: Pirate Sheep, 2016, All Rights reserved.
  * @link     https://piratesheep.com
  *

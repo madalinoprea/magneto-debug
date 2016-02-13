@@ -10,7 +10,7 @@
  * @method string getSenderEmail()
  *
  * @category Sheep
- * @package  Sheep_Subscription
+ * @package  Sheep_Debug
  * @license  Copyright: Pirate Sheep, 2016, All Rights reserved.
  * @link     https://piratesheep.com
  */
