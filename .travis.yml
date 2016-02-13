@@ -11,8 +11,8 @@ services:
 install:
   # clean up
   - echo $TRAVIS_BUILD_DIR
-  - rm -rf magento; mkdir magento;
-  - cd magento
+  - rm -rf build; mkdir build;
+  - cd build
 
   # install composer
   - wget -O composer-setup.php https://getcomposer.org/installer
@@ -29,21 +29,24 @@ install:
   - ./n98-magerun.phar --version
 
 before_script:
-  - ls -al
-  - cd $TRAVIS_BUILD_DIR
+  - export
   # Clean mysql database
   - mysql -e "DROP DATABASE IF EXISTS magento_test; CREATE DATABASE IF NOT EXISTS magento_test;" -uroot
 
+  - cd $TRAVIS_BUILD_DIR/build
+
   # Download Magento (n98-magerun links are broken)
-  - curl https://codeload.github.com/OpenMage/magento-mirror/tar.gz/$MAGENTO_VERSION | tar xz; mv magento-mirror-$MAGENTO_VERSION magento
+  - curl https://codeload.github.com/OpenMage/magento-mirror/tar.gz/$MAGENTO_VERSION
+  - tar xz; mv magento-mirror-$MAGENTO_VERSION magento
 
   # Install Magento
   - ls -al; ls -al magento
-  - ./magento/n98-magerun.phar install --installationFolder "magento" --dbHost "127.0.0.1" --dbUser "root" --dbPass "" --dbName "magento_test" --baseUrl "http://testmagento.local" --noDownload --forceUseDb yes --useDefaultConfigParams yes
+  - ./n98-magerun.phar install --installationFolder "magento" --dbHost "127.0.0.1" --dbUser "root" --dbPass "" --dbName "magento_test" --baseUrl "http://testmagento.local" --noDownload --forceUseDb yes --useDefaultConfigParams yes
 
   # install dependencies
   - cd magento
   - ls -al
+
 
 script:
   - cd magento
