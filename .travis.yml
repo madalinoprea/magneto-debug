@@ -48,7 +48,6 @@ before_script:
   # Install Magento
   - ls -al; ls -al magento
   - n98-magerun.phar install --installationFolder "magento" --dbHost "127.0.0.1" --dbUser "root" --dbPass "" --dbName "magento_test" --baseUrl "http://testmagento.local" --noDownload --forceUseDb yes --useDefaultConfigParams yes
-  - n98-magerun.phar sys:check --format text
 
   # Install our module
   - cd $TRAVIS_BUILD_DIR/build/magento
