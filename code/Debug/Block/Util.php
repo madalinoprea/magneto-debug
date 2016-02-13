@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class Sheep_Debug_Block_Blocks
+ * Class Sheep_Debug_Block_Util
  *
  * @category Sheep
  * @package  Sheep_Debug
@@ -10,10 +10,6 @@
  */
 class Sheep_Debug_Block_Util extends Sheep_Debug_Block_Panel
 {
-    public function isVisible()
-    {
-        return $this->helper->isPanelVisible('util');
-    }
 
     public function getFlushCacheUrl()
     {
@@ -42,7 +38,7 @@ class Sheep_Debug_Block_Util extends Sheep_Debug_Block_Panel
 
     public function isFPCDebugEnabled()
     {
-        return Mage::getStoreConfig('system/page_cache/debug');
+        return (bool)Mage::getStoreConfig('system/page_cache/debug');
     }
 
     public function getEnableFPCDebugUrl()
