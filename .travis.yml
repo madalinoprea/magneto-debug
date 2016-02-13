@@ -72,7 +72,9 @@ script:
 
   - cd $TRAVIS_BUILD_DIR/build/magento
   - phpunit --group Sheep_Debug --coverage-clover ../logs/clover.xml
+  - ls -al ../logs/
 
 after_success:
   - cd $TRAVIS_BUILD_DIR/build
+  - ls -al logs
   - ./coveralls.phar -x logs/clover.xml
