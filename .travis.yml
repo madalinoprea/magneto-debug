@@ -30,8 +30,10 @@ before_script:
   - echo "install magento"
   - rm -rf magento/; mkdir magento
   - curl https://codeload.github.com/OpenMage/magento-mirror/tar.gz/1.9.2.3 | tar xz -C "magento"
-  - ./n98-magerun.phar install --magentoVersion "$MAGENTO_VERSION" --installationFolder "magento" --dbHost "127.0.0.1" --dbUser "root" --dbName "magento_test" --baseUrl "http://testmagento.local" --noDownload
+  - ls -al
+  - ls -al magento
   - cd magento
+  - ./n98-magerun.phar install --magentoVersion "$MAGENTO_VERSION" --installationFolder "magento" --dbHost "127.0.0.1" --dbUser "root" --dbName "magento_test" --baseUrl "http://testmagento.local" --noDownload
   - # install dependencies
   - # install module
 
