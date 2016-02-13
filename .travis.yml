@@ -29,9 +29,10 @@ before_script:
   # install Magento
   - echo "install magento"
   - rm -rf magento/;
+  # Download Magento (n98-magerun links are broken)
   - curl https://codeload.github.com/OpenMage/magento-mirror/tar.gz/$MAGENTO_VERSION | tar xz; mv magento-mirror-$MAGENTO_VERSION magento
   - ls -al; ls -al magento
-  - ./n98-magerun.phar --magentoVersion "$MAGENTO_VERSION" --installationFolder "magento" --dbHost "127.0.0.1" --dbUser "root" --dbPass "" --dbName "magento_test" --baseUrl "http://testmagento.local" --noDownload --forceUseDb yes --useDefaultConfigParams yes
+  - ./n98-magerun.phar --installationFolder "magento" --dbHost "127.0.0.1" --dbUser "root" --dbPass "" --dbName "magento_test" --baseUrl "http://testmagento.local" --noDownload --forceUseDb yes --useDefaultConfigParams yes
   - # install dependencies
   - # install module
 
