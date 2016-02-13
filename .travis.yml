@@ -3,11 +3,27 @@ language: php
 php:
   - 5.5
 env:
-  - MAGENTO_DB_ALLOWSAME=1
-  - SKIP_CLEANUP=1
   - MAGENTO_VERSION=magento-ce-1.9.0.1
+matrix:
+  - fast_finish: true
+
+before_install:
+  # check composer version
+  - composer --version
+
+  # install modman
+  - bash < <(wget -q --no-check-certificate -O - https://raw.github.com/colinmollenhour/modman/master/modman-installer)
+  - modman --version
+
+  # install n98-magerun
+  - wget https://files.magerun.net/n98-magerun.phar
+  - chmod +x ./n98-magerun.phar
+  - n98-magerun.phar --version
+
 install:
-  - curl -sSL https://raw.githubusercontent.com/AOEpeople/MageTestStand/master/setup.sh | bash
+  # TODO: install Magento using modman
+  - ls -al
+  # install our module and its dependencies
 
 script:
   - ls -al
