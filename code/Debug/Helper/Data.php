@@ -45,6 +45,15 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
 
 
     /**
+     * @return bool
+     */
+    public function getIsDeveloperMode()
+    {
+        return Mage::getIsDeveloperMode();
+    }
+
+
+    /**
      * Returns filename for general logging
      *
      * @param $store
