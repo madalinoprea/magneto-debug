@@ -16,6 +16,7 @@ class Sheep_Debug_Model_Observer
 {
     // This is initialised as soon as app is setup
     protected $canCapture = true;
+    protected $profilingStarted = false;
 
     public function canCapture()
     {
@@ -35,6 +36,8 @@ class Sheep_Debug_Model_Observer
 
     public function startProfiling(Mage_Core_Controller_Request_Http $httpRequest)
     {
+        $this->profilingStarted = true;
+
         // Register shutdown function
         register_shutdown_function(array($this, 'shutdown'));
 
@@ -59,7 +62,6 @@ class Sheep_Debug_Model_Observer
      *
      */
     public function updateProfiling()
-
     {
         $requestInfo = $this->getRequestInfo();
         $helper = Mage::helper('sheep_debug');
@@ -86,6 +88,10 @@ class Sheep_Debug_Model_Observer
      */
     public function shutdown()
     {
+        if (!$this->profilingStarted) {
+            return;
+        }
+
         // Last time to update request profile information
         $this->updateProfiling();
 
