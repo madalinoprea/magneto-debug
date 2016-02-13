@@ -104,6 +104,10 @@ class Sheep_Debug_Model_Logging
      */
     public function getLastFilePosition($filePath)
     {
+        if (!file_exists($filePath)) {
+            return 0;
+        }
+
         $f = fopen($filePath, 'r');
         fseek($f, -1, SEEK_END);
         return ftell($f);
