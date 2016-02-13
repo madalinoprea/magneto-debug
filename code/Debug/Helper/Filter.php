@@ -28,8 +28,9 @@ class Sheep_Debug_Helper_Filter extends Mage_Core_Helper_Abstract
             $this->requestFilterValues = array();
 
             foreach ($filters as $filter) {
-                if ($request->getParam($filter, null) !== null) {
-                    $this->requestFilterValues[$filter] = $request->getParam($filter);
+                $param = $request->getParam($filter, null);
+                if ($param !== null) {
+                    $this->requestFilterValues[$filter] = $param;
                 }
             }
         }
