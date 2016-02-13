@@ -35,7 +35,9 @@ class Sheep_Debug_Model_Observer
 
     public function startProfiling(Mage_Core_Controller_Request_Http $httpRequest)
     {
-        $this->profilingStarted = true;
+        if (php_sapi_name() == 'cli') {
+            return;
+        }
 
         // Register shutdown function
         register_shutdown_function(array($this, 'shutdown'));
