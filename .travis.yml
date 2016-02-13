@@ -45,8 +45,8 @@ before_script:
   # Configure
   # install dependencies
   - cd $TRAVIS_BUILD_DIR/build/magento
-  - ../modman init
-  - ../modman clone git://github.com/EcomDev/EcomDev_PHPUnit.git
+  - modman init
+  - modman clone git://github.com/EcomDev/EcomDev_PHPUnit.git
   - ls -al ../../
   - modman link ../../
   - ../n98-magerun.phar sys:modules:list | grep -e 'Sheep\|EcomDev_PHPUnit'
