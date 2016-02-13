@@ -35,8 +35,8 @@ before_script:
   - cd $TRAVIS_BUILD_DIR/build
 
   # Download Magento (n98-magerun links are broken)
-  - curl https://codeload.github.com/OpenMage/magento-mirror/tar.gz/$MAGENTO_VERSION
-  - tar xz; mv magento-mirror-$MAGENTO_VERSION magento
+  - curl https://codeload.github.com/OpenMage/magento-mirror/tar.gz/$MAGENTO_VERSION | tar xz;
+  - mv magento-mirror-$MAGENTO_VERSION magento
 
   # Install Magento
   - ls -al; ls -al magento
