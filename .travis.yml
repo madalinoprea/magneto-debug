@@ -8,9 +8,8 @@ env:
 services:
   - mysql
 
+# Deletes build directoy and adds new tools
 install:
-  # clean up
-  - echo $TRAVIS_BUILD_DIR
   - rm -rf build; mkdir build;
   - cd build
 
@@ -25,8 +24,8 @@ install:
   - phpunit --version
 
   # install coveralls
-   - wget https://github.com/satooshi/php-coveralls/releases/download/v1.0.0/coveralls.phar
-   - chmod +x coveralls.phar
+  - wget https://github.com/satooshi/php-coveralls/releases/download/v1.0.0/coveralls.phar
+  - chmod +x coveralls.phar
 
   # install modman
   - bash < <(wget -q --no-check-certificate -O - https://raw.github.com/colinmollenhour/modman/master/modman-installer)
