@@ -4,13 +4,19 @@ php:
   - 5.5
 env:
   - MAGENTO_VERSION=magento-ce-1.9.0.1
-matrix:
-  - fast_finish: true
+
+services:
+  - mysql
 
 before_install:
-  - ls -al
-  # update composer
-  - composer self-update
+  # re-create database
+  - mysql -e "DROP DATABASE IF EXISTS magento_test; CREATE DATABASE IF NOT EXISTS magento_test;" -uroot
+
+install:
+  # install composer
+  - wget https://getcomposer.org/installer -O
+  - wget -O composer-setup.php https://getcomposer.org/installer
+  - php composer-setup.php --filename=composer
 
   # install modman
   - bash < <(wget -q --no-check-certificate -O - https://raw.github.com/colinmollenhour/modman/master/modman-installer)
@@ -21,10 +27,10 @@ before_install:
   - chmod +x n98-magerun.phar
   - ./n98-magerun.phar --version
 
-install:
-  # TODO: install Magento using modman
-  - ls -al
-  # install our module and its dependencies
+# configure our database and install magento
+before_script:
+  # install magento
+  - ./n98-magerun.phar install --dbHost=“127.0.0.1” --dbUser=“root” --dbPass=“” --dbName="magento_test" installSampleData=no --useDefaultConfigParams=yes --magentoVersionByName=“${MAGENTO_VERSION}” --installationFolder="magento" --baseUrl="http://magento.localdomain/"
 
 script:
   - ls -al
