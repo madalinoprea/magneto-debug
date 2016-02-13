@@ -54,18 +54,10 @@ class Sheep_Debug_Block_Toolbar extends Sheep_Debug_Block_Abstract
                     continue;
                 }
 
-                if (!$panel->isVisible()) {
-                    continue;
-                }
-
                 $this->visiblePanels[] = $panel;
             }
         }
         return $this->visiblePanels;
     }
 
-    public function getDebugMediaUrl()
-    {
-        return Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN) . 'frontend/base/default/sheep_debug/';
-    }
 }
