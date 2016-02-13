@@ -29,7 +29,6 @@ install:
   - ./n98-magerun.phar --version
 
 before_script:
-  - export
   # Clean mysql database
   - mysql -e "DROP DATABASE IF EXISTS magento_test; CREATE DATABASE IF NOT EXISTS magento_test;" -uroot
 
