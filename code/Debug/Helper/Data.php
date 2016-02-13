@@ -213,9 +213,9 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
         if ($size == 0) {
             return $this->__('n/a');
         } else {
-            $value = round($size / pow(1024, ($i = floor(log($size, 1024)))), $precision);
+            $value = round($size / pow(1000, ($i = floor(log($size, 1000)))), $precision);
             $unitIndex = (int)$i;
-            return $this->__('%d%s', $this->formatNumber($value), $sizes[$unitIndex]);
+            return $this->__('%s%s', $this->formatNumber($value, $precision), $sizes[$unitIndex]);
         }
     }
 
