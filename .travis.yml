@@ -19,7 +19,7 @@ before_install:
   - chmod +x ./n98-magerun.phar
 
 install:
-  - la -al
+  - ls -al
   - composer --version
   - modman --version
   - n98-magerun.phar --version
