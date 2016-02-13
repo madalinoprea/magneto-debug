@@ -2,6 +2,7 @@ sudo: false
 language: php
 php:
   - 5.5
+
 env:
   - MAGENTO_VERSION=1.9.2.3
 
@@ -26,6 +27,7 @@ install:
   # install coveralls
   - wget https://github.com/satooshi/php-coveralls/releases/download/v1.0.0/coveralls.phar
   - chmod +x coveralls.phar
+  - ./coveralls.phar --version
 
   # install modman
   - bash < <(wget -q --no-check-certificate -O - https://raw.github.com/colinmollenhour/modman/master/modman-installer)
@@ -76,5 +78,4 @@ script:
 after_success:
   - cd $TRAVIS_BUILD_DIR
   - ls -al build/logs
-  - cat build/logs/clover.xml
-  - ./coveralls.phar -v -x build/logs/clover.xml
+  - coveralls.phar -v
