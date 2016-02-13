@@ -74,6 +74,7 @@ script:
   - ls -al ../logs/
 
 after_success:
-  - cd $TRAVIS_BUILD_DIR/build
-  - ls -al logs
-  - ./coveralls.phar -x logs/clover.xml
+  - cd $TRAVIS_BUILD_DIR
+  - ls -al build/logs
+  - cat build/logs/clover.xml
+  - ./coveralls.phar -v -x build/logs/clover.xml
