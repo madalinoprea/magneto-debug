@@ -8,22 +8,20 @@ matrix:
   - fast_finish: true
 
 before_install:
+  - ls -al
   # update composer
   - composer self-update
 
   # install modman
   - bash < <(wget -q --no-check-certificate -O - https://raw.github.com/colinmollenhour/modman/master/modman-installer)
+  - modman --version
 
   # install n98-magerun
   - wget https://files.magerun.net/n98-magerun.phar
   - chmod +x n98-magerun.phar
+  - ./n98-magerun.phar --version
 
 install:
-  - ls -al
-  - composer --version
-  - modman --version
-  - php n98-magerun.phar --version
-  - ./n98-magerun.phar --version
   # TODO: install Magento using modman
   - ls -al
   # install our module and its dependencies
