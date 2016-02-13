@@ -19,6 +19,11 @@ install:
   - php composer-setup.php --filename=composer
   - ./composer --version
 
+  # install phpunit
+  - wget -O phpunit https://phar.phpunit.de/phpunit-old.phar
+  - chmod +x phpunit
+  - phpunit --version
+
   # install modman
   - bash < <(wget -q --no-check-certificate -O - https://raw.github.com/colinmollenhour/modman/master/modman-installer)
   - modman --version
@@ -27,6 +32,8 @@ install:
   - wget https://files.magerun.net/n98-magerun.phar
   - chmod +x n98-magerun.phar
   - ./n98-magerun.phar --version
+
+  - export PATH=$PWD:$PATH
 
 before_script:
   # Clean mysql database
@@ -40,18 +47,23 @@ before_script:
 
   # Install Magento
   - ls -al; ls -al magento
-  - ./n98-magerun.phar install --installationFolder "magento" --dbHost "127.0.0.1" --dbUser "root" --dbPass "" --dbName "magento_test" --baseUrl "http://testmagento.local" --noDownload --forceUseDb yes --useDefaultConfigParams yes
+  - n98-magerun.phar install --installationFolder "magento" --dbHost "127.0.0.1" --dbUser "root" --dbPass "" --dbName "magento_test" --baseUrl "http://testmagento.local" --noDownload --forceUseDb yes --useDefaultConfigParams yes
 
   # Configure
   # install dependencies
   - cd $TRAVIS_BUILD_DIR/build/magento
   - modman init
-  - modman clone git://github.com/EcomDev/EcomDev_PHPUnit.git
-  - ls -al .modman/
   - modman link $TRAVIS_BUILD_DIR
-  - ../n98-magerun.phar sys:modules:list | grep -e 'Sheep\|EcomDev_PHPUnit'
-  - ls -al
+
+  # install EcomDev_PHPUnit
+  - modman clone git://github.com/EcomDev/EcomDev_PHPUnit.git
+#  - cd shell
+#  - php ecomdev-phpunit.php -a magento-config -r --db-name $DB_NAM --base-url http://your.magento.url/
+#  - cd ..
+
+  - n98-magerun.phar sys:modules:list | grep -e 'Sheep\|EcomDev_PHPUnit'
 
 
 script:
-  - cd magento
+  - cd $TRAVIS_BUILD_DIR/build/magento
+  - phpunit
