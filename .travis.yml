@@ -23,7 +23,7 @@ install:
   - composer --version
   - modman --version
   - php n98-magerun.phar --version
-  - n98-magerun.phar --version
+  - ./n98-magerun.phar --version
   # TODO: install Magento using modman
   - ls -al
   # install our module and its dependencies
