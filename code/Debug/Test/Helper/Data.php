@@ -117,7 +117,7 @@ XML;
 
         $this->helper->xml2array($xml, $data, 'root');
 
-        $this->assertNotEmpty($data);
+        $this->assertCount(2, $data);
         $this->assertArrayHasKey('root/modules/Sheep_Debug/version', $data);
         $this->assertEquals('1.3.1', $data['root/modules/Sheep_Debug/version']);
         $this->assertArrayHasKey('root/global/models/sheep_debug/class', $data);
@@ -280,5 +280,4 @@ XML;
         $this->assertEquals(1, $this->helper->sortModelCmp($b, $a));
     }
 
-    
 }
