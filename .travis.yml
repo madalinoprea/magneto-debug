@@ -57,9 +57,9 @@ before_script:
 
   # install EcomDev_PHPUnit
   - modman clone git://github.com/EcomDev/EcomDev_PHPUnit.git
-#  - cd shell
-#  - php ecomdev-phpunit.php -a magento-config -r --db-name $DB_NAM --base-url http://your.magento.url/
-#  - cd ..
+  - cd shell
+  - php ecomdev-phpunit.php -a magento-config -r --db-name "magento_test" --base-url "http://testmagento.local"
+  - cd ..
 
   - n98-magerun.phar sys:modules:list | grep -e 'Sheep\|EcomDev_PHPUnit'
 
