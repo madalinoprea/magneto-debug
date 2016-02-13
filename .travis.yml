@@ -42,8 +42,14 @@ before_script:
   - ls -al; ls -al magento
   - ./n98-magerun.phar install --installationFolder "magento" --dbHost "127.0.0.1" --dbUser "root" --dbPass "" --dbName "magento_test" --baseUrl "http://testmagento.local" --noDownload --forceUseDb yes --useDefaultConfigParams yes
 
+  # Configure
   # install dependencies
-  - cd magento
+  - cd $TRAVIS_BUILD_DIR/build/magento
+  - ../modman init
+  - ../modman clone git://github.com/EcomDev/EcomDev_PHPUnit.git
+  - ls -al ../../
+  - modman link ../../
+  - ../n98-magerun.phar sys:modules:list | grep -e 'Sheep\|EcomDev_PHPUnit'
   - ls -al
 
 
