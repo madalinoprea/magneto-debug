@@ -1,0 +1,13 @@
+sudo: false
+language: php
+php:
+  - 5.5
+env:
+  - MAGENTO_DB_ALLOWSAME=1
+  - SKIP_CLEANUP=1
+  - MAGENTO_VERSION=magento-ce-1.9.0.1
+install:
+  - curl -sSL https://raw.githubusercontent.com/AOEpeople/MageTestStand/master/setup.sh | bash
+
+script:
+  - ls -al
