@@ -64,5 +64,4 @@ before_script:
 
 script:
   - cd $TRAVIS_BUILD_DIR/build/magento
-  - ls -al var; ls -al var/log
-  - phpunit
+  - phpunit --group Sheep_Debug

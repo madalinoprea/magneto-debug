@@ -16,7 +16,6 @@ class Sheep_Debug_Model_Observer
 {
     // This is initialised as soon as app is setup
     protected $canCapture = true;
-    protected $profilingStarted = false;
 
     public function canCapture()
     {
@@ -88,7 +87,9 @@ class Sheep_Debug_Model_Observer
      */
     public function shutdown()
     {
-        if (!$this->profilingStarted) {
+        // TODO: Find a better way to skip shutdown handler when running unit tests
+        // For now we have this cheap workaround
+        if (php_sapi_name() == 'cli') {
             return;
         }
 
