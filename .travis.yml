@@ -9,9 +9,14 @@ services:
   - mysql
 
 install:
+  # clean up
+  - rm -rf magento; mkdir magento;
+  - cd ~/magento
+
   # install composer
   - wget -O composer-setup.php https://getcomposer.org/installer
   - php composer-setup.php --filename=composer
+  - ./composer --version
 
   # install modman
   - bash < <(wget -q --no-check-certificate -O - https://raw.github.com/colinmollenhour/modman/master/modman-installer)
@@ -22,19 +27,22 @@ install:
   - chmod +x n98-magerun.phar
   - ./n98-magerun.phar --version
 
-# configure our database and install magento
 before_script:
-  # clean mysql database
+  - cd ~
+  # Clean mysql database
   - mysql -e "DROP DATABASE IF EXISTS magento_test; CREATE DATABASE IF NOT EXISTS magento_test;" -uroot
-  # install Magento
-  - echo "install magento"
-  - rm -rf magento/;
+
   # Download Magento (n98-magerun links are broken)
   - curl https://codeload.github.com/OpenMage/magento-mirror/tar.gz/$MAGENTO_VERSION | tar xz; mv magento-mirror-$MAGENTO_VERSION magento
+
+  # Install Magento
   - ls -al; ls -al magento
-  - ./n98-magerun.phar install --installationFolder "magento" --dbHost "127.0.0.1" --dbUser "root" --dbPass "" --dbName "magento_test" --baseUrl "http://testmagento.local" --noDownload --forceUseDb yes --useDefaultConfigParams yes
-  - # install dependencies
-  - # install module
+  - ./magento/n98-magerun.phar install --installationFolder "magento" --dbHost "127.0.0.1" --dbUser "root" --dbPass "" --dbName "magento_test" --baseUrl "http://testmagento.local" --noDownload --forceUseDb yes --useDefaultConfigParams yes
+
+  # install dependencies
+  - cd magento
+  - ls -al
+
 
 script:
   - cd magento
