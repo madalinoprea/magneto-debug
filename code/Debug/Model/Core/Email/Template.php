@@ -16,6 +16,18 @@
  */
 class Sheep_Debug_Model_Core_Email_Template extends Mage_Core_Model_Email_Template
 {
+
+    /**
+     * @param array|string $email
+     * @param null $name
+     * @param array $variables
+     * @return bool
+     */
+    public function parentSend($email, $name = null, array $variables = array())
+    {
+        return parent::send($email, $name, $variables);
+    }
+
     /**
      * @param array|string $email
      * @param null $name
@@ -27,7 +39,7 @@ class Sheep_Debug_Model_Core_Email_Template extends Mage_Core_Model_Email_Templa
         // store a reference to mail object that get populate by parent send()
         $zendMail = $this->getMail();
 
-        $result = parent::send($email, $name, $variables);
+        $result = $this->parentSend($email, $name, $variables);
 
         try {
             $this->addEmailToProfile($email, $name, $variables, $result, $zendMail);
@@ -40,7 +52,7 @@ class Sheep_Debug_Model_Core_Email_Template extends Mage_Core_Model_Email_Templa
 
 
     /**
-     * Adds e-mail informatoin on request profiler
+     * Adds e-mail information on request profiler
      *
      * @param $email
      * @param $name
@@ -76,7 +88,7 @@ class Sheep_Debug_Model_Core_Email_Template extends Mage_Core_Model_Email_Templa
      * @param Zend_Mail $mail
      * @return string
      */
-    protected function getContent(Zend_Mail $mail)
+    public function getContent(Zend_Mail $mail)
     {
         /** @var Zend_Mime_Part $content */
         $content = $this->isPlain() ? $mail->getBodyText() : $mail->getBodyHtml();
@@ -90,7 +102,7 @@ class Sheep_Debug_Model_Core_Email_Template extends Mage_Core_Model_Email_Templa
      * @param $subject
      * @return string
      */
-    protected function decodeSubject($subject)
+    public function decodeSubject($subject)
     {
         return base64_decode(substr($subject, strlen('=?utf-8?B?'), -1 * strlen('?=')));
     }
