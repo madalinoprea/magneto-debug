@@ -24,7 +24,7 @@ class Sheep_Debug_Block_Abstract extends Mage_Core_Block_Template
      *
      * @param array $args
      */
-    public function __construct(array $args)
+    public function __construct(array $args = array())
     {
         parent::__construct($args);
         $this->helper = Mage::helper('sheep_debug');
