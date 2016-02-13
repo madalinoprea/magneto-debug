@@ -14,16 +14,6 @@ install:
   - rm -rf build; mkdir build;
   - cd build
 
-  # install composer
-  - wget -O composer-setup.php https://getcomposer.org/installer
-  - php composer-setup.php --filename=composer
-  - ./composer --version
-
-  # install phpunit
-  - wget -O phpunit https://phar.phpunit.de/phpunit-old.phar
-  - chmod +x phpunit
-  - phpunit --version
-
   # install coveralls
   - wget https://github.com/satooshi/php-coveralls/releases/download/v1.0.0/coveralls.phar
   - chmod +x coveralls.phar
