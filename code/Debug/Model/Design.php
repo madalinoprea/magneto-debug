@@ -29,7 +29,7 @@ class Sheep_Debug_Model_Design
         $this->area = $designPackage->getArea();
         $this->packageName = $designPackage->getPackageName();
         $this->themeLayout = $designPackage->getTheme('layout');
-        $this->themeLocale = $designPackage->getTheme('local');
+        $this->themeLocale = $designPackage->getTheme('locale');
         $this->themeTemplate = $designPackage->getTheme('template');
         $this->themeSkin = $designPackage->getTheme('skin');
 
@@ -60,7 +60,7 @@ class Sheep_Debug_Model_Design
      */
     public function getLayoutUpdates()
     {
-        if ($this->uncompressedLayoutUpdates===null) {
+        if ($this->uncompressedLayoutUpdates === null) {
             $this->uncompressedLayoutUpdates = $this->layoutUpdates ?
                 json_decode(gzuncompress($this->layoutUpdates), true) : array();
         }
@@ -125,9 +125,12 @@ class Sheep_Debug_Model_Design
     public function getInfoAsArray()
     {
         return array(
-            'design_area' => $this->getArea(),
-            'package_name' => $this->getPackageName(),
-            'template_theme' => $this->getThemeTemplate()
+            'design_area'    => $this->getArea(),
+            'package_name'   => $this->getPackageName(),
+            'layout_theme'   => $this->getThemeLayout(),
+            'template_theme' => $this->getThemeTemplate(),
+            'locale'         => $this->getThemeLocale(),
+            'skin'           => $this->getThemeSkin()
         );
     }
 }
