@@ -34,27 +34,33 @@ class Sheep_Debug_Model_Controller
     protected $responseHeaders;
 
 
-    public function __construct(Mage_Core_Controller_Varien_Action $action)
+    /**
+     * Sheep_Debug_Model_Controller constructor.
+     * @param Mage_Core_Controller_Varien_Action $action
+     */
+    public function __construct($action)
     {
+        $helper = Mage::helper('sheep_debug');
+
         /** @var Mage_Core_Controller_Request_Http $request */
         $request = $action->getRequest();
-
-        $this->serverParameters = $_SERVER;
 
         $this->httpMethod = $request->getMethod();
         $this->requestOriginalPath = $request->getOriginalPathInfo();
         $this->requestPath = $request->getPathInfo();
-        $this->requestHeaders = getallheaders();
 
         $this->routeName = $request->getRouteName();
         $this->module = $request->getControllerModule();
         $this->class = get_class($action);
         $this->action = $action->getActionMethodName($request->getActionName());
-        $this->cookies = $_COOKIE;
-        $this->session = $_SESSION;
-        $this->sessionId  = Mage::getSingleton('core/session')->getEncryptedSessionId();
-        $this->getParameters = $_GET;
-        $this->postParameters = $_POST;
+        $this->sessionId = Mage::getSingleton('core/session')->getEncryptedSessionId();
+
+        $this->serverParameters = $helper->getGlobalServer();
+        $this->requestHeaders = $helper->getAllHeaders();
+        $this->cookies = $helper->getGlobalCookie();
+        $this->session = $helper->getGlobalSession();
+        $this->getParameters = $helper->getGlobalGet();
+        $this->postParameters = $helper->getGlobalPost();
     }
 
 
@@ -164,7 +170,7 @@ class Sheep_Debug_Model_Controller
     public function getRequestAttributes()
     {
         return array(
-            'route' => $this->routeName,
+            'route'  => $this->routeName,
             'module' => $this->module,
             'action' => $this->getReference()
         );
@@ -225,6 +231,5 @@ class Sheep_Debug_Model_Controller
     {
         return $this->responseHeaders;
     }
-
 
 }
