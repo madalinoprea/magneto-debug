@@ -20,13 +20,13 @@ class Sheep_Debug_Model_Block
     /** @var string */
     protected $templateFile;
     /** @var bool */
-    protected $isRendering;
+    protected $isRendering = false;
     /** @var int */
-    protected $renderedAt;
+    protected $renderedAt = 0;
     /** @var int */
     protected $renderedCount;
     protected $renderedCompletedAt;
-    protected $renderedDuration;
+    protected $renderedDuration = 0;
     /** @var array */
     protected $data = array();
 
@@ -34,8 +34,6 @@ class Sheep_Debug_Model_Block
     public function __construct(Mage_Core_Block_Abstract $block)
     {
         $this->init($block);
-        $this->isRendering = false;
-        $this->renderedCount = 0;
     }
 
 
