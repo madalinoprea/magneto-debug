@@ -253,6 +253,48 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
 
 
     /**
+     * Wrapper for getallheaders().
+     *
+     * This method is not available on CLI
+     * @return array
+     */
+    public function getAllHeaders()
+    {
+        return function_exists('getallheaders') ? getallheaders() : array();
+    }
+
+
+    public function getGlobalServer()
+    {
+        return $_SERVER;
+    }
+
+
+    public function getGlobalSession()
+    {
+        return isset($_SESSION) ? $_SESSION : array();
+    }
+
+
+    public function getGlobalPost()
+    {
+        return isset($_POST) ? $_POST : array();
+    }
+
+
+    public function getGlobalGet()
+    {
+        return isset($_GET) ? $_GET : array();
+    }
+
+
+    public function getGlobalCookie()
+    {
+        return isset($_COOKIE) ? $_COOKIE : array();
+    }
+
+
+    /**
      * Sort callback for objects that have getCount()
      * @see Sheep_Debug_Model_Model
      *
