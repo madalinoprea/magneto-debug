@@ -17,6 +17,10 @@
 class Sheep_Debug_Model_Core_Email extends Mage_Core_Model_Email
 {
 
+    public function parentSend()
+    {
+        return parent::send();
+    }
     public function send()
     {
         try {
@@ -25,14 +29,14 @@ class Sheep_Debug_Model_Core_Email extends Mage_Core_Model_Email
             Mage::logException($e);
         }
 
-        return parent::send();
+        return $this->parentSend();
     }
 
 
     /**
      * Adds e-mail information on current request profile info
      */
-    protected function captureEmail()
+    public function captureEmail()
     {
         $email = Mage::getModel('sheep_debug/email');
         $email->setFromEmail($this->getFromEmail());
