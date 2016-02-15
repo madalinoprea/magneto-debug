@@ -10,7 +10,6 @@
  */
 class Sheep_Debug_Model_Query
 {
-    protected $resourceName;
     protected $queryType;
     protected $query;
     protected $queryParams;
@@ -28,24 +27,6 @@ class Sheep_Debug_Model_Query
         $this->query = $profilerQuery->getQuery();
         $this->queryParams = $profilerQuery->getQueryParams();
         $this->elapsedSecs = $profilerQuery->getElapsedSecs();
-    }
-
-
-    /**
-     * @param string $name
-     */
-    public function setResourceName($name)
-    {
-        $this->resourceName = $name;
-    }
-
-
-    /**
-     * @return mixed
-     */
-    public function getResourceName()
-    {
-        return $this->resourceName;
     }
 
 
