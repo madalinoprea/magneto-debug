@@ -44,7 +44,7 @@ class Sheep_Debug_Model_Cron
      *
      * @return string
      */
-    protected function getRequestsTable()
+    public function getRequestsTable()
     {
         return Mage::getResourceModel('sheep_debug/requestInfo')->getMainTable();
     }
@@ -56,7 +56,7 @@ class Sheep_Debug_Model_Cron
      * @param string $currentDate
      * @return bool|string
      */
-    protected function getExpirationDate($currentDate)
+    public function getExpirationDate($currentDate)
     {
         $numberOfDays = Mage::helper('sheep_debug')->getPersistLifetime();
 
