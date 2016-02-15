@@ -58,6 +58,11 @@ $info = $this->getController();
         </div>
 
         <div class="sf-toolbar-info-piece">
+            <b><?php echo $this->__('Original Request Path'); ?></b>
+            <span><?php echo $this->escapeHtml($info->getRequestOriginalPath()); ?></span>
+        </div>
+
+        <div class="sf-toolbar-info-piece">
             <b><?php echo $this->__('Request Path'); ?></b>
             <span><?php echo $this->escapeHtml($info->getRequestPath()); ?></span>
         </div>
