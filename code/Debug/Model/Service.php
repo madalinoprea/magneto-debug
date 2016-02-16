@@ -43,7 +43,7 @@ class Sheep_Debug_Model_Service
      * Sets active status for specified module
      *
      * @param string $moduleName
-     * @param bool   $isActive
+     * @param bool $isActive
      * @throws Exception
      */
     public function setModuleStatus($moduleName, $isActive)
@@ -73,7 +73,7 @@ class Sheep_Debug_Model_Service
     {
         $filePath = $this->getLocalXmlFilePath();
         $xml = simplexml_load_file($filePath);
-        if ($xml===false) {
+        if ($xml === false) {
             throw new Exception("Unable to parse local.xml configuration file: {$filePath}");
         }
 
@@ -124,6 +124,8 @@ class Sheep_Debug_Model_Service
      */
     public function setTemplateHints($status)
     {
+        $this->deleteTemplateHintsDbConfigs();
+
         $config = Mage::app()->getConfig();
         $config->saveConfig('dev/debug/template_hints', $status);
         $config->saveConfig('dev/debug/template_hints_blocks', $status);
@@ -137,7 +139,7 @@ class Sheep_Debug_Model_Service
      */
     public function setTranslateInline($status)
     {
-        $status = (int) $status;
+        $status = (int)$status;
         $config = Mage::app()->getConfig();
         $config->saveConfig('dev/translate_inline/active', $status);
     }
@@ -156,13 +158,26 @@ class Sheep_Debug_Model_Service
 
         $results = array();
         $configKeys = array_keys($configArray);
-        foreach ($configKeys as $configKey){
-            if (strpos($configKey, $query)!==FALSE){
+        foreach ($configKeys as $configKey) {
+            if (strpos($configKey, $query) !== FALSE) {
                 $results[$configKey] = $configArray[$configKey];
             }
         }
 
         return $results;
+    }
+
+
+    /**
+     * Delete template_hints related configurations
+     */
+    public function deleteTemplateHintsDbConfigs()
+    {
+        $configTable = Mage::getResourceModel('core/config')->getMainTable();
+
+        /** @var Magento_Db_Adapter_Pdo_Mysql $db */
+        $db = Mage::getSingleton('core/resource')->getConnection('core_write');
+        $db->delete($configTable, "path like 'dev/debug/template_hints%'");
     }
 
 
