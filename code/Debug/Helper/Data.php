@@ -45,6 +45,18 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
 
 
     /**
+     * Returns module's directory
+     *
+     * @return string
+     */
+    public function getModuleDirectory()
+    {
+        $config = Mage::getConfig();
+        return $config->getModuleDir('', $this->getModuleName());
+    }
+
+
+    /**
      * @return bool
      */
     public function getIsDeveloperMode()
@@ -260,6 +272,12 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
      */
     public function getAllHeaders()
     {
+        if (!function_exists('getallheaders')) {
+            $libRelativePath = 'lib' . DS . 'getallheaders' . DS . 'getallheaders.php';
+            $polyfillFilepath = $this->getModuleDirectory() . DS . $libRelativePath;
+            require_once($polyfillFilepath);
+        }
+
         return function_exists('getallheaders') ? getallheaders() : array();
     }
 
