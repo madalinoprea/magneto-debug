@@ -104,6 +104,10 @@ class Sheep_Debug_Model_Logging
      */
     public function getLastFilePosition($filePath)
     {
+        if (!file_exists($filePath)) {
+            return 0;
+        }
+
         $f = fopen($filePath, 'r');
         fseek($f, -1, SEEK_END);
         return ftell($f);
@@ -172,6 +176,10 @@ class Sheep_Debug_Model_Logging
      */
     public function getContent($filePath, $startPosition, $endPosition)
     {
+        if (!file_exists($filePath)) {
+            return '';
+        }
+
         // End position not saved yet
         if (!$endPosition) {
             return trim(file_get_contents($filePath, null, null, $startPosition));
