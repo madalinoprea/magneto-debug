@@ -499,9 +499,9 @@ class Sheep_Debug_Test_Model_RequestInfo extends EcomDev_PHPUnit_Test_Case
         $controller->expects($this->any())->method('getSessionId')->willReturn('12345');
 
         $model = $this->getModelMock('sheep_debug/requestInfo',
-            array('getId', 'getAction', 'generateToken', 'setToken', 'setHttpMethod', 'setResponseCode', 'setRequestPath', 'getSerializedInfo', 'setSessionId', 'setInfo'));
+            array('getController', 'getId', 'getAction', 'generateToken', 'setToken', 'setHttpMethod', 'setResponseCode', 'setRequestPath', 'getSerializedInfo', 'setSessionId', 'setInfo'));
         $model->expects($this->any())->method('getId')->willReturn(null);
-        $model->expects($this->any())->method('getAction')->willReturn($controller);
+        $model->expects($this->any())->method('getController')->willReturn($controller);
         $model->expects($this->any())->method('generateToken')->willReturn('token');
         $model->expects($this->any())->method('getSerializedInfo')->willReturn('serialized info');
 
@@ -528,9 +528,9 @@ class Sheep_Debug_Test_Model_RequestInfo extends EcomDev_PHPUnit_Test_Case
         $controller->expects($this->any())->method('getSessionId')->willReturn('12345');
 
         $model = $this->getModelMock('sheep_debug/requestInfo',
-            array('getId', 'getAction', 'generateToken', 'setToken', 'setHttpMethod', 'setResponseCode', 'setRequestPath', 'getSerializedInfo', 'setSessionId', 'setInfo'));
+            array('getId', 'getController', 'generateToken', 'setToken', 'setHttpMethod', 'setResponseCode', 'setRequestPath', 'getSerializedInfo', 'setSessionId', 'setInfo'));
         $model->expects($this->any())->method('getId')->willReturn(102);
-        $model->expects($this->any())->method('getAction')->willReturn($controller);
+        $model->expects($this->any())->method('getController')->willReturn($controller);
         $model->expects($this->any())->method('generateToken')->willReturn('token');
         $model->expects($this->any())->method('getSerializedInfo')->willReturn('serialized info');
 
