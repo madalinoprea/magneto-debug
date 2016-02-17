@@ -147,6 +147,10 @@ class Sheep_Debug_Test_Block_Util extends EcomDev_PHPUnit_Test_Case
      */
     public function testIsVarienProfilerEnabled()
     {
+        $helper = $this->getHelperMock('sheep_debug', array('canEnableVarienProfiler'));
+        $helper->expects($this->any())->method('canEnableVarienProfiler')->willReturn(false);
+        $this->replaceByMock('helper', 'sheep_debug', $helper);
+
         $block = $this->getBlockMock('sheep_debug/util', array('toHtml'));
         $this->assertFalse($block->isVarienProfilerEnabled());
     }

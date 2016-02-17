@@ -73,7 +73,7 @@ class Sheep_Debug_Block_Util extends Sheep_Debug_Block_Panel
 
     public function isVarienProfilerEnabled()
     {
-        return count(Varien_Profiler::getTimers()) > 0;
+        return $this->helper->canEnableVarienProfiler();
     }
 
     public function getEnableSqlProfilerUrl()
