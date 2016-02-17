@@ -8,6 +8,7 @@ php:
 env:
   - MAGENTO_VERSION=1.9.2.3
   - MAGENTO_VERSION=1.8.1.0
+  - MAGENTO_VERSION=1.7.0.2
 
 services:
   - mysql
@@ -49,6 +50,7 @@ before_script:
 
   # Install our module
   - cd $TRAVIS_BUILD_DIR/build/magento
+  - n98-magerun.phar sys:info
   - modman init
   - modman link $TRAVIS_BUILD_DIR
 
