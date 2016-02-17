@@ -12,12 +12,52 @@ class Sheep_Debug_Model_Service
 {
 
     /**
+     * @return Mage_Core_Model_Config
+     */
+    protected function getConfig()
+    {
+        return Mage::getConfig();
+    }
+
+
+    /**
+     * @return Mage_Core_Model_Cache
+     */
+    protected function getCacheInstance()
+    {
+        return Mage::app()->getCacheInstance();
+    }
+
+
+    /**
+     * @param $filepath
+     * @return SimpleXMLElement
+     */
+    protected function loadXmlFile($filepath)
+    {
+        return simplexml_load_file($filepath);
+    }
+
+
+    /**
+     * @param SimpleXMLElement $xml
+     * @param string $filepath
+     * @return bool
+     */
+    public function saveXml($xml, $filepath)
+    {
+        return $xml->saveXML($filepath);
+    }
+
+
+    /**
      * Flushes cache instance.
      */
     public function flushCache()
     {
-        Mage::app()->getCacheInstance()->flush();
+        $this->getCacheInstance()->flush();
     }
+
 
     /**
      * Returns module configuration file
@@ -28,11 +68,11 @@ class Sheep_Debug_Model_Service
      */
     public function getModuleConfigFilePath($moduleName)
     {
-        $config = Mage::getConfig();
+        $config = $this->getConfig();
         $moduleConfig = $config->getModuleConfig($moduleName);
 
         if (!$moduleConfig) {
-            throw  new Exception("Unable to load find module '{$moduleName}'");
+            throw  new Exception("Unable to find module '{$moduleName}'");
         }
 
         return $config->getOptions()->getEtcDir() . DS . 'modules' . DS . $moduleName . '.xml';
@@ -49,7 +89,7 @@ class Sheep_Debug_Model_Service
     public function setModuleStatus($moduleName, $isActive)
     {
         $moduleConfigFile = $this->getModuleConfigFilePath($moduleName);
-        $configXml = simplexml_load_file($moduleConfigFile);
+        $configXml = $this->loadXmlFile($moduleConfigFile);
         if ($configXml === false) {
             throw new Exception("Unable to parse module configuration file {$moduleConfigFile}");
         }
@@ -57,7 +97,7 @@ class Sheep_Debug_Model_Service
         $configXml->modules->{$moduleName}->active = $isActive ? 'true' : 'false';
 
         // save
-        if ($configXml->saveXML($moduleConfigFile) === false) {
+        if ($this->saveXml($configXml, $moduleConfigFile) === false) {
             throw new Exception("Unable to save module configuration file {$moduleConfigFile}. Check to see if web server user has write permissions.");
         }
     }
@@ -72,7 +112,7 @@ class Sheep_Debug_Model_Service
     public function setSqlProfilerStatus($isEnabled)
     {
         $filePath = $this->getLocalXmlFilePath();
-        $xml = simplexml_load_file($filePath);
+        $xml = $this->loadXmlFile($filePath);
         if ($xml === false) {
             throw new Exception("Unable to parse local.xml configuration file: {$filePath}");
         }
@@ -86,7 +126,7 @@ class Sheep_Debug_Model_Service
             unset($connectionNode->profiler);
         }
 
-        if ($xml->saveXML($filePath) === false) {
+        if ($this->saveXml($xml, $filePath) === false) {
             throw new Exception("Unable to save {$filePath}: check if web server user has write permission");
         }
     }
@@ -99,8 +139,7 @@ class Sheep_Debug_Model_Service
      */
     public function setVarienProfilerStatus($isEnabled)
     {
-        $config = Mage::app()->getConfig();
-        $config->saveConfig(Sheep_Debug_Helper_Data::DEBUG_OPTION_FORCE_VARIEN_PROFILE_PATH, (int)$isEnabled);
+        $this->getConfig()->saveConfig(Sheep_Debug_Helper_Data::DEBUG_OPTION_FORCE_VARIEN_PROFILE_PATH, (int)$isEnabled);
     }
 
 
@@ -114,8 +153,7 @@ class Sheep_Debug_Model_Service
             throw new Exception ('Cannot enable FPC debug for this Magento version.');
         }
 
-        $config = Mage::app()->getConfig();
-        $config->saveConfig('system/page_cache/debug', $status);
+        $this->getConfig()->saveConfig('system/page_cache/debug', (int)$status);
     }
 
 
@@ -126,9 +164,9 @@ class Sheep_Debug_Model_Service
     {
         $this->deleteTemplateHintsDbConfigs();
 
-        $config = Mage::app()->getConfig();
-        $config->saveConfig('dev/debug/template_hints', $status);
-        $config->saveConfig('dev/debug/template_hints_blocks', $status);
+        $config = $this->getConfig();
+        $config->saveConfig('dev/debug/template_hints', (int)$status);
+        $config->saveConfig('dev/debug/template_hints_blocks', (int)$status);
     }
 
 
@@ -139,9 +177,7 @@ class Sheep_Debug_Model_Service
      */
     public function setTranslateInline($status)
     {
-        $status = (int)$status;
-        $config = Mage::app()->getConfig();
-        $config->saveConfig('dev/translate_inline/active', $status);
+        $this->getConfig()->saveConfig('dev/translate_inline/active', (int)$status);
     }
 
 
@@ -151,10 +187,9 @@ class Sheep_Debug_Model_Service
      */
     public function searchConfig($query)
     {
-        $configs = Mage::app()->getConfig()->getNode();
         $configArray = array();
 
-        Mage::helper('sheep_debug')->xml2array($configs, $configArray);
+        $configArray = Mage::helper('sheep_debug')->xml2array($this->getConfig()->getNode(), $configArray);
 
         $results = array();
         $configKeys = array_keys($configArray);

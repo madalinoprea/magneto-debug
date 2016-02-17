@@ -121,11 +121,12 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
 
 
     /**
-     * @param $xml
+     * @param Mage_Core_Model_Config_Element $xml
      * @param array $arr
      * @param string $parentKey
+     * @return array|void
      */
-    public function xml2array(Mage_Core_Model_Config_Element $xml, array &$arr, $parentKey = '')
+    public function xml2array($xml, array &$arr, $parentKey = '')
     {
         if (!$xml) {
             return;
@@ -139,6 +140,8 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
                 $this->xml2array($item, $arr, $key);
             }
         }
+
+        return $arr;
     }
 
 
