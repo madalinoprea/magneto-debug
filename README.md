@@ -47,6 +47,15 @@ modman update magneto-debug
 ```
 - Flush Magento's cache
 
+# Compatibility
+
+Extension is (hopefully) successfully unit tested against PHP 5.4, PHP 5.5 and Magento CE 1.9 and Magento CE 1.8.
+
+If you would like to support it on another version let us know.
+
+[![Build Status](https://travis-ci.org/madalinoprea/magneto-debug.svg)](https://travis-ci.org/madalinoprea/magneto-debug)
+
+
 # Issues, Ideas or Feedback
 
 Use [issue tracker on GitHub](https://github.com/madalinoprea/magneto-debug/issues) to report issues, ideas or any feedback.
