@@ -14,6 +14,39 @@
 class Sheep_Debug_Test_Model_Email extends EcomDev_PHPUnit_Test_Case
 {
 
+    public function testSetters()
+    {
+        $model = Mage::getModel('sheep_debug/email');
+
+        $model->setFromEmail('mario@mailinator.com');
+        $this->assertEquals('mario@mailinator.com', $model->getFromEmail());
+
+        $model->setFromName('Mario O');
+        $this->assertEquals('Mario O', $model->getFromName());
+
+        $model->setToEmail('mario+to@mailinator.com');
+        $this->assertEquals('mario+to@mailinator.com', $model->getToEmail());
+
+        $model->setToName('Mario To');
+        $this->assertEquals('Mario To', $model->getToName());
+
+        $model->setSubject('Some subject');
+        $this->assertEquals('Some subject', $model->getSubject());
+
+        $model->setIsPlain(true);
+        $this->assertTrue($model->getIsPlain());
+
+        $model->setBody('e-mail body');
+        $this->assertEquals('e-mail body', $model->getBody());
+
+        $model->setIsSmtpDisabled(false);
+        $this->assertFalse($model->isIsSmtpDisabled());
+
+        $model->setIsAccepted(false);
+        $this->assertFalse($model->isAccepted());
+    }
+
+    
     public function testSetVariables()
     {
         $model = Mage::getModel('sheep_debug/email');
