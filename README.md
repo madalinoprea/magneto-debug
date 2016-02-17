@@ -47,17 +47,6 @@ modman update magneto-debug
 ```
 - Flush Magento's cache
 
-## Via Magento Connect
-
-Extension is not updated regularly on Magento Connect. My recommendation is to use modman. 
-
-```bash
-cd [magento root folder]
-sudo ./mage install community MagnetoDebug
-```
-
-Magento Connect extension package is available here: http://www.magentocommerce.com/magento-connect/sstoiana/extension/6714/magnetodebug
-
 # Issues, Ideas or Feedback
 
 Use [issue tracker on GitHub](https://github.com/madalinoprea/magneto-debug/issues) to report issues, ideas or any feedback.
