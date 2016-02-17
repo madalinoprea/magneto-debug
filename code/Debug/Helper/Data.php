@@ -15,6 +15,7 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
     const DEBUG_OPTION_PERSIST_EXPIRATION_PATH = 'sheep_debug/options/persist_expiration';
     const DEBUG_OPTION_FORCE_VARIEN_PROFILE_PATH = 'sheep_debug/options/force_varien_profile';
 
+
     public function isEnabled()
     {
         return (bool)Mage::getStoreConfig(self::DEBUG_OPTIONS_ENABLE_PATH);
@@ -39,7 +40,7 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
     public function getModuleVersion()
     {
         /** @var Mage_Core_Model_Config_Element $moduleConfig */
-        $moduleConfig = Mage::getConfig()->getModuleConfig($this->getModuleName());
+        $moduleConfig = $this->getConfig()->getModuleConfig($this->getModuleName());
         return (string)$moduleConfig->version;
     }
 
@@ -51,8 +52,7 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
      */
     public function getModuleDirectory()
     {
-        $config = Mage::getConfig();
-        return $config->getModuleDir('', $this->getModuleName());
+        return $this->getConfig()->getModuleDir('', $this->getModuleName());
     }
 
 
@@ -352,7 +352,7 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
      */
     public function getLayoutUpdatesFiles($storeId, $designArea)
     {
-        $updatesRoot = Mage::app()->getConfig()->getNode($designArea . '/layout/updates');
+        $updatesRoot = $this->getConfig()->getNode($designArea . '/layout/updates');
 
         // Find files with layout updates
         $updateFiles = array();
@@ -371,18 +371,6 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
         $updateFiles[] = 'local.xml';
 
         return $updateFiles;
-    }
-
-
-    /**
-     * Checks configuration to see if we can display toolbar panel
-     *
-     * @param $panelId
-     * @return bool
-     */
-    public function isPanelVisible($panelId)
-    {
-        return (bool)Mage::getStoreConfig('sheep_debug/panels/' . strtolower($panelId) . '_visibility');
     }
 
 
@@ -429,4 +417,12 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
         return (bool)Mage::getStoreConfig(self::DEBUG_OPTION_FORCE_VARIEN_PROFILE_PATH);
     }
 
+
+    /**
+     * @return Mage_Core_Model_Config
+     */
+    protected function getConfig()
+    {
+        return Mage::getConfig();
+    }
 }

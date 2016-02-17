@@ -36,6 +36,25 @@ class Sheep_Debug_Test_Helper_Data extends EcomDev_PHPUnit_Test_Case
         $this->assertNotEmpty($this->helper->getModuleVersion());
     }
 
+    public function testGetModuleDirectory()
+    {
+        $config = $this->getModelMock('core/config', array('getModuleDir'));
+        $config->expects($this->once())->method('getModuleDir')->with('', 'Sheep_Module')->willReturn('app/code/community');
+
+        $helper = $this->getHelperMock('sheep_debug', array('getModuleName', 'getConfig'));
+        $helper->expects($this->any())->method('getModuleName')->willReturn('Sheep_Module');
+        $helper->expects($this->any())->method('getConfig')->willReturn($config);
+
+        $actual = $helper->getModuleDirectory();
+        $this->assertEquals('app/code/community', $actual);
+    }
+
+    public function testGetIsDevelopMode()
+    {
+        Mage::setIsDeveloperMode(true);
+        $this->assertTrue($this->helper->getIsDeveloperMode());
+    }
+
     public function testGetLogFilename()
     {
         $this->assertEquals('system.log', $this->helper->getLogFilename(null));
@@ -242,8 +261,6 @@ XML;
             array(1000000, '1 MB'),
             array(1230000, '1.23 MB'),
             array(14330000, '14.33 MB'),
-
-
         );
     }
 
@@ -271,6 +288,37 @@ XML;
         $this->assertGreaterThan(0, $this->helper->getCurrentScriptDuration());
     }
 
+    public function testGetAllHeaders()
+    {
+        $this->assertInternalType('array', $this->helper->getAllHeaders());
+    }
+
+    public function testGetGlobalServer()
+    {
+        $this->assertEquals($_SERVER, $this->helper->getGlobalServer());
+    }
+
+    public function testGetGlobalSession()
+    {
+        // Session was not started so we should get an empty array
+        $this->assertEquals(array(), $this->helper->getGlobalSession());
+    }
+
+    public function testGetGlobalPost()
+    {
+        $this->assertEquals($_POST, $this->helper->getGlobalPost());
+    }
+
+    public function testGlobalGet()
+    {
+        $this->assertEquals($_GET, $this->helper->getGlobalGet());
+    }
+
+    public function testGetGlobalCookie()
+    {
+        $this->assertEquals($_COOKIE, $this->helper->getGlobalCookie());
+    }
+
     public function testSortModelCmp()
     {
         $a = new Varien_Object(array('count' => 3));
@@ -279,6 +327,61 @@ XML;
         $this->assertEquals(0, $this->helper->sortModelCmp($a, $a));
         $this->assertEquals(-1, $this->helper->sortModelCmp($a, $b));
         $this->assertEquals(1, $this->helper->sortModelCmp($b, $a));
+    }
+
+    public function testGetBlockFilename()
+    {
+        $this->assertStringEndsWith('core/Mage/Catalog/Block/Product/List.php', $this->helper->getBlockFilename('Mage_Catalog_Block_Product_List'));
+    }
+
+    public function testGetLayoutUpdatesFile()
+    {
+        $updatesRootXml = <<<XML
+<updates>
+    <sheep_module>
+        <file>some_file.xml</file>
+    </sheep_module>
+    <sheep_other>
+        <file>other_file.xml</file>
+    </sheep_other>
+</updates>
+XML;
+        $updatesXml = simplexml_load_string($updatesRootXml, 'Mage_Core_Model_Config_Element');
+
+
+        $config = $this->getModelMock('core/config', array('getNode'));
+        $config->expects($this->once())->method('getNode')
+            ->with('frontend/layout/updates')
+            ->willReturn($updatesXml);
+
+        $helper = $this->getHelperMock('sheep_debug', array('getConfig'));
+        $helper->expects($this->any())->method('getConfig')->willReturn($config);
+
+        $updatesFiles = $helper->getLayoutUpdatesFiles(10, 'frontend');
+        $this->assertCount(3, $updatesFiles);
+        $this->assertContains('some_file.xml', $updatesFiles);
+        $this->assertContains('other_file.xml', $updatesFiles);
+        $this->assertContains('local.xml', $updatesFiles);
+    }
+
+    public function testIsMagentoEE()
+    {
+        $this->assertFalse($this->helper->isMagentoEE());
+    }
+
+    public function testCanPersist()
+    {
+        return $this->assertTrue($this->helper->canPersist());
+    }
+
+    public function testGetPersistLifetime()
+    {
+        return $this->assertEquals(1, $this->helper->getPersistLifetime());
+    }
+
+    public function testCanEnableVarienProfiler()
+    {
+        return $this->assertTrue($this->helper->canEnableVarienProfiler());
     }
 
 }
