@@ -58,7 +58,7 @@ class Sheep_Debug_Model_Resource_RequestInfo_Collection extends Mage_Core_Model_
      */
     public function addResponseCodeFilter($code)
     {
-        return $this->addFieldToFilter('response_code', $code);
+        return $this->addFieldToFilter('response_code', (int)$code);
     }
 
     /**
@@ -95,6 +95,5 @@ class Sheep_Debug_Model_Resource_RequestInfo_Collection extends Mage_Core_Model_
             'datetime' => true
         ));
     }
-
 
 }

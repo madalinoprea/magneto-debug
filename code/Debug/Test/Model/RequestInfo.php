@@ -573,4 +573,111 @@ class Sheep_Debug_Test_Model_RequestInfo extends EcomDev_PHPUnit_Test_Case
         $this->assertEquals('emails', $model->getEmails());
     }
 
+
+    /**
+     * @covers Sheep_Debug_Model_Resource_RequestInfo_Collection::addSessionIdFilter
+     */
+    public function testAddSessionIdFilter()
+    {
+        $collection = $this->getResourceModelMock('sheep_debug/requestInfo_collection', array('addFieldToFilter'));
+        $this->replaceByMock('resource_model', 'sheep_debug/requestInfo_collection', $collection);
+        $collection->expects($this->once())->method('addFieldToFilter')->with('session_id', '123123');
+
+        $this->model->getCollection()->addSessionIdFilter('123123');
+    }
+
+
+    /**
+     * @covers Sheep_Debug_Model_Resource_RequestInfo_Collection::addTokenFilter
+     */
+    public function testAddTokenFilter()
+    {
+        $collection = $this->getResourceModelMock('sheep_debug/requestInfo_collection', array('addFieldToFilter'));
+        $this->replaceByMock('resource_model', 'sheep_debug/requestInfo_collection', $collection);
+        $collection->expects($this->once())->method('addFieldToFilter')->with('token', 'abcdef');
+
+        $this->model->getCollection()->addTokenFilter('abcdef');
+    }
+
+
+    /**
+     * @covers Sheep_Debug_Model_Resource_RequestInfo_Collection::addHttpMethodFilter
+     */
+    public function testAddHttpMethodFilter()
+    {
+        $collection = $this->getResourceModelMock('sheep_debug/requestInfo_collection', array('addFieldToFilter'));
+        $this->replaceByMock('resource_model', 'sheep_debug/requestInfo_collection', $collection);
+        $collection->expects($this->once())->method('addFieldToFilter')->with('http_method', 'post');
+
+        $this->model->getCollection()->addHttpMethodFilter('post');
+    }
+
+
+    /**
+     * @covers Sheep_Debug_Model_Resource_RequestInfo_Collection::addRequestPathFilter
+     */
+    public function testAddRequestPathFilter()
+    {
+        $collection = $this->getResourceModelMock('sheep_debug/requestInfo_collection', array('addFieldToFilter'));
+        $this->replaceByMock('resource_model', 'sheep_debug/requestInfo_collection', $collection);
+        $collection->expects($this->once())->method('addFieldToFilter')
+            ->with('request_path', array('like' => '%catalog%'));
+
+        $this->model->getCollection()->addRequestPathFilter('catalog');
+    }
+
+
+    /**
+     * @covers Sheep_Debug_Model_Resource_RequestInfo_Collection::addResponseCodeFilter
+     */
+    public function testAddResponseCodeFilter()
+    {
+        $collection = $this->getResourceModelMock('sheep_debug/requestInfo_collection', array('addFieldToFilter'));
+        $this->replaceByMock('resource_model', 'sheep_debug/requestInfo_collection', $collection);
+        $collection->expects($this->once())->method('addFieldToFilter')->with('response_code', 404);
+
+        $this->model->getCollection()->addResponseCodeFilter(404);
+    }
+
+
+    /**
+     * @covers Sheep_Debug_Model_Resource_RequestInfo_Collection::addIpFilter
+     */
+    public function testAddIpFilter()
+    {
+        $collection = $this->getResourceModelMock('sheep_debug/requestInfo_collection', array('addFieldToFilter'));
+        $this->replaceByMock('resource_model', 'sheep_debug/requestInfo_collection', $collection);
+        $collection->expects($this->once())->method('addFieldToFilter')->with('ip', '127.0.0.1');
+
+        $this->model->getCollection()->addIpFilter('127.0.0.1');
+    }
+
+
+    /**
+     * @covers Sheep_Debug_Model_Resource_RequestInfo_Collection::addEarlierFilter
+     */
+    public function testAddEarlierFilter()
+    {
+        $collection = $this->getResourceModelMock('sheep_debug/requestInfo_collection', array('addFieldToFilter'));
+        $this->replaceByMock('resource_model', 'sheep_debug/requestInfo_collection', $collection);
+        $collection->expects($this->once())->method('addFieldToFilter')
+            ->with('date', array('to' => '2016-02-17', 'datetime' => true));
+
+        $this->model->getCollection()->addEarlierFilter('2016-02-17');
+    }
+
+
+    /**
+     * @covers Sheep_Debug_Model_Resource_RequestInfo_Collection::addAfterFilter
+     */
+    public function testAddAfterFilter()
+    {
+        $collection = $this->getResourceModelMock('sheep_debug/requestInfo_collection', array('addFieldToFilter'));
+        $this->replaceByMock('resource_model', 'sheep_debug/requestInfo_collection', $collection);
+        $collection->expects($this->once())->method('addFieldToFilter')
+            ->with('date', array('from' => '2016-02-17', 'datetime' => true));
+
+        $this->model->getCollection()->addAfterFilter('2016-02-17');
+    }
+
 }
