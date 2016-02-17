@@ -423,11 +423,9 @@ class Sheep_Debug_Test_Model_RequestInfo extends EcomDev_PHPUnit_Test_Case
 
         $actual = $model->generateToken();
         $this->assertNotNull($actual);
-        $this->assertEquals(8, strlen($actual));
 
         $actual2 = $model->generateToken();
         $this->assertNotNull($actual2);
-        $this->assertEquals(8, strlen($actual2));
         $this->assertNotEquals($actual, $actual2);
     }
 
