@@ -8,6 +8,8 @@
  * @license  Copyright: Pirate Sheep, 2016, All Rights reserved.
  * @link     https://piratesheep.com
  *
+ * @method boolean getIsStarted()
+ * @method void setIsStarted(boolean $value)
  * @method string getToken()
  * @method Sheep_Debug_Model_RequestInfo setToken(string $value)
  * @method string getHttpMethod()
@@ -75,6 +77,12 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
         Mage::dispatchEvent('sheep_debug_init_logging', array('logging' => $this->logging));
 
         $this->logging->startRequest();
+    }
+
+
+    public function completeLogging()
+    {
+        $this->getLogging()->endRequest();
     }
 
     /**
@@ -471,12 +479,13 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
 
         if (!$this->getId()) {
             $this->setToken($this->generateToken());
-            $this->setHttpMethod($this->getAction()->getHttpMethod());
-            $this->setResponseCode($this->getAction()->getResponseCode());
+            $this->setHttpMethod($this->getController()->getHttpMethod());
+            $this->setResponseCode($this->getController()->getResponseCode());
+            $this->setIp($this->getController()->getRemoteIp());
         }
 
-        $this->setRequestPath($this->getAction()->getRequestOriginalPath());
-        $this->setSessionId($this->getAction()->getSessionId());
+        $this->setRequestPath($this->getController()->getRequestOriginalPath());
+        $this->setSessionId($this->getController()->getSessionId());
         $this->setInfo($this->getSerializedInfo());
 
         return $this;

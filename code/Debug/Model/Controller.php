@@ -18,6 +18,7 @@ class Sheep_Debug_Model_Controller
     // request url path after rewrite (internal url path)
     protected $requestPath;
     protected $requestHeaders;
+    protected $remoteIp;
 
     protected $routeName;
     protected $module;
@@ -48,6 +49,7 @@ class Sheep_Debug_Model_Controller
         $this->httpMethod = $request->getMethod();
         $this->requestOriginalPath = $request->getOriginalPathInfo();
         $this->requestPath = $request->getPathInfo();
+        $this->remoteIp = Mage::helper('core/http')->getRemoteAddr();
 
         $this->routeName = $request->getRouteName();
         $this->module = $request->getControllerModule();
@@ -230,6 +232,14 @@ class Sheep_Debug_Model_Controller
     public function getResponseHeaders()
     {
         return $this->responseHeaders;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRemoteIp()
+    {
+        return $this->remoteIp;
     }
 
 }

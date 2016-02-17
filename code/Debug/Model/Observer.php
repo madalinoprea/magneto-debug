@@ -11,15 +11,42 @@
  *
  * TODO: clarify stages where request info's data is updated and when should be changed..
  * TODO: what do we generate when saving is not enabled !? Do we use persist data in cache for 30-60 minutes?
+ *
+ * 1. is_started is set to True only if
+ *      - canCapture is True (module is enabled)
+ *      - this execution context can be profiled (request not blacklisted, etc)
+ * 1. request info is updated via its event observer and manually via updateProfile()
+ *      - canCapture is true
+ * 2. request info can be saved only if
+ *      - is_started is True AND
+ *      - canPersist is True
  */
 class Sheep_Debug_Model_Observer
 {
-    // This is initialised as soon as app is setup
+    // This can  proper initialised only after application config is loaded
     protected $canCapture = true;
 
-    public function canCapture()
+
+    /**
+     * Returns current selected store
+     *
+     * @return Mage_Core_Model_Store
+     */
+    public function getCurrentStore()
     {
-        return $this->canCapture;
+        return Mage::app()->getStore();
+    }
+
+
+
+    /**
+     * Checks if we can start collection for current execution context
+     *
+     * @return bool
+     */
+    public function canCollect()
+    {
+        return $this->canCapture && php_sapi_name() != 'cli';
     }
 
     /**
@@ -33,22 +60,29 @@ class Sheep_Debug_Model_Observer
     }
 
 
-    public function startProfiling(Mage_Core_Controller_Request_Http $httpRequest)
+    /**
+     * Called to mark that we can start profile execution of specified request
+     *
+     */
+    public function startProfiling()
     {
-        if (php_sapi_name() == 'cli') {
+        // Magento configuration is now available and we can init
+        $this->canCapture = Mage::helper('sheep_debug')->canCapture();
+
+        // Are we still allowed to collect
+        if (!$this->canCapture) {
             return;
         }
 
-        // Register shutdown function
-        register_shutdown_function(array($this, 'shutdown'));
-
-        // Now we can properly initialise canCapture based on configuration
-        $this->canCapture = Mage::helper('sheep_debug')->canCapture();
-
         $requestInfo = $this->getRequestInfo();
-        $requestInfo->setStoreId(Mage::app()->getStore()->getId());
-        $requestInfo->setIp(Mage::helper('core/http')->getRemoteAddr());
-        $requestInfo->setRequestPath($httpRequest->getOriginalPathInfo());
+        $requestInfo->setIsStarted(true);
+
+        // Register shutdown function
+        $this->registerShutdown();
+
+
+        // Init profile
+        $requestInfo->setStoreId($this->getCurrentStore()->getId());
         $requestInfo->setDate(date('Y-m-d H:i:s'));
         $requestInfo->initLogging();
 
@@ -59,24 +93,28 @@ class Sheep_Debug_Model_Observer
 
 
     /**
-     * Executed after response is send. Now is safe to capture properties like response code, request time or peak memory usage.
-     *
+     * Can be manually called to update current profile with data collected from (loggers, SQL Profiler, etC)
+     * Executed after response is send to update profile with latest information
      */
     public function updateProfiling()
     {
         $requestInfo = $this->getRequestInfo();
+
+        if (!$requestInfo->getIsStarted()) {
+            return;
+        }
+
         $helper = Mage::helper('sheep_debug');
 
         // update query information
         $requestInfo->initQueries();
 
         // capture log ranges
-        $requestInfo->getLogging()->endRequest();
+        $requestInfo->completeLogging();
 
         // save rendering time
         $requestInfo->setRenderingTime(Sheep_Debug_Model_Block::getTotalRenderingTime());
 
-        // first tentative to save response code
         $requestInfo->setPeakMemory($helper->getMemoryUsage());
         $requestInfo->setTime($helper->getCurrentScriptDuration());
         $requestInfo->setTimers(Varien_Profiler::getTimers());
@@ -89,15 +127,13 @@ class Sheep_Debug_Model_Observer
      */
     public function shutdown()
     {
-        // TODO: Find a better way to skip shutdown handler when running unit tests
-        // For now we have this cheap workaround
-        if (php_sapi_name() == 'cli') {
+        // We don't do anything during shutdown if profiling was not started
+        if (!$this->getRequestInfo()->getIsStarted()) {
             return;
         }
 
         // Last time to update request profile information
         $this->updateProfiling();
-
         $this->saveProfiling();
     }
 
@@ -109,7 +145,11 @@ class Sheep_Debug_Model_Observer
      */
     public function saveProfiling()
     {
-        if (!$this->canCapture() || !Mage::helper('sheep_debug')->canPersist()) {
+        if (!$this->canCollect() || !Mage::helper('sheep_debug')->canPersist()) {
+            return;
+        }
+
+        if (!$this->getRequestInfo()->getIsStarted()) {
             return;
         }
 
@@ -117,32 +157,23 @@ class Sheep_Debug_Model_Observer
     }
 
     /**
-     * Listens to controller_front_init_before event. An event that we can consider the start of the
-     * request profiling.
-     * @param Varien_Event_Observer $observer
+     * Listens to controller_front_init_before event. An event that we can consider the start of HTTP request profiling.
      */
-    public function onControllerFrontInitBefore(Varien_Event_Observer $observer)
+    public function onControllerFrontInitBefore()
     {
-        /** @var Mage_Core_Controller_Varien_Front $front */
-        $front = $observer->getData('front');
-        $this->startProfiling($front->getRequest());
+        $this->startProfiling();
     }
 
 
     /**
-     * Listens to controller_action_predispatch event to prevent undesired access
-     * TODO: review access permissions
-     *
-     * We listen to this event to filter access to actions defined by Debug module.
-     * We allow only actions if debug toolbar is on and ip is listed in Developer Client Restrictions
+     * Listens to controller_action_predispatch event to capture request information
      *
      * @param Varien_Event_Observer $observer
-     *
      * @return void
      */
     public function onActionPreDispatch(Varien_Event_Observer $observer)
     {
-        if (!$this->canCapture()) {
+        if (!$this->canCollect()) {
             return;
         }
 
@@ -161,7 +192,7 @@ class Sheep_Debug_Model_Observer
      */
     public function onLayoutGenerate(Varien_Event_Observer $observer)
     {
-        if (!$this->canCapture()) {
+        if (!$this->canCollect()) {
             return;
         }
 
@@ -172,32 +203,31 @@ class Sheep_Debug_Model_Observer
         // Adds block description for all blocks generated by layout
         $layoutBlocks = $layout->getAllBlocks();
         foreach ($layoutBlocks as $block) {
-            if ($this->_skipBlock($block)) {
+            if (!$this->canCaptureBlock($block)) {
                 continue;
             }
 
             $requestInfo->addBlock($block);
         }
 
-        // Add design
+        // Update design information
         /** @var Mage_Core_Model_Design_Package $design */
         $design = Mage::getSingleton('core/design_package');
         $requestInfo->addLayout($layout, $design);
 
-        // Save profiler information?
+        // Save profiler information to get a generated token before rendering toolbar
         $this->saveProfiling();
     }
 
 
     /**
-     * Listens to core_block_abstract_to_html_before event and records blocks
-     * that are about to being rendered.
+     * Listens to core_block_abstract_to_html_before event and records blocks that are about to be rendered.
      *
      * @param Varien_Event_Observer $observer
      */
     public function onBlockToHtml(Varien_Event_Observer $observer)
     {
-        if (!$this->canCapture()) {
+        if (!$this->canCollect()) {
             return;
         }
 
@@ -209,7 +239,7 @@ class Sheep_Debug_Model_Observer
             $this->updateProfiling();
         }
 
-        if ($this->_skipBlock($block)) {
+        if (!$this->canCaptureBlock($block)) {
             return;
         }
 
@@ -226,14 +256,13 @@ class Sheep_Debug_Model_Observer
 
 
     /**
-     * Listens to core_block_abstract_to_html_after event and computes time spent in
-     * block's _toHtml (rendering time).
+     * Listens to core_block_abstract_to_html_after event and computes time spent in block's _toHtml (rendering time).
      *
      * @param Varien_Event_Observer $observer
      */
     public function onBlockToHtmlAfter(Varien_Event_Observer $observer)
     {
-        if (!$this->canCapture()) {
+        if (!$this->canCollect()) {
             return;
         }
 
@@ -241,7 +270,7 @@ class Sheep_Debug_Model_Observer
         $block = $observer->getData('block');
 
         // Don't list blocks from Debug module
-        if ($this->_skipBlock($block)) {
+        if (!$this->canCaptureBlock($block)) {
             return;
         }
 
@@ -258,7 +287,7 @@ class Sheep_Debug_Model_Observer
      */
     public function onActionPostDispatch(Varien_Event_Observer $observer)
     {
-        if (!$this->canCapture()) {
+        if (!$this->canCollect()) {
             return;
         }
 
@@ -277,7 +306,7 @@ class Sheep_Debug_Model_Observer
      */
     public function onCollectionLoad(Varien_Event_Observer $observer)
     {
-        if (!$this->canCapture()) {
+        if (!$this->canCollect()) {
             return;
         }
 
@@ -294,7 +323,7 @@ class Sheep_Debug_Model_Observer
      */
     public function onModelLoad(Varien_Event_Observer $observer)
     {
-        if (!$this->canCapture()) {
+        if (!$this->canCollect()) {
             return;
         }
 
@@ -310,7 +339,7 @@ class Sheep_Debug_Model_Observer
      */
     public function onControllerFrontSendResponseAfter(Varien_Event_Observer $observer)
     {
-        if (!$this->canCapture()) {
+        if (!$this->canCollect()) {
             return;
         }
 
@@ -328,32 +357,37 @@ class Sheep_Debug_Model_Observer
      *
      * @return bool
      */
-    protected function _skipCoreBlocks()
+    public function canCaptureCoreBlocks()
     {
-        return false;
+        return true;
     }
 
 
     /**
-     * Logic that checks if we should ignore this block
+     * Logic that checks if we should capture specified block
      *
      * @param $block Mage_Core_Block_Abstract
      * @return bool
      */
-    protected function _skipBlock($block)
+    public function canCaptureBlock($block)
     {
         $blockClass = get_class($block);
 
-        if ($this->_skipCoreBlocks() && strpos($blockClass, 'Mage_') === 0) {
-            return true;
+        if (!$this->canCaptureCoreBlocks() && strpos($blockClass, 'Mage_') === 0) {
+            return false;
         }
 
-        // Skip our own blocks
-        if (strpos($blockClass, 'Sheep_Debug_Block') === 0) {
-            return true;
+        // Don't capture debug blocks
+        if (strpos($blockClass, 'Sheep_Debug_Block') > 0) {
+            return false;
         }
 
-        return false;
+        return true;
+    }
+
+    protected function registerShutdown()
+    {
+        register_shutdown_function(array($this, 'shutdown'));
     }
 
 }
