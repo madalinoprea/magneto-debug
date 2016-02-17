@@ -11,7 +11,7 @@
  * @covers Sheep_Debug_Model_Collection
  * @codeCoverageIgnore
  */
-class Sheep_Debug_Model_Test_Collection extends EcomDev_PHPUnit_Test_Case
+class Sheep_Debug_Test_Model_Collection extends EcomDev_PHPUnit_Test_Case
 {
 
     public function testConstruct()
