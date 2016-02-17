@@ -26,6 +26,8 @@ class Sheep_Debug_Model_Observer
     // This can  proper initialised only after application config is loaded
     protected $canCapture = true;
 
+    protected $requestInfo;
+
 
     /**
      * Returns current selected store
@@ -49,6 +51,7 @@ class Sheep_Debug_Model_Observer
         return $this->canCapture && php_sapi_name() != 'cli';
     }
 
+
     /**
      * Returns request info model associated to current request.
      *
@@ -56,7 +59,11 @@ class Sheep_Debug_Model_Observer
      */
     public function getRequestInfo()
     {
-        return Mage::getSingleton('sheep_debug/requestInfo');
+        if ($this->requestInfo === null) {
+            $this->requestInfo = Mage::getModel('sheep_debug/requestInfo');
+        }
+
+        return $this->requestInfo;
     }
 
 
@@ -73,6 +80,7 @@ class Sheep_Debug_Model_Observer
         if (!$this->canCapture) {
             return;
         }
+
 
         $requestInfo = $this->getRequestInfo();
         $requestInfo->setIsStarted(true);
