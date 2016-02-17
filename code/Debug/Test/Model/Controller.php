@@ -16,6 +16,14 @@ class Sheep_Debug_Test_Model_Controller extends EcomDev_PHPUnit_Test_Case
 
     public function testConstruct()
     {
+        $controller = Mage::getModel('sheep_debug/controller');
+        $this->assertNotFalse($controller);
+        $this->assertInstanceOf('Sheep_Debug_Model_Controller', $controller);
+    }
+
+
+    public function testInit()
+    {
         // Our helper that abstracts access to super global variables
         $helperMock = $this->getHelperMock('sheep_debug', array('getAllHeaders', 'getGlobalServer', 'getGlobalSession', 'getGlobalPost', 'getGlobalGet', 'getGlobalCookie'));
         $this->replaceByMock('helper', 'sheep_debug', $helperMock);
@@ -62,7 +70,9 @@ class Sheep_Debug_Test_Model_Controller extends EcomDev_PHPUnit_Test_Case
         $action->expects($this->any())->method('getActionMethodName')->with('view')->willReturn('viewAction');
 
         /** @var Sheep_Debug_Model_Controller $model */
-        $model = Mage::getModel('sheep_debug/controller', $action);
+        $model = Mage::getModel('sheep_debug/controller');
+        $model->init($action);
+
         $this->assertNotFalse($model);
         $this->assertInstanceOf('Sheep_Debug_Model_Controller', $model);
 

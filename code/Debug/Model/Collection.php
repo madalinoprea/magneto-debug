@@ -18,7 +18,7 @@ class Sheep_Debug_Model_Collection
     protected $query;
     protected $count;
 
-    public function __construct(Varien_Data_Collection_Db $collection)
+    public function init(Varien_Data_Collection_Db $collection)
     {
         $this->class = get_class($collection);
         $this->type = $collection instanceof Mage_Eav_Model_Entity_Collection_Abstract ? self::TYPE_EAV : self::TYPE_FLAT;

@@ -14,7 +14,7 @@ class Sheep_Debug_Model_Model
     protected $resource;
     protected $count;
 
-    public function __construct(Mage_Core_Model_Abstract $model)
+    public function init(Mage_Core_Model_Abstract $model)
     {
         $this->class = get_class($model);
         $this->resource = $model->getResourceName();

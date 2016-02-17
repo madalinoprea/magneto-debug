@@ -173,11 +173,13 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
 
 
     /**
-     * @param Mage_Core_Controller_Varien_Action $action
+     * @param Mage_Core_Controller_Varien_Action $controllerAction
      */
-    public function addControllerAction(Mage_Core_Controller_Varien_Action $action)
+    public function addControllerAction($controllerAction)
     {
-        $this->action = Mage::getModel('sheep_debug/controller', $action);
+        $controller = Mage::getModel('sheep_debug/controller');
+        $controller->init($controllerAction);
+        $this->action = $controller;
     }
 
 
@@ -196,7 +198,7 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
      */
     public function addLayout(Mage_Core_Model_Layout $layout, Mage_Core_Model_Design_Package $design)
     {
-        $this->design->init($layout, $design);
+        $this->getDesign()->init($layout, $design);
     }
 
 
@@ -215,15 +217,11 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
      */
     public function addBlock(Mage_Core_Block_Abstract $block)
     {
-        $blockInfo = Mage::getModel('sheep_debug/block', $block);
+        $blockInfo = Mage::getModel('sheep_debug/block');
+        $blockInfo->init($block);
         $key = $blockInfo->getName();
 
         return $this->blocks[$key] = $blockInfo;
-    }
-
-    public function setBlocks(array $blockInfo)
-    {
-        $this->blocks = $blockInfo;
     }
 
 
@@ -235,7 +233,7 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
     public function getBlock($blockName)
     {
         if (!array_key_exists($blockName, $this->blocks)) {
-            throw new Exception('Unableto find block with name ' . $blockName);
+            throw new Exception('Unable to find block with name ' . $blockName);
         }
 
         return $this->blocks[$blockName];
@@ -257,7 +255,7 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
     {
         $helper = Mage::helper('sheep_debug');
         $data = array();
-        foreach ($this->blocks as $block) {
+        foreach ($this->getBlocks() as $block) {
             $data[] = array(
                 'name'     => $block->getName(),
                 'class'    => $block->getClass(),
@@ -273,7 +271,8 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
 
     public function addCollection(Varien_Data_Collection_Db $collection)
     {
-        $info = Mage::getModel('sheep_debug/collection', $collection);
+        $info = Mage::getModel('sheep_debug/collection');
+        $info->init($collection);
         $key = $info->getClass();
 
         if (!array_key_exists($key, $this->collections)) {
@@ -302,7 +301,7 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
     {
         $data = array();
 
-        foreach ($this->collections as $collection) {
+        foreach ($this->getCollections() as $collection) {
             $data[] = array(
                 'type'  => $collection->getType(),
                 'class' => $collection->getClass(),
@@ -322,7 +321,8 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
      */
     public function addModel(Mage_Core_Model_Abstract $model)
     {
-        $modelInfo = Mage::getModel('sheep_debug/model', $model);
+        $modelInfo = Mage::getModel('sheep_debug/model');
+        $modelInfo->init($model);
         $key = $modelInfo->getClass();
 
         if (!array_key_exists($key, $this->models)) {
@@ -348,7 +348,7 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
     {
         $data = array();
 
-        foreach ($this->models as $model) {
+        foreach ($this->getModels() as $model) {
             $data[] = array(
                 'resource_name' => $model->getResource(),
                 'class'         => $model->getClass(),
@@ -432,12 +432,12 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
         $this->design = Mage::getModel('sheep_debug/design');
     }
 
-    protected function generateToken()
+    public function generateToken()
     {
-        return sprintf('%x', crc32(uniqid($this->action->getSessionId(), true)));
+        return sprintf('%x', crc32(uniqid($this->getController()->getSessionId(), true)));
     }
 
-    protected function getSerializedInfo()
+    public function getSerializedInfo()
     {
         return serialize(array(
             'logging'     => $this->getLogging(),
@@ -453,7 +453,7 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
     }
 
 
-    protected function getUnserializedInfo()
+    public function getUnserializedInfo()
     {
         return unserialize($this->getInfo());
     }
@@ -471,12 +471,12 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
 
         if (!$this->getId()) {
             $this->setToken($this->generateToken());
-            $this->setHttpMethod($this->action->getHttpMethod());
-            $this->setResponseCode($this->action->getResponseCode());
+            $this->setHttpMethod($this->getAction()->getHttpMethod());
+            $this->setResponseCode($this->getAction()->getResponseCode());
         }
 
-        $this->setRequestPath($this->action->getRequestOriginalPath());
-        $this->setSessionId($this->action->getSessionId());
+        $this->setRequestPath($this->getAction()->getRequestOriginalPath());
+        $this->setSessionId($this->getAction()->getSessionId());
         $this->setInfo($this->getSerializedInfo());
 
         return $this;

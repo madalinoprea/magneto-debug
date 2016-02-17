@@ -16,12 +16,20 @@ class Sheep_Debug_Model_Test_Collection extends EcomDev_PHPUnit_Test_Case
 
     public function testConstruct()
     {
+        $model = Mage::getModel('sheep_debug/collection');
+        $this->assertNotFalse($model);
+        $this->assertInstanceOf('Sheep_Debug_Model_Collection', $model);
+    }
+
+
+    public function testInit()
+    {
         $collection = $this->getMock('Varien_Data_Collection_Db', array('getSelectSql'));
         $collection->expects($this->once())->method('getSelectSql')->with(true)->willReturn('sql query');
 
-        $model = Mage::getModel('sheep_debug/collection', $collection);
-        $this->assertNotFalse($model);
-        $this->assertInstanceOf('Sheep_Debug_Model_Collection', $model);
+        $model = Mage::getModel('sheep_debug/collection');
+        $model->init($collection);
+
         $this->assertContains('Varien_Data_Collection_Db', $model->getClass());
         $this->assertEquals('flat', $model->getType());
         $this->assertEquals('sql query', $model->getQuery());
@@ -31,13 +39,7 @@ class Sheep_Debug_Model_Test_Collection extends EcomDev_PHPUnit_Test_Case
 
     public function testIncrementCount()
     {
-        $collection = $this->getResourceModelMock('catalog/product_collection', array('getSelectSql'));
-        $collection->expects($this->once())->method('getSelectSql')->with(true)->willReturn('sql query');
-
-        $model = Mage::getModel('sheep_debug/collection', $collection);
-        $this->assertContains('Mage_Catalog_Model_Resource_Product_Collection', $model->getClass());
-        $this->assertEquals('eav', $model->getType());
-        $this->assertEquals('sql query', $model->getQuery());
+        $model = Mage::getModel('sheep_debug/collection');
         $this->assertEquals(0, $model->getCount());
 
         $model->incrementCount();

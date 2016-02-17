@@ -16,8 +16,7 @@ class Sheep_Debug_Test_Model_Block extends EcomDev_PHPUnit_Test_Case
 
     public function testConstruct()
     {
-        $block = $this->getBlockMock('core/template');
-        $model = Mage::getModel('sheep_debug/block', $block);
+        $model = Mage::getModel('sheep_debug/block');
 
         $this->assertNotFalse($model);
         $this->assertInstanceOf('Sheep_Debug_Model_Block', $model);

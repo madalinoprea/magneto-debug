@@ -31,12 +31,6 @@ class Sheep_Debug_Model_Block
     protected $data = array();
 
 
-    public function __construct(Mage_Core_Block_Abstract $block)
-    {
-        $this->init($block);
-    }
-
-
     public function init(Mage_Core_Block_Abstract $block)
     {
         $this->name = $block->getNameInLayout();

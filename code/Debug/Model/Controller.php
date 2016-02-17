@@ -38,7 +38,7 @@ class Sheep_Debug_Model_Controller
      * Sheep_Debug_Model_Controller constructor.
      * @param Mage_Core_Controller_Varien_Action $action
      */
-    public function __construct($action)
+    public function init($action)
     {
         $helper = Mage::helper('sheep_debug');
 
