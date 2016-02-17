@@ -210,7 +210,7 @@ class Sheep_Debug_Test_Model_RequestInfo extends EcomDev_PHPUnit_Test_Case
         $this->assertEquals('Mage_Core_Block_Template', $blockInfoArray[0]['class']);
         $this->assertEquals('some_template.phtml', $blockInfoArray[0]['template']);
         $this->assertEquals(null, $blockInfoArray[0]['time (s)']);
-        $this->assertEquals(0.312, $blockInfoArray[1]['time (s)']);
+        $this->assertArrayHasKey('time (s)', $blockInfoArray[1]);
         $this->assertEquals(1, $blockInfoArray[1]['count']);
     }
 
