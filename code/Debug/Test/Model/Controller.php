@@ -5,7 +5,7 @@
  *
  * @category Sheep
  * @package  Sheep_Subscription
- * @license  Copyright: Pirate Sheep, 2016, All Rights reserved.
+ * @license  Copyright: Pirate Sheep, 2016
  * @link     https://piratesheep.com
  *
  * @covers Sheep_Debug_Model_Controller

@@ -11,7 +11,7 @@
  *
  * @category Sheep
  * @package  Sheep_Debug
- * @license  Copyright: Pirate Sheep, 2016, All Rights reserved.
+ * @license  Copyright: Pirate Sheep, 2016
  * @link     https://piratesheep.com
  */
 class Sheep_Debug_Model_Core_Email extends Mage_Core_Model_Email

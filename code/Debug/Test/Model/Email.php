@@ -5,7 +5,7 @@
  *
  * @category Sheep
  * @package  Sheep_Subscription
- * @license  Copyright: Pirate Sheep, 2016, All Rights reserved.
+ * @license  Copyright: Pirate Sheep, 2016
  * @link     https://piratesheep.com
  *
  * @covers Sheep_Debug_Model_Email
@@ -46,7 +46,7 @@ class Sheep_Debug_Test_Model_Email extends EcomDev_PHPUnit_Test_Case
         $this->assertFalse($model->isAccepted());
     }
 
-    
+
     public function testSetVariables()
     {
         $model = Mage::getModel('sheep_debug/email');

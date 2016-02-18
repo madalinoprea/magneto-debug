@@ -5,7 +5,7 @@
  *
  * @category Sheep
  * @package  Sheep_Debug
- * @license  Copyright: Pirate Sheep, 2016, All Rights reserved.
+ * @license  Copyright: Pirate Sheep, 2016
  * @link     https://piratesheep.com
  *
  * @method setRequestInfo(Sheep_Debug_Model_RequestInfo $requestInfo)

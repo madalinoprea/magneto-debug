@@ -5,7 +5,7 @@
  *
  * @category Sheep
  * @package  Sheep_Debug
- * @license  Copyright: Pirate Sheep, 2016, All Rights reserved.
+ * @license  Copyright: Pirate Sheep, 2016
  * @link     https://piratesheep.com
  */
 class Sheep_Debug_Model_Resource_RequestInfo_Collection extends Mage_Core_Model_Resource_Db_Collection_Abstract

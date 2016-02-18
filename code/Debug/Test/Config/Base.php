@@ -5,7 +5,7 @@
  *
  * @category Sheep
  * @package  Sheep_Debug
- * @license  Copyright: Pirate Sheep, 2016, All Rights reserved.
+ * @license  Copyright: Pirate Sheep, 2016
  * @link     https://piratesheep.com
  */
 class Sheep_Debug_Test_Config_Base extends EcomDev_PHPUnit_Test_Case_Config
