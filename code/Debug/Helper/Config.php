@@ -11,19 +11,30 @@
 class Sheep_Debug_Helper_Config extends Mage_Core_Helper_Abstract
 {
 
+    /**
+     * Returns Magento version
+     *
+     * @return string
+     */
     public function getMagentoVersion()
     {
         return Mage::getVersion();
     }
 
+
+    /**
+     * Returns PHP version
+     *
+     * @return string
+     */
     public function getPhpVersion()
     {
         return phpversion();
     }
 
+
     /**
-     * Returns a list of php extension name required by current Magento version
-     * TODO: read array dynamically from app/code/core/Mage/Install/etc/install.xml, verify when this file was added
+     * Returns a list of php extensions required by current Magento version
      *
      * @return array
      */
@@ -32,6 +43,12 @@ class Sheep_Debug_Helper_Config extends Mage_Core_Helper_Abstract
         return array('spl', 'dom', 'simplexml', 'mcrypt', 'hash', 'curl', 'iconv', 'ctype', 'gd', 'soap', 'mbstring');
     }
 
+
+    /**
+     * Returns enable state for required PHP extensions
+     *
+     * @return array
+     */
     public function getExtensionStatus()
     {
         $status = array();
@@ -44,7 +61,10 @@ class Sheep_Debug_Helper_Config extends Mage_Core_Helper_Abstract
         return $status;
     }
 
+
     /**
+     * Returns description for installed Magento modules
+     *
      * @return array
      */
     public function getModules()
@@ -71,4 +91,5 @@ class Sheep_Debug_Helper_Config extends Mage_Core_Helper_Abstract
 
         return $items;
     }
+
 }

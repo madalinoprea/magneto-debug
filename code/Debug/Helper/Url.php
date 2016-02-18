@@ -23,25 +23,11 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
     }
 
 
-    public function getRequestListUrl($filters = array())
-    {
-        return $this->getUrl('index/search', $filters);
-    }
-
-    public function getLatestRequestViewUrl($panel = 'request')
-    {
-        return $this->getUrl('index/latest', array('panel' => $panel));
-    }
-
-    public function getRequestViewUrl($token, $panel = 'request')
-    {
-        return $this->getUrl('index/view', array('token' => $token, 'panel' => $panel));
-    }
-
-
     /**
+     * Returns an url for our module route and default store
+     *
      * @param string $path Contains controller and action. Route will be added.
-     * @param array  $params
+     * @param array $params
      * @return string
      */
     public function getUrl($path, array $params = array())
@@ -55,6 +41,49 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
 
 
     /**
+     * Returns request list page url
+     *
+     * @see \Sheep_Debug_IndexController::searchAction
+     * @param array $filters
+     * @return string
+     */
+    public function getRequestListUrl($filters = array())
+    {
+        return $this->getUrl('index/search', $filters);
+    }
+
+
+    /**
+     * Returns last request profile view page url
+     *
+     * @see \Sheep_Debug_IndexController::latestAction
+     * @param string $panel
+     * @return string
+     */
+    public function getLatestRequestViewUrl($panel = 'request')
+    {
+        return $this->getUrl('index/latest', array('panel' => $panel));
+    }
+
+
+    /**
+     * Returns request profile view page url for request specified by token
+     *
+     * @see \Sheep_Debug_IndexController::viewAction
+     * @param $token
+     * @param string $panel
+     * @return string
+     */
+    public function getRequestViewUrl($token, $panel = 'request')
+    {
+        return $this->getUrl('index/view', array('token' => $token, 'panel' => $panel));
+    }
+
+
+    /**
+     * Returns url to enable specified module
+     *
+     * @see \Sheep_Debug_ModuleController::enableAction
      * @param string $moduleName
      * @return string
      */
@@ -65,6 +94,9 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
 
 
     /**
+     * Returns url to disable specified module
+     *
+     * @see \Sheep_Debug_ModuleController::disableAction
      * @param string $moduleName
      * @return string
      */
@@ -73,7 +105,11 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
         return $this->getUrl('module/disable', array('module' => $moduleName));
     }
 
+
     /**
+     * Returns url to enable SQL profiler
+     *
+     * @see \Sheep_Debug_ModelController::enableSqlProfilerAction
      * @return string
      */
     public function getEnableSqlProfilerUrl()
@@ -82,6 +118,12 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
     }
 
 
+    /**
+     * Returns url to disable SQL profiler
+     *
+     * @see \Sheep_Debug_ModelController::disableSqlProfilerAction
+     * @return string
+     */
     public function getDisableSqlProfilerUrl()
     {
         return $this->getUrl('model/disableSqlProfiler');
@@ -89,6 +131,9 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
 
 
     /**
+     * Returns url to execute SQL specified by request token and its index
+     *
+     * @see \Sheep_Debug_ModelController::selectSqlAction
      * @param string $token
      * @param int $index
      * @return string
@@ -100,6 +145,9 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
 
 
     /**
+     * Returns url to describe SQL specified by request token and its index
+     *
+     * @see \Sheep_Debug_ModelController::describeSqlAction
      * @param string $token
      * @param int $index
      * @return string
@@ -111,7 +159,10 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
 
 
     /**
-     * @param $blockClass
+     * Returns url that shows definition for specified block class
+     *
+     * @deprecated This functionality is not currently available.
+     * @param string $blockClass
      * @return string
      */
     public function getViewBlockUrl($blockClass)
@@ -121,7 +172,10 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
 
 
     /**
-     * @param $template
+     * Returns url that shows contents of specified template.
+     *
+     * @deprecated This functionality is not currently available.
+     * @param string $template
      * @return string
      */
     public function getViewTemplateUrl($template)
@@ -132,7 +186,7 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
 
     /**
      * @param string $layoutHandle
-     * @param int    $storeId
+     * @param int $storeId
      * @param string $area
      * @return string
      */
@@ -141,8 +195,12 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
         return $this->getUrl('design/viewHandle', array('handle' => $layoutHandle, 'store' => $storeId, 'area' => $area));
     }
 
+
     /**
-     * @param $token
+     * Returns url that fetches layout updates for processed for specified request
+     *
+     * @see \Sheep_Debug_DesignController::layoutUpdatesAction
+     * @param string $token
      * @return string
      */
     public function getLayoutUpdatesUrl($token)
@@ -150,7 +208,11 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
         return $this->getUrl('design/layoutUpdates', array('token' => $token));
     }
 
+
     /**
+     * Returns url that fetches log line added during specified request and for specified log file
+     *
+     * @see \Sheep_Debug_IndexController::viewLogAction
      * @param string $token
      * @param string $logfile
      * @return string
@@ -160,12 +222,23 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
         return $this->getUrl('index/viewLog', array('token' => $token, 'log' => $logfile));
     }
 
+
+    /**
+     * Returns url that delete all recorded request profiles
+     *
+     * @see \Sheep_Debug_IndexController::purgeProfilesAction
+     * @return string
+     */
     public function getPurgeProfilesAction()
     {
         return $this->getUrl('index/purgeProfiles');
     }
 
+
     /**
+     * Returns url that returns classed for different types of group classes
+     *
+     * @see \Sheep_Debug_UtilController::searchGroupClassAction
      * @return string
      */
     public function getSearchGroupClassUrl()
@@ -174,73 +247,160 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
     }
 
 
+    /**
+     * Returns url that flushes Magento's cache storage
+     *
+     * @see \Sheep_Debug_UtilController::flushCacheAction
+     * @return string
+     */
     public function getFlushCacheUrl()
     {
         return $this->getUrl('util/flushCache');
     }
 
 
+    /**
+     * Returns url that enables template and block hints
+     *
+     * @see \Sheep_Debug_UtilController::enableTemplateHintsAction
+     * @return string
+     */
     public function getEnableTemplateHintsUrl()
     {
         return $this->getUrl('util/enableTemplateHints');
     }
 
 
+    /**
+     * Returns url that disables template and block hints
+     *
+     * @see \Sheep_Debug_UtilController::disableTemplateHintsAction
+     * @return string
+     */
     public function getDisableTemplateHintsUrl()
     {
         return $this->getUrl('util/disableTemplateHints');
     }
 
 
+    /**
+     * Returns url that enables Full Page Cache debug (available only for Magento Enterprise)
+     *
+     * @see \Sheep_Debug_UtilController::enableFPCDebugAction
+     * @return string
+     */
     public function getEnableFPCDebugUrl()
     {
         return $this->getUrl('util/enableFPCDebug');
     }
 
 
+    /**
+     * Returns url that disables Full Page Cache debug (available only for Magento Enterprise)
+     *
+     * @see \Sheep_Debug_UtilController::disableFPCDebugAction
+     * @return string
+     */
     public function getDisableFPCDebugUrl()
     {
         return $this->getUrl('util/disableFPCDebug');
     }
 
 
+    /**
+     * Returns url that enables inline translations
+     *
+     * @see \Sheep_Debug_UtilController::enableTranslateAction
+     * @return string
+     */
     public function getEnableTranslateUrl()
     {
         return $this->getUrl('util/enableTranslate');
     }
 
 
+    /**
+     * Returns url that disables inline translation
+     *
+     * @see \Sheep_Debug_UtilController::disableTranslateAction
+     * @return string
+     */
     public function getDisableTranslateUrl()
     {
         return $this->getUrl('util/disableTranslate');
     }
 
+
+    /**
+     * Returns url that show PHP info
+     *
+     * @see \Sheep_Debug_ConfigController::phpinfoAction
+     * @return string
+     */
     public function getPhpInfoUrl()
     {
         return $this->getUrl('config/phpinfo');
     }
 
+
+    /**
+     * Returns url that returns results for searched configurations
+     *
+     * @see \Sheep_Debug_ConfigController::searchAction
+     * @deprecated Currently functionality is not available.
+     * @return string
+     */
     public function getSearchConfigUrl()
     {
         return $this->getUrl('config/search');
     }
 
 
+    /**
+     * Returns url that outputs configuration as text or as xml
+     *
+     * @see \Sheep_Debug_ConfigController::downloadAction
+     * @param string $type
+     * @return string
+     */
     public function getDownloadConfig($type = 'txt')
     {
         return $this->getUrl('config/download', array('type' => $type));
     }
 
+
+    /**
+     * Returns url that enables to automatically start Varien Profiler
+     *
+     * @see \Sheep_Debug_ConfigController::enableVarienProfilerAction
+     * @return string
+     */
     public function getEnableVarienProfilerUrl()
     {
         return $this->getUrl('config/enableVarienProfiler');
     }
 
+
+    /**
+     * Returns url that disables to start automatically Varien Profiler
+     *
+     * @see \Sheep_Debug_ConfigController::disableVarienProfilerAction
+     * @return string
+     */
     public function getDisableVarienProfilerUrl()
     {
         return $this->getUrl('config/disableVarienProfiler');
     }
 
+
+    /**
+     * Returns url that outputs body of an e-mail sent during specified request
+     *
+     * @see \Sheep_Debug_EmailController::getBodyAction
+     * @param string $token
+     * @param int $row
+     * @return string
+     */
     public function getEmailBodyUrl($token, $row)
     {
         return $this->getUrl('email/getBody', array('token' => $token, 'index' => $row));

@@ -16,6 +16,11 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
     const DEBUG_OPTION_FORCE_VARIEN_PROFILE_PATH = 'sheep_debug/options/force_varien_profile';
 
 
+    /**
+     * Checks if module is enabled based on configuration
+     *
+     * @return bool
+     */
     public function isEnabled()
     {
         return (bool)Mage::getStoreConfig(self::DEBUG_OPTIONS_ENABLE_PATH);
@@ -57,6 +62,7 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
 
 
     /**
+     * Checks if Magento Developer Mode is enabled
      * @return bool
      */
     public function getIsDeveloperMode()
@@ -109,6 +115,8 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
 
 
     /**
+     * Returns SQL profiler
+     *
      * @return Zend_Db_Profiler
      */
     public function getSqlProfiler()
@@ -121,6 +129,8 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
 
 
     /**
+     * Flattens an xml tree into an associate array where key represents path
+     *
      * @param Mage_Core_Model_Config_Element $xml
      * @param array $arr
      * @param string $parentKey
@@ -225,7 +235,7 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
 
 
     /**
-     * Return readable file size
+     * Returns readable file size
      *
      * @param int $size size in bytes
      * @param int $precision
@@ -285,30 +295,55 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
     }
 
 
+    /**
+     * Returns $_SERVER
+     *
+     * @return mixed
+     */
     public function getGlobalServer()
     {
         return $_SERVER;
     }
 
 
+    /**
+     * Returns $_SESSION or empty array if not available
+     *
+     * @return array
+     */
     public function getGlobalSession()
     {
         return isset($_SESSION) ? $_SESSION : array();
     }
 
 
+    /**
+     * Returns $_POST or empty array if not available
+     *
+     * @return array
+     */
     public function getGlobalPost()
     {
         return isset($_POST) ? $_POST : array();
     }
 
 
+    /**
+     * Returns $_GET or empty array if not available
+     *
+     * @return array
+     */
     public function getGlobalGet()
     {
         return isset($_GET) ? $_GET : array();
     }
 
 
+    /**
+     * Returns $_COOKIE or empty array if not available
+     *
+     * @return array
+     */
     public function getGlobalCookie()
     {
         return isset($_COOKIE) ? $_COOKIE : array();
@@ -331,12 +366,23 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
     }
 
 
+    /**
+     * Sorts specified array based on getCount()
+     *
+     * @param array $objects
+     */
     public function sortByCount(&$objects)
     {
         usort($objects, array('Sheep_Debug_Helper_Data', 'sortModelCmp'));
     }
 
 
+    /**
+     * Returns filepath for specified block class
+     *
+     * @param $blockClass
+     * @return bool|string
+     */
     public function getBlockFilename($blockClass)
     {
         return mageFindClassFile($blockClass);
@@ -419,6 +465,8 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
 
 
     /**
+     * Returns Magento configuration instance
+     *
      * @return Mage_Core_Model_Config
      */
     protected function getConfig()
