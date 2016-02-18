@@ -8,7 +8,6 @@
  * @license  Copyright: Pirate Sheep, 2016
  * @link     https://piratesheep.com
  *
- * @method setRequestInfo(Sheep_Debug_Model_RequestInfo $requestInfo)
  */
 class Sheep_Debug_Block_Abstract extends Mage_Core_Block_Template
 {
@@ -41,6 +40,12 @@ class Sheep_Debug_Block_Abstract extends Mage_Core_Block_Template
     }
 
 
+    /**
+     * Returns store if for default configured store
+     *
+     * @return mixed
+     * @throws Mage_Core_Exception
+     */
     public function getDefaultStoreId()
     {
         return Mage::app()
@@ -50,6 +55,11 @@ class Sheep_Debug_Block_Abstract extends Mage_Core_Block_Template
     }
 
 
+    /**
+     * Disable template hints for our own blocks
+     *
+     * @return bool
+     */
     public function getShowTemplateHints()
     {
         return false;
@@ -58,8 +68,6 @@ class Sheep_Debug_Block_Abstract extends Mage_Core_Block_Template
 
     /**
      * Returns info attached to this block or returns current request's info
-     *
-     * TODO: Return specified request info
      *
      * @return Sheep_Debug_Model_RequestInfo
      */
@@ -72,18 +80,38 @@ class Sheep_Debug_Block_Abstract extends Mage_Core_Block_Template
         return $this->requestInfo;
     }
 
-    public function getRequestListUrl($filters = array())
+
+    /**
+     * Returns url to request profile list
+     *
+     * @param array $filters
+     * @return string
+     */
+    public function getRequestListUrl(array $filters = array())
     {
         return Mage::helper('sheep_debug/url')->getRequestListUrl($filters);
     }
 
 
+    /**
+     * Returns url to latest request profile page view
+     *
+     * @param string $panel
+     * @return string
+     */
     public function getLatestRequestViewUrl($panel = null)
     {
         return Mage::helper('sheep_debug/url')->getLatestRequestViewUrl($panel);
     }
 
 
+    /**
+     * Returns url to specified request profile page
+     *
+     * @param string $panel
+     * @param string $token
+     * @return string
+     */
     public function getRequestViewUrl($panel = null, $token = null)
     {
         $token = $token ?: $this->getRequestInfo()->getToken();
@@ -139,4 +167,5 @@ class Sheep_Debug_Block_Abstract extends Mage_Core_Block_Template
 
         return $cssClass;
     }
+
 }
