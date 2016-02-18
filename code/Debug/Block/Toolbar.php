@@ -30,6 +30,8 @@ class Sheep_Debug_Block_Toolbar extends Sheep_Debug_Block_Abstract
 
 
     /**
+     * Returns Sheep Debug module version
+     *
      * @return string
      */
     public function getVersion()

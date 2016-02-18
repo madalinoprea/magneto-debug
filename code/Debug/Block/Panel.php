@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class Sheep_Debug_Block_Panel
+ * Class Sheep_Debug_Block_Panel represents a section on toolbar.
  *
  * @category Sheep
  * @package  Sheep_Debug

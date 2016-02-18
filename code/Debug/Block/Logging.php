@@ -21,6 +21,11 @@ class Sheep_Debug_Block_Logging extends Sheep_Debug_Block_Panel
     }
 
 
+    /**
+     * Returns an array with all registered log file names
+     *
+     * @return array
+     */
     public function getLogFiles()
     {
         return $this->getLogging()->getFiles();

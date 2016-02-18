@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class Sheep_Debug_Block_View
+ * Class Sheep_Debug_Block_View represents main block used in request profile view page
  *
  * @category Sheep
  * @package  Sheep_Debug
@@ -27,6 +27,8 @@ class Sheep_Debug_Block_View extends Sheep_Debug_Block_Abstract
 
 
     /**
+     * Returns an instance to our service
+     *
      * @return Sheep_Debug_Model_Service
      */
     public function getService()
@@ -122,6 +124,8 @@ class Sheep_Debug_Block_View extends Sheep_Debug_Block_Abstract
 
 
     /**
+     * Renders an array key
+     *
      * @param string $field
      * @return string
      */

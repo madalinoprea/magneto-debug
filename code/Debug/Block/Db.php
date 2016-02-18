@@ -11,6 +11,11 @@
 class Sheep_Debug_Block_Db extends Sheep_Debug_Block_Panel
 {
 
+    /**
+     * Checks if SQL Profiler is enabled
+     *
+     * @return bool
+     */
     public function isSqlProfilerEnabled()
     {
         return $this->helper->getSqlProfiler()->getEnabled();
