@@ -15,5 +15,8 @@
   },
   "require": {
     "magento-hackathon/magento-composer-installer": "*"
+  },
+  "suggest": {
+    "ecomdev/ecomdev_phpunit": "Allows to verify compatibility by running module's unit tests"
   }
 }
