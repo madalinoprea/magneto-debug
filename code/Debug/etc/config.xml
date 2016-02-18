@@ -72,7 +72,7 @@
                 </observers>
             </controller_action_layout_generate_blocks_after>
 
-            <!-- Records rendered block and rendering start time -->
+            <!-- Records rendered blocks and their rendering start time -->
             <core_block_abstract_to_html_before>
                 <observers>
                     <debug_observer>
@@ -83,7 +83,7 @@
                 </observers>
             </core_block_abstract_to_html_before>
 
-            <!-- Records block rendering end time -->
+            <!-- Records blocks rendering end time -->
             <core_block_abstract_to_html_after>
                 <observers>
                     <debug_observer>
@@ -94,6 +94,7 @@
                 </observers>
             </core_block_abstract_to_html_after>
 
+            <!-- Records request properties (current route, original request path, etc) -->
             <controller_action_postdispatch>
                 <observers>
                     <debug_observer>
@@ -115,7 +116,7 @@
                 </observers>
             </core_collection_abstract_load_before>
 
-            <!-- Records collection load -->
+            <!-- Records loaded EAV collections -->
             <eav_collection_abstract_load_before>
                 <observers>
                     <debug_observer>
@@ -126,7 +127,7 @@
                 </observers>
             </eav_collection_abstract_load_before>
 
-            <!-- Records model load -->
+            <!-- Records loaded models -->
             <model_load_after>
                 <observers>
                     <debug_observer>
@@ -138,6 +139,7 @@
             </model_load_after>
 
 
+            <!-- TODO: candidate to be removed -->
             <controller_action_predispatch>
                 <observers>
                     <debug_observer>
@@ -148,7 +150,7 @@
                 </observers>
             </controller_action_predispatch>
 
-            <!-- last chance to save stuff -->
+            <!-- Last change from Magento to save everything, we'll also try to save it from a PHP shutdown callback -->
             <controller_front_send_response_after>
                 <observers>
                     <sheep_debug>
@@ -158,6 +160,17 @@
                     </sheep_debug>
                 </observers>
             </controller_front_send_response_after>
+
+            <!-- Instruct website restriction module to allow our requests -->
+            <websiterestriction_frontend>
+                <observers>
+                    <sheep_debug>
+                        <type>singleton</type>
+                        <class>sheep_debug/obsever</class>
+                        <method>onWebsiteRestriction</method>
+                    </sheep_debug>
+                </observers>
+            </websiterestriction_frontend>
         </events>
     </global>
 
@@ -180,31 +193,7 @@
             </updates>
         </layout>
 
-        <enterprise>
-            <!-- TODO: Update whitelisted actions after module renaming -->
-            <websiterestriction>
-                <full_action_names>
-                    <generic>
-                        <debug_index_clearCache/>
-                        <debug_index_downloadConfig/>
-                        <debug_index_downloadConfigAsText/>
-                        <debug_index_searchConfig/>
-                        <debug_index_searchGroupedClass/>
-                        <debug_index_toggleModuleStatus/>
-                        <debug_index_togglePageCacheDebug/>
-                        <debug_index_toggleSqlProfiler/>
-                        <debug_index_toggleTemplateHints/>
-                        <debug_index_toggleTranslateInline/>
-                        <debug_index_viewBlock/>
-                        <debug_index_viewFilesWithHandle/>
-                        <debug_index_viewLog/>
-                        <debug_index_viewSqlExplain/>
-                        <debug_index_viewSqlSelect/>
-                        <debug_index_viewTemplate/>
-                    </generic>
-                </full_action_names>
-            </websiterestriction>
-        </enterprise>
+
     </frontend>
 
     <!-- adminhtml configuration -->
@@ -240,17 +229,6 @@
                 <persist_expiration>1</persist_expiration>
                 <force_varien_profile>1</force_varien_profile>
             </options>
-
-            <panels>
-                <controller_visibility>1</controller_visibility>
-                <models_visibility>1</models_visibility>
-                <design_visibility>1</design_visibility>
-                <blocks_visibility>1</blocks_visibility>
-                <logging_visibility>1</logging_visibility>
-                <util_visibility>1</util_visibility>
-                <modules_visibility>1</modules_visibility>
-                <config_visibility>1</config_visibility>
-            </panels>
         </sheep_debug>
     </default>
 

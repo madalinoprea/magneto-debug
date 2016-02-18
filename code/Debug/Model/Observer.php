@@ -40,7 +40,6 @@ class Sheep_Debug_Model_Observer
     }
 
 
-
     /**
      * Checks if we can start collection for current execution context
      *
@@ -356,6 +355,26 @@ class Sheep_Debug_Model_Observer
 
         $this->updateProfiling();
         $this->getRequestInfo()->getController()->addResponseInfo($front->getResponse());
+    }
+
+
+    /**
+     * Disables website restriction module for requests handled by our module
+     *
+     * @param Varien_Event_Observer $observer
+     */
+    public function onWebsiteRestriction(Varien_Event_Observer $observer)
+    {
+        /** @var Mage_Core_Controller_Front_Action $controller */
+        $controller = $observer->getController();
+        /** @var Varien_Object $result */
+        $result = $observer->getResult();
+
+        $helper = Mage::helper('sheep_debug');
+        if ($helper->canShowToolbar() && $controller instanceof Sheep_Debug_Controller_Front_Action) {
+            $result->setShouldProceed(false);
+        }
+
     }
 
 
