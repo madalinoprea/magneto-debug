@@ -21,34 +21,14 @@
 
         <reference name="before_body_end">
             <block type="sheep_debug/toolbar" name="debug_panels" template="sheep_debug/toolbar.phtml" after="-">
-
-                <block type="sheep_debug/controller" name="debug_controller_panel" template="sheep_debug/panel/controller.phtml">
-                    <action method="setTitle"><title>Controller</title></action>
-                </block>
-
-                <block type="sheep_debug/db" name="debug_models_panel" template="sheep_debug/panel/db.phtml">
-                    <action method="setTitle"><title>Models</title></action>
-                </block>
-
-                <block type="sheep_debug/panel" name="debug_design_panel" template="sheep_debug/panel/layout.phtml">
-                    <action method="setTitle"><title>Design</title></action>
-                    <action method="setSubTitle"><sub_title>Updates, Handlers</sub_title></action>
-                </block>
-
-                <block type="sheep_debug/logging" name="debug_logs_panel" template="sheep_debug/panel/logging.phtml">
-                    <action method="setTitle"><title>Logs</title></action>
-                    <action method="setSubTitle"><sub_title>system.log, exception.log</sub_title></action>
-                </block>
+                <block type="sheep_debug/controller" name="debug_controller_panel" template="sheep_debug/panel/controller.phtml"/>
+                <block type="sheep_debug/db" name="debug_models_panel" template="sheep_debug/panel/db.phtml"/>
+                <block type="sheep_debug/panel" name="debug_design_panel" template="sheep_debug/panel/layout.phtml"/>
+                <block type="sheep_debug/logging" name="debug_logs_panel" template="sheep_debug/panel/logging.phtml"/>
 
                 <!-- Aligned to right -->
-                <block type="sheep_debug/config" name="debug_config_panel" template="sheep_debug/panel/config.phtml">
-                    <action method="setTitle"><title>About</title></action>
-                </block>
-
-                <block type="sheep_debug/util" name="debug_utils_panel" template="sheep_debug/panel/utilities.phtml">
-                    <action method="setTitle"><title>Utils</title></action>
-                    <action method="setSubTitle"><sub_title>Cache, Hints, etc</sub_title></action>
-                </block>
+                <block type="sheep_debug/config" name="debug_config_panel" template="sheep_debug/panel/config.phtml"/>
+                <block type="sheep_debug/util" name="debug_utils_panel" template="sheep_debug/panel/utilities.phtml"/>
             </block>
         </reference>
     </default>
