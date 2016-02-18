@@ -118,7 +118,7 @@ class Sheep_Debug_Block_Abstract extends Mage_Core_Block_Template
         return Mage::helper('sheep_debug/url')->getRequestViewUrl($token, $panel);
     }
 
-    
+
     /**
      * Returns number formatted based on current locale
      *
