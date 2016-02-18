@@ -39,17 +39,8 @@ class Sheep_Debug_Controller_Front_Action extends Mage_Core_Controller_Front_Act
 
 
     /**
-     * Returns current checkout session
+     * Returns an instance to our all known service
      *
-     * @return Mage_Checkout_Model_Session
-     */
-    public function getCheckoutSession()
-    {
-        return Mage::getSingleton('checkout/session');
-    }
-
-
-    /**
      * @return Sheep_Debug_Model_Service
      */
     public function getService()
