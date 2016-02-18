@@ -24,6 +24,12 @@ class Sheep_Debug_Model_Design
     protected $uncompressedLayoutUpdates;
 
 
+    /**
+     * Captures layout information
+     *
+     * @param Mage_Core_Model_Layout $layout
+     * @param Mage_Core_Model_Design_Package $designPackage
+     */
     public function init(Mage_Core_Model_Layout $layout, Mage_Core_Model_Design_Package $designPackage)
     {
         $this->area = $designPackage->getArea();
@@ -39,6 +45,9 @@ class Sheep_Debug_Model_Design
 
 
     /**
+     * Sets layout updates.
+     * They are stores as compressed json.
+     *
      * @param array $updates
      */
     public function setLayoutUpdates(array $updates)
@@ -48,6 +57,8 @@ class Sheep_Debug_Model_Design
 
 
     /**
+     * Returns layout handles added during the request
+     *
      * @return array
      */
     public function getLayoutHandles()
@@ -55,7 +66,10 @@ class Sheep_Debug_Model_Design
         return $this->layoutHandles;
     }
 
+
     /**
+     * Returns layout updates processed during the request
+     *
      * @return array
      */
     public function getLayoutUpdates()
@@ -69,7 +83,10 @@ class Sheep_Debug_Model_Design
     }
 
 
+
     /**
+     * Returns application area used during request
+     *
      * @return string
      */
     public function getArea()
@@ -79,6 +96,8 @@ class Sheep_Debug_Model_Design
 
 
     /**
+     * Returns design package name used during request
+     *
      * @return string
      */
     public function getPackageName()
@@ -88,6 +107,8 @@ class Sheep_Debug_Model_Design
 
 
     /**
+     * Returns used theme name
+     *
      * @return string
      */
     public function getThemeLayout()
@@ -97,6 +118,8 @@ class Sheep_Debug_Model_Design
 
 
     /**
+     * Returns used theme template
+     *
      * @return string
      */
     public function getThemeTemplate()
@@ -106,6 +129,8 @@ class Sheep_Debug_Model_Design
 
 
     /**
+     * Returns used theme skin
+     *
      * @return string
      */
     public function getThemeSkin()
@@ -115,6 +140,8 @@ class Sheep_Debug_Model_Design
 
 
     /**
+     * Returns used theme locale
+     *
      * @return string
      */
     public function getThemeLocale()
@@ -122,6 +149,12 @@ class Sheep_Debug_Model_Design
         return $this->themeLocale;
     }
 
+
+    /**
+     * Returns design descriptive properties
+     *
+     * @return array
+     */
     public function getInfoAsArray()
     {
         return array(
@@ -133,4 +166,5 @@ class Sheep_Debug_Model_Design
             'skin'           => $this->getThemeSkin()
         );
     }
+
 }

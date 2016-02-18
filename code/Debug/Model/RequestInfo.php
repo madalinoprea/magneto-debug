@@ -66,6 +66,10 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
     /** @var Sheep_Debug_Model_Email[] */
     protected $emails = array();
 
+
+    /**
+     * Initialises logging by registering commong log files
+     */
     public function initLogging()
     {
         $helper = Mage::helper('sheep_debug');
@@ -80,12 +84,19 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
     }
 
 
+    /**
+     * Marks logging as completed.
+     */
     public function completeLogging()
     {
         $this->getLogging()->endRequest();
     }
 
+
     /**
+     * Returns timers registered by Varien Profiler
+     *
+     * @see Varien_Profiler
      * @return array
      */
     public function getTimers()
@@ -95,7 +106,8 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
 
 
     /**
-     * Returns a list of events
+     * Returns list of events dispatched during request.
+     * This is extracted from data captured by Varien Profiler
      *
      * @return array
      */
@@ -122,8 +134,7 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
 
     /**
      * Returns a list of called observers during request.
-     *
-     * Observers are determined based on recorded events
+     * Observers are determined based on Varien Profiler timers
      *
      * @return array
      */
@@ -149,6 +160,8 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
 
 
     /**
+     * Sets Varien Profiler timers
+     *
      * @param array $timers
      */
     public function setTimers($timers)
@@ -157,12 +170,20 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
     }
 
 
+    /**
+     * Adds sent e-mail info
+     *
+     * @param Sheep_Debug_Model_Email $email
+     */
     public function addEmail(Sheep_Debug_Model_Email $email)
     {
         $this->emails[] = $email;
     }
 
+
     /**
+     * Returns e-mails sent during request
+     *
      * @return Sheep_Debug_Model_Email[]
      */
     public function getEmails()
@@ -172,6 +193,8 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
 
 
     /**
+     * Returns captured logging information
+     *
      * @return Sheep_Debug_Model_Logging
      */
     public function getLogging()
@@ -181,6 +204,8 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
 
 
     /**
+     * Captures information from controller
+     *
      * @param Mage_Core_Controller_Varien_Action $controllerAction
      */
     public function addControllerAction($controllerAction)
@@ -192,6 +217,8 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
 
 
     /**
+     * Returns request/response/controller model
+     *
      * @return Sheep_Debug_Model_Controller
      */
     public function getController()
@@ -201,6 +228,8 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
 
 
     /**
+     * Captures layout information
+     *
      * @param Mage_Core_Model_Layout $layout
      * @param Mage_Core_Model_Design_Package $design
      */
@@ -211,6 +240,8 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
 
 
     /**
+     * Returns design model
+     *
      * @return Sheep_Debug_Model_Design
      */
     public function getDesign()
@@ -220,6 +251,8 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
 
 
     /**
+     * Adds block
+     *
      * @param Mage_Core_Block_Abstract $block
      * @return Sheep_Debug_Model_Block
      */
@@ -234,6 +267,8 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
 
 
     /**
+     * Returns block information associated to specified block name
+     *
      * @param $blockName
      * @return Sheep_Debug_Model_Block
      * @throws Exception
@@ -249,6 +284,8 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
 
 
     /**
+     * Returns information about instantiated/rendered blocks
+     *
      * @return Sheep_Debug_Model_Block[]
      */
     public function getBlocks()
@@ -256,7 +293,10 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
         return $this->blocks;
     }
 
+
     /**
+     * Returns information about instantiated/rendered blocks
+     *
      * @return array
      */
     public function getBlocksAsArray()
@@ -277,6 +317,11 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
     }
 
 
+    /**
+     * Adds loaded collection
+     *
+     * @param Varien_Data_Collection_Db $collection
+     */
     public function addCollection(Varien_Data_Collection_Db $collection)
     {
         $info = Mage::getModel('sheep_debug/collection');
@@ -292,6 +337,8 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
 
 
     /**
+     * Returns information about loaded collections
+     *
      * @return Sheep_Debug_Model_Collection[]
      */
     public function getCollections()
@@ -301,7 +348,7 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
 
 
     /**
-     * Returns captured collection as array
+     * Returns information about loaded collections
      *
      * @return array
      */
@@ -323,7 +370,7 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
 
 
     /**
-     * Adds model load
+     * Adds loaded model
      *
      * @param Mage_Core_Model_Abstract $model
      */
@@ -342,6 +389,8 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
 
 
     /**
+     * Returns information about captured models
+     *
      * @return Sheep_Debug_Model_Model[]
      */
     public function getModels()
@@ -349,7 +398,10 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
         return $this->models;
     }
 
+
     /**
+     * Returns information about captured models
+     *
      * @return array
      */
     public function getModelsAsArray()
@@ -386,6 +438,8 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
 
 
     /**
+     * Returns SQL queries executed during request.
+     *
      * @return Zend_Db_Profiler_Query[]
      */
     public function getQueries()
@@ -440,11 +494,23 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
         $this->design = Mage::getModel('sheep_debug/design');
     }
 
+
+    /**
+     * Generates a unique id that identifies a request.
+     *
+     * @return string
+     */
     public function generateToken()
     {
         return sprintf('%x', crc32(uniqid($this->getController()->getSessionId(), true)));
     }
 
+
+    /**
+     * Serialize fields that are stored in info blob
+     *
+     * @return string
+     */
     public function getSerializedInfo()
     {
         return serialize(array(
@@ -461,18 +527,33 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
     }
 
 
+    /**
+     * Unserialize info blob
+     *
+     * @return mixed
+     */
     public function getUnserializedInfo()
     {
         return unserialize($this->getInfo());
     }
 
 
+    /**
+     * Returns absolute url for current request
+     *
+     * @return string
+     */
     public function getAbsoluteUrl()
     {
         return Mage::getUrl('', array('_store' => $this->getStoreId(), '_direct' => ltrim($this->getRequestPath(), '/')));
     }
 
 
+    /**
+     * Initialize persistent fields that are used as filters and prepare info blob
+     *
+     * @return $this
+     */
     protected function _beforeSave()
     {
         parent::_beforeSave();
@@ -492,6 +573,11 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
     }
 
 
+    /**
+     * Initialize fields that are saved in info blob
+     *
+     * @return Mage_Core_Model_Abstract
+     */
     protected function _afterLoad()
     {
         $info = $this->getUnserializedInfo();

@@ -17,10 +17,22 @@
 class Sheep_Debug_Model_Core_Email extends Mage_Core_Model_Email
 {
 
+    /**
+     * Calls parent's real send method
+     *
+     * @return $this
+     */
     public function parentSend()
     {
         return parent::send();
     }
+
+
+    /**
+     * Overwrites parent method to capture details for sent e-mail
+     *
+     * @return Sheep_Debug_Model_Core_Email
+     */
     public function send()
     {
         try {

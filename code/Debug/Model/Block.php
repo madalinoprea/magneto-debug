@@ -10,8 +10,8 @@
  */
 class Sheep_Debug_Model_Block
 {
-    static $startRenderingTime;
-    static $endRenderingTime;
+    public static $startRenderingTime;
+    public static $endRenderingTime;
 
     /** @var string */
     protected $name;
@@ -41,9 +41,14 @@ class Sheep_Debug_Model_Block
     }
 
 
+    /**
+     * Captures rendering start for specified block
+     *
+     * @param Mage_Core_Block_Abstract $block
+     * @throws Exception
+     */
     public function startRendering(Mage_Core_Block_Abstract $block)
     {
-        // TODO: we have blocks with same that are rendered multiple times
         if ($this->isRendering) {
             throw new Exception("Block {$this->name} is already marked as rendered");
         }
@@ -61,6 +66,11 @@ class Sheep_Debug_Model_Block
     }
 
 
+    /**
+     * Captures rendering completion for specified block
+     *
+     * @param Mage_Core_Block_Abstract $block
+     */
     public function completeRendering(Mage_Core_Block_Abstract $block)
     {
         $this->isRendering = false;
@@ -70,7 +80,10 @@ class Sheep_Debug_Model_Block
         self::$endRenderingTime = $this->renderedCompletedAt;
     }
 
+
     /**
+     * Returns block's name in layout
+     *
      * @return string
      */
     public function getName()
@@ -78,7 +91,10 @@ class Sheep_Debug_Model_Block
         return $this->name;
     }
 
+
     /**
+     * Returns block's class
+     *
      * @return string
      */
     public function getClass()
@@ -86,7 +102,10 @@ class Sheep_Debug_Model_Block
         return $this->class;
     }
 
+
     /**
+     * Returns block's template file
+     *
      * @return string
      */
     public function getTemplateFile()
@@ -94,7 +113,10 @@ class Sheep_Debug_Model_Block
         return $this->templateFile;
     }
 
+
     /**
+     * Checks if current block is rendering
+     *
      * @return boolean
      */
     public function isRendering()
@@ -102,7 +124,10 @@ class Sheep_Debug_Model_Block
         return $this->isRendering;
     }
 
+
     /**
+     * Return timestamp when block rendering started
+     *
      * @return int
      */
     public function getRenderedAt()
@@ -110,7 +135,10 @@ class Sheep_Debug_Model_Block
         return $this->renderedAt;
     }
 
+
     /**
+     * Returns timestamp when block rendering completed
+     *
      * @return int
      */
     public function getRenderedCompletedAt()
@@ -118,7 +146,10 @@ class Sheep_Debug_Model_Block
         return $this->renderedCompletedAt;
     }
 
+
     /**
+     * Returns rendering duration
+     *
      * @return mixed
      */
     public function getRenderedDuration()
@@ -128,6 +159,8 @@ class Sheep_Debug_Model_Block
 
 
     /**
+     * Returns how many time a block with same name was rendered
+     *
      * @return int
      */
     public function getRenderedCount()
@@ -137,6 +170,8 @@ class Sheep_Debug_Model_Block
 
 
     /**
+     * Returns blocks associated data
+     *
      * @return array
      */
     public function getData()
@@ -145,6 +180,11 @@ class Sheep_Debug_Model_Block
     }
 
 
+    /**
+     * Returns rendering time for all blocks.
+     *
+     * @return mixed
+     */
     static public function getTotalRenderingTime()
     {
         return self::$endRenderingTime - self::$startRenderingTime;

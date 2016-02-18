@@ -14,6 +14,12 @@ class Sheep_Debug_Model_Model
     protected $resource;
     protected $count;
 
+
+    /**
+     * Captures information about specified model
+     *
+     * @param Mage_Core_Model_Abstract $model
+     */
     public function init(Mage_Core_Model_Abstract $model)
     {
         $this->class = get_class($model);
@@ -21,7 +27,10 @@ class Sheep_Debug_Model_Model
         $this->count = 0;
     }
 
+
     /**
+     * Returns model's class
+     *
      * @return string
      */
     public function getClass()
@@ -31,7 +40,7 @@ class Sheep_Debug_Model_Model
 
 
     /**
-     *
+     * Increments number of times this model was loaded
      */
     public function incrementCount()
     {
@@ -40,6 +49,8 @@ class Sheep_Debug_Model_Model
 
 
     /**
+     * Returns model's resource name
+     *
      * @return string
      */
     public function getResource()
@@ -49,6 +60,8 @@ class Sheep_Debug_Model_Model
 
 
     /**
+     * Returns model's number of loads
+     *
      * @return int
      */
     public function getCount()

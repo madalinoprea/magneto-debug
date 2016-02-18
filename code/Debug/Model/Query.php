@@ -31,6 +31,8 @@ class Sheep_Debug_Model_Query
 
 
     /**
+     * Returns query type
+     *
      * @return int
      */
     public function getQueryType()
@@ -40,6 +42,8 @@ class Sheep_Debug_Model_Query
 
 
     /**
+     * Returns SQL query
+     *
      * @return string
      */
     public function getQuery()
@@ -49,6 +53,8 @@ class Sheep_Debug_Model_Query
 
 
     /**
+     * Returns SQL query parameters
+     *
      * @return array
      */
     public function getQueryParams()
@@ -56,7 +62,10 @@ class Sheep_Debug_Model_Query
         return $this->queryParams;
     }
 
+
     /**
+     * Returns execution time in seconds
+     *
      * @return false|float
      */
     public function getElapsedSecs()

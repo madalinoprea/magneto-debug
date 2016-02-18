@@ -15,12 +15,23 @@ class Sheep_Debug_Model_Logging
     protected $logLineCount;
 
 
+    /**
+     * Adds log file that will be monitored during request.
+     * Filename should be relative to global var/log directory.
+     *
+     * @param string $filename
+     */
     public function addFile($filename)
     {
         $this->files[] = $filename;
     }
 
 
+    /**
+     * Returns monitored log files
+     *
+     * @return array
+     */
     public function getFiles()
     {
         return $this->files;
@@ -28,9 +39,12 @@ class Sheep_Debug_Model_Logging
 
 
     /**
-     * @param  string $logFile
-     * @param  string $start
-     * @param int     $end
+     * Adds position range for log file.
+     * Position range represents a range that describe what logs were added during current requests.
+     *
+     * @param string $logFile
+     * @param string $start
+     * @param int $end
      */
     public function addRange($logFile, $start, $end = 0)
     {
@@ -41,6 +55,13 @@ class Sheep_Debug_Model_Logging
     }
 
 
+    /**
+     * Returns position range for specified log file
+     *
+     * @param string $logFile
+     * @return array
+     * @throws Exception
+     */
     public function getRange($logFile)
     {
         if (!array_key_exists($logFile, $this->ranges)) {
@@ -51,12 +72,22 @@ class Sheep_Debug_Model_Logging
     }
 
 
+    /**
+     * Returns absolute path for specified log file.
+     * Log file is considered to be relative to global log directory.
+     *
+     * @param string $filename
+     * @return string
+     */
     public function getLogFilePath($filename)
     {
         return Mage::getBaseDir('var') . DS . 'log' . DS . $filename;
     }
 
 
+    /**
+     * Initiates start range for all registered files
+     */
     public function startRequest()
     {
         foreach ($this->files as $logFile) {
@@ -69,6 +100,9 @@ class Sheep_Debug_Model_Logging
     }
 
 
+    /**
+     * Records end range for all registered log files
+     */
     public function endRequest()
     {
         foreach ($this->files as $logFile) {
@@ -99,7 +133,7 @@ class Sheep_Debug_Model_Logging
     /**
      * Returns current end position for specified file path
      *
-     * @param $filePath
+     * @param string $filePath
      * @return int
      */
     public function getLastFilePosition($filePath)
@@ -138,7 +172,7 @@ class Sheep_Debug_Model_Logging
     /**
      * Returns number of lines added in specified log from start of this request
      *
-     * @param $logFile
+     * @param string $logFile
      * @return int
      * @throws Exception
      */
@@ -170,8 +204,8 @@ class Sheep_Debug_Model_Logging
      * Returns content from specified file between specified range
      *
      * @param string $filePath
-     * @param int    $startPosition
-     * @param int    $endPosition
+     * @param int $startPosition
+     * @param int $endPosition
      * @return string
      */
     public function getContent($filePath, $startPosition, $endPosition)

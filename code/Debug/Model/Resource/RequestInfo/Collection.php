@@ -16,7 +16,11 @@ class Sheep_Debug_Model_Resource_RequestInfo_Collection extends Mage_Core_Model_
         $this->_init('sheep_debug/requestInfo');
     }
 
+
     /**
+     * Filters request profiles by session id.
+     * We capture encrypted session id. @see \Sheep_Debug_Model_Controller::init
+     *
      * @param string $sessionId
      * @return Sheep_Debug_Model_Resource_RequestInfo_Collection
      */
@@ -25,7 +29,10 @@ class Sheep_Debug_Model_Resource_RequestInfo_Collection extends Mage_Core_Model_
         return $this->addFieldToFilter('session_id', $sessionId);
     }
 
+
     /**
+     * Filters request profiles by specified token.
+     *
      * @param string $token
      * @return Sheep_Debug_Model_Resource_RequestInfo_Collection
      */
@@ -34,7 +41,10 @@ class Sheep_Debug_Model_Resource_RequestInfo_Collection extends Mage_Core_Model_
         return $this->addFieldToFilter('token', $token);
     }
 
+
     /**
+     * Filters request profiles by HTTP method
+     *
      * @param string $method
      * @return Sheep_Debug_Model_Resource_RequestInfo_Collection
      */
@@ -43,7 +53,10 @@ class Sheep_Debug_Model_Resource_RequestInfo_Collection extends Mage_Core_Model_
         return $this->addFieldToFilter('http_method', $method);
     }
 
+
     /**
+     * Filters request profiles with request path containing specified value
+     *
      * @param string $requestPath
      * @return Sheep_Debug_Model_Resource_RequestInfo_Collection
      */
@@ -52,16 +65,22 @@ class Sheep_Debug_Model_Resource_RequestInfo_Collection extends Mage_Core_Model_
         return $this->addFieldToFilter('request_path', array('like' => '%' . $requestPath . '%'));
     }
 
-    /**
-     * @param int $code
-     * @return Sheep_Debug_Model_Resource_RequestInfo_Collection
-     */
-    public function addResponseCodeFilter($code)
-    {
-        return $this->addFieldToFilter('response_code', (int)$code);
-    }
 
     /**
+     * Filters requests profile that had specified response code
+     *
+     * @param int $responseCode
+     * @return Sheep_Debug_Model_Resource_RequestInfo_Collection
+     */
+    public function addResponseCodeFilter($responseCode)
+    {
+        return $this->addFieldToFilter('response_code', (int)$responseCode);
+    }
+
+
+    /**
+     * Filters requests profile that had requests initiated for specified ip
+     *
      * @param string $ip
      * @return Sheep_Debug_Model_Resource_RequestInfo_Collection
      */
@@ -70,8 +89,9 @@ class Sheep_Debug_Model_Resource_RequestInfo_Collection extends Mage_Core_Model_
         return $this->addFieldToFilter('ip', $ip);
     }
 
+
     /**
-     * Filters requests that were processed before specified data
+     * Filters requests that were processed before specified date
      *
      * @param string $date Date string using format Y-m-d H
      * @return Sheep_Debug_Model_Resource_RequestInfo_Collection
@@ -84,7 +104,10 @@ class Sheep_Debug_Model_Resource_RequestInfo_Collection extends Mage_Core_Model_
         ));
     }
 
+
     /**
+     * Filters requests that were processed after specified date
+     *
      * @param string $date
      * @return Sheep_Debug_Model_Resource_RequestInfo_Collection
      */

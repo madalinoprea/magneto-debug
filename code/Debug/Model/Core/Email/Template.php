@@ -4,8 +4,6 @@
  * Class Sheep_Debug_Model_Core_Email_Template rewrites core/email_template class in order
  * to capture e-mail variables.
  *
- * TODO: extend support for other extension that rewrite same class
- *
  * @method string getSenderName()
  * @method string getSenderEmail()
  *
@@ -18,6 +16,8 @@ class Sheep_Debug_Model_Core_Email_Template extends Mage_Core_Model_Email_Templa
 {
 
     /**
+     * Calls real send() method
+     *
      * @param array|string $email
      * @param null $name
      * @param array $variables
@@ -28,7 +28,10 @@ class Sheep_Debug_Model_Core_Email_Template extends Mage_Core_Model_Email_Templa
         return parent::send($email, $name, $variables);
     }
 
+
     /**
+     * Overwrites parent method to capture e-mail details
+     *
      * @param array|string $email
      * @param null $name
      * @param array $variables
@@ -95,6 +98,7 @@ class Sheep_Debug_Model_Core_Email_Template extends Mage_Core_Model_Email_Templa
 
         return $content->getRawContent();
     }
+
 
     /**
      * Returns raw subject

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class Sheep_Debug_Model_Controller
+ * Class Sheep_Debug_Model_Controller captures information about the HTTP request, HTTP response and used controller.
  *
  * @category Sheep
  * @package  Sheep_Debug
@@ -36,6 +36,8 @@ class Sheep_Debug_Model_Controller
 
 
     /**
+     * Captures request, response and controller information.
+     *
      * Sheep_Debug_Model_Controller constructor.
      * @param Mage_Core_Controller_Varien_Action $action
      */
@@ -84,6 +86,8 @@ class Sheep_Debug_Model_Controller
 
 
     /**
+     * Returns request path
+     *
      * @return string
      */
     public function getRequestPath()
@@ -93,6 +97,8 @@ class Sheep_Debug_Model_Controller
 
 
     /**
+     * Returns route name
+     *
      * @return mixed
      */
     public function getRouteName()
@@ -102,6 +108,8 @@ class Sheep_Debug_Model_Controller
 
 
     /**
+     * Returns module name
+     *
      * @return string
      */
     public function getModule()
@@ -111,6 +119,8 @@ class Sheep_Debug_Model_Controller
 
 
     /**
+     * Returns controller class that handled the request
+     *
      * @return string
      */
     public function getClass()
@@ -120,6 +130,8 @@ class Sheep_Debug_Model_Controller
 
 
     /**
+     * Returns controller's method that handled the request
+     *
      * @return string
      */
     public function getAction()
@@ -129,6 +141,8 @@ class Sheep_Debug_Model_Controller
 
 
     /**
+     * Returns a meaningful code reference that includes controller class and action method
+     *
      * @return string
      */
     public function getReference()
@@ -136,7 +150,10 @@ class Sheep_Debug_Model_Controller
         return $this->getClass() . '::' . $this->getAction();
     }
 
+
     /**
+     * Returns cookies state during the request
+     *
      * @return mixed
      */
     public function getCookies()
@@ -144,7 +161,10 @@ class Sheep_Debug_Model_Controller
         return $this->cookies;
     }
 
+
     /**
+     * Returns session state during the request
+     *
      * @return mixed
      */
     public function getSession()
@@ -152,7 +172,10 @@ class Sheep_Debug_Model_Controller
         return $this->session;
     }
 
+
     /**
+     * Request request's get parameters
+     *
      * @return mixed
      */
     public function getGetParameters()
@@ -160,7 +183,10 @@ class Sheep_Debug_Model_Controller
         return $this->getParameters;
     }
 
+
     /**
+     * Returns request's post parameters
+     *
      * @return mixed
      */
     public function getPostParameters()
@@ -169,6 +195,11 @@ class Sheep_Debug_Model_Controller
     }
 
 
+    /**
+     * Returns request handling attributes
+     *
+     * @return array
+     */
     public function getRequestAttributes()
     {
         return array(
@@ -178,7 +209,10 @@ class Sheep_Debug_Model_Controller
         );
     }
 
+
     /**
+     * Returns response code
+     *
      * @return mixed
      */
     public function getResponseCode()
@@ -186,7 +220,10 @@ class Sheep_Debug_Model_Controller
         return $this->responseCode;
     }
 
+
     /**
+     * Returns session id during the request
+     *
      * @return string
      */
     public function getSessionId()
@@ -194,7 +231,10 @@ class Sheep_Debug_Model_Controller
         return $this->sessionId;
     }
 
+
     /**
+     * Returns request's http method
+     *
      * @return mixed
      */
     public function getHttpMethod()
@@ -202,7 +242,10 @@ class Sheep_Debug_Model_Controller
         return $this->httpMethod;
     }
 
+
     /**
+     * Returns request's original path (before Magento's rewrite)
+     *
      * @return string
      */
     public function getRequestOriginalPath()
@@ -210,7 +253,10 @@ class Sheep_Debug_Model_Controller
         return $this->requestOriginalPath;
     }
 
+
     /**
+     * Returns request's headers
+     *
      * @return array
      */
     public function getRequestHeaders()
@@ -218,7 +264,10 @@ class Sheep_Debug_Model_Controller
         return $this->requestHeaders;
     }
 
+
     /**
+     * Returns server parameters during the request
+     *
      * @return mixed
      */
     public function getServerParameters()
@@ -226,7 +275,10 @@ class Sheep_Debug_Model_Controller
         return $this->serverParameters;
     }
 
+
     /**
+     * Returns response headers
+     *
      * @return mixed
      */
     public function getResponseHeaders()
@@ -234,7 +286,10 @@ class Sheep_Debug_Model_Controller
         return $this->responseHeaders;
     }
 
+
     /**
+     * Returns remote ip
+     *
      * @return mixed
      */
     public function getRemoteIp()

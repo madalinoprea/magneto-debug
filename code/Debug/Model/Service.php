@@ -12,6 +12,8 @@ class Sheep_Debug_Model_Service
 {
 
     /**
+     * Returns Magento's configuration model
+     *
      * @return Mage_Core_Model_Config
      */
     protected function getConfig()
@@ -21,6 +23,8 @@ class Sheep_Debug_Model_Service
 
 
     /**
+     * Returns Magento's cache model
+     *
      * @return Mage_Core_Model_Cache
      */
     protected function getCacheInstance()
@@ -30,6 +34,8 @@ class Sheep_Debug_Model_Service
 
 
     /**
+     * Loads specified XML file
+     *
      * @param $filepath
      * @return SimpleXMLElement
      */
@@ -40,6 +46,8 @@ class Sheep_Debug_Model_Service
 
 
     /**
+     * Saves specified SimpleXMLElement
+     *
      * @param SimpleXMLElement $xml
      * @param string $filepath
      * @return bool
@@ -103,12 +111,23 @@ class Sheep_Debug_Model_Service
     }
 
 
+    /**
+     * Returns absolute path for local.xml
+     *
+     * @return string
+     */
     public function getLocalXmlFilePath()
     {
         return Mage::getBaseDir('etc') . DS . 'local.xml';
     }
 
 
+    /**
+     * Changes status for SQL profiler
+     *
+     * @param bool $isEnabled
+     * @throws Exception
+     */
     public function setSqlProfilerStatus($isEnabled)
     {
         $filePath = $this->getLocalXmlFilePath();
@@ -144,7 +163,9 @@ class Sheep_Debug_Model_Service
 
 
     /**
-     * @param $status
+     * Enable/disables Full Page Cache debug
+     *
+     * @param int $status
      * @throws Exception
      */
     public function setFPCDebug($status)
@@ -158,7 +179,9 @@ class Sheep_Debug_Model_Service
 
 
     /**
-     * @param $status
+     * Changes status for template and block hints
+     *
+     * @param int $status
      */
     public function setTemplateHints($status)
     {
@@ -173,7 +196,7 @@ class Sheep_Debug_Model_Service
     /**
      * Changes status for inline translations
      *
-     * @param $status
+     * @param int $status
      */
     public function setTranslateInline($status)
     {
@@ -182,6 +205,8 @@ class Sheep_Debug_Model_Service
 
 
     /**
+     * Searches configuration keys
+     *
      * @param string $query
      * @return array
      */
@@ -236,6 +261,7 @@ class Sheep_Debug_Model_Service
         return $result->rowCount();
     }
 
+
     /**
      * Returns layout files that have updates for specified handle
      *
@@ -289,6 +315,8 @@ class Sheep_Debug_Model_Service
 
 
     /**
+     * Returns layout updates added via Admin and stored in database.
+     *
      * @see \Mage_Core_Model_Resource_Layout::fetchUpdatesByHandle
      *
      * @param string $handle

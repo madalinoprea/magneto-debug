@@ -18,6 +18,12 @@ class Sheep_Debug_Model_Collection
     protected $query;
     protected $count;
 
+
+    /**
+     * Captures information from specified collection
+     *
+     * @param Varien_Data_Collection_Db $collection
+     */
     public function init(Varien_Data_Collection_Db $collection)
     {
         $this->class = get_class($collection);
@@ -28,6 +34,8 @@ class Sheep_Debug_Model_Collection
 
 
     /**
+     * Returns collection type (eav or flat)
+     *
      * @return string
      */
     public function getType()
@@ -37,6 +45,8 @@ class Sheep_Debug_Model_Collection
 
 
     /**
+     * Returns collection class
+     *
      * @return string
      */
     public function getClass()
@@ -46,6 +56,8 @@ class Sheep_Debug_Model_Collection
 
 
     /**
+     * Returns SQL query used by collection
+     *
      * @return string
      */
     public function getQuery()
@@ -55,6 +67,8 @@ class Sheep_Debug_Model_Collection
 
 
     /**
+     * Returns number of times same collection class was loaded.
+     *
      * @return int
      */
     public function getCount()
@@ -64,7 +78,7 @@ class Sheep_Debug_Model_Collection
 
 
     /**
-     *
+     * Increments collection load count
      */
     public function incrementCount()
     {
