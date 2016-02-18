@@ -10,33 +10,18 @@
  */
 class Sheep_Debug_ConfigController extends Sheep_Debug_Controller_Front_Action
 {
+    /**
+     * PHP info Action
+     */
     public function phpinfoAction()
     {
         phpinfo();
     }
 
-    public function searchAction()
-    {
-        if (!$this->getRequest()->isPost()) {
-            $this->getResponse()->setHttpResponseCode(405);
-            $this->getResponse()->setBody('Method not allowed');
-        }
 
-        $query = (string)$this->getRequest()->getPost('query', '');
-
-        if ($query) {
-            $results = $this->getService()->searchConfig($query);
-
-            /** @var Sheep_Debug_Block_Array $block */
-            $block = $this->getLayout()->createBlock('sheep_debug/array');
-            $block->setTemplate('sheep_debug/config_search_results.phtml');
-            $block->setArray($results);
-
-            $this->getResponse()->setBody($block->toHtml());
-        }
-    }
-
-
+    /**
+     * Download configuration as text or xml action
+     */
     public function downloadAction()
     {
         $type = $this->getRequest()->getParam('type', 'xml');
@@ -54,6 +39,35 @@ class Sheep_Debug_ConfigController extends Sheep_Debug_Controller_Front_Action
     }
 
 
+    /**
+     * Force enable Varien Profiler action
+     */
+    public function enableVarienProfilerAction()
+    {
+        $this->getService()->setVarienProfilerStatus(1);
+        $this->getService()->flushCache();
+
+        $this->_redirectReferer();
+    }
+
+
+    /**
+     * Disable forced activation of Varien Profiler
+     */
+    public function disableVarienProfilerAction()
+    {
+        $this->getService()->setVarienProfilerStatus(0);
+        $this->getService()->flushCache();
+
+        $this->_redirectReferer();
+    }
+
+
+    /**
+     * Prepares response with configuration as text
+     *
+     * @param Mage_Core_Model_Config_Element $configNode
+     */
     public function downloadAsText(Mage_Core_Model_Config_Element $configNode)
     {
         $items = array();
@@ -68,27 +82,14 @@ class Sheep_Debug_ConfigController extends Sheep_Debug_Controller_Front_Action
     }
 
 
+    /**
+     * Prepares response with configuration as xml
+     *
+     * @param Mage_Core_Model_Config_Element $configNode
+     */
     public function downloadAsXml(Mage_Core_Model_Config_Element $configNode)
     {
         $this->_prepareDownloadResponse('config.xml', $configNode->asXML(), 'text/xml');
-    }
-
-
-    public function enableVarienProfilerAction()
-    {
-        $this->getService()->setVarienProfilerStatus(1);
-        $this->getService()->flushCache();
-
-        $this->_redirectReferer();
-    }
-
-
-    public function disableVarienProfilerAction()
-    {
-        $this->getService()->setVarienProfilerStatus(0);
-        $this->getService()->flushCache();
-
-        $this->_redirectReferer();
     }
 
 }

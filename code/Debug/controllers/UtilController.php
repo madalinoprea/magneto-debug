@@ -47,6 +47,9 @@ class Sheep_Debug_UtilController extends Sheep_Debug_Controller_Front_Action
     }
 
 
+    /**
+     * Flushes cache
+     */
     public function flushCacheAction()
     {
         try {
@@ -61,6 +64,9 @@ class Sheep_Debug_UtilController extends Sheep_Debug_Controller_Front_Action
     }
 
 
+    /**
+     * Enables Full Page Cache Debug
+     */
     public function enableFPCDebugAction()
     {
         try {
@@ -78,6 +84,9 @@ class Sheep_Debug_UtilController extends Sheep_Debug_Controller_Front_Action
     }
 
 
+    /**
+     * Disables Full Page Cache Debug
+     */
     public function disableFPCDebugAction()
     {
         try {
@@ -95,12 +104,15 @@ class Sheep_Debug_UtilController extends Sheep_Debug_Controller_Front_Action
     }
 
 
+    /**
+     * Enables template Hints
+     */
     public function enableTemplateHintsAction()
     {
         try {
             $this->getService()->setTemplateHints(1);
             $this->getService()->flushCache();
-            // no need to notify customer - is obvious if they were enabled
+            // no need to notify customer - it's obvious if they were enabled
 
         } catch (Exception $e) {
             $message = $this->__('Template hints cannot be enabled: %s', $e->getMessage());
@@ -111,6 +123,9 @@ class Sheep_Debug_UtilController extends Sheep_Debug_Controller_Front_Action
     }
 
 
+    /**
+     * Disable template hints
+     */
     public function disableTemplateHintsAction()
     {
         try {
@@ -126,6 +141,9 @@ class Sheep_Debug_UtilController extends Sheep_Debug_Controller_Front_Action
     }
 
 
+    /**
+     * Enable inline translation
+     */
     public function enableTranslateAction()
     {
         try {
@@ -140,6 +158,9 @@ class Sheep_Debug_UtilController extends Sheep_Debug_Controller_Front_Action
     }
 
 
+    /**
+     * Disables inline translation
+     */
     public function disableTranslateAction()
     {
         try {

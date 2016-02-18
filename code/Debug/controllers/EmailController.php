@@ -11,7 +11,9 @@
 class Sheep_Debug_EmailController extends Sheep_Debug_Controller_Front_Action
 {
 
-
+    /**
+     * E-mail body action
+     */
     public function getBodyAction()
     {
         if ($email = $this->_initEmail()) {

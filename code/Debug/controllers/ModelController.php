@@ -11,6 +11,9 @@
 class Sheep_Debug_ModelController extends Sheep_Debug_Controller_Front_Action
 {
 
+    /**
+     * Enable SQL profiler
+     */
     public function enableSqlProfilerAction()
     {
         try {
@@ -26,6 +29,9 @@ class Sheep_Debug_ModelController extends Sheep_Debug_Controller_Front_Action
     }
 
 
+    /**
+     * Disable SQL profiler
+     */
     public function disableSqlProfilerAction()
     {
         try {
@@ -41,6 +47,9 @@ class Sheep_Debug_ModelController extends Sheep_Debug_Controller_Front_Action
     }
 
 
+    /**
+     * Runs specified SQL
+     */
     public function selectSqlAction()
     {
         if ($query = $this->_initQuery()) {
@@ -51,6 +60,9 @@ class Sheep_Debug_ModelController extends Sheep_Debug_Controller_Front_Action
     }
 
 
+    /**
+     * Runs DESCRIBE for specified SQL
+     */
     public function describeSqlAction()
     {
         if ($query = $this->_initQuery()) {
@@ -62,7 +74,7 @@ class Sheep_Debug_ModelController extends Sheep_Debug_Controller_Front_Action
 
 
     /**
-     * Returns query references in request parameters
+     * Returns query referenced in request parameters
      *
      * @return Zend_Db_Profiler_Query
      */

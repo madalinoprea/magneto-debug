@@ -11,6 +11,9 @@
 class Sheep_Debug_ModuleController extends Sheep_Debug_Controller_Front_Action
 {
 
+    /**
+     * Enables specified module
+     */
     public function enableAction()
     {
         $moduleName = (string)$this->getRequest()->getParam('module');
@@ -23,10 +26,13 @@ class Sheep_Debug_ModuleController extends Sheep_Debug_Controller_Front_Action
             Mage::getSingleton('core/session')->addError('Unable to enable module: ' . $e->getMessage());
         }
 
-        return $this->_redirectReferer();
+        $this->_redirectReferer();
     }
 
 
+    /**
+     * Disables specified module
+     */
     public function disableAction()
     {
 
@@ -40,7 +46,7 @@ class Sheep_Debug_ModuleController extends Sheep_Debug_Controller_Front_Action
             Mage::getSingleton('core/session')->addError('Unable to disable module: ' . $e->getMessage());
         }
 
-        return $this->_redirectReferer();
+        $this->_redirectReferer();
     }
 
 }

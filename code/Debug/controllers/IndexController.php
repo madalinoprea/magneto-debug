@@ -11,61 +11,12 @@
 class Sheep_Debug_IndexController extends Sheep_Debug_Controller_Front_Action
 {
 
+    /**
+     * Request profile index page
+     */
     public function indexAction()
     {
         $this->_forward('search');
-    }
-
-
-    /**
-     * @return Sheep_Debug_Model_Resource_RequestInfo_Collection
-     */
-    protected function _getFilteredRequests()
-    {
-        /** @var Sheep_Debug_Model_Resource_RequestInfo_Collection $requests */
-        $requests = Mage::getModel('sheep_debug/requestInfo')->getCollection();
-        $requests->setCurPage(1);
-        $requests->setPageSize(Mage::helper('sheep_debug/filter')->getLimitDefaultValue());
-
-        if ($sessionId = $this->getRequest()->getParam('session_id')) {
-            $requests->addSessionIdFilter($sessionId);
-        }
-
-        if ($ip = $this->getRequest()->getParam('ip')) {
-            $requests->addIpFilter($ip);
-        }
-
-        if ($method = $this->getRequest()->getParam('method')) {
-            $requests->addHttpMethodFilter($method);
-        }
-
-        if ($limit = $this->getRequest()->getParam('limit')) {
-            $requests->setPageSize($limit);
-        }
-
-        if ($path = $this->getRequest()->getParam('path')) {
-            $requests->addRequestPathFilter($path);
-        }
-
-        if ($token = $this->getRequest()->getParam('token')) {
-            $requests->addTokenFilter($token);
-        }
-
-        if ($startDate = $this->getRequest()->getParam('start')) {
-            $requests->addAfterFilter($startDate);
-        }
-
-        if ($endDate = $this->getRequest()->getParam('end')) {
-            $requests->addEarlierFilter($endDate);
-        }
-
-        if ($page = (int)$this->getRequest()->getParam('page')) {
-            $requests->setCurPage($page);
-        }
-
-        $requests->addOrder('id', Varien_Data_Collection_Db::SORT_ORDER_DESC);
-
-        return $requests;
     }
 
 
@@ -185,6 +136,60 @@ class Sheep_Debug_IndexController extends Sheep_Debug_Controller_Front_Action
         $this->getSession()->addSuccess($this->__('%d request profiles were deleted', $count));
 
         $this->_redirect('/');
+    }
+
+
+    /**
+     * Initialise request profile collection based on filters set on request
+     *
+     * @return Sheep_Debug_Model_Resource_RequestInfo_Collection
+     */
+    protected function _getFilteredRequests()
+    {
+        /** @var Sheep_Debug_Model_Resource_RequestInfo_Collection $requests */
+        $requests = Mage::getModel('sheep_debug/requestInfo')->getCollection();
+        $requests->setCurPage(1);
+        $requests->setPageSize(Mage::helper('sheep_debug/filter')->getLimitDefaultValue());
+
+        if ($sessionId = $this->getRequest()->getParam('session_id')) {
+            $requests->addSessionIdFilter($sessionId);
+        }
+
+        if ($ip = $this->getRequest()->getParam('ip')) {
+            $requests->addIpFilter($ip);
+        }
+
+        if ($method = $this->getRequest()->getParam('method')) {
+            $requests->addHttpMethodFilter($method);
+        }
+
+        if ($limit = $this->getRequest()->getParam('limit')) {
+            $requests->setPageSize($limit);
+        }
+
+        if ($path = $this->getRequest()->getParam('path')) {
+            $requests->addRequestPathFilter($path);
+        }
+
+        if ($token = $this->getRequest()->getParam('token')) {
+            $requests->addTokenFilter($token);
+        }
+
+        if ($startDate = $this->getRequest()->getParam('start')) {
+            $requests->addAfterFilter($startDate);
+        }
+
+        if ($endDate = $this->getRequest()->getParam('end')) {
+            $requests->addEarlierFilter($endDate);
+        }
+
+        if ($page = (int)$this->getRequest()->getParam('page')) {
+            $requests->setCurPage($page);
+        }
+
+        $requests->addOrder('id', Varien_Data_Collection_Db::SORT_ORDER_DESC);
+
+        return $requests;
     }
 
 }
