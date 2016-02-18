@@ -41,7 +41,7 @@ class Sheep_Debug_Block_Abstract extends Mage_Core_Block_Template
 
 
     /**
-     * Returns store if for default configured store
+     * Returns id for default configured store
      *
      * @return mixed
      * @throws Mage_Core_Exception
@@ -67,7 +67,7 @@ class Sheep_Debug_Block_Abstract extends Mage_Core_Block_Template
 
 
     /**
-     * Returns info attached to this block or returns current request's info
+     * Returns registered request info or request profile for current request
      *
      * @return Sheep_Debug_Model_RequestInfo
      */
@@ -118,6 +118,7 @@ class Sheep_Debug_Block_Abstract extends Mage_Core_Block_Template
         return Mage::helper('sheep_debug/url')->getRequestViewUrl($token, $panel);
     }
 
+    
     /**
      * Returns number formatted based on current locale
      *
