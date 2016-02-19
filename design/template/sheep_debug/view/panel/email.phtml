@@ -42,16 +42,6 @@ $emailConfigs = Mage::getModel('sheep_debug/service')->searchConfig('email');
 
                             <td>
                                 <?php echo $this->escapeHtml($email->getSubject()); ?>
-
-                                <div class="text-small font-normal">
-                                    <a class="link-inverse"
-                                       href="<?php echo Mage::helper('sheep_debug/url')->getEmailBodyUrl($info->getToken(), $row) ?>"
-                                       onclick="return fetchData(this);"
-                                       title="<?php echo $this->__('Retrieve E-mail Body'); ?>"
-                                       data-target-id="email-body-<?php echo $row ?>">
-                                        <?php echo $this->__('Retrieve E-mail Body'); ?>
-                                    </a>
-                                </div>
                             </td>
 
                             <td>
@@ -83,8 +73,7 @@ $emailConfigs = Mage::getModel('sheep_debug/service')->searchConfig('email');
                         <tr bgcolor="#6495ed">
                             <td></td>
                             <td bgcolor="#00008b" colspan="4">
-                                <div id="email-body-<?php echo $row ?>"></div>
-                                &nbsp;
+                                <iframe width="100%" height="400" src="<?php echo Mage::helper('sheep_debug/url')->getEmailBodyUrl($info->getToken(), $row) ?>" frameborder="0"></iframe>
                             </td>
                         </tr>
                         <?php $row++; ?>

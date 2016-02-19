@@ -93,10 +93,16 @@ class Sheep_Debug_Model_Core_Email_Template extends Mage_Core_Model_Email_Templa
      */
     public function getContent(Zend_Mail $mail)
     {
+        $hasQueue = $this->hasQueue();
+
+        if ($hasQueue && $queue = $this->getQueue()) {
+            return $queue->getMessageBody();
+        }
+
         /** @var Zend_Mime_Part $content */
         $content = $this->isPlain() ? $mail->getBodyText() : $mail->getBodyHtml();
 
-        return $content->getRawContent();
+        return $content ? $content->getRawContent() : '';
     }
 
 
@@ -108,6 +114,10 @@ class Sheep_Debug_Model_Core_Email_Template extends Mage_Core_Model_Email_Templa
      */
     public function decodeSubject($subject)
     {
+        if ($this->hasQueue() && $queue = $this->getQueue()) {
+            return $queue->getMessageParameters('subject');
+        }
+
         return base64_decode(substr($subject, strlen('=?utf-8?B?'), -1 * strlen('?=')));
     }
 
