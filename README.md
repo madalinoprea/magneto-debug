@@ -79,8 +79,11 @@ Use [issue tracker on GitHub](https://github.com/madalinoprea/magneto-debug/issu
     Eliminate a possible cache problem by disabling all caches. Try to determine if there are any customizations that have removed `before_body_end`.
 
 # Change Log
+- **1.4.1**
+    - Minor fixes for Magento Enterprise (website restrictions, Full Page Cache debug menu item)
+    
 - **1.4.0**:
-    - Added unit tests and continous integration via Travis CI
+    - Added unit tests and continuous integration via Travis CI
     - Fixes request headers collection for non Apache web servers (e.g Nginx)
     - Improves support to collect and render sent e-mails 
     - Other minor UI tweaks
