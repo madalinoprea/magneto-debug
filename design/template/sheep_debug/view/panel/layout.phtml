@@ -15,8 +15,8 @@ $updates = $design->getLayoutUpdates();
 <div class="metrics">
     <div class="metric">
         <span class="value">
-            <?php echo $this->formatNumber($info->getRenderingTime() ) ?>
-            <span class="unit"><?php echo $this->__('s'); ?></span>
+            <?php echo sprintf('%0.0f', $info->getRenderingTime() * 1000) ?>
+            <span class="unit"><?php echo $this->__('ms'); ?></span>
         </span>
         <span class="label"><?php echo $this->__('Render time'); ?></span>
     </div>
