@@ -32,11 +32,11 @@ Don't forget to check out [screenshots gallery](docs/images.md)
     - For newer Magento versions (1.5.1.0 & above) you just need enable 'Allow Symlinks' from System - Configuration / Advanced / Developer / Template Settings
     - For older Magento versions you need to change some code http://www.tonigrigoriu.com/magento/magento-how-to-fix-template-path-errors-when-using-symlinks/
 - Install Debug Toolbar module:
-    ```bash
-    cd [magento root folder]
-    modman init
-    modman clone https://github.com/madalinoprea/magneto-debug.git
-    ```
+```bash
+cd [magento root folder]
+modman init
+modman clone https://github.com/madalinoprea/magneto-debug.git
+```
 - Flush Magento's cache 
 
 ### How to update
@@ -79,6 +79,12 @@ Use [issue tracker on GitHub](https://github.com/madalinoprea/magneto-debug/issu
     Eliminate a possible cache problem by disabling all caches. Try to determine if there are any customizations that have removed `before_body_end`.
 
 # Change Log
+- **1.4.0**:
+    - Added unit tests and continous integration via Travis CI
+    - Fixes request headers collection for non Apache web servers (e.g Nginx)
+    - Improves support to collect and render sent e-mails 
+    - Other minor UI tweaks
+    
 - **1.3.0**:
     - UI reimplemented based on Symphony's web debug toolbar 
     - Ability to view POST and Ajax requests
@@ -103,6 +109,5 @@ Use [issue tracker on GitHub](https://github.com/madalinoprea/magneto-debug/issu
 	
 # Roadmap
 - Re-add ability to search configuration
-- Add unit tests
-- Add Travis
+- UI tweaks and improvements
 - Add more detailed documentation
