@@ -25,6 +25,7 @@
         </div>
 
         <?php if ($this->hasFullPageCache()): ?>
+        <div class="sf-toolbar-info-piece">
             <b><?php echo $this->__('Full Page Cache Hints'); ?></b>
             <span>
                 <?php if ($this->isFPCDebugEnabled()): ?>
@@ -33,6 +34,7 @@
                     <a href="<?php echo $this->getEnableFPCDebugUrl() ?>"><?php echo $this->__('Enable'); ?></a>
                 <?php endif; ?>
             </span>
+        </div>
         <?php endif; ?>
 
         <div class="sf-toolbar-info-piece">
