@@ -349,7 +349,7 @@ class Sheep_Debug_Model_Service
 
         /* @var $select Varien_Db_Select */
         $select = $readAdapter->select()
-            ->from(array('layout_update' => $layoutResourceModel->getMainTable()), array('xml'))
+            ->from(array('layout_update' => $layoutResourceModel->getMainTable()), array('layout_update_id', 'xml'))
             ->join(array('link' => $layoutResourceModel->getTable('core/layout_link')),
                 'link.layout_update_id=layout_update.layout_update_id',
                 '')
@@ -360,11 +360,11 @@ class Sheep_Debug_Model_Service
             ->where('layout_update.handle = :layout_update_handle')
             ->order('layout_update.sort_order ' . Varien_Db_Select::SQL_ASC);
 
-        $result = $readAdapter->fetchCol($select, $bind);
+        $result = $readAdapter->fetchAssoc($select, $bind);
 
         if (count($result)) {
             foreach ($result as $dbLayoutUpdate) {
-                $databaseHandles[] = $dbLayoutUpdate;
+                $databaseHandles[$dbLayoutUpdate['layout_update_id']] = $dbLayoutUpdate['xml'];
             }
         }
 

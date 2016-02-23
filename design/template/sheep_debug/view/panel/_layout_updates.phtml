@@ -24,5 +24,22 @@ $dbUpdates = $this->getData('db_updates');
     <div class="empty"><?php echo $this->__('No Data'); ?></div>
 <?php endif; ?>
 
-<h3><?php echo $this->__('Database Layout Updates'); ?></h3>
-<?php echo $this->renderArrayFields($dbUpdates) ?>
+<?php if ($dbUpdates): ?>
+    <h3><?php echo $this->__('Database Layout Updates'); ?></h3>
+    <table>
+        <thead>
+            <th scope="col"><?php echo $this->__('Layout Update Id'); ?></th>
+            <th scope="col"><?php echo $this->__('XML'); ?></th>
+        </thead>
+        <tbody>
+        <?php foreach ($dbUpdates as $layoutUpdateId => $xml): ?>
+            <tr>
+                <td><?php echo $this->escapeHtml($layoutUpdateId); ?></td>
+                <td>
+                    <code class="xml lazy-code-snippet"><?php echo $this->escapeHtml($xml) ?></code>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php endif; ?>
