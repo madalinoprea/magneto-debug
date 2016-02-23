@@ -12,6 +12,17 @@ class Sheep_Debug_Model_Service
 {
 
     /**
+     * Return's Magento base design directory
+     *
+     * @return string
+     */
+    public function getBaseDir()
+    {
+        return Mage::getBaseDir();
+    }
+
+
+    /**
      * Returns Magento's configuration model
      *
      * @return Mage_Core_Model_Config
@@ -299,13 +310,15 @@ class Sheep_Debug_Model_Service
                 continue;
             }
 
+            $relativeFilename = str_replace($this->getBaseDir(), '', $filename);
+
             /** @var SimpleXMLElement[] $result */
             $results = $fileXml->xpath("/layout/{$handle}");
             if ($results) {
-                $handleFiles[$file] = array();
+                $handleFiles[$relativeFilename] = array();
                 /** @var SimpleXMLElement $result */
                 foreach ($results as $result) {
-                    $handleFiles[$file][] = $result->asXML();
+                    $handleFiles[$relativeFilename][] = $result->asXML();
                 }
             }
         }
