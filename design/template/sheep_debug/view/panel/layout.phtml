@@ -28,14 +28,6 @@ $updates = $design->getLayoutUpdates();
         <span class="label"><?php echo $this->__('Blocks'); ?></span>
     </div>
 
-
-    <div class="metric">
-        <span class="value">
-            <?php echo $this->formatNumber(count($updates), 0) ?>
-        </span>
-        <span class="label"><?php echo $this->__('Layout Updates'); ?></span>
-    </div>
-
     <div class="metric">
         <span class="value">
             <?php echo $this->formatNumber(count($handles), 0) ?>
@@ -60,7 +52,6 @@ $updates = $design->getLayoutUpdates();
     <div class="tab <?php if (!count($updates)): ?>disabled<?php endif; ?>">
         <h3 class="tab-title">
             <?php echo $this->__('Layout Updates'); ?>
-            <span class="badge"><?php echo $this->formatNumber(count($updates), 0) ?></span>
         </h3>
 
         <div class="tab-content">
@@ -80,7 +71,7 @@ $updates = $design->getLayoutUpdates();
 
         <div class="tab-content">
             <h3><?php echo $this->__('Layout Handles'); ?></h3>
-            <p class="help"><?php echo $this->__('Click on each handle to see their associated layout updates.'); ?></p>
+            <p class="help"><?php echo $this->__('Click on each handle to see their associated layout updates and files that contributed.'); ?></p>
 
             <?php if ($handles): ?>
                 <table>
