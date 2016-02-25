@@ -1,22 +1,7 @@
 <?php
 
-/**
- * Class Sheep_Debug_Model_Core_Email rewrites core/email and overwrites send() to capture any e-mail information.
- *
- * @method string getType()
- * @method string getFromEmail()
- * @method string getFromName()
- * @method string getToEmail()
- * @method string getToName()
- *
- * @category Sheep
- * @package  Sheep_Debug
- * @license  Copyright: Pirate Sheep, 2016
- * @link     https://piratesheep.com
- */
-class Sheep_Debug_Model_Core_Email extends Mage_Core_Model_Email
+trait Sheep_Debug_Model_Core_Email_Capture
 {
-
     /**
      * Calls parent's real send method
      *
@@ -65,4 +50,34 @@ class Sheep_Debug_Model_Core_Email extends Mage_Core_Model_Email
         $requestInfo->addEmail($email);
     }
 
+}
+
+
+/**
+ * Class Sheep_Debug_Model_Core_Email rewrites core/email and overwrites send() to capture any e-mail information.
+ *
+ * @method string getType()
+ * @method string getFromEmail()
+ * @method string getFromName()
+ * @method string getToEmail()
+ * @method string getToName()
+ *
+ * @category Sheep
+ * @package  Sheep_Debug
+ * @license  Copyright: Pirate Sheep, 2016
+ * @link     https://piratesheep.com
+ */
+
+
+if (Mage::helper('core')->isModuleEnabled('Aschroder_SMTPPro')) {
+    class Sheep_Debug_Model_Core_Email extends Aschroder_SMTPPro_Model_Email
+    {
+        use Sheep_Debug_Model_Core_Email_Capture;
+    }
+} else {
+
+    class Sheep_Debug_Model_Core_Email extends Mage_Core_Model_Email
+    {
+        use Sheep_Debug_Model_Core_Email_Capture;
+    }
 }

@@ -12,15 +12,15 @@
  * @license  Copyright: Pirate Sheep, 2016
  * @link     https://piratesheep.com
  */
-class Sheep_Debug_Model_Core_Email_Template extends Mage_Core_Model_Email_Template
+trait Sheep_Debug_Model_Core_Email_Template_Capture
 {
 
     /**
      * Calls real send() method
      *
      * @param array|string $email
-     * @param null $name
-     * @param array $variables
+     * @param null         $name
+     * @param array        $variables
      * @return bool
      */
     public function parentSend($email, $name = null, array $variables = array())
@@ -33,8 +33,8 @@ class Sheep_Debug_Model_Core_Email_Template extends Mage_Core_Model_Email_Templa
      * Overwrites parent method to capture e-mail details
      *
      * @param array|string $email
-     * @param null $name
-     * @param array $variables
+     * @param null         $name
+     * @param array        $variables
      * @return bool
      */
     public function send($email, $name = null, array $variables = array())
@@ -57,10 +57,10 @@ class Sheep_Debug_Model_Core_Email_Template extends Mage_Core_Model_Email_Templa
     /**
      * Adds e-mail information on request profiler
      *
-     * @param $email
-     * @param $name
-     * @param $variables
-     * @param $result
+     * @param           $email
+     * @param           $name
+     * @param           $variables
+     * @param           $result
      * @param Zend_Mail $mail
      */
     public function addEmailToProfile($email, $name, $variables, $result, Zend_Mail $mail)
@@ -121,4 +121,20 @@ class Sheep_Debug_Model_Core_Email_Template extends Mage_Core_Model_Email_Templa
         return base64_decode(substr($subject, strlen('=?utf-8?B?'), -1 * strlen('?=')));
     }
 
+}
+
+
+if (Mage::helper('core')->isModuleEnabled('Aschroder_SMTPPro')) {
+
+    class Sheep_Debug_Model_Core_Email_Template extends Aschroder_SMTPPro_Model_Email_Template
+    {
+        use Sheep_Debug_Model_Core_Email_Template_Capture;
+    }
+
+} else {
+
+    class Sheep_Debug_Model_Core_Email_Template extends Mage_Core_Model_Email_Template
+    {
+        use Sheep_Debug_Model_Core_Email_Template_Capture;
+    }
 }
