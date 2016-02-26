@@ -308,7 +308,7 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
                 'name'     => $block->getName(),
                 'class'    => $block->getClass(),
                 'template' => $block->getTemplateFile(),
-                'time (s)' => $block->getRenderedDuration() ? $helper->formatNumber($block->getRenderedDuration(), 3) : '',
+                'time (ms)' => $block->getRenderedDuration() ? $helper->formatNumber($block->getRenderedDuration(), 0) : '',
                 'count'    => $block->getRenderedCount()
             );
         }
@@ -475,7 +475,7 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
 
 
     /**
-     * Returns rendering time in seconds
+     * Returns rendering time in miliseconds
      *
      * @return float
      */

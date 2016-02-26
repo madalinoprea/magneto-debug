@@ -5,6 +5,7 @@ $node = $this->getNode();
 $indent = $this->getIndent();
 
 $percent = ($node->getDuration() * 100) / $this->getRequestInfo()->getRenderingTime();
+$percent = min($percent, 100);
 
 ?>
 <br>
@@ -20,7 +21,7 @@ $percent = ($node->getDuration() * 100) / $this->getRequestInfo()->getRenderingT
 
 <?php if ($percent > 1): ?>
     <span class="status-error">
-        <?php echo $this->__('%s ms', $this->formatNumber($node->getDuration(), 2)); ?>/
+        <?php echo $this->__('%s ms', $this->formatNumber($node->getDuration(), 0)); ?>/
         <?php echo $this->__('%s%%', $this->formatNumber($percent, 2)); ?></span>
     </span>
 <?php endif; ?>

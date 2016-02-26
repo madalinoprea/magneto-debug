@@ -78,7 +78,7 @@ class Sheep_Debug_Model_Block
     {
         $this->isRendering = false;
         $this->renderedCompletedAt = microtime(true);
-        $this->renderedDuration += ($this->renderedCompletedAt - $this->renderedAt);
+        $this->renderedDuration += ($this->renderedCompletedAt * 1000 - $this->renderedAt * 1000);
 
         self::$endRenderingTime = $this->renderedCompletedAt;
     }
@@ -184,13 +184,13 @@ class Sheep_Debug_Model_Block
 
 
     /**
-     * Returns rendering time for all blocks.
+     * Returns rendering time for all blocks in microseconds
      *
      * @return mixed
      */
     static public function getTotalRenderingTime()
     {
-        return self::$endRenderingTime - self::$startRenderingTime;
+        return self::$endRenderingTime * 1000 - self::$startRenderingTime * 1000;
     }
 
     /**
