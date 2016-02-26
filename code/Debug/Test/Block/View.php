@@ -175,4 +175,112 @@ class Sheep_Debug_Test_Block_View extends EcomDev_PHPUnit_Test_Case
         $actual = $block->renderValue($a);
         $this->assertEquals(var_export($a, true), $actual);
     }
+
+    public function testGetBlocksAsTree()
+    {
+        $rootBlock = $this->getModelMock('sheep_debug/block',
+            array('getParentName', 'getName', 'getClass', 'getTemplateFile', 'getRenderedDuration', 'getRenderedCount'));
+        $rootBlock->expects($this->any())->method('getParentName')->willReturn('');
+        $rootBlock->expects($this->any())->method('getName')->willReturn('root');
+        $rootBlock->expects($this->any())->method('getClass')->willReturn('Some_Class');
+        $rootBlock->expects($this->any())->method('getTemplateFile')->willReturn('root_template.phtml');
+        $rootBlock->expects($this->any())->method('getRenderedDuration')->willReturn(250);
+        $rootBlock->expects($this->any())->method('getRenderedCount')->willReturn(1);
+
+        $headBlock = $this->getModelMock('sheep_debug/block',
+            array('getParentName', 'getName', 'getClass', 'getTemplateFile', 'getRenderedDuration', 'getRenderedCount'));
+        $headBlock->expects($this->any())->method('getParentName')->willReturn('root');
+        $headBlock->expects($this->any())->method('getName')->willReturn('head');
+        $headBlock->expects($this->any())->method('getClass')->willReturn('Some_Head_Class');
+        $headBlock->expects($this->any())->method('getTemplateFile')->willReturn('head_template.phtml');
+        $headBlock->expects($this->any())->method('getRenderedDuration')->willReturn(50);
+        $headBlock->expects($this->any())->method('getRenderedCount')->willReturn(1);
+
+        $gaBlock = $this->getModelMock('sheep_debug/block',
+            array('getParentName', 'getName', 'getClass', 'getTemplateFile', 'getRenderedDuration', 'getRenderedCount'));
+        $gaBlock->expects($this->any())->method('getParentName')->willReturn('head');
+        $gaBlock->expects($this->any())->method('getName')->willReturn('google_analytics');
+        $gaBlock->expects($this->any())->method('getClass')->willReturn('Mage_GoogleAnalytics_Block_Ga');
+        $gaBlock->expects($this->any())->method('getTemplateFile')->willReturn('ga.phtml');
+        $gaBlock->expects($this->any())->method('getRenderedDuration')->willReturn(12);
+        $gaBlock->expects($this->any())->method('getRenderedCount')->willReturn(1);
+
+        $formKeyBlock = $this->getModelMock('sheep_debug/block',
+            array('getParentName', 'getName', 'getClass', 'getTemplateFile', 'getRenderedDuration', 'getRenderedCount'));
+        $formKeyBlock->expects($this->any())->method('getParentName')->willReturn('');
+        $formKeyBlock->expects($this->any())->method('getName')->willReturn('formkey');
+        $formKeyBlock->expects($this->any())->method('getClass')->willReturn('Mage_Core_Block_Template');
+        $formKeyBlock->expects($this->any())->method('getTemplateFile')->willReturn('formkey.phtml');
+        $formKeyBlock->expects($this->any())->method('getRenderedDuration')->willReturn(0);
+        $formKeyBlock->expects($this->any())->method('getRenderedCount')->willReturn(0);
+
+        $requestInfo = $this->getModelMock('sheep_debug/requestInfo', array('getBlocks'));
+        $requestInfo->expects($this->any())->method('getBlocks')->willReturn(array($rootBlock, $headBlock, $gaBlock, $formKeyBlock));
+
+        $block = $this->getBlockMock('sheep_debug/view', array('getLayout', 'getRequestInfo'));
+        $block->expects($this->any())->method('getRequestInfo')->willReturn($requestInfo);
+
+        $expected = $block->getBlocksAsTree();
+        $this->assertCount(2, $expected);
+        $tree = $expected[0]->getTree();
+        $this->assertNotNull($tree);
+
+        // Verify that our two root nodes were added correctly and they were returned
+        $this->assertEquals('root', $expected[0]->getName());
+        $this->assertEquals('formkey', $expected[1]->getName());
+
+        // Verify that third level node was added will all expected data
+        $gaNode = $tree->getNodeById('google_analytics');
+        $this->assertNotNull($gaNode);
+        $this->assertNotNull($gaNode->getParent());
+        $this->assertEquals('Some_Head_Class', $gaNode->getParent()->getClass());
+        $this->assertEquals('google_analytics', $gaNode->getName());
+        $this->assertEquals('Mage_GoogleAnalytics_Block_Ga', $gaNode->getClass());
+        $this->assertEquals('ga.phtml', $gaNode->getTemplate());
+        $this->assertEquals(12, $gaNode->getDuration());
+        $this->assertEquals(1, $gaNode->getCount());
+    }
+
+    public function testGetBlockTreeHtml()
+    {
+        $node1 = $this->getMock('Varien_Data_Tree_Node', array(), array(), '', false);
+        $node2 = $this->getMock('Varien_Data_Tree_Node', array(), array(), '', false);
+
+        $rootNodes = array($node1, $node2);
+
+        $block = $this->getBlockMock('sheep_debug/view', array('getBlocksAsTree', 'renderTreeNode'));
+        $block->expects($this->any())->method('getBlocksAsTree')->willReturn($rootNodes);
+        $block->expects($this->at(1))->method('renderTreeNode')->with($node1)->willReturn('node 1 content');
+        $block->expects($this->at(2))->method('renderTreeNode')->with($node2)->willReturn('node 2 content');
+
+        $actual = $block->getBlockTreeHtml();
+        $this->assertEquals('node 1 contentnode 2 content', $actual);
+    }
+
+
+    public function testRenderTreeNode()
+    {
+        $requestInfo = $this->getModelMock('sheep_debug/requestInfo');
+        $node = $this->getMock('Varien_Data_Tree_Node', array(), array(), '', false);
+
+        $nodeBlock = $this->getBlockMock('sheep_debug/view', array('setRequestInfo', 'setTemplate', 'setNode', 'setIndent', '_toHtml'));
+        $nodeBlock->expects($this->once())->method('setRequestInfo')->with($requestInfo);
+        $nodeBlock->expects($this->once())->method('setTemplate')->with('sheep_debug/view/panel/_block_node.phtml');
+        $nodeBlock->expects($this->once())->method('setNode')->with($node);
+        $nodeBlock->expects($this->once())->method('setIndent')->with(3);
+        $nodeBlock->expects($this->once())->method('_toHtml')->willReturn('node html representation');
+
+        $layout = $this->getModelMock('core/layout', array('createBlock'));
+        $layout->expects($this->once())->method('createBlock')
+            ->with('sheep_debug/view')
+            ->willReturn($nodeBlock);
+
+        $block = $this->getBlockMock('sheep_debug/view', array('getLayout', 'getRequestInfo'));
+        $block->expects($this->any())->method('getLayout')->willReturn($layout);
+        $block->expects($this->any())->method('getRequestInfo')->willReturn($requestInfo);
+
+        $content = $block->renderTreeNode($node, 3);
+        $this->assertEquals('node html representation', $content);
+    }
+
 }

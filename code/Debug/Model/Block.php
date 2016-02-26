@@ -14,6 +14,8 @@ class Sheep_Debug_Model_Block
     public static $endRenderingTime;
 
     /** @var string */
+    protected $parentName;
+    /** @var string */
     protected $name;
     /** @var string */
     protected $class;
@@ -33,6 +35,7 @@ class Sheep_Debug_Model_Block
 
     public function init(Mage_Core_Block_Abstract $block)
     {
+        $this->parentName = $block->getParentBlock() ? $block->getParentBlock()->getNameInLayout() : '';
         $this->name = $block->getNameInLayout();
         $this->class = get_class($block);
         $this->templateFile = $block instanceof Mage_Core_Block_Template ? $block->getTemplateFile() : '';
@@ -148,7 +151,7 @@ class Sheep_Debug_Model_Block
 
 
     /**
-     * Returns rendering duration
+     * Returns rendering duration in microseconds
      *
      * @return mixed
      */
@@ -188,6 +191,14 @@ class Sheep_Debug_Model_Block
     static public function getTotalRenderingTime()
     {
         return self::$endRenderingTime - self::$startRenderingTime;
+    }
+
+    /**
+     * @return string
+     */
+    public function getParentName()
+    {
+        return $this->parentName;
     }
 
 }

@@ -38,6 +38,15 @@ $updates = $design->getLayoutUpdates();
 </div>
 
 <div class="sf-tabs">
+
+    <div class="tab">
+        <h3 class="tab-title"><?php echo $this->__('Rendering Tree'); ?></h3>
+
+        <div class="tab-content">
+            <?php echo $this->getBlockTreeHtml(); ?>
+        </div>
+    </div>
+
     <div class="tab <?php if (!count($blocks)): ?>disabled<?php endif; ?>">
         <h3 class="tab-title">
             <?php echo $this->__('Blocks'); ?>

@@ -25,13 +25,18 @@ class Sheep_Debug_Test_Model_Block extends EcomDev_PHPUnit_Test_Case
 
     public function testInit()
     {
-        $block = $this->getBlockMock('wishlist/customer_wishlist', array('getNameInLayout', 'getTemplateFile'));
+        $parentBlock = $this->getBlockMock('page/html_wrapper', array('getNameInLayout'));
+        $parentBlock->expects($this->any())->method('getNameInLayout')->willReturn('my.account.wrapper');
+
+        $block = $this->getBlockMock('wishlist/customer_wishlist', array('getParentBlock', 'getNameInLayout', 'getTemplateFile'));
+        $block->expects($this->any())->method('getParentBlock')->willReturn($parentBlock);
         $block->expects($this->any())->method('getNameInLayout')->willReturn('customer.wishlist');
         $block->expects($this->any())->method('getTemplateFile')->willReturn('wishlist/view.phtml');
 
         $model = $this->getModelMock('sheep_debug/block', array('startRendering'), false, array(), '', false);
         $model->init($block);
 
+        $this->assertEquals('my.account.wrapper', $model->getParentName());
         $this->assertContains('Mage_Wishlist_Block_Customer_Wishlist', $model->getClass());
         $this->assertEquals('customer.wishlist', $model->getName());
         $this->assertEquals('wishlist/view.phtml', $model->getTemplateFile());

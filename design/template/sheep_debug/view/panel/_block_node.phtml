@@ -1,0 +1,36 @@
+<?php
+/** @var Sheep_Debug_Block_View $this */
+
+$node = $this->getNode();
+$indent = $this->getIndent();
+
+$percent = ($node->getDuration() * 100) / $this->getRequestInfo()->getRenderingTime();
+
+?>
+<br>
+<?php echo str_repeat('&nbsp;', $indent * 4) ?>└
+<span class="status-success"><?php echo $this->escapeHtml($node->getName()) ?></span> <?php echo $this->escapeHtml($node->getClass()) ?>
+
+<?php if ($node->getCount() == 0): ?>
+    <span class="status-error"><?php echo $this->__('Not rendered'); ?></span>
+<?php endif; ?>
+<?php if ($node->getCount() > 1): ?>
+    <span class="status-error"><?php echo $this->__('(%d counts)', $node->getCount()); ?></span>
+<?php endif; ?>
+
+<?php if ($percent > 1): ?>
+    <span class="status-error">
+        <?php echo $this->__('%s ms', $this->formatNumber($node->getDuration(), 2)); ?>/
+        <?php echo $this->__('%s%%', $this->formatNumber($percent, 2)); ?></span>
+    </span>
+<?php endif; ?>
+
+<?php $indent++; ?>
+<?php if ($node->getTemplate()): ?>
+    <br><?php echo str_repeat('&nbsp;', $indent * 4)  ?>└
+    <?php echo $this->__('template:'); ?> <span class="status-warning"><?php echo $this->escapeHtml($node->getTemplate()); ?></span>
+<?php endif; ?>
+
+<?php foreach ($node->getChildren() as $child): ?>
+    <?php echo $this->renderTreeNode($child, $indent) ?>
+<?php endforeach; ?>

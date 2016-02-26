@@ -73,9 +73,9 @@ class Sheep_Debug_Block_View extends Sheep_Debug_Block_Abstract
     /**
      * Iterates an array and prints its keys and values.
      *
-     * @param array $data
+     * @param array  $data
      * @param string $noDataLabel
-     * @param null $header
+     * @param null   $header
      * @return string
      */
     public function renderArray($data, $noDataLabel = 'No Data', $header = null)
@@ -95,8 +95,8 @@ class Sheep_Debug_Block_View extends Sheep_Debug_Block_Abstract
      *
      * If fields parameter is omitted we're going to use keys from first array element.
      *
-     * @param array $data
-     * @param array $fields
+     * @param array  $data
+     * @param array  $fields
      * @param string $noDataLabel
      * @return string
      */
@@ -155,6 +155,78 @@ class Sheep_Debug_Block_View extends Sheep_Debug_Block_Abstract
         }
 
         return $output;
+    }
+
+
+    /**
+     * Builds a tree based on block recorded information
+     *
+     * @return Varien_Data_Tree_Node[]
+     */
+    public function getBlocksAsTree()
+    {
+        $blocks = $this->getRequestInfo()->getBlocks();
+        $tree = new Varien_Data_Tree();
+        $rootNodes = array();
+
+        foreach ($blocks as $block) {
+            $parentNode = $tree->getNodeById($block->getParentName());
+
+            $node = new Varien_Data_Tree_Node(array(
+                'name'     => $block->getName(),
+                'class'    => $block->getClass(),
+                'template' => $block->getTemplateFile(),
+                'duration' => $block->getRenderedDuration(),
+                'count' => $block->getRenderedCount()
+            ), 'name', $tree, $parentNode);
+
+            $tree->addNode($node, $parentNode);
+
+            if (!$parentNode) {
+                $rootNodes[] = $node;
+            }
+        }
+
+        return $rootNodes;
+    }
+
+
+    /**
+     * Returns a tree html representation for layout tree
+     *
+     * @return string
+     */
+    public function getBlockTreeHtml()
+    {
+        $content = '';
+        $rootNodes = $this->getBlocksAsTree();
+
+        // Try to iterate our non-conventional tree
+        foreach ($rootNodes as $rootNode) {
+            $content .= $this->renderTreeNode($rootNode);
+        }
+
+        return $content;
+    }
+
+
+    /**
+     * Renders a rendering tree node
+     *
+     * @see Sheep_Debug_Block_View::getBlocksTree
+     * @param Varien_Data_Tree_Node $node
+     * @param int                   $indentLevel
+     * @return string
+     */
+    public function renderTreeNode(Varien_Data_Tree_Node $node, $indentLevel=0)
+    {
+        $block = $this->getLayout()->createBlock('sheep_debug/view');
+        $block->setRequestInfo($this->getRequestInfo());
+        $block->setTemplate('sheep_debug/view/panel/_block_node.phtml');
+        $block->setNode($node);
+        $block->setIndent($indentLevel);
+
+        return $block->toHtml();
     }
 
 }
