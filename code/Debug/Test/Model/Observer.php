@@ -71,7 +71,7 @@ class Sheep_Debug_Test_Model_Observer extends EcomDev_PHPUnit_Test_Case
         $requestInfo->expects($this->any())->method('getIsStarted')->willReturn(true);
         $requestInfo->expects($this->once())->method('initQueries');
         $requestInfo->expects($this->once())->method('completeLogging');
-        $requestInfo->expects($this->once())->method('setRenderingTime')->with(0.20);
+        $requestInfo->expects($this->once())->method('setRenderingTime')->with(200);
         $requestInfo->expects($this->once())->method('setPeakMemory')->with(1230300);
         $requestInfo->expects($this->once())->method('setTime')->with(0.1231);
         $requestInfo->expects($this->once())->method('setTimers');

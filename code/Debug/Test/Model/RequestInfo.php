@@ -209,8 +209,8 @@ class Sheep_Debug_Test_Model_RequestInfo extends EcomDev_PHPUnit_Test_Case
         $this->assertEquals('block 1', $blockInfoArray[0]['name']);
         $this->assertEquals('Mage_Core_Block_Template', $blockInfoArray[0]['class']);
         $this->assertEquals('some_template.phtml', $blockInfoArray[0]['template']);
-        $this->assertEquals(null, $blockInfoArray[0]['time (s)']);
-        $this->assertArrayHasKey('time (s)', $blockInfoArray[1]);
+        $this->assertEquals(null, $blockInfoArray[0]['time (ms)']);
+        $this->assertArrayHasKey('time (ms)', $blockInfoArray[1]);
         $this->assertEquals(1, $blockInfoArray[1]['count']);
     }
 
@@ -405,11 +405,11 @@ class Sheep_Debug_Test_Model_RequestInfo extends EcomDev_PHPUnit_Test_Case
         Sheep_Debug_Model_Block::$startRenderingTime = 0.75;
 
         $actual = $this->model->getRenderingTime();
-        $this->assertEquals(0.15, $actual);
+        $this->assertEquals(150, $actual);
 
-        $this->model->setRenderingTime(0.4567);
+        $this->model->setRenderingTime(4567);
         $actual = $this->model->getRenderingTime();
-        $this->assertEquals(0.4567, $actual);
+        $this->assertEquals(4567, $actual);
     }
 
 
