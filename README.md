@@ -14,8 +14,8 @@ Latest version is based on Symfony's WebProfilerBundle.
 - **Events**: shows all raised events and called observers
 - **Database**: lists all models and collections loaded during the request; all executed SQL queries are listed
  when SQL Profiler is enabled
-- **E-mails**: lists e-mail information and preview
- **Layout**: lists layout handlers loaded during current request and adds ability to see layout files
+- **E-mails**: lists sent e-mails with preview
+- **Layout**: outputs rendering tree, lists layout handlers loaded during current request and adds ability to see layout files
 updates to a specific handle; offers information about instantiated and rendered block
 - **Configuration**: lists available Magento modules with their status and their version; 
  also offers the ability to enable/disable them
@@ -29,8 +29,9 @@ Don't forget to check out [screenshots gallery](docs/images.md)
 
 - Make sure you have [Modman](https://github.com/colinmollenhour/modman) installed
 - Allow symlinks for the templates directory (required for installations via Modman)
-    - For newer Magento versions (1.5.1.0 & above) you just need enable 'Allow Symlinks' from System - Configuration / Advanced / Developer / Template Settings
-    - For older Magento versions you need to change some code http://www.tonigrigoriu.com/magento/magento-how-to-fix-template-path-errors-when-using-symlinks/
+    - Use n98-magerun like pro: `n98-magerun.phar dev:symlinks`
+    - Or just set 'Allow Symlinks' to 'Yes' from System - Configuration / Advanced / Developer / Template Settings
+
 - Install Debug Toolbar module:
 ```bash
 cd [magento root folder]
@@ -79,6 +80,11 @@ Use [issue tracker on GitHub](https://github.com/madalinoprea/magneto-debug/issu
     Eliminate a possible cache problem by disabling all caches. Try to determine if there are any customizations that have removed `before_body_end`.
 
 # Change Log
+- **1.5.0**
+    - Adds nicer way to present rendering tree
+    - Adds support to capture e-mails even when Aschroder_SMTPPro or Ebizmarts_Mandrill are installed
+    - Minor UI tweaks for layout panel
+    - Fixes listing of database layout updates
 - **1.4.1**
     - Minor fixes for Magento Enterprise (website restrictions, Full Page Cache debug menu item)
     

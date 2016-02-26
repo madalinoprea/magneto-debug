@@ -28,3 +28,5 @@
 ## E-mails
 ![](images/view_post_emails.png)
 
+## Layout
+![](images/view_layout_rendering_tree.png)
