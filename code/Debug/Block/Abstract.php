@@ -39,6 +39,18 @@ class Sheep_Debug_Block_Abstract extends Mage_Core_Block_Template
         return null;
     }
 
+    /**
+     * Retrieve application instance
+     *
+     * Method added to support Magento CE 1.7
+     *
+     * @return Mage_Core_Model_App
+     */
+    protected function _getApp()
+    {
+        return Mage::app();
+    }
+
 
     /**
      * Returns id for default configured store
