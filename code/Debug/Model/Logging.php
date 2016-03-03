@@ -208,23 +208,40 @@ class Sheep_Debug_Model_Logging
      * @param int $endPosition
      * @return string
      */
-    public function getContent($filePath, $startPosition, $endPosition)
+    public function getContent($filePath, $startPosition, $endPosition = false)
     {
-        if (!file_exists($filePath)) {
-            return '';
-        }
-
-        // End position not saved yet
-        if (!$endPosition) {
-            return trim(file_get_contents($filePath, null, null, $startPosition));
-        }
-
         // End position exists but is less then start position
         if ($endPosition <= $startPosition) {
             return '';
         }
 
-        return trim(file_get_contents($filePath, null, null, $startPosition, $endPosition = $startPosition));
+        $contentLength = $endPosition - $startPosition; // calculate how many characters we want to buffer
+
+        if (!file_exists($filePath) || !($h = fopen($filePath, "r"))) { // file not found or issue reading
+            return '';
+        }
+
+        fseek($h, $startPosition); // jump to the start position
+
+        $lengthCounter = 0;
+        $outputBuffer = "";
+        while (($line = fgets($h)) !== false) { // read line by line
+            $lengthCounter += strlen($line); // add length of read content to total counter
+
+            if ($endPosition!=false && $lengthCounter > $contentLength) { // check if current line is longer than allowed length
+                $line = substr($line, 0, $lengthCounter - $contentLength); // trim the lenght of line
+            }
+
+            $outputBuffer = $line . PHP_EOL;
+
+            if ($endPosition!=false && $lengthCounter > $contentLength) { // read enough, stahp
+                break;
+            }
+        }
+
+        fclose($h);
+
+        return trim($outputBuffer);
     }
 
 }
