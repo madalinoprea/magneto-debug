@@ -224,7 +224,7 @@ class Sheep_Debug_Model_Logging
             return '';
         }
 
-        return trim(file_get_contents($filePath, null, null, $startPosition, $endPosition = $startPosition));
+        return trim(file_get_contents($filePath, null, null, $startPosition, $endPosition - $startPosition));
     }
 
 }
