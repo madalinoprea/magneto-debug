@@ -282,7 +282,7 @@ class Sheep_Debug_Test_Model_Service extends EcomDev_PHPUnit_Test_Case
         $statement = $this->getMock('Varien_Db_Statement_Pdo_Mysql', array(), array(), '', false);
         $statement->expects($this->once())->method('rowCount')->willReturn(2);
 
-        $connection = $this->getMock('Magento_Db_Adapter_Pdo_Mysql', array(), array(), '', false);
+        $connection = $this->getMock('Varien_Db_Adapter_Pdo_Mysql', array(), array(), '', false);
         $connection->expects($this->once())->method('query')
             ->with('DELETE FROM profile_table')
             ->willReturn($statement);
