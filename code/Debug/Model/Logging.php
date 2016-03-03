@@ -208,7 +208,7 @@ class Sheep_Debug_Model_Logging
      * @param int $endPosition
      * @return string
      */
-    public function getContent($filePath, $startPosition, $endPosition = false)
+    public function getContent($filePath, $startPosition, $endPosition)
     {
         // End position exists but is less then start position
         if ($endPosition <= $startPosition) {
