@@ -50,7 +50,8 @@ modman update magneto-debug
 
 # Compatibility
 
-Extension is (hopefully) successfully unit tested against PHP 5.4, PHP 5.5 and Magento CE 1.9 and Magento CE 1.8.
+Extension is (hopefully) successfully unit tested against PHP 5.4, PHP 5.5 and Magento CE 1.9, Magento CE 1.8, Magento CE 1.7 and 
+their related Magento Enterprise versions.
 
 If you would like to support it on another version let us know.
 
