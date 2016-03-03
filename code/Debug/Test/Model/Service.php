@@ -260,7 +260,7 @@ class Sheep_Debug_Test_Model_Service extends EcomDev_PHPUnit_Test_Case
         $this->replaceByMock('resource_model', 'core/config', $resourceMock);
         $resourceMock->expects($this->any())->method('getMainTable')->willReturn('config_table');
 
-        $connection = $this->getMock('Magento_Db_Adapter_Pdo_Mysql', array(), array(), '', false);
+        $connection = $this->getMock('Varien_Db_Adapter_Pdo_Mysql', array(), array(), '', false);
         $connection->expects($this->once())->method('delete')
             ->with('config_table', "path like 'dev/debug/template_hints%'");
 

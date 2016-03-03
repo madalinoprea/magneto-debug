@@ -70,7 +70,7 @@ class Sheep_Debug_Test_Helper_Data extends EcomDev_PHPUnit_Test_Case
         $statement = $this->getMock('Varien_Db_Statement_Pdo_Mysql', array(), array(), '', false);
         $statement->expects($this->once())->method('fetchAll')->with(PDO::FETCH_ASSOC)->willReturn(2);
 
-        $connection = $this->getMock('Magento_Db_Adapter_Pdo_Mysql', array(), array(), '', false);
+        $connection = $this->getMock('Varien_Db_Adapter_Pdo_Mysql', array(), array(), '', false);
         $connection->expects($this->once())->method('query')
             ->with('TEST', array('var1' => 1, 'var2' => 2))
             ->willReturn($statement);
@@ -87,7 +87,7 @@ class Sheep_Debug_Test_Helper_Data extends EcomDev_PHPUnit_Test_Case
     {
         $profiler = $this->getMock('Zend_Db_Profiler');
 
-        $connection = $this->getMock('Magento_Db_Adapter_Pdo_Mysql', array(), array(), '', false);
+        $connection = $this->getMock('Varien_Db_Adapter_Pdo_Mysql', array(), array(), '', false);
         $connection->expects($this->once())->method('getProfiler')->willReturn($profiler);
 
         $coreResource = $this->getModelMock('core/resource', array('getConnection'));
