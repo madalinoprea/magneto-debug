@@ -4,7 +4,7 @@
   "type": "magento-module",
   "keywords": ["Magento", "logging", "performance"],
   "homepage": "https://github.com/madalinoprea/magneto-debug",
-  "license": "OSL-3.0",
+  "license": "MIT",
   "authors": [
     {"name": "Madalin Oprea (Mario)"}
   ],
