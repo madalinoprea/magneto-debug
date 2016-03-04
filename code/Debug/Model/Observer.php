@@ -250,9 +250,12 @@ class Sheep_Debug_Model_Observer
             return;
         }
 
+        $blockName = Mage::helper('sheep_debug')->getBlockName($block);
+
         $requestInfo = $this->getRequestInfo();
+
         try {
-            $blockInfo = $requestInfo->getBlock($block->getNameInLayout());
+            $blockInfo = $requestInfo->getBlock($blockName);
         } catch (Exception $e) {
             // block was not found - lets add it now
             $blockInfo = $requestInfo->addBlock($block);
