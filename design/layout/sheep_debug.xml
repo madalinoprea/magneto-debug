@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<layout version="1.5.0">
+<layout version="1.5.1">
     <default>
         <reference name="head">
             <reference name="head">

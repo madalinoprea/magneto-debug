@@ -81,6 +81,10 @@ Use [issue tracker on GitHub](https://github.com/madalinoprea/magneto-debug/issu
     Eliminate a possible cache problem by disabling all caches. Try to determine if there are any customizations that have removed `before_body_end`.
 
 # Change Log
+- **1.5.1**
+    - Adds support for Magento CE 1.7 and Magento EE 1.12
+    - Fixes why for some people toolbar was not showing in admin (corrected modman links)
+    - Fixes how log lines are fetched from logs (there is a good chance that is addressing some memory limit error)
 - **1.5.0**
     - Adds nicer way to present rendering tree
     - Adds support to capture e-mails even when Aschroder_SMTPPro or Ebizmarts_Mandrill are installed
