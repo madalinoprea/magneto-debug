@@ -250,9 +250,18 @@ class Sheep_Debug_Model_Observer
             return;
         }
 
+        $blockName = $block->getParentBlock() ?
+            "{$block->getParentBlock()->getNameInLayout()}_{$block->getNameInLayout()}" :
+            "{$block->getNameInLayout()}" ;
+
+        if ($block->getBlockAlias()) {
+            $blockName .= "_{$block->getBlockAlias()}";
+        }
+
         $requestInfo = $this->getRequestInfo();
+
         try {
-            $blockInfo = $requestInfo->getBlock($block->getNameInLayout());
+            $blockInfo = $requestInfo->getBlock($blockName);
         } catch (Exception $e) {
             // block was not found - lets add it now
             $blockInfo = $requestInfo->addBlock($block);
