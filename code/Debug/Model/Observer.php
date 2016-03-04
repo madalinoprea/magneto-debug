@@ -250,13 +250,7 @@ class Sheep_Debug_Model_Observer
             return;
         }
 
-        $blockName = $block->getParentBlock() ?
-            "{$block->getParentBlock()->getNameInLayout()}_{$block->getNameInLayout()}" :
-            "{$block->getNameInLayout()}" ;
-
-        if ($block->getBlockAlias()) {
-            $blockName .= "_{$block->getBlockAlias()}";
-        }
+        $blockName = Mage::helper('sheep_debug')->getBlockName($block);
 
         $requestInfo = $this->getRequestInfo();
 
