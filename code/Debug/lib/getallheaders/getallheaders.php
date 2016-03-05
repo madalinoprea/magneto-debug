@@ -1,5 +1,5 @@
 <?php
-
+// @codeCoverageIgnoreStart
 if (!function_exists('getallheaders')) {
 
     /**
@@ -44,3 +44,4 @@ if (!function_exists('getallheaders')) {
     }
 
 }
+// @codeCoverageIgnoreEnd
