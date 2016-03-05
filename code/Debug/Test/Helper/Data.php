@@ -384,4 +384,29 @@ XML;
         return $this->assertTrue($this->helper->canEnableVarienProfiler());
     }
 
+    public function testGetBlockNameWithoutParent()
+    {
+        $block = $this->getBlockMock('core/template', array('getParentBlock', 'getNameInLayout', 'getBlockAlias'));
+        $block->expects($this->any())->method('getParentBlock')->willReturn(null);
+        $block->expects($this->any())->method('getNameInLayout')->willReturn('customer_account_dashboard_hello');
+        $block->expects($this->any())->method('getBlockAlias')->willReturn('hello');
+
+        $actual = $this->helper->getBlockName($block);
+        $this->assertEquals('customer_account_dashboard_hello_hello', $actual);
+    }
+
+    public function testGetBlockNameWithParent()
+    {
+        $parentBlock = $this->getBlockMock('customer/account_dashboard', array('getNameInLayout'));
+        $parentBlock->expects($this->any())->method('getNameInLayout')->willReturn('customer_account_dashboard');
+
+        $block = $this->getBlockMock('core/template', array('getParentBlock', 'getNameInLayout', 'getBlockAlias'));
+        $block->expects($this->any())->method('getParentBlock')->willReturn($parentBlock);
+        $block->expects($this->any())->method('getNameInLayout')->willReturn('customer_account_dashboard_hello');
+        $block->expects($this->any())->method('getBlockAlias')->willReturn('hello');
+
+        $actual = $this->helper->getBlockName($block);
+        $this->assertEquals('customer_account_dashboard_customer_account_dashboard_hello_hello', $actual);
+    }
+    
 }
