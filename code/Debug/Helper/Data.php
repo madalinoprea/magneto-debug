@@ -473,4 +473,24 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
     {
         return Mage::getConfig();
     }
+
+
+    /**
+     * Formats the blockname used in the observer::onBlockToHtml method
+     *
+     * @param Mage_Core_Block_Abstract $block
+     * @return string
+     */
+    public function getBlockName(Mage_Core_Block_Abstract $block)
+    {
+        $blockName = $block->getParentBlock() ?
+            "{$block->getParentBlock()->getNameInLayout()}_{$block->getNameInLayout()}" :
+            "{$block->getNameInLayout()}" ;
+
+        if ($block->getBlockAlias()) {
+            $blockName .= "_{$block->getBlockAlias()}";
+        }
+
+        return $blockName;
+    }
 }
