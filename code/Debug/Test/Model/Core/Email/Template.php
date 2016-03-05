@@ -50,6 +50,29 @@ class Sheep_Debug_Test_Model_Core_Email_Template extends EcomDev_PHPUnit_Test_Ca
 
 
     /**
+     * Checks that execution is not interrupted if an exception is raised by our profile method
+     *
+     * @covers Sheep_Debug_Model_Core_Email_Template_Capture::send
+     */
+    public function testSendWithException()
+    {
+        $mail = $this->getMock('Zend_Mail');
+
+        $model = $this->getModelMock('core/email_template', array('getMail', 'parentSend', 'addEmailToProfile'));
+        $model->expects($this->once())->method('getMail')->willReturn($mail);
+
+        // Parameters are passed to parrent method
+        $model->expects($this->once())->method('parentSend')
+            ->with('mario@mailinator.com', 'Mario', array('store' => 'Pirate Sheep'))
+            ->willReturn(true);
+        $model->expects($this->once())->method('addEmailToProfile')->willThrowException(new Exception('boom'));
+
+        $actual = $model->send('mario@mailinator.com', 'Mario', array('store' => 'Pirate Sheep'));
+        $this->assertTrue($actual);
+    }
+
+
+    /**
      * @covers Sheep_Debug_Model_Core_Email_Template_Capture::addEmailToProfile
      */
     public function testAddEmailToProfile()
@@ -116,7 +139,7 @@ class Sheep_Debug_Test_Model_Core_Email_Template extends EcomDev_PHPUnit_Test_Ca
     /**
      * @covers Sheep_Debug_Model_Core_Email_Template_Capture::getContent
      */
-    public function testContentForNonPlain()
+    public function testGetContentForNonPlain()
     {
         $content = $this->getMock('Zend_Mime_Part', array('getRawContent'), array(), '', false);;
         $content->expects($this->once())->method('getRawContent')->willReturn('raw html content');
@@ -134,12 +157,50 @@ class Sheep_Debug_Test_Model_Core_Email_Template extends EcomDev_PHPUnit_Test_Ca
 
 
     /**
+     * @covers Sheep_Debug_Model_Core_Email_Template_Capture::getContent
+     */
+    public function testGetContentForQueue()
+    {
+        $mail = $this->getMock('Zend_Mail', array('getBodyText', 'getBodyHtml'));
+        $mail->expects($this->never())->method('getBodyText');
+        $mail->expects($this->never())->method('getBodyHtml');
+
+        $queue = $this->getModelMock('core/email_queue', array('getMessageBody'));
+        $queue->expects($this->once())->method('getMessageBody')->willReturn('e-mail body');
+
+        $model = $this->getModelMock('core/email_template', array('hasQueue', 'getQueue'));
+        $model->expects($this->any())->method('hasQueue')->willReturn(true);
+        $model->expects($this->any())->method('getQueue')->willReturn($queue);
+
+        $actual = $model->getContent($mail);
+        $this->assertEquals('e-mail body', $actual);
+
+    }
+
+
+    /**
      * @covers Sheep_Debug_Model_Core_Email_Template_Capture::decodeSubject
      */
     public function testDecodeSubject()
     {
         $model = $this->getModelMock('core/email_template', array('send'));
         $this->assertEquals('Hello, world', $model->decodeSubject('=?utf-8?B?SGVsbG8sIHdvcmxk?='));
+    }
+
+
+    public function testDecodeSubjectForQueue()
+    {
+        $queue = $this->getModelMock('core/email_queue', array('getMessageParameters'));
+        $queue->expects($this->once())->method('getMessageParameters')
+            ->with('subject')
+            ->willReturn('e-mail subject');
+
+        $model = $this->getModelMock('core/email_template', array('hasQueue', 'getQueue'));
+        $model->expects($this->any())->method('hasQueue')->willReturn(true);
+        $model->expects($this->any())->method('getQueue')->willReturn($queue);
+
+        $actual = $model->decodeSubject('subject');
+        $this->assertEquals('e-mail subject', $actual);
     }
 
 }
