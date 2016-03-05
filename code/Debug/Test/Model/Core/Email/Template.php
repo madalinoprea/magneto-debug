@@ -23,6 +23,9 @@ class Sheep_Debug_Test_Model_Core_Email_Template extends EcomDev_PHPUnit_Test_Ca
     }
 
 
+    /**
+     * @covers Sheep_Debug_Model_Core_Email_Template_Capture::send
+     */
     public function testSend()
     {
         $mail = $this->getMock('Zend_Mail');
@@ -46,7 +49,10 @@ class Sheep_Debug_Test_Model_Core_Email_Template extends EcomDev_PHPUnit_Test_Ca
     }
 
 
-    public function testAddEmailtoProfile()
+    /**
+     * @covers Sheep_Debug_Model_Core_Email_Template_Capture::addEmailToProfile
+     */
+    public function testAddEmailToProfile()
     {
         $model = $this->getModelMock('core/email_template', array('decodeSubject', 'getContent', 'getSenderName', 'getSenderEmail', 'isPlain', 'send'));
         $model->expects($this->once())->method('decodeSubject')->with('encoded e-mail subject')->willReturn('e-mail subject');
@@ -87,6 +93,9 @@ class Sheep_Debug_Test_Model_Core_Email_Template extends EcomDev_PHPUnit_Test_Ca
     }
 
 
+    /**
+     * @covers Sheep_Debug_Model_Core_Email_Template_Capture::getContent
+     */
     public function testGetContentForPlain()
     {
         $content = $this->getMock('Zend_Mime_Part', array('getRawContent'), array(), '', false);;
@@ -104,6 +113,9 @@ class Sheep_Debug_Test_Model_Core_Email_Template extends EcomDev_PHPUnit_Test_Ca
     }
 
 
+    /**
+     * @covers Sheep_Debug_Model_Core_Email_Template_Capture::getContent
+     */
     public function testContentForNonPlain()
     {
         $content = $this->getMock('Zend_Mime_Part', array('getRawContent'), array(), '', false);;
@@ -121,6 +133,9 @@ class Sheep_Debug_Test_Model_Core_Email_Template extends EcomDev_PHPUnit_Test_Ca
     }
 
 
+    /**
+     * @covers Sheep_Debug_Model_Core_Email_Template_Capture::decodeSubject
+     */
     public function testDecodeSubject()
     {
         $model = $this->getModelMock('core/email_template', array('send'));
