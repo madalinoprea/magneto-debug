@@ -288,16 +288,18 @@ class Sheep_Debug_Model_Service
 
         /* @var $designPackage Mage_Core_Model_Design_Package */
         $designPackage = Mage::getModel('core/design_package');
-        $designPackage->setStore(Mage::app()->getStore($storeId));
+        $designPackage->setStore($storeId);
         $designPackage->setArea($area);
+        $designPackageName = $designPackage->getPackageName();
+        $layoutTheme = $designPackage->getTheme('layout');
 
         // search handle in all layout files registered for this area, package name and theme
         $handleFiles = array();
         foreach ($updateFiles as $file) {
             $filename = $designPackage->getLayoutFilename($file, array(
-                '_area'    => $designPackage->getArea(),
-                '_package' => $designPackage->getPackageName(),
-                '_theme'   => $designPackage->getTheme('layout')
+                '_area'    => $area,
+                '_package' => $designPackageName,
+                '_theme'   => $layoutTheme
             ));
 
             if (!is_readable($filename)) {
@@ -305,7 +307,7 @@ class Sheep_Debug_Model_Service
             }
 
             /** @var SimpleXMLElement $fileXml */
-            $fileXml = simplexml_load_file($filename);
+            $fileXml = $this->loadXmlFile($filename);
             if ($fileXml === false) {
                 continue;
             }

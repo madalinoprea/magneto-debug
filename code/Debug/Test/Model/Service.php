@@ -296,6 +296,86 @@ class Sheep_Debug_Test_Model_Service extends EcomDev_PHPUnit_Test_Case
         $this->assertEquals(2, $actual);
     }
 
+
+    /**
+     * @covers Sheep_Debug_Model_Service::getFileUpdatesWithHandle
+     */
+    public function testGetFileUpdatesWithHandle()
+    {
+        $magentoBaseDir = Mage::getBaseDir();
+        $customerXmlFilePath = '/app/design/frontend/rwd/default/layout/customer.xml';
+        $customerXmlContent=<<<XML
+<layout>
+    <default>
+        <content></content>
+    </default>
+    <some_handle>
+        handle_content
+    </some_handle>
+    <another_handle>
+        another content
+    </another_handle>
+</layout>
+XML;
+
+        $salesXmlFilePath = '/app/design/frontend/rwd/default/layout/sales.xml';
+        $salesXmlContent = <<<XML
+<layout>
+    <other_handle>
+        some content
+    </other_handle>
+    <some_handle>
+        <block>
+            <child_block/>
+        </block>
+    </some_handle>
+</layout>
+XML;
+
+        $helperMock = $this->getHelperMock('sheep_debug', array('getLayoutUpdatesFiles'));
+        $helperMock->expects($this->once())->method('getLayoutUpdatesFiles')
+            ->with(5, 'frontend')
+            ->willReturn(array('customer.xml', 'missing_file.xml', 'sales.xml'));
+        $this->replaceByMock('helper', 'sheep_debug', $helperMock);
+
+        $model = $this->getModelMock('sheep_debug/service', array('loadXmlFile'));
+
+        $designPackageMock = $this->getModelMock('core/design_package', array('setStore', 'setArea', 'getLayoutFilename', 'getArea', 'getPackageName'));
+        $designPackageMock->expects($this->any())->method('getArea')->willReturn('frontend');
+        $designPackageMock->expects($this->any())->method('getPackageName')->willReturn('rwd');
+        $designPackageMock->expects($this->once())->method('setStore')->with(5);
+        $designPackageMock->expects($this->once())->method('setArea')->with('frontend');
+        $this->replaceByMock('model', 'core/design_package', $designPackageMock);
+
+        // customer xml
+        $designPackageMock->expects($this->at(3))->method('getLayoutFilename')
+            ->with('customer.xml')
+            ->willReturn($magentoBaseDir . $customerXmlFilePath);
+        $model->expects($this->at(0))->method('loadXmlFile')
+            ->with($magentoBaseDir . $customerXmlFilePath)
+            ->willReturn(simplexml_load_string($customerXmlContent));
+
+        // missing xml
+        $designPackageMock->expects($this->at(4))->method('getLayoutFilename')
+            ->with('missing_file.xml')
+            ->willReturn($magentoBaseDir . '/app/design/frontend/base/default/layout/missing_xml.xml');
+
+        // sales xml
+        $designPackageMock->expects($this->at(5))->method('getLayoutFilename')
+            ->with('sales.xml')
+            ->willReturn($magentoBaseDir . $salesXmlFilePath);
+        $model->expects($this->at(1))->method('loadXmlFile')
+            ->with($magentoBaseDir . $salesXmlFilePath)
+            ->willReturn(simplexml_load_string($salesXmlContent));
+
+        $actual = $model->getFileUpdatesWithHandle('some_handle', 5, 'frontend');
+        $this->assertCount(2, $actual);
+        $this->assertArrayHasKey($customerXmlFilePath, $actual);
+        $this->assertContains('handle_content', $actual[$customerXmlFilePath][0]);
+        $this->assertArrayHasKey($salesXmlFilePath, $actual);
+        $this->assertContains('child_block', $actual[$salesXmlFilePath][0]);
+    }
+
 }
 
 
