@@ -303,7 +303,7 @@ class Sheep_Debug_Test_Model_Service extends EcomDev_PHPUnit_Test_Case
     public function testGetFileUpdatesWithHandle()
     {
         $magentoBaseDir = Mage::getBaseDir();
-        $customerXmlFilePath = '/app/design/frontend/rwd/default/layout/customer.xml';
+        $customerXmlFilePath = '/app/design/frontend/base/default/layout/customer.xml';
         $customerXmlContent = <<<XML
 <layout>
     <default>
@@ -318,7 +318,7 @@ class Sheep_Debug_Test_Model_Service extends EcomDev_PHPUnit_Test_Case
 </layout>
 XML;
 
-        $salesXmlFilePath = '/app/design/frontend/rwd/default/layout/sales.xml';
+        $salesXmlFilePath = '/app/design/frontend/base/default/layout/sales.xml';
         $salesXmlContent = <<<XML
 <layout>
     <other_handle>
