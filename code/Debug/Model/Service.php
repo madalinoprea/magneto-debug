@@ -332,6 +332,8 @@ class Sheep_Debug_Model_Service
     /**
      * Returns layout updates added via Admin and stored in database.
      *
+     * Returned value is an array of arrays that have layout update id as key and its associated xml update as value.
+     *
      * @see \Mage_Core_Model_Resource_Layout::fetchUpdatesByHandle
      *
      * @param string $handle
@@ -345,7 +347,7 @@ class Sheep_Debug_Model_Service
 
         /* @var $designPackage Mage_Core_Model_Design_Package */
         $designPackage = Mage::getModel('core/design_package');
-        $designPackage->setStore(Mage::app()->getStore($storeId));
+        $designPackage->setStore($storeId);
         $designPackage->setArea($area);
 
         /* @var $layoutResourceModel Mage_Core_Model_Resource_Layout */

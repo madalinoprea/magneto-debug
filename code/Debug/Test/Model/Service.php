@@ -304,7 +304,7 @@ class Sheep_Debug_Test_Model_Service extends EcomDev_PHPUnit_Test_Case
     {
         $magentoBaseDir = Mage::getBaseDir();
         $customerXmlFilePath = '/app/design/frontend/rwd/default/layout/customer.xml';
-        $customerXmlContent=<<<XML
+        $customerXmlContent = <<<XML
 <layout>
     <default>
         <content></content>
@@ -376,6 +376,74 @@ XML;
         $this->assertContains('child_block', $actual[$salesXmlFilePath][0]);
     }
 
+
+    /**
+     * @covers Sheep_Debug_Model_Service::getDatabaseUpdatesWithHandle
+     */
+    public function testGetDatabaseUpdatesWithHandle()
+    {
+        $designPackageMock = $this->getModelMock('core/design_package', array('setStore', 'setArea', 'getPackageName', 'getTheme'));
+        $designPackageMock->expects($this->any())->method('getPackageName')->willReturn('my_package');
+        $designPackageMock->expects($this->any())->method('getTheme')->with('layout')->willReturn('/templates');
+        $designPackageMock->expects($this->once())->method('setStore')->with(10);
+        $designPackageMock->expects($this->once())->method('setArea')->with('adminhtml');
+        $this->replaceByMock('model', 'core/design_package', $designPackageMock);
+
+        $layoutResourceModelMock = $this->getResourceModelMock('core/layout', array('getMainTable', 'getTable'));
+        $layoutResourceModelMock->expects($this->any())->method('getMainTable')->willReturn('db_layout_updates_table');
+        $layoutResourceModelMock->expects($this->any())->method('getTable')->with('core/layout_link')->willReturn('core_layout_link_table');
+        $this->replaceByMock('resource_model', 'core/layout', $layoutResourceModelMock);
+
+
+        // Select
+        $selectMock = $this->getMock('Varien_Db_Select', array(), array(), '', false);
+        $selectMock->expects($this->once())->method('from')
+            ->with(
+                array('layout_update' => 'db_layout_updates_table'),
+                array('layout_update_id', 'xml')
+            )
+            ->willReturnSelf();
+        $selectMock->expects($this->once())->method('join')
+            ->with(array('link' => 'core_layout_link_table'))
+            ->willReturnSelf();
+        $selectMock->expects($this->at(2))->method('where')->with('link.store_id IN (0, :store_id)')->willReturnSelf();
+        $selectMock->expects($this->at(3))->method('where')->with('link.area = :area')->willReturnSelf();
+        $selectMock->expects($this->at(4))->method('where')->with('link.package = :package')->willReturnSelf();
+        $selectMock->expects($this->at(5))->method('where')->with('link.theme = :theme')->willReturnSelf();
+        $selectMock->expects($this->at(6))->method('where')->with('layout_update.handle = :layout_update_handle')->willReturnSelf();
+        $selectMock->expects($this->once())->method('order')->with('layout_update.sort_order ASC')->willReturnSelf();
+
+        $connection = $this->getMock('Varien_Db_Adapter_Pdo_Mysql', array(), array(), '', false);
+        $connection->expects($this->once())->method('select')->willReturn($selectMock);
+        $connection->expects($this->once())->method('fetchAssoc')
+            ->with($selectMock, array(
+                'store_id'             => 10,
+                'area'                 => 'adminhtml',
+                'package'              => 'my_package',
+                'theme'                => '/templates',
+                'layout_update_handle' => 'some_handle'
+            ))
+            ->willReturn(array(
+                array(
+                    'layout_update_id' => 10,
+                    'xml'              => 'xml 1'
+                ),
+                array(
+                    'layout_update_id' => 21,
+                    'xml'              => 'xml 2'
+                )
+            ));
+
+        $coreResource = $this->getModelMock('core/resource', array('getConnection'));
+        $coreResource->expects($this->once())->method('getConnection')->with('core_read')->willReturn($connection);
+        $this->replaceByMock('singleton', 'core/resource', $coreResource);
+
+        $actual = Mage::getModel('sheep_debug/service')->getDatabaseUpdatesWithHandle('some_handle', 10, 'adminhtml');
+        $this->assertCount(2, $actual);
+        $this->assertArrayHasKey(10, $actual);
+        $this->assertEquals('xml 1', $actual[10]);
+        $this->assertArrayHasKey(21, $actual);
+        $this->assertEquals('xml 2', $actual[21]);
+    }
+
 }
-
-
