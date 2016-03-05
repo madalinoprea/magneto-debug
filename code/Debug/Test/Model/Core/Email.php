@@ -23,6 +23,9 @@ class Sheep_Debug_Test_Model_Core_Email extends EcomDev_PHPUnit_Test_Case
     }
 
 
+    /**
+     * @covers Sheep_Debug_Model_Core_Email_Capture::send
+     */
     public function testSend()
     {
         $model = $this->getModelMock('sheep_debug/core_email', array('parentSend', 'captureEmail'));
@@ -33,6 +36,9 @@ class Sheep_Debug_Test_Model_Core_Email extends EcomDev_PHPUnit_Test_Case
     }
 
 
+    /**
+     * @covers Sheep_Debug_Model_Core_Email_Capture::captureEmail
+     */
     public function testCaptureEmail()
     {
         $model = $this->getModelMock('sheep_debug/core_email', array(
