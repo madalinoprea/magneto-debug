@@ -67,6 +67,9 @@ Use [issue tracker on GitHub](https://github.com/madalinoprea/magneto-debug/issu
 - 'Mage Registry key already exists' exception is raised after installation
     - `Mage registry key "_singleton/debug/observer" already exists` is reported when cache regeneration was corrupted. 
     Please try to flush Magento cache.
+
+- Doesn'work. I see these logs on `var/log/system.log`: `Not valid template file:adminhtml/default/default/template/sheep_debug/toolbar.phtml`
+    - If you installed the module using modman you've missed an important step. Search this page after 'Allow symlinks for the templates directory' and complete that step.  	
   
 - I can't see toolbar.
     - Toolbar is displayed in these conditions:
