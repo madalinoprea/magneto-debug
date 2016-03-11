@@ -47,6 +47,17 @@ modman update magneto-debug
 ```
 - Flush Magento's cache
 
+
+## Using composer
+
+Lately, I've been more into composer and thanks to these project https://github.com/Cotya/magento-composer-installer you can use it for your Magento 1.x websites.
+
+```
+# Add package as requirement to composer.json
+composer require madalinoprea/magneto-debug
+# Clear cache and voila..
+```
+
 # Compatibility
 
 Extension is (hopefully) successfully unit tested against PHP 5.4, PHP 5.5 and Magento CE 1.9, Magento CE 1.8, Magento CE 1.7 and 
