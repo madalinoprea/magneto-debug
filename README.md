@@ -94,6 +94,8 @@ Use [issue tracker on GitHub](https://github.com/madalinoprea/magneto-debug/issu
     Eliminate a possible cache problem by disabling all caches. Try to determine if there are any customizations that have removed `before_body_end`.
 
 # Change Log
+- **1.6.1**
+   - Quick fix release for recursive block rendering #68 	
 - **1.6.0**
     - Adds support for unexpected block rendering used by some common extension #66
     - Unit tests coverage improvements
