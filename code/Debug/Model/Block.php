@@ -56,6 +56,7 @@ class Sheep_Debug_Model_Block
             // Recursive block instances with same name is used - we don't update render start time
             $this->renderedCount++;
 
+            Mage::log("Recursive block rendering {$this->getName()}", Zend_Log::DEBUG);
             return;
         }
 
