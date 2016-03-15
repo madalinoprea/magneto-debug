@@ -58,8 +58,6 @@ class Sheep_Debug_Test_Model_Block extends EcomDev_PHPUnit_Test_Case
 
 
     /**
-     * @expectedException Exception
-     * @expectedExceptionMessage is already marked as rendered
      */
     public function testStartRenderingTwice()
     {
@@ -75,8 +73,11 @@ class Sheep_Debug_Test_Model_Block extends EcomDev_PHPUnit_Test_Case
         $this->assertNotNull($model->getRenderedAt());
         $this->assertNull($model->getRenderedCompletedAt());
         $this->assertEquals(0, $model->getRenderedDuration());
+        $initialRenderAt = $model->getRenderedAt();
 
         $model->startRendering($block);
+        $this->assertEquals(2, $model->getRenderedCount());
+        $this->assertEquals($initialRenderAt, $model->getRenderedAt());
     }
 
 
