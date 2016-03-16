@@ -1,27 +1,24 @@
-[![Stories in Ready](https://badge.waffle.io/madalinoprea/magneto-debug.png?label=ready&title=Ready)](https://waffle.io/madalinoprea/magneto-debug)
-
 [![Build Status](https://travis-ci.org/madalinoprea/magneto-debug.svg?branch=master)](https://travis-ci.org/madalinoprea/magneto-debug) [![Coveralls](https://coveralls.io/repos/github/madalinoprea/magneto-debug/badge.svg?branch=master)](https://coveralls.io/github/madalinoprea/magneto-debug)
 
-This repository represents an extension for Magento 1.x that offers a developer debug toolbar. The idea came from robhudson's [django-debug-toolbar](https://github.com/robhudson/django-debug-toolbar).  
-Latest version is based on Symfony's WebProfilerBundle.
+This repository represents an extension for Magento 1.x that offers a developer debug toolbar. The idea came from robhudson's [django-debug-toolbar](https://github.com/robhudson/django-debug-toolbar). Latest version is based on Symfony's WebProfilerBundle UI.
 
 ![Toolbar](docs/images/frontend_toolbar_request.png)
 
+
 # Features 
-- **Request and Controller information**: lists request attributes and controller that handled the request, including Ajax and POST requests
+- **Request and Controller information**: lists request attributes and controller that handled the request; captures request info for Ajax and POST requests
 - **Execution Timeline**: shows execution timeline based on Varien Profiler timers
-- **Logs**: shows log lines added to system and exception 'during' the request
-- **Events**: shows all raised events and called observers
-- **Database**: lists all models and collections loaded during the request; all executed SQL queries are listed
- when SQL Profiler is enabled
+- **Logs**: shows log lines added to system and exception logs during a request
+- **Events**: shows all events dispatched during request and observers that were called
+- **Database**: lists all models and collections loaded during a request; when SQL profiler is enabled, lists all SQL queries executed and offers the ability to see their result or describe their execution plan
 - **E-mails**: lists sent e-mails with preview
-- **Layout**: outputs rendering tree, lists layout handlers loaded during current request and adds ability to see layout files
-updates to a specific handle; offers information about instantiated and rendered block
+- **Layout**: outputs rendering tree, lists layout handlers loaded during current request and adds ability to see updated added by layout files to specific handle; offers information about instantiated and rendered blocks
 - **Configuration**: lists available Magento modules with their status and their version; 
  also offers the ability to enable/disable them
-- **Toolbar Tools**: contains quick links to flush cache, enable template hints, enable SQL profiler, enable Varien Profiler
+- **Toolbar Tools**: contains quick links to flush cache, enable template hints, enable SQL profiler, enable Varien Profiler, enable Magento Enterprise full page cache debug
 
 Don't forget to check out [screenshots gallery](docs/images.md)
+
 
 # Installation 
 
@@ -48,10 +45,9 @@ modman update magneto-debug
 ```
 - Flush Magento's cache
 
-
 ## Using composer
 
-Lately, I've been more into composer and thanks to these project https://github.com/Cotya/magento-composer-installer you can use it for your Magento 1.x websites.
+Lately, I've been more into composer and thanks to this project https://github.com/Cotya/magento-composer-installer you can use it for your Magento 1.x websites.
 
 ```
 # Add package as requirement to composer.json
@@ -59,19 +55,38 @@ composer require madalinoprea/magneto-debug
 # Clear cache and voila..
 ```
 
+
+# Change Log
+
+All released versions can be found on [releases' page](https://github.com/madalinoprea/magneto-debug/releases). 
+
+- Latest version: [**1.6.1**](https://github.com/madalinoprea/magneto-debug//releases/latest)
+   - Quick fix release for recursive block rendering #68 	
+
+
+# Issues, Ideas or Feedback
+
+Please don't be afraid to use [issue tracker on GitHub](https://github.com/madalinoprea/magneto-debug/issues) to report issues, ideas or any feedback. Also I encourage you to send pull requests. I'll review them, change them a bit and make sure unit tests are ok (pedantic :older_man:).
+
+
+# Roadmap
+
+[![Stories in Ready](https://badge.waffle.io/madalinoprea/magneto-debug.png?label=ready&title=Ready)](https://waffle.io/madalinoprea/magneto-debug)
+
+My goal is to have weekly releases with some meaningful features. To stay focused I use a Scrum board that shows backlog, selected work for current interation and progress.
+
+Hot fix versions are released as soon as possible, outside of our weekly release schedule and they are triggered by some :crying_cat_face:-astrophic issue.
+
+
 # Compatibility
+
+[![Aggregated Build Status](https://travis-ci.org/madalinoprea/magneto-debug.svg)](https://travis-ci.org/madalinoprea/magneto-debug)
 
 Extension is (hopefully) successfully unit tested against PHP 5.4, PHP 5.5 and Magento CE 1.9, Magento CE 1.8, Magento CE 1.7 and 
 their related Magento Enterprise versions.
 
 If you would like to support it on another version let us know.
 
-[![Build Status](https://travis-ci.org/madalinoprea/magneto-debug.svg)](https://travis-ci.org/madalinoprea/magneto-debug)
-
-
-# Issues, Ideas or Feedback
-
-Use [issue tracker on GitHub](https://github.com/madalinoprea/magneto-debug/issues) to report issues, ideas or any feedback.
 
 # Common Issues
 
@@ -94,53 +109,16 @@ Use [issue tracker on GitHub](https://github.com/madalinoprea/magneto-debug/issu
     - Toolbar is added to all pages that have a structural block named `before_body_end`. By default this block is available on all Magento pages.
     Eliminate a possible cache problem by disabling all caches. Try to determine if there are any customizations that have removed `before_body_end`.
 
-# Change Log
-- **1.6.1**
-   - Quick fix release for recursive block rendering #68 	
-- **1.6.0**
-    - Adds support for unexpected block rendering used by some common extension #66
-    - Unit tests coverage improvements
-- **1.5.1**
-    - Adds support for Magento CE 1.7 and Magento EE 1.12
-    - Fixes why for some people toolbar was not showing in admin (corrected modman links)
-    - Fixes how log lines are fetched from logs (there is a good chance that is addressing some memory limit error)
-- **1.5.0**
-    - Adds nicer way to present rendering tree
-    - Adds support to capture e-mails even when Aschroder_SMTPPro or Ebizmarts_Mandrill are installed
-    - Minor UI tweaks for layout panel
-    - Fixes listing of database layout updates
-- **1.4.1**
-    - Minor fixes for Magento Enterprise (website restrictions, Full Page Cache debug menu item)
-    
-- **1.4.0**:
-    - Added unit tests and continuous integration via Travis CI
-    - Fixes request headers collection for non Apache web servers (e.g Nginx)
-    - Improves support to collect and render sent e-mails 
-    - Other minor UI tweaks
-    
-- **1.3.0**:
-    - UI reimplemented based on Symphony's web debug toolbar 
-    - Ability to view POST and Ajax requests
-    - Ability to view sent e-mails
-    - Ability to view raised events and called observers
-    - Ability to see an execution timeline based on Varien Profiler timers
-    
-- **1.2.0**: 
-    - Fixes SELECT and DESCRIBE operations for long queries
-    - Better way to identify what logging lines were added during request
-    - Various minor UI improvements (order of the panel, panel titles)
-    - Structural changes to improve stability and prepare new features
+
+
 
 # Authors, contributors
 
 - [Mario O](https://twitter.com/madalinoprea)
 - [Other contributors](https://github.com/madalinoprea/magneto-debug/graphs/contributors)
 
+
 # License
 
 [MIT License](LICENSE.txt)
-	
-# Roadmap
-- Re-add ability to search configuration
-- UI tweaks and improvements
-- Add more detailed documentation
+
