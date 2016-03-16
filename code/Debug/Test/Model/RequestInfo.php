@@ -321,9 +321,9 @@ class Sheep_Debug_Test_Model_RequestInfo extends EcomDev_PHPUnit_Test_Case
 
     public function testInitQueries()
     {
-        $profilerMock = $this->getMock('Zend_Db_Profiler', array('getEnabled', 'getQueryProfiles', 'getTotalNumQueries', 'getTotalElapsedSecs'));
+        $profilerMock = $this->getMock('Sheep_Debug_Model_Db_Profiler', array('getEnabled', 'getQueryModels', 'getTotalNumQueries', 'getTotalElapsedSecs'));
         $profilerMock->expects($this->any())->method('getEnabled')->willReturn(true);
-        $profilerMock->expects($this->any())->method('getQueryProfiles')->willReturn(array('q1', 'q2'));
+        $profilerMock->expects($this->any())->method('getQueryModels')->willReturn(array('q1', 'q2'));
         $profilerMock->expects($this->any())->method('getTotalNumQueries')->willReturn(10);
         $profilerMock->expects($this->any())->method('getTotalElapsedSecs')->willReturn(0.035);
 
@@ -347,9 +347,33 @@ class Sheep_Debug_Test_Model_RequestInfo extends EcomDev_PHPUnit_Test_Case
 
     public function testInitQueriesWithDisabledProfiler()
     {
-        $profilerMock = $this->getMock('Zend_Db_Profiler', array('getEnabled', 'getQueryProfiles', 'getTotalNumQueries', 'getTotalElapsedSecs'));
+        $profilerMock = $this->getMock('Sheep_Debug_Model_Db_Profiler', array('getEnabled', 'getQueryModels', 'getTotalNumQueries', 'getTotalElapsedSecs'));
         $profilerMock->expects($this->any())->method('getEnabled')->willReturn(false);
-        $profilerMock->expects($this->never())->method('getQueryProfiles');
+        $profilerMock->expects($this->never())->method('getQueryModels');
+        $profilerMock->expects($this->never())->method('getTotalNumQueries');
+        $profilerMock->expects($this->never())->method('getTotalElapsedSecs');
+
+        $helperMock = $this->getHelperMock('sheep_debug', array('getSqlProfiler'));
+        $helperMock->expects($this->any())->method('getSqlProfiler')->willReturn($profilerMock);
+        $this->replaceByMock('helper', 'sheep_debug', $helperMock);
+
+        $model = $this->getModelMock('sheep_debug/requestInfo', array('setQueryCount', 'setQueryTime'));
+        $model->expects($this->never())->method('setQueryCount');
+        $model->expects($this->never())->method('setQueryTime');
+
+        $queries = $model->getQueries();
+        $this->assertCount(0, $queries);
+
+        // initQueries is not called twice
+        $model->getQueries();
+    }
+
+
+    public function testInitQueriesWithoutCustomProfiler()
+    {
+        $profilerMock = $this->getMock('Zend_Db_Profiler', array('getEnabled', 'getQueryProfiles', 'getTotalNumQueries', 'getTotalElapsedSecs'));
+        $profilerMock->expects($this->any())->method('getEnabled')->willReturn(true);
+        $profilerMock->expects($this->never())->method('getQueryModels');
         $profilerMock->expects($this->never())->method('getTotalNumQueries');
         $profilerMock->expects($this->never())->method('getTotalElapsedSecs');
 

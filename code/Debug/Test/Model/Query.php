@@ -26,7 +26,9 @@ class Sheep_Debug_Test_Model_Query extends EcomDev_PHPUnit_Test_Case
         ));
         $zendQuery->expects($this->any())->method('getElapsedSecs')->willReturn(0.123);
 
-        $model = Mage::getModel('sheep_debug/query', $zendQuery);
+        $model = Mage::getModel('sheep_debug/query');
+        $model->init($zendQuery, 'stack trace');
+
         $this->assertNotFalse($model);
         $this->assertInstanceOf('Sheep_Debug_Model_Query', $model);
         $this->assertEquals(32, $model->getQueryType());
@@ -34,6 +36,7 @@ class Sheep_Debug_Test_Model_Query extends EcomDev_PHPUnit_Test_Case
         $this->assertCount(2, $model->getQueryParams());
         $this->assertEquals(5, $model->getQueryParams()[':customer_id']);
         $this->assertEquals(0.123, $model->getElapsedSecs());
+        $this->assertEquals('stack trace', $model->getStacktrace());
     }
 
 }

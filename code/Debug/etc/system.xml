@@ -75,6 +75,46 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </use_store_locale>
+
+                        <capture_sql_stacktrace>
+                            <label>Capture SQL stack trace</label>
+                            <comment>If enabled we can show what code is triggering execution for a specific SQL query.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </capture_sql_stacktrace>
+
+                        <strip_zend_db_traces>
+                            <label>Strip Zend Db traces</label> 
+                            <comment>When enabled, doesn't display traces related to Zend Db component.</comment> 
+                            <depends>
+                                <capture_sql_stacktrace>1</capture_sql_stacktrace>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>60</sort_order> 
+                             <show_in_default>1</show_in_default> 
+                            <show_in_website>0</show_in_website>
+                             <show_in_store>0</show_in_store> 
+                        </strip_zend_db_traces>
+
+                        <trim_magento_basedir>
+                            <label>Trim Magento base dir</label> 
+                            <comment>Trims Magento base dir from file paths that appears in SQL stack trace</comment> 
+                            <depends>
+                                <capture_sql_stacktrace>1</capture_sql_stacktrace>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>70</sort_order> 
+                             <show_in_default>1</show_in_default> 
+                            <show_in_website>0</show_in_website>
+                             <show_in_store>0</show_in_store> 
+                        </trim_magento_basedir>
+
                     </fields>
                 </options>
             </groups>

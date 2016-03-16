@@ -96,6 +96,11 @@ class Sheep_Debug_Model_Observer
         if (Mage::helper('sheep_debug')->canEnableVarienProfiler()) {
             Varien_Profiler::enable();
         }
+
+        // use customer Zend Db Profiler that also records stack traces
+        $stackTraceProfiler = Mage::getModel('sheep_debug/db_profiler');
+        $stackTraceProfiler->setCaptureStacktraces(Mage::helper('sheep_debug')->canEnableSqlStacktrace());
+        $stackTraceProfiler->replaceProfiler();
     }
 
 

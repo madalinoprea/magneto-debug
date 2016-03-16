@@ -229,6 +229,9 @@
                 <persist_expiration>1</persist_expiration>
                 <force_varien_profile>1</force_varien_profile>
                 <use_store_locale>0</use_store_locale>
+                <capture_sql_stacktrace>1</capture_sql_stacktrace>
+                <strip_zend_db_traces>1</strip_zend_db_traces>
+                <trim_magento_basedir>1</trim_magento_basedir>
             </options>
         </sheep_debug>
     </default>

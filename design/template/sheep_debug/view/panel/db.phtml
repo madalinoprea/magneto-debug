@@ -40,28 +40,40 @@ $databaseConfigurations = $this->getService()->searchConfig('default_setup');
                                     </div>
                                     <?php endif; ?>
 
-                                    <?php if ($query->getQueryType() == Zend_Db_Profiler::SELECT): ?>
-                                        <div class="text-small font-normal">
-                                            <a class="link-inverse"
-                                               href="<?php echo Mage::helper('sheep_debug/url')->getSelectQueryUrl($info->getToken(), $row) ?>"
-                                               onclick="return fetchData(this);"
-                                               title="<?php echo $this->__('Select Query'); ?>"
-                                               data-target-id="select-<?php echo $row ?>">
-                                                <?php echo $this->__('Select Query'); ?>
-                                            </a>
+                                    <div class="text-small font-normal">
+                                        <?php if ($query->getQueryType() == Zend_Db_Profiler::SELECT): ?>
+                                                <a class="link-inverse"
+                                                   href="<?php echo Mage::helper('sheep_debug/url')->getSelectQueryUrl($info->getToken(), $row) ?>"
+                                                   onclick="return fetchData(this);"
+                                                   title="<?php echo $this->__('Select Query'); ?>"
+                                                   data-target-id="select-<?php echo $row ?>">
+                                                    <?php echo $this->__('Select Query'); ?>
+                                                </a>
+                                                &nbsp; &nbsp;
+                                                <a class="link-inverse"
+                                                   href="<?php echo Mage::helper('sheep_debug/url')->getExplainQueryUrl($info->getToken(), $row) ?>"
+                                                   onclick="return fetchData(this);"
+                                                   title="<?php echo $this->__('Explain Query'); ?>"
+                                                   data-target-id="explain-<?php echo $row ?>">
+                                                    <?php echo $this->__('Explain Query'); ?>
+                                                </a>
+                                        <?php endif; ?>
+
+                                        <?php if ($query->getStacktrace()): ?>
                                             &nbsp; &nbsp;
                                             <a class="link-inverse"
-                                               href="<?php echo Mage::helper('sheep_debug/url')->getExplainQueryUrl($info->getToken(), $row) ?>"
+                                               href="<?php echo Mage::helper('sheep_debug/url')->getQueryStacktraceUrl($info->getToken(), $row) ?>"
                                                onclick="return fetchData(this);"
-                                               title="<?php echo $this->__('Explain Query'); ?>"
-                                               data-target-id="explain-<?php echo $row ?>">
-                                                <?php echo $this->__('Explain Query'); ?>
+                                               title="<?php echo $this->__('Show Stacktrace'); ?>"
+                                               data-target-id="stacktrace-<?php echo $row ?>">
+                                                <?php echo $this->__('Show Stacktrace'); ?>
                                             </a>
-                                        </div>
-                                    <?php endif; ?>
+                                        <?php endif; ?>
+                                    </div>
 
                                     <div class="query-results" id="select-<?php echo $row ?>"></div>
                                     <div class="query-explain" id="explain-<?php echo $row ?>"></div>
+                                    <div id="stacktrace-<?php echo $row ?>"></div>
                                 </td>
                             </tr>
                             <?php $row++; ?>

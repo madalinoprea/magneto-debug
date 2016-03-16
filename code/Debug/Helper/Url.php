@@ -159,6 +159,20 @@ class Sheep_Debug_Helper_Url extends Mage_Core_Helper_Data
 
 
     /**
+     * Returns url that returns SQL stack trace
+     *
+     * @see \Sheep_Debug_ModelController::stacktraceSqlAction
+     * @param string $token
+     * @param int $index
+     * @return string
+     */
+    public function getQueryStacktraceUrl($token, $index)
+    {
+        return $this->getUrl('model/stacktraceSql', array('token' => $token, 'index' => $index));
+    }
+
+
+    /**
      * Returns url that shows definition for specified block class
      *
      * @deprecated This functionality is not currently available.

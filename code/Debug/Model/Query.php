@@ -14,19 +14,22 @@ class Sheep_Debug_Model_Query
     protected $query;
     protected $queryParams;
     protected $elapsedSecs;
+    protected $stacktrace;
 
 
     /**
      * Sheep_Debug_Model_Query constructor.
      *
      * @param Zend_Db_Profiler_Query $profilerQuery
+     * @param string                 $stacktrace
      */
-    public function __construct(Zend_Db_Profiler_Query $profilerQuery)
+    public function init(Zend_Db_Profiler_Query $profilerQuery, $stacktrace = '')
     {
         $this->queryType = $profilerQuery->getQueryType();
         $this->query = $profilerQuery->getQuery();
         $this->queryParams = $profilerQuery->getQueryParams();
         $this->elapsedSecs = $profilerQuery->getElapsedSecs();
+        $this->stacktrace = $stacktrace;
     }
 
 
@@ -71,6 +74,14 @@ class Sheep_Debug_Model_Query
     public function getElapsedSecs()
     {
         return $this->elapsedSecs;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStacktrace()
+    {
+        return $this->stacktrace;
     }
 
 }
