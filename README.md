@@ -60,8 +60,8 @@ composer require madalinoprea/magneto-debug
 
 All released versions can be found on [releases' page](https://github.com/madalinoprea/magneto-debug/releases). 
 
-- Latest version: [**1.6.1**](https://github.com/madalinoprea/magneto-debug//releases/latest)
-   - Quick fix release for recursive block rendering #68 	
+- Latest version: [**1.6.2**](https://github.com/madalinoprea/magneto-debug/releases/latest)
+   - Fixes e-mail capture for Magento CE 1.7 and Magento EE 1.12 #75
 
 
 # Issues, Ideas or Feedback

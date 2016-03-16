@@ -99,10 +99,33 @@ trait Sheep_Debug_Model_Core_Email_Template_Capture
             return $queue->getMessageBody();
         }
 
-        /** @var Zend_Mime_Part $content */
-        $content = $this->isPlain() ? $mail->getBodyText() : $mail->getBodyHtml();
+        /** @var Zend_Mime_Part $mimePart */
+        $mimePart = $this->isPlain() ? $mail->getBodyText() : $mail->getBodyHtml();
 
-        return $content ? $content->getRawContent() : '';
+        return $this->getPartDecodedContent($mimePart);
+    }
+
+
+    /**
+     * Returns raw content of e-mail message. Abstract Zend_Mime_Part interface changes between 1.11.0 and 1.12.0
+     *
+     * @param Zend_Mime_Part $mimePart
+     * @return String
+     */
+    public function getPartDecodedContent(Zend_Mime_Part $mimePart)
+    {
+
+        // getRawContent is not available in Zend 1.11 (Magento CE 1.7)
+        if (method_exists($mimePart, 'getRawContent')) {
+            return $mimePart->getRawContent();
+        }
+
+        $encoding = $mimePart->encoding;
+        $mimePart->encoding = 'none';
+        $content = $mimePart->getContent();
+        $mimePart->encoding = $encoding;
+
+        return $content;
     }
 
 
