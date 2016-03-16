@@ -79,6 +79,40 @@ class Sheep_Debug_Block_Abstract extends Mage_Core_Block_Template
 
 
     /**
+     * @param array $args
+     * @return mixed
+     */
+    public function parentTranslate(array $args)
+    {
+        return call_user_func_array(array('parent', '__'), $args);
+    }
+
+
+    /**
+     * @param array $args
+     * @return mixed
+     */
+    public function dummyTranslate(array $args)
+    {
+        $text = array_shift($args);
+        $result = @vsprintf($text, $args);
+        return $result ?: $text;
+    }
+
+
+    /**
+     * Don't use translation for our debug module
+     *
+     * @return mixed
+     */
+    public function __()
+    {
+        $args = func_get_args();
+        return $this->helper->useStoreLocale() ? $this->parentTranslate($args) : $this->dummyTranslate($args);
+    }
+
+
+    /**
      * Returns registered request info or request profile for current request
      *
      * @return Sheep_Debug_Model_RequestInfo
@@ -134,18 +168,18 @@ class Sheep_Debug_Block_Abstract extends Mage_Core_Block_Template
     /**
      * Returns number formatted based on current locale
      *
-     * @param $number
-     * @param int $precision
+     * @param mixed $number
+     * @param int   $precision
      * @return string
      */
     public function formatNumber($number, $precision = 2)
     {
-        return $this->helper->formatNumber($number, $precision);
+        return $this->helper->useStoreLocale() ? $this->helper->formatNumber($number, $precision) : number_format($number, $precision);
     }
 
 
     /**
-     * Returns an option array where evey element has its value and label filled in
+     * Returns an option array where every element has its value and label filled in
      * with elements from passed array
      *
      * @param array $data

@@ -228,6 +228,7 @@
                 <persist>1</persist>
                 <persist_expiration>1</persist_expiration>
                 <force_varien_profile>1</force_varien_profile>
+                <use_store_locale>0</use_store_locale>
             </options>
         </sheep_debug>
     </default>

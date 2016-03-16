@@ -41,6 +41,50 @@ class Sheep_Debug_Test_Block_Abstract extends EcomDev_PHPUnit_Test_Case
     }
 
 
+    public function testParentTranslate()
+    {
+        $this->assertEquals('simple text', $this->block->parentTranslate(array('simple text')));
+        $this->assertEquals('simple text 10 20.9', $this->block->parentTranslate(array('simple text %d %0.1f', 10, 20.90)));
+    }
+
+
+    public function testDummyTranslate()
+    {
+        $this->assertEquals('simple text', $this->block->dummyTranslate(array('simple text')));
+        $this->assertEquals('simple text 10 20.9', $this->block->dummyTranslate(array('simple text %d %0.1f', 10, 20.90)));
+    }
+
+
+    public function testTranslate()
+    {
+        $helper = $this->getHelperMock('sheep_debug', array('useStoreLocale'));
+        $helper->expects($this->once())->method('useStoreLocale')->willReturn(false);
+        $this->replaceByMock('helper', 'sheep_debug', $helper);
+
+        $block = $this->getBlockMock('sheep_debug/abstract', array('parentTranslate', 'dummyTranslate'));
+        $block->expects($this->never())->method('parentTranslate');
+        $block->expects($this->once())->method('dummyTranslate')->with(array('some text', 10, 20))->willReturn('translated text');;
+
+        $actual = $block->__('some text', 10, 20);
+        $this->assertEquals('translated text', $actual);
+    }
+
+
+    public function testTranslateWithStoreLocale()
+    {
+        $helper = $this->getHelperMock('sheep_debug', array('useStoreLocale'));
+        $helper->expects($this->once())->method('useStoreLocale')->willReturn(true);
+        $this->replaceByMock('helper', 'sheep_debug', $helper);
+
+        $block = $this->getBlockMock('sheep_debug/abstract', array('parentTranslate', 'dummyTranslate'));
+        $block->expects($this->once())->method('parentTranslate')->with(array('some text', 10, 20))->willReturn('translated text');
+        $block->expects($this->never())->method('dummyTranslate');
+
+        $actual = $block->__('some text', 10, 20);
+        $this->assertEquals('translated text', $actual);
+    }
+
+
     public function testGetRequestInfo()
     {
         $requestInfoMock = $this->getModelMock('sheep_debug/requestInfo');
@@ -118,7 +162,21 @@ class Sheep_Debug_Test_Block_Abstract extends EcomDev_PHPUnit_Test_Case
 
     public function testFormatNumber()
     {
-        $helper = $this->getHelperMock('sheep_debug', array('formatNumber'));
+        $helper = $this->getHelperMock('sheep_debug', array('useStoreLocale', 'formatNumber'));
+        $helper->expects($this->once())->method('useStoreLocale')->willReturn(false);
+        $helper->expects($this->never())->method('formatNumber');
+        $this->replaceByMock('helper', 'sheep_debug', $helper);
+
+        $block = $this->getBlockMock('sheep_debug/abstract', array('_toHtml'));
+        $actual = $block->formatNumber(10.3333);
+        $this->assertEquals(10.33, $actual);
+    }
+
+
+    public function testFormatNumberWithStoreLocale()
+    {
+        $helper = $this->getHelperMock('sheep_debug', array('useStoreLocale', 'formatNumber'));
+        $helper->expects($this->once())->method('useStoreLocale')->willReturn(true);
         $helper->expects($this->once())->method('formatNumber')->with(10.3333, 2)->willReturn(10.33);
         $this->replaceByMock('helper', 'sheep_debug', $helper);
 
