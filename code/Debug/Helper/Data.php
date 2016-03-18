@@ -267,7 +267,7 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
      * @param string $stripFilepath
      * @return string
      */
-    public function formatStacktrace(array $trace, $stripFilepath = '', $trimPath='')
+    public function formatStacktrace(array $trace, $stripFilepath = '', $trimPath = '')
     {
         $out = '';
         foreach ($trace as $index => $row) {
@@ -276,12 +276,17 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
                 continue;
             }
 
-            if ($trimPath) {
+            if ($trimPath && isset($row['file'])) {
                 $row['file'] = str_replace($trimPath, '', $row['file']);
             }
 
-            // sometimes there is undefined index 'file'
-            @$out .= "[$index] {$row['file']}:{$row['line']}\n";
+            if (isset($row['file'])) {
+                $out .= "[$index] {$row['file']}:{$row['line']}\n";
+            } else {
+                // sometimes there is undefined index 'file'
+                $out .= "[$index] (?) {$row['class']}:{$row['function']}\n";
+            }
+
         }
 
         return $out;
