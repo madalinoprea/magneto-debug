@@ -117,7 +117,7 @@ class Sheep_Debug_Test_Model_RequestInfo extends EcomDev_PHPUnit_Test_Case
     }
 
 
-    public function testAddControllerAction()
+    public function testInitController()
     {
         $action = $this->getMock('Mage_Catalog_ProductController', array(), array(), '', false);
 
@@ -125,7 +125,7 @@ class Sheep_Debug_Test_Model_RequestInfo extends EcomDev_PHPUnit_Test_Case
         $controllerMock->expects($this->once())->method('init')->with($action);
         $this->replaceByMock('model', 'sheep_debug/controller', $controllerMock);
 
-        $this->model->addControllerAction($action);
+        $this->model->initController($action);
 
         $actual = $this->model->getController();
         $this->assertNotNull($actual);

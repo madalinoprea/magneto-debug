@@ -288,36 +288,6 @@ XML;
         $this->assertGreaterThan(0, $this->helper->getCurrentScriptDuration());
     }
 
-    public function testGetAllHeaders()
-    {
-        $this->assertInternalType('array', $this->helper->getAllHeaders());
-    }
-
-    public function testGetGlobalServer()
-    {
-        $this->assertEquals($_SERVER, $this->helper->getGlobalServer());
-    }
-
-    public function testGetGlobalSession()
-    {
-        // Session was not started so we should get an empty array
-        $this->assertEquals(array(), $this->helper->getGlobalSession());
-    }
-
-    public function testGetGlobalPost()
-    {
-        $this->assertEquals($_POST, $this->helper->getGlobalPost());
-    }
-
-    public function testGlobalGet()
-    {
-        $this->assertEquals($_GET, $this->helper->getGlobalGet());
-    }
-
-    public function testGetGlobalCookie()
-    {
-        $this->assertEquals($_COOKIE, $this->helper->getGlobalCookie());
-    }
 
     public function testSortModelCmp()
     {

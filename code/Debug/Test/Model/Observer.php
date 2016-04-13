@@ -41,9 +41,10 @@ class Sheep_Debug_Test_Model_Observer extends EcomDev_PHPUnit_Test_Case
         $currentStore = $this->getModelMock('core/store', array('getId'));
         $currentStore->expects($this->any())->method('getId')->willReturn(10);
 
-        $requestInfo = $this->getModelMock('sheep_debug/requestInfo', array('setIsStarted', 'setStoreId', 'setDate', 'initLogging'));
+        $requestInfo = $this->getModelMock('sheep_debug/requestInfo', array('setIsStarted', 'setStoreId', 'setDate', 'initController', 'initLogging'));
         $requestInfo->expects($this->once())->method('setIsStarted')->with(true);
         $requestInfo->expects($this->once())->method('setStoreId')->with(10);
+        $requestInfo->expects($this->once())->method('initController');
         $requestInfo->expects($this->once())->method('initLogging');
 
         $model = $this->getModelMock('sheep_debug/observer', array('getCurrentStore', 'canCollect', 'getRequestInfo', 'registerShutdown'));
@@ -218,8 +219,8 @@ class Sheep_Debug_Test_Model_Observer extends EcomDev_PHPUnit_Test_Case
         $event = $this->getMock('Varien_Event_Observer', array('getData'));
         $event->expects($this->any())->method('getData')->with('controller_action')->willReturn('controller action');
 
-        $requestInfo = $this->getModelMock('sheep_debug/requestInfo', array('addControllerAction'));
-        $requestInfo->expects($this->once())->method('addControllerAction')->with('controller action');
+        $requestInfo = $this->getModelMock('sheep_debug/requestInfo', array('initController'));
+        $requestInfo->expects($this->once())->method('initController')->with('controller action');
 
         $model = $this->getModelMock('sheep_debug/observer', array('canCollect', 'getRequestInfo'));
         $model->expects($this->any())->method('canCollect')->willReturn(true);
@@ -237,8 +238,8 @@ class Sheep_Debug_Test_Model_Observer extends EcomDev_PHPUnit_Test_Case
         $event = $this->getMock('Varien_Event_Observer', array('getData'));
         $event->expects($this->any())->method('getData')->with('controller_action')->willReturn('controller action');
 
-        $requestInfo = $this->getModelMock('sheep_debug/requestInfo', array('addControllerAction'));
-        $requestInfo->expects($this->never())->method('addControllerAction');
+        $requestInfo = $this->getModelMock('sheep_debug/requestInfo', array('initController'));
+        $requestInfo->expects($this->never())->method('initController');
 
         $model = $this->getModelMock('sheep_debug/observer', array('canCollect', 'getRequestInfo'));
         $model->expects($this->any())->method('canCollect')->willReturn(false);
@@ -467,8 +468,8 @@ class Sheep_Debug_Test_Model_Observer extends EcomDev_PHPUnit_Test_Case
         $event = $this->getMock('Varien_Event_Observer', array('getData'));
         $event->expects($this->any())->method('getData')->with('controller_action')->willReturn('controller action');
 
-        $requestInfo = $this->getModelMock('sheep_debug/requestInfo', array('addControllerAction'));
-        $requestInfo->expects($this->once())->method('addControllerAction')->with('controller action');
+        $requestInfo = $this->getModelMock('sheep_debug/requestInfo', array('initController'));
+        $requestInfo->expects($this->once())->method('initController')->with('controller action');
 
         $model = $this->getModelMock('sheep_debug/observer', array('canCollect', 'getRequestInfo'));
         $model->expects($this->any())->method('canCollect')->willReturn(true);
@@ -483,8 +484,8 @@ class Sheep_Debug_Test_Model_Observer extends EcomDev_PHPUnit_Test_Case
 
     public function testOnActionPostDispatchCollectDisabled()
     {
-        $requestInfo = $this->getModelMock('sheep_debug/requestInfo', array('addControllerAction'));
-        $requestInfo->expects($this->never())->method('addControllerAction');
+        $requestInfo = $this->getModelMock('sheep_debug/requestInfo', array('initController'));
+        $requestInfo->expects($this->never())->method('initController');
 
         $model = $this->getModelMock('sheep_debug/observer', array('canCollect', 'getRequestInfo'));
         $model->expects($this->any())->method('canCollect')->willReturn(false);

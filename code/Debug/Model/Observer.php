@@ -91,6 +91,7 @@ class Sheep_Debug_Model_Observer
         // Init profile
         $requestInfo->setStoreId($this->getCurrentStore()->getId());
         $requestInfo->setDate(date('Y-m-d H:i:s'));
+        $requestInfo->initController();
         $requestInfo->initLogging();
 
         if (Mage::helper('sheep_debug')->canEnableVarienProfiler()) {
@@ -192,7 +193,7 @@ class Sheep_Debug_Model_Observer
         $action = $observer->getData('controller_action');
 
         // Record action that handled current request
-        $this->getRequestInfo()->addControllerAction($action);
+        $this->getRequestInfo()->initController($action);
     }
 
 
@@ -309,7 +310,7 @@ class Sheep_Debug_Model_Observer
         /** @var Mage_Core_Controller_Varien_Action $action */
         $action = $observer->getData('controller_action');
 
-        $this->getRequestInfo()->addControllerAction($action);
+        $this->getRequestInfo()->initController($action);
     }
 
 

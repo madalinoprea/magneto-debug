@@ -21,12 +21,66 @@ class Sheep_Debug_Test_Model_Controller extends EcomDev_PHPUnit_Test_Case
         $this->assertInstanceOf('Sheep_Debug_Model_Controller', $controller);
     }
 
-
     public function testInit()
     {
+        /** @var Sheep_Debug_Model_Controller $model */
+        $model = $this->getModelMock('sheep_debug/controller', array('initFromAction', 'initFromGlobals'));
+        $model->expects($this->once())->method('initFromAction')->with('some action');
+        $model->expects($this->once())->method('initFromGlobals');
+        $model->init('some action');
+    }
+
+
+    public function testInitFromAction()
+    {
+        // current request
+        $request = $this->getMock('Mage_Core_Controller_Request_Http',
+            array('getMethod', 'getOriginalPathInfo', 'getPathInfo', 'getRouteName', 'getControllerModule', 'getActionName'));
+        $request->expects($this->any())->method('getMethod')->willReturn('POST');
+        $request->expects($this->any())->method('getOriginalPathInfo')->willReturn('/product_page.html');
+        $request->expects($this->any())->method('getPathInfo')->willReturn('/catalog/product/view/id/100');
+        $request->expects($this->any())->method('getRouteName')->willReturn('catalog');
+        $request->expects($this->any())->method('getControllerModule')->willReturn('Mage_Catalog');
+        $request->expects($this->any())->method('getActionName')->willReturn('view');
+
+        $action = $this->getMock('Mage_Catalog_ProductController', array('getRequest', 'getActionMethodName'), array(), '', false);
+        $action->expects($this->any())->method('getRequest')->willReturn($request);
+        $action->expects($this->any())->method('getActionMethodName')->with('view')->willReturn('viewAction');
+
+        /** @var Sheep_Debug_Model_Controller $model */
+        $model = Mage::getModel('sheep_debug/controller');
+        $model->initFromAction($action);
+
+        $this->assertEquals('POST', $model->getHttpMethod());
+        $this->assertEquals('/product_page.html', $model->getRequestOriginalPath());
+        $this->assertEquals('/catalog/product/view/id/100', $model->getRequestPath());
+        $this->assertEquals('catalog', $model->getRouteName());
+        $this->assertEquals('Mage_Catalog', $model->getModule());
+        $this->assertContains('Mage_Catalog_ProductController', $model->getClass());
+        $this->assertEquals('viewAction', $model->getAction());
+    }
+
+
+    public function testInitFromActionWithNull()
+    {
+        /** @var Sheep_Debug_Model_Controller $model */
+        $model = Mage::getModel('sheep_debug/controller');
+        $model->initFromAction(null);
+
+        $this->assertEquals('', $model->getHttpMethod());
+    }
+
+
+    public function testInitFromGlobals()
+    {
         // Our helper that abstracts access to super global variables
-        $helperMock = $this->getHelperMock('sheep_debug', array('getAllHeaders', 'getGlobalServer', 'getGlobalSession', 'getGlobalPost', 'getGlobalGet', 'getGlobalCookie'));
-        $this->replaceByMock('helper', 'sheep_debug', $helperMock);
+        $helperMock = $this->getHelperMock('sheep_debug/http',
+            array('getHttpMethod', 'getRequestPath', 'getRemoteAddr', 'getAllHeaders', 'getGlobalServer', 'getGlobalSession', 'getGlobalPost', 'getGlobalGet', 'getGlobalCookie'));
+        $this->replaceByMock('helper', 'sheep_debug/http', $helperMock);
+
+        $helperMock->expects($this->any())->method('getHttpMethod')->willReturn('POST');
+        $helperMock->expects($this->any())->method('getRequestPath')->willReturn('/some/url');
+        $helperMock->expects($this->any())->method('getRemoteAddr')->willReturn('8.8.8.8');
         $helperMock->expects($this->any())->method('getGlobalServer')->willReturn(array(
             'DOCUMENT_ROOT' => '/var/www'
         ));
@@ -55,34 +109,13 @@ class Sheep_Debug_Test_Model_Controller extends EcomDev_PHPUnit_Test_Case
         $coreSession->expects($this->any())->method('getEncryptedSessionId')->willReturn('encrypted_12345');
         $this->replaceByMock('singleton', 'core/session', $coreSession);
 
-        // current request
-        $request = $this->getMock('Mage_Core_Controller_Request_Http',
-            array('getMethod', 'getOriginalPathInfo', 'getPathInfo', 'getRouteName', 'getControllerModule', 'getActionName'));
-        $request->expects($this->any())->method('getMethod')->willReturn('POST');
-        $request->expects($this->any())->method('getOriginalPathInfo')->willReturn('/product_page.html');
-        $request->expects($this->any())->method('getPathInfo')->willReturn('/catalog/product/view/id/100');
-        $request->expects($this->any())->method('getRouteName')->willReturn('catalog');
-        $request->expects($this->any())->method('getControllerModule')->willReturn('Mage_Catalog');
-        $request->expects($this->any())->method('getActionName')->willReturn('view');
-
-        $action = $this->getMock('Mage_Catalog_ProductController', array('getRequest', 'getActionMethodName'), array(), '', false);
-        $action->expects($this->any())->method('getRequest')->willReturn($request);
-        $action->expects($this->any())->method('getActionMethodName')->with('view')->willReturn('viewAction');
-
         /** @var Sheep_Debug_Model_Controller $model */
         $model = Mage::getModel('sheep_debug/controller');
-        $model->init($action);
-
-        $this->assertNotFalse($model);
-        $this->assertInstanceOf('Sheep_Debug_Model_Controller', $model);
+        $model->initFromGlobals();
 
         $this->assertEquals('POST', $model->getHttpMethod());
-        $this->assertEquals('/product_page.html', $model->getRequestOriginalPath());
-        $this->assertEquals('/catalog/product/view/id/100', $model->getRequestPath());
-        $this->assertEquals('catalog', $model->getRouteName());
-        $this->assertEquals('Mage_Catalog', $model->getModule());
-        $this->assertContains('Mage_Catalog_ProductController', $model->getClass());
-        $this->assertEquals('viewAction', $model->getAction());
+        $this->assertEquals('/some/url', $model->getRequestOriginalPath());
+        $this->assertEquals('/some/url', $model->getRequestPath());
         $this->assertEquals('encrypted_12345', $model->getSessionId());
 
         $this->assertArrayHasKey('DOCUMENT_ROOT', $model->getServerParameters());

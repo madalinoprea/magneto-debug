@@ -41,9 +41,24 @@ class Sheep_Debug_Model_Controller
      * Sheep_Debug_Model_Controller constructor.
      * @param Mage_Core_Controller_Varien_Action $action
      */
-    public function init($action)
+    public function init($action=null)
     {
-        $helper = Mage::helper('sheep_debug');
+        $this->initFromAction($action);
+        $this->initFromGlobals();
+    }
+
+
+    /**
+     * Captures request, response and controller information.
+     *
+     * Sheep_Debug_Model_Controller constructor.
+     * @param Mage_Core_Controller_Varien_Action $action
+     */
+    public function initFromAction($action)
+    {
+        if (!$action) {
+            return;
+        }
 
         /** @var Mage_Core_Controller_Request_Http $request */
         $request = $action->getRequest();
@@ -57,7 +72,21 @@ class Sheep_Debug_Model_Controller
         $this->module = $request->getControllerModule();
         $this->class = get_class($action);
         $this->action = $action->getActionMethodName($request->getActionName());
-        $this->sessionId = Mage::getSingleton('core/session')->getEncryptedSessionId();
+
+    }
+
+    
+    /**
+     *
+     */
+    public function initFromGlobals()
+    {
+        /** @var Sheep_Debug_Helper_Http $helper */
+        $helper = Mage::helper('sheep_debug/http');
+
+        $this->httpMethod = $helper->getHttpMethod();
+        $this->requestPath = $this->requestOriginalPath = $helper->getRequestPath();
+        $this->remoteIp = $helper->getRemoteAddr();
 
         $this->serverParameters = $helper->getGlobalServer();
         $this->requestHeaders = $helper->getAllHeaders();
@@ -65,6 +94,7 @@ class Sheep_Debug_Model_Controller
         $this->session = $helper->getGlobalSession();
         $this->getParameters = $helper->getGlobalGet();
         $this->postParameters = $helper->getGlobalPost();
+        $this->sessionId = Mage::getSingleton('core/session')->getEncryptedSessionId();
     }
 
 

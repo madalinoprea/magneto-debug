@@ -208,8 +208,9 @@ class Sheep_Debug_Model_RequestInfo extends Mage_Core_Model_Abstract
      *
      * @param Mage_Core_Controller_Varien_Action $controllerAction
      */
-    public function addControllerAction($controllerAction)
+    public function initController($controllerAction = null)
     {
+        /** @var Sheep_Debug_Model_Controller $controller */
         $controller = Mage::getModel('sheep_debug/controller');
         $controller->init($controllerAction);
         $this->action = $controller;
