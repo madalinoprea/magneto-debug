@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+
+<phpunit
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.8/phpunit.xsd"
+        stderr="true"
+        cacheTokens="true"
+        colors="true"
+        convertErrorsToExceptions="true"
+        convertNoticesToExceptions="true"
+        convertWarningsToExceptions="true"
+        printerClass="PHPUnit_TextUI_ResultPrinter"
+        stopOnError="false"
+        stopOnFailure="false"
+        stopOnIncomplete="false"
+        stopOnSkipped="false"
+        verbose="false"
+        bootstrap="app/code/community/EcomDev/PHPUnit/bootstrap.php">
+    <listeners>
+        <listener file="app/code/community/EcomDev/PHPUnit/Test/Listener.php" class="EcomDev_PHPUnit_Test_Listener"/>
+    </listeners>
+    <testsuite name="Magento Test Suite">
+        <file>app/code/community/EcomDev/PHPUnit/Test/Suite.php</file>
+    </testsuite>
+    <filter>
+        <blacklist>
+            <!-- Exclude Magento Core files from code coverage -->
+            <directory suffix=".php">app/code/core</directory>
+            <!-- Exclude EcomDev_PHPUnit classes from code coverage -->
+            <directory suffix=".php">app/code/community/EcomDev/PHPUnit</directory>
+            <directory suffix=".php">lib/EcomDev/Utils</directory>
+            <directory suffix=".php">lib/EcomDev/PHPUnit</directory>
+            <directory suffix=".php">lib/Spyc</directory>
+            <directory suffix=".php">lib/vfsStream</directory>
+            <!-- Exclude Mage.php file from code coverage -->
+            <file>app/Mage.php</file>
+            <!-- Exclude template files -->
+            <directory suffix=".phtml">app/design</directory>
+            <!-- Exclude Varien & Zend libraries -->
+            <directory suffix=".php">lib/Varien</directory>
+            <directory suffix=".php">lib/Zend</directory>
+            <directory suffix=".php">lib/Magento</directory>
+        </blacklist>
+    </filter>
+    <logging>
+        <!-- Uncomment this line if you want to have coverage report generated every test run
+        <log type="coverage-html" target="var/phpunit/coverage" charset="UTF-8"
+              yui="true" highlight="false"
+              lowUpperBound="35" highLowerBound="70"/>
+        <log type="coverage-clover" target="var/phpunit/coverage.xml"/>
+        -->
+        <log type="junit" target="var/phpunit/junit.xml" logIncompleteSkipped="false"/>
+    </logging>
+    <php>
+        <ini name="memory_limit" value="256M"/>
+    </php>
+</phpunit>
