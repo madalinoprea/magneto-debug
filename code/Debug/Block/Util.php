@@ -180,4 +180,14 @@ class Sheep_Debug_Block_Util extends Sheep_Debug_Block_Panel
         return Mage::helper('sheep_debug/url')->getDisableVarienProfilerUrl();
     }
 
+
+    /**
+     * Checks if disable persistance cookie is set
+     *
+     * @return boolean
+     */
+    public function isDisablePersistenceCookieOn()
+    {
+        return Mage::helper('sheep_debug')->hasDisablePersistenceCookie();
+    }
 }

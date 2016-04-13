@@ -161,10 +161,15 @@ class Sheep_Debug_Model_Observer
         if (!$this->canCollect() || !Mage::helper('sheep_debug')->canPersist()) {
             return;
         }
+        
+        if (Mage::helper('sheep_debug')->hasDisablePersistenceCookie()) {
+            return;
+        }
 
         if (!$this->getRequestInfo()->getIsStarted()) {
             return;
         }
+        
 
         $this->getRequestInfo()->save();
     }

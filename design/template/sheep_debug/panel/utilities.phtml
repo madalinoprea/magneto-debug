@@ -80,5 +80,15 @@
                 <?php endif; ?>
             </span>
         </div>
+
+        <div class="sf-toolbar-info-piece">
+            <b><?php echo $this->__('Persist Request Profile'); ?></b>
+            <span>
+                <a href="#" onclick="sheepDebugCookie.togglePersistence()" id="sheep-debug-toggle-persist"><?php echo $this->isDisablePersistenceCookieOn() ? $this->__('Enable') : $this->__('Disable'); ?></a>
+            </span>
+        </div>
     </div>
 </div>
+<script>
+    var sheepDebugCookie = new SheepDebug.PersistCookie('<?php echo 'sheep_debug_disable_persist' ?>', 'sheep-debug-toggle-persist');
+</script>

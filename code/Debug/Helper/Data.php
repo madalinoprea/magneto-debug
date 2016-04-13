@@ -409,6 +409,19 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
 
 
     /**
+     * Returns if disable persistence cookie is set.
+     *
+     * @return bool
+     */
+    public function hasDisablePersistenceCookie()
+    {
+        /** @var Mage_Core_Model_Cookie $cookie */
+        $cookie = Mage::getSingleton('core/cookie');
+        return (boolean) $cookie->get('sheep_debug_disable_persist');
+    }
+
+    
+    /**
      * Lifetime of persisted requests
      *
      * @return int
