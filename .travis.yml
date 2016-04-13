@@ -63,6 +63,7 @@ script:
   - mkdir logs
 
   - cd $TRAVIS_BUILD_DIR/build/magento
+  - cat phpunit.xml.dist
   - phpunit --group Sheep_Debug --coverage-clover ../logs/clover.xml
 
 after_success:
