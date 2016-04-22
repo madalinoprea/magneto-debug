@@ -23,7 +23,11 @@
             <div class="sf-toolbar-info-piece">
                 <b><?php echo $this->__('Profiler Token'); ?></b>
                 <span>
-                    <a href="<?php echo $this->getRequestViewUrl() ?>"><?php echo $this->escapeHtml($this->getRequestInfo()->getToken()); ?></a>
+                    <?php if ($this->getRequestInfo()->getToken()): ?>
+                        <a href="<?php echo $this->getRequestViewUrl() ?>"><?php echo $this->escapeHtml($this->getRequestInfo()->getToken()); ?></a>
+                    <?php else: ?>
+                        <i><?php echo $this->__('Not Saved') ?></i>
+                    <?php endif; ?>
                 </span>
             </div>
 

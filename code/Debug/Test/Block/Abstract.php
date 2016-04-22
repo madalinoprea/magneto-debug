@@ -159,6 +159,22 @@ class Sheep_Debug_Test_Block_Abstract extends EcomDev_PHPUnit_Test_Case
         $this->assertEquals('request view url', $actual);
     }
 
+    public function testGetRequestViewUrlWithoutSavedProfiler()
+    {
+        $requestInfo = $this->getModelMock('sheep_debug/requestInfo', array('getToken'));
+        $requestInfo->expects($this->any())->method('getToken')->willReturn(null);
+
+        $block = $this->getBlockMock('sheep_debug/abstract', array('getRequestInfo'));
+        $block->expects($this->once())->method('getRequestInfo')->willReturn($requestInfo);
+
+        $urlHelper = $this->getHelperMock('sheep_debug/url');
+        $this->replaceByMock('helper', 'sheep_debug/url', $urlHelper);
+        $urlHelper->expects($this->never())->method('getRequestViewUrl');
+
+        $actual = $block->getRequestViewUrl('layout');
+        $this->assertEquals('#', $actual);
+    }
+
 
     public function testFormatNumber()
     {
