@@ -60,8 +60,9 @@ composer require madalinoprea/magneto-debug
 
 All released versions can be found on [releases' page](https://github.com/madalinoprea/magneto-debug/releases). 
 
-- Latest version: [**1.6.2**](https://github.com/madalinoprea/magneto-debug/releases/latest)
-   - Fixes e-mail capture for Magento CE 1.7 and Magento EE 1.12 #75
+- Latest version: [**1.8.0**](https://github.com/madalinoprea/magneto-debug/releases/latest)
+   - Adds ability to disable/enable profile persistence via Tools / Persist Request Profile (detailed view is disabled)
+   - Fixes fatal error when downloader was accessed
 
 
 # Issues, Ideas or Feedback
