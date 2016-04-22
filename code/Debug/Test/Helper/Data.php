@@ -344,6 +344,16 @@ XML;
         return $this->assertTrue($this->helper->canPersist());
     }
 
+
+    public function testHasDisablePersistenceCookie()
+    {
+        $cookie = $this->getModelMock('core/cookie', array('get'));
+        $cookie->expects($this->once())->method('get')->with('sheep_debug_disable_persist')->willReturn('1');
+        $this->replaceByMock('singleton', 'core/cookie', $cookie);
+
+        $this->assertTrue($this->helper->hasDisablePersistenceCookie());
+    }
+
     public function testGetPersistLifetime()
     {
         return $this->assertEquals(1, $this->helper->getPersistLifetime());

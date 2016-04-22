@@ -48,6 +48,17 @@ class Sheep_Debug_Test_Block_Util extends EcomDev_PHPUnit_Test_Case
         $this->assertEquals('disable template hints url', $actual);
     }
 
+    public function testGetEnableTemplateHintsUrl()
+    {
+        $helper = $this->getHelperMock('sheep_debug/url', array('getEnableTemplateHintsUrl'));
+        $helper->expects($this->once())->method('getEnableTemplateHintsUrl')->willReturn('enable template hints url');
+        $this->replaceByMock('helper', 'sheep_debug/url', $helper);
+
+        $block = $this->getBlockMock('sheep_debug/util', array('toHtml'));
+        $actual = $block->getEnableTemplateHintsUrl();
+        $this->assertEquals('enable template hints url', $actual);
+    }
+
 
     public function testHasFullPageCache()
     {
@@ -200,6 +211,16 @@ class Sheep_Debug_Test_Block_Util extends EcomDev_PHPUnit_Test_Case
         $block = $this->getBlockMock('sheep_debug/util', array('toHtml'));
         $actual = $block->getDisableVarienProfilerUrl();
         $this->assertEquals('disable varien profiler url', $actual);
+    }
+
+    public function testIsDisabledPersistenceCookieOn()
+    {
+        $helper = $this->getHelperMock('sheep_debug', array('hasDisablePersistenceCookie'));
+        $helper->expects($this->any())->method('hasDisablePersistenceCookie')->willReturn(true);
+        $this->replaceByMock('helper', 'sheep_debug', $helper);
+
+        $block = $this->getBlockMock('sheep_debug/util', array('toHtml'));
+        $this->assertTrue($block->isDisablePersistenceCookieOn());
     }
 
 }

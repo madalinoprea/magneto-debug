@@ -186,6 +186,24 @@ class Sheep_Debug_Test_Model_Observer extends EcomDev_PHPUnit_Test_Case
         $model->saveProfiling();
     }
 
+    public function testSaveProfilingPersistenceCookieDisabled()
+    {
+        $helper = $this->getHelperMock('sheep_debug', array('canPersist', 'hasDisablePersistenceCookie'));
+        $helper->expects($this->any())->method('canPersist')->willReturn(true);
+        $helper->expects($this->any())->method('hasDisablePersistenceCookie')->willReturn(true);
+        $this->replaceByMock('helper', 'sheep_debug', $helper);
+
+        $requestInfo = $this->getModelMock('sheep_debug/requestInfo', array('getIsStarted', 'save'));
+        $requestInfo->expects($this->any())->method('getIsStarted')->willReturn(true);
+        $requestInfo->expects($this->never())->method('save');
+
+        $model = $this->getModelMock('sheep_debug/observer', array('canCollect', 'getRequestInfo'));
+        $model->expects($this->any())->method('canCollect')->willReturn(true);
+        $model->expects($this->any())->method('getRequestInfo')->willReturn($requestInfo);
+
+        $model->saveProfiling();
+    }
+
 
     public function testSaveProfilingNotStarted()
     {
@@ -615,6 +633,51 @@ class Sheep_Debug_Test_Model_Observer extends EcomDev_PHPUnit_Test_Case
         $model->onControllerFrontSendResponseAfter($event);
     }
 
+    public function testOnWebsiteRestrictionForDebugControllers()
+    {
+        // We can show toolbar
+        $helper = $this->getHelperMock('sheep_debug', array('canShowToolbar'));
+        $helper->expects($this->any())->method('canShowToolbar')->willReturn(true);
+        $this->replaceByMock('helper', 'sheep_debug', $helper);
+
+        // controller is our own
+        $controller = $this->getMock('Sheep_Debug_Controller_Front_Action', array(), array(), '', false);
+
+        // then we should disable website restrictions
+        $result = $this->getMock('Varien_Object', array('setShouldProceed'));
+        $result->expects($this->once())->method('setShouldProceed')->with(false);
+
+        $event = $this->getMock('Varien_Event_Observer', array('getController', 'getResult'));
+        $event->expects($this->any())->method('getController')->willReturn($controller);
+        $event->expects($this->any())->method('getResult')->willReturn($result);
+
+        $model = Mage::getModel('sheep_debug/observer');
+
+        $model->onWebsiteRestriction($event);
+    }
+
+    public function testOnWebsiteRestrictionForOtherControllers()
+    {
+        // We can show toolbar
+        $helper = $this->getHelperMock('sheep_debug', array('canShowToolbar'));
+        $helper->expects($this->any())->method('canShowToolbar')->willReturn(true);
+        $this->replaceByMock('helper', 'sheep_debug', $helper);
+
+        // controller is not sub-class of our base controller
+        $controller = $this->getMock('Mage_Core_Controller_Front_Action', array(), array(), '', false);
+
+        // then we should disable website restrictions
+        $result = $this->getMock('Varien_Object', array('setShouldProceed'));
+        $result->expects($this->never())->method('setShouldProceed')->with(false);
+
+        $event = $this->getMock('Varien_Event_Observer', array('getController', 'getResult'));
+        $event->expects($this->any())->method('getController')->willReturn($controller);
+        $event->expects($this->any())->method('getResult')->willReturn($result);
+
+        $model = Mage::getModel('sheep_debug/observer');
+
+        $model->onWebsiteRestriction($event);
+    }
 
     public function testCanCaptureCoreBlocks()
     {
