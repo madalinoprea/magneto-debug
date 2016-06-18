@@ -38,7 +38,6 @@ class Sheep_Debug_Model_Block
         $this->parentName = $block->getParentBlock() ? $block->getParentBlock()->getNameInLayout() : '';
         $this->name = $block->getNameInLayout();
         $this->class = get_class($block);
-        $this->templateFile = $block instanceof Mage_Core_Block_Template ? $block->getTemplateFile() : '';
         // TODO: make sure we copy only serializable data
 //        $this->data = $block->getData();
     }
@@ -83,6 +82,7 @@ class Sheep_Debug_Model_Block
         $this->isRendering = false;
         $this->renderedCompletedAt = microtime(true);
         $this->renderedDuration += ($this->renderedCompletedAt * 1000 - $this->renderedAt * 1000);
+        $this->templateFile = $block instanceof Mage_Core_Block_Template ? $block->getTemplateFile() : '';
 
         self::$endRenderingTime = $this->renderedCompletedAt;
     }

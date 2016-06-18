@@ -39,7 +39,7 @@ class Sheep_Debug_Test_Model_Block extends EcomDev_PHPUnit_Test_Case
         $this->assertEquals('my.account.wrapper', $model->getParentName());
         $this->assertContains('Mage_Wishlist_Block_Customer_Wishlist', $model->getClass());
         $this->assertEquals('customer.wishlist', $model->getName());
-        $this->assertEquals('wishlist/view.phtml', $model->getTemplateFile());
+        $this->assertNull($model->getTemplateFile());
     }
 
 
@@ -85,12 +85,12 @@ class Sheep_Debug_Test_Model_Block extends EcomDev_PHPUnit_Test_Case
      */
     public function testStartAndCompleteRendering()
     {
-        $block = $this->getBlockMock('wishlist/customer_wishlist', array('getNameInLayout', 'getTemplateFile'));
+        $block = $this->getBlockMock('wishlist/customer_wishlist', array('getTemplateFile'));
+        $block->expects($this->once())->method('getTemplateFile')->willReturn('wishlist/view.phtml');
 
         /** @var Sheep_Debug_Model_Block $model */
         $model = $this->getModelMock('sheep_debug/block', array('init'), false, array(), '', false);
         $model->expects($this->once())->method('init')->with($block);
-
 
         $model->startRendering($block);
         $this->assertTrue($model->isRendering());
@@ -100,11 +100,13 @@ class Sheep_Debug_Test_Model_Block extends EcomDev_PHPUnit_Test_Case
         $this->assertEquals(0, $model->getRenderedDuration());
 
         $model->completeRendering($block);
+
         $this->assertFalse($model->isRendering());
         $this->assertEquals(1, $model->getRenderedCount());
         $this->assertNotNull($model->getRenderedCompletedAt());
         $this->assertGreaterThan(0, $model->getRenderedDuration());
         $this->assertGreaterThan(0, $model->getTotalRenderingTime());
+        $this->assertEquals('wishlist/view.phtml', $model->getTemplateFile());
     }
 
 }
