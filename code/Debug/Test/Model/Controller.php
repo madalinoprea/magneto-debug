@@ -106,7 +106,7 @@ class Sheep_Debug_Test_Model_Controller extends EcomDev_PHPUnit_Test_Case
 
         // our mocked session
         $coreSession = $this->getModelMock('core/session', array('init', 'getEncryptedSessionId'));
-        $coreSession->expects($this->any())->method('getEncryptedSessionId')->willReturn('encrypted_12345');
+        $coreSession->expects($this->never())->method('getEncryptedSessionId');
         $this->replaceByMock('singleton', 'core/session', $coreSession);
 
         /** @var Sheep_Debug_Model_Controller $model */
@@ -116,7 +116,6 @@ class Sheep_Debug_Test_Model_Controller extends EcomDev_PHPUnit_Test_Case
         $this->assertEquals('POST', $model->getHttpMethod());
         $this->assertEquals('/some/url', $model->getRequestOriginalPath());
         $this->assertEquals('/some/url', $model->getRequestPath());
-        $this->assertEquals('encrypted_12345', $model->getSessionId());
 
         $this->assertArrayHasKey('DOCUMENT_ROOT', $model->getServerParameters());
         $this->assertEquals('/var/www', $model->getServerParameters()['DOCUMENT_ROOT']);
@@ -135,6 +134,21 @@ class Sheep_Debug_Test_Model_Controller extends EcomDev_PHPUnit_Test_Case
 
         $this->assertArrayHasKey('pass', $model->getPostParameters());
         $this->assertEquals('password', $model->getPostParameters()['pass']);
+    }
+
+
+    public function testInitFromSession()
+    {
+        // our mocked session
+        $coreSession = $this->getModelMock('core/session', array('init', 'getEncryptedSessionId'));
+        $coreSession->expects($this->any())->method('getEncryptedSessionId')->willReturn('encrypted_12345');
+        $this->replaceByMock('singleton', 'core/session', $coreSession);
+
+        /** @var Sheep_Debug_Model_Controller $model */
+        $model = Mage::getModel('sheep_debug/controller');
+        $model->initFromSession();
+
+        $this->assertEquals('encrypted_12345', $model->getSessionId());
     }
 
 
