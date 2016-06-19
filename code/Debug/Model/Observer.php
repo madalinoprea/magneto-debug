@@ -125,6 +125,9 @@ class Sheep_Debug_Model_Observer
         // capture log ranges
         $requestInfo->completeLogging();
 
+        // update Magento session attributes
+        $requestInfo->getController()->initFromSession();
+
         // save rendering time
         $requestInfo->setRenderingTime(Sheep_Debug_Model_Block::getTotalRenderingTime());
 

@@ -77,7 +77,7 @@ class Sheep_Debug_Model_Controller
 
     
     /**
-     *
+     * Initialize generic request attributes stored in PHP global variables (POST, GET, etc)
      */
     public function initFromGlobals()
     {
@@ -94,6 +94,14 @@ class Sheep_Debug_Model_Controller
         $this->session = $helper->getGlobalSession();
         $this->getParameters = $helper->getGlobalGet();
         $this->postParameters = $helper->getGlobalPost();
+    }
+
+
+    /**
+     * Initialise Magento session related attributes
+     */
+    public function initFromSession()
+    {
         $this->sessionId = Mage::getSingleton('core/session')->getEncryptedSessionId();
     }
 

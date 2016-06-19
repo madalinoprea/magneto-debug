@@ -64,11 +64,14 @@ class Sheep_Debug_Test_Model_Observer extends EcomDev_PHPUnit_Test_Case
         $helper->expects($this->once())->method('getCurrentScriptDuration')->willReturn(0.1231);
         $this->replaceByMock('helper', 'sheep_debug', $helper);
 
+        $controllerMock = $this->getModelMock('sheep_debug/controller', array('initFromSession'));
+        $controllerMock->expects($this->once())->method('initFromSession');
+        
         Sheep_Debug_Model_Block::$startRenderingTime = 0.70;
         Sheep_Debug_Model_Block::$endRenderingTime = 0.90;
 
         $requestInfo = $this->getModelMock('sheep_debug/requestInfo',
-            array('getIsStarted', 'initQueries', 'completeLogging', 'setRenderingTime', 'setPeakMemory', 'setTime', 'setTimers', 'setResponseCode'));
+            array('getIsStarted', 'getController', 'initQueries', 'completeLogging', 'setRenderingTime', 'setPeakMemory', 'setTime', 'setTimers', 'setResponseCode'));
         $requestInfo->expects($this->any())->method('getIsStarted')->willReturn(true);
         $requestInfo->expects($this->once())->method('initQueries');
         $requestInfo->expects($this->once())->method('completeLogging');
@@ -77,6 +80,7 @@ class Sheep_Debug_Test_Model_Observer extends EcomDev_PHPUnit_Test_Case
         $requestInfo->expects($this->once())->method('setTime')->with(0.1231);
         $requestInfo->expects($this->once())->method('setTimers');
         $requestInfo->expects($this->once())->method('setResponseCode');
+        $requestInfo->expects($this->any())->method('getController')->willReturn($controllerMock);
 
         $model = $this->getModelMock('sheep_debug/observer', array('getRequestInfo'));
         $model->expects($this->any())->method('getRequestInfo')->willReturn($requestInfo);
