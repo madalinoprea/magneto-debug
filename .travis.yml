@@ -41,7 +41,7 @@ before_script:
   - cd $TRAVIS_BUILD_DIR/build
 
   # Install Magento
-  - n98-magerun.phar install --magentoVersion ${MAGENTO_VERSION} --installationFolder "magento" --dbHost "127.0.0.1" --dbUser "root" --dbPass "" --dbName "magento_test" --baseUrl "http://testmagento.local" --forceUseDb yes --useDefaultConfigParams yes --installSampleData no
+  - n98-magerun.phar install --magentoVersion ${MAGENTO_VERSION} --installationFolder "magento" --dbHost "127.0.0.1" --dbUser "root" --dbPass "" --dbName "magento_test" --baseUrl "http://testmagento.local" --forceUseDb --useDefaultConfigParams yes --installSampleData no
   - mkdir -p magento/var/log
 
   # Install our module
