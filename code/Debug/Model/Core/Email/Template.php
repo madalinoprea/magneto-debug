@@ -43,10 +43,6 @@ trait Sheep_Debug_Model_Core_Email_Template_Capture
         $zendMail = $this->getMail();
 
         $result = $this->parentSend($email, $name, $variables);
-        
-        if (Mage::getStoreConfigFlag('system/smtp/disable') || Mage::getStoreConfig('smtppro/general/option') != 'disabled') {
-            return $result;
-        }
 
         try {
             $this->addEmailToProfile($email, $name, $variables, $result, $zendMail);
@@ -84,6 +80,7 @@ trait Sheep_Debug_Model_Core_Email_Template_Capture
         $emailCapture->setBody($body);
         $emailCapture->setIsAccepted($result);
         $emailCapture->setVariables($variables);
+        $emailCapture->setIsSmtpDisabled((bool)Mage::getStoreConfigFlag('system/smtp/disable'));
 
         Mage::getSingleton('sheep_debug/observer')->getRequestInfo()->addEmail($emailCapture);
     }
@@ -106,7 +103,7 @@ trait Sheep_Debug_Model_Core_Email_Template_Capture
         /** @var Zend_Mime_Part $mimePart */
         $mimePart = $this->isPlain() ? $mail->getBodyText() : $mail->getBodyHtml();
 
-        return $this->getPartDecodedContent($mimePart);
+        return $mimePart ? $this->getPartDecodedContent($mimePart) : '';
     }
 
 
@@ -118,16 +115,18 @@ trait Sheep_Debug_Model_Core_Email_Template_Capture
      */
     public function getPartDecodedContent(Zend_Mime_Part $mimePart)
     {
-
         // getRawContent is not available in Zend 1.11 (Magento CE 1.7)
         if (method_exists($mimePart, 'getRawContent')) {
             return $mimePart->getRawContent();
         }
 
-        $encoding = $mimePart->encoding;
-        $mimePart->encoding = 'none';
-        $content = $mimePart->getContent();
-        $mimePart->encoding = $encoding;
+        $content = '';
+        if (method_exists($mimePart, 'getContent')) {
+            $encoding = $mimePart->encoding;
+            $mimePart->encoding = 'none';
+            $content = $mimePart->getContent();
+            $mimePart->encoding = $encoding;
+        }
 
         return $content;
     }
