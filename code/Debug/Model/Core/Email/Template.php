@@ -43,6 +43,10 @@ trait Sheep_Debug_Model_Core_Email_Template_Capture
         $zendMail = $this->getMail();
 
         $result = $this->parentSend($email, $name, $variables);
+        
+        if (Mage::getStoreConfigFlag('system/smtp/disable') || Mage::getStoreConfig('smtppro/general/option') != 'disabled') {
+            return $result;
+        }
 
         try {
             $this->addEmailToProfile($email, $name, $variables, $result, $zendMail);
