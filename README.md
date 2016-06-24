@@ -110,7 +110,9 @@ If you would like to support it on another version let us know.
     - Toolbar is added to all pages that have a structural block named `before_body_end`. By default this block is available on all Magento pages.
     Eliminate a possible cache problem by disabling all caches. Try to determine if there are any customizations that have removed `before_body_end`.
 
-
+- Fatal error while running unit tests
+   - If you get error `PHP Fatal error: Uncaught exception 'Exception' with message 'Warning: session_start(): Cannot send session cookie headers already sent by ` you should review your phpunit configuration file and redirect phpunit output to stderr, please check my configuration file from phpunit.xml
+   - More details can be found here #83
 
 
 # Authors, contributors
