@@ -275,13 +275,19 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
             if ($stripFilepath && isset($row['file']) && strpos($row['file'], $stripFilepath) !== false) {
                 continue;
             }
-
             if ($trimPath && isset($row['file'])) {
                 $row['file'] = str_replace($trimPath, '', $row['file']);
             }
 
             if (isset($row['file'])) {
-                $out .= "[$index] {$row['file']}:{$row['line']}\n";
+                $out .= sprintf('<a href="http://localhost:63342/api/file/%s:%u" onclick="var ajax = new XMLHttpRequest(); ajax.open(\'GET\', this.href); ajax.send(null); return false">[%u] %s:%u</a><br>',
+                    $row['file'],
+                    $row['line'],
+                    $index,
+                    $row['file'],
+                    $row['line']
+                    );
+
             } else {
                 // sometimes there is undefined index 'file'
                 $out .= "[$index] (?) {$row['class']}:{$row['function']}\n";
