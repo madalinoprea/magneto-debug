@@ -28,7 +28,7 @@ install:
   - modman --version
 
   # install n98-magerun
-  - wget https://files.magerun.net/n98-magerun.phar
+  - wget --no-check-certificate https://files.magerun.net/n98-magerun.phar
   - chmod +x n98-magerun.phar
   - ./n98-magerun.phar --version
 
