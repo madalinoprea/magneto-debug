@@ -165,6 +165,14 @@ if (Mage::helper('core')->isModuleEnabled('Aschroder_SMTPPro')) {
         use Sheep_Debug_Model_Core_Email_Template_Capture;
     }
 
+} else if(Mage::helper('core')->isModuleEnabled('Ebizmarts_MailChimp')) {
+
+
+    class Sheep_Debug_Model_Core_Email_Template extends Ebizmarts_MailChimp_Model_Email_Template
+    {
+        use Sheep_Debug_Model_Core_Email_Template_Capture;
+    }
+
 } else if(Mage::helper('core')->isModuleEnabled('FreeLunchLabs_MailGun')) {
 
 
