@@ -4,15 +4,15 @@
     <default>
         <reference name="head">
             <reference name="head">
-                <action method="addItem">
+                <action method="addItem" ifconfig="sheep_debug/options/enable">
                     <type>skin_js</type>
                     <name>sheep_debug/js/toolbar.js</name>
                 </action>
-                <action method="addItem">
+                <action method="addItem" ifconfig="sheep_debug/options/enable">
                     <type>skin_js</type>
                     <name>sheep_debug/js/profile.js</name>
                 </action>
-                <action method="addItem">
+                <action method="addItem" ifconfig="sheep_debug/options/enable">
                     <type>skin_css</type>
                     <name>sheep_debug/css/toolbar.css</name>
                 </action>
