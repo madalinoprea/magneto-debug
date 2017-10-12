@@ -8,7 +8,6 @@ php:
 env:
   - MAGENTO_VERSION=magento-mirror-1.9.2.3
   - MAGENTO_VERSION=magento-mirror-1.8.1.0
-  - MAGENTO_VERSION=magento-mirror-1.7.0.2
 
 services:
   - mysql
