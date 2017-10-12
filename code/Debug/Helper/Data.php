@@ -27,6 +27,10 @@ class Sheep_Debug_Helper_Data extends Mage_Core_Helper_Data
      */
     public function isEnabled()
     {
+        if(!Mage::isInstalled()) {
+            return false;
+        }
+
         return (bool)Mage::getStoreConfig(self::DEBUG_OPTIONS_ENABLE_PATH);
     }
 
