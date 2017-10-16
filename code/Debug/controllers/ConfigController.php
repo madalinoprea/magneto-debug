@@ -47,7 +47,8 @@ class Sheep_Debug_ConfigController extends Sheep_Debug_Controller_Front_Action
         $this->getService()->setVarienProfilerStatus(1);
         $this->getService()->flushCache();
 
-        $this->_redirectReferer();
+        $this->getResponse()->setRedirect();
+        $this->getResponse()->sendResponse();
     }
 
 
@@ -59,7 +60,8 @@ class Sheep_Debug_ConfigController extends Sheep_Debug_Controller_Front_Action
         $this->getService()->setVarienProfilerStatus(0);
         $this->getService()->flushCache();
 
-        $this->_redirectReferer();
+        $this->getResponse()->setRedirect();
+        $this->getResponse()->sendResponse();
     }
 
 

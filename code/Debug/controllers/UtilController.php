@@ -60,7 +60,8 @@ class Sheep_Debug_UtilController extends Sheep_Debug_Controller_Front_Action
             $this->getSession()->addError($message);
         }
 
-        $this->_redirectReferer();
+        $this->getResponse()->setRedirect();
+        $this->getResponse()->sendResponse();
     }
 
 
@@ -80,7 +81,8 @@ class Sheep_Debug_UtilController extends Sheep_Debug_Controller_Front_Action
             $this->getSession()->addError($message);
         }
 
-        $this->_redirectReferer();
+        $this->getResponse()->setRedirect();
+        $this->getResponse()->sendResponse();
     }
 
 
@@ -100,7 +102,8 @@ class Sheep_Debug_UtilController extends Sheep_Debug_Controller_Front_Action
             $this->getSession()->addError($message);
         }
 
-        $this->_redirectReferer();
+        $this->getResponse()->setRedirect();
+        $this->getResponse()->sendResponse();
     }
 
 
@@ -119,7 +122,8 @@ class Sheep_Debug_UtilController extends Sheep_Debug_Controller_Front_Action
             $this->getSession()->addError($message);
         }
 
-        $this->_redirectReferer();
+        $this->getResponse()->setRedirect();
+        $this->getResponse()->sendResponse();
     }
 
 
@@ -137,7 +141,8 @@ class Sheep_Debug_UtilController extends Sheep_Debug_Controller_Front_Action
             $this->getSession()->addError($message);
         }
 
-        $this->_redirectReferer();
+        $this->getResponse()->setRedirect();
+        $this->getResponse()->sendResponse();
     }
 
 
@@ -154,7 +159,8 @@ class Sheep_Debug_UtilController extends Sheep_Debug_Controller_Front_Action
             $this->getSession()->addError($message);
         }
 
-        $this->_redirectReferer();
+        $this->getResponse()->setRedirect();
+        $this->getResponse()->sendResponse();
     }
 
 
@@ -172,7 +178,8 @@ class Sheep_Debug_UtilController extends Sheep_Debug_Controller_Front_Action
             $this->getSession()->addError($message);
         }
 
-        $this->_redirectReferer();
+        $this->getResponse()->setRedirect();
+        $this->getResponse()->sendResponse();
     }
 
 }

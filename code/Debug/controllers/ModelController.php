@@ -25,7 +25,8 @@ class Sheep_Debug_ModelController extends Sheep_Debug_Controller_Front_Action
             Mage::getSingleton('core/session')->addError('Unable to enable SQL profiler: ' . $e->getMessage());
         }
 
-        $this->_redirectReferer();
+        $this->getResponse()->setRedirect();
+        $this->getResponse()->sendResponse();
     }
 
 
@@ -43,7 +44,8 @@ class Sheep_Debug_ModelController extends Sheep_Debug_Controller_Front_Action
             Mage::getSingleton('core/session')->addError('Unable to disable SQL profiler: ' . $e->getMessage());
         }
 
-        $this->_redirectReferer();
+        $this->getResponse()->setRedirect();
+        $this->getResponse()->sendResponse();
     }
 
 
